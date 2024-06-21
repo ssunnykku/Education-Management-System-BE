@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body th:fragment="header">
+<div id="header">
+    <div id="nav-wrapper">
+        <div id="top-logo">
+            <img src="../../assets/kosta-logo.png" alt=""/>
+        </div>
+        <ul id="nav-ul">
+            <li id="nav-notification" class="nav-li">공지사항</li>
+            <li id="nav-course" class="nav-li">과정 관리</li>
+            <li id="nav-scholarship" class="nav-li">장학금 관리</li>
+            <li id="nav-benefit" class="nav-li">지원금 관리</li>
+            <li id="nav-student" class="nav-li">수강생 관리</li>
+        </ul>
+        <div id="header-btns">
+            <button id="logout-btn" type="button">로그아웃</button>
+        </div>
+    </div>
+    <script src="../../scripts/common.js"></script>
+    <div th:insert="~{common/headerDropdown :: dropdown}"></div>
+</div>
+<script type="text/javascript" th:src="@{/scripts/common.js}"></script>
+</body>
+</html>

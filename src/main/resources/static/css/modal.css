@@ -1,0 +1,255 @@
+@import "reset.css";
+@import "button.css";
+
+/************* removeModal*****************/
+.modal-background {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0,0,0,0.5);
+z-index: 100;
+}
+
+.remove-wrapper {
+position: absolute;
+top: calc(50vh - 100px);
+left: calc(50vw - 200px);
+display: flex;
+justify-content: center;
+align-items: center;
+border-radius: 10px;
+width: 340px;
+height: 200px;
+background: #ffffff;
+border-radius: 10px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 10px 16px;
+gap: 10px;
+width: 340px;
+z-index: 200;
+}
+
+#remove-title {
+width: 100%;
+height: 80px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+text-align: center;
+column-gap: 30px;
+}
+
+.remove-info {
+width: 100%;
+display: flex;
+flex-direction: column;
+justify-content: center;
+text-align: center;
+column-gap: 30px;
+}
+
+.remove-info>h1 {
+font-size: 18px;
+}
+
+.title {
+font-weight: bold;
+color: rgba(45, 98, 234, 1);
+}
+
+.upperline {
+background: #ffffff;
+border-top: 1px solid #f3f5f9;
+border-radius: 10px 10px 0px 0px;
+padding: 20px 0;
+}
+
+/**************** button *******************/
+
+#btn-wrapper {
+height: 55px;
+padding: 0;
+
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: center;
+gap: 10px;
+margin-top: 20px;
+}
+
+#notification-delete-Modal-btn {
+width: 57px;
+height: 32px;
+background: #2D62EA;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.08);
+border-radius: 6px;
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+color: #FFFFFF;
+}
+
+#notification-delete-Modal-cancel-btn {
+width: 57px;
+height: 32px;
+top: calc(50% - 32px/ 2 + 63px);
+background: #D9D9D9;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.08);
+border-radius: 6px;
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 144%;
+/* Text/Text_Wh */
+color: #FFFFFF;
+}
+
+/***************** notificationBoard -> alertNotSelectModal************/
+
+#alert-confirm-btn {
+width: 57px;
+height: 32px;
+background: #2D62EA;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.08);
+border-radius: 6px;
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+color: #FFFFFF;
+}
+
+/* #select-alert-wrapper {
+width: 340px;
+height: 200px;
+background: #ffffff;
+border-radius: 10px;
+
+display: flex;
+flex-direction: column;
+justify-content: center;
+padding: 10px 16px;
+gap: 10px;
+
+```
+width: 100%;
+display: flex;
+flex-drection: row;
+padding-left: 140px;
+
+```
+
+}
+*/
+.select-alert-wrapper {
+position: absolute;
+top: calc(50vh - 100px);
+left: calc(50vw - 200px);
+border-radius: 10px;
+width: 340px;
+height: 200px;
+background: #ffffff;
+
+
+display: flex;
+flex-direction: column;
+
+z-index: 200;
+}
+
+.select-alert-wrapper  > div  {
+width: 100%;
+height: 100px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+text-align: center;
+/* 	column-gap: 30px; */
+}
+
+/******************* removeResultModal *******************/
+
+.notification-delete-result-wrapper {
+position: absolute;
+top: calc(50vh - 100px);
+left: calc(50vw - 200px);
+
+width: 340px;
+height: 200px;
+background: #ffffff;
+border-radius: 10px;
+
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 10px 16px;
+gap: 10px;
+
+}
+
+.notification-delete-info {
+width: 100%;
+display: flex;
+flex-direction: column;
+justify-content: center;
+text-align: center;
+column-gap: 30px;
+}
+
+.upperline {
+background: #ffffff;
+border-top: 1px solid #f3f5f9;
+border-radius: 10px 10px 0px 0px;
+padding: 20px 0;
+}
+
+.title {
+font-weight: bold;
+color: rgba(45, 98, 234, 1);
+}
+
+#notificatin-delete-btn-wrapper {
+height: 55px;
+padding: 0;
+
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: center;
+gap: 10px;
+margin-top: 20px;
+
+}
+
+#enroll-btn-format {
+font-weight: 600;
+color: rgba(45, 98, 234, 1);
+border-radius: 8px;
+}
+
+.btn-setting-format {
+font-style: normal;
+
+/* font-weight: 600; */
+font-size: 14px;
+line-height: 144%;
+
+width: 57px;
+height: 32px;
+
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+gap: 10px;
+
+padding: 5px;
+box-shadow: 0px 0px 3px rgba(45, 98, 234, 1);
+line-height: 1.5em;
+}

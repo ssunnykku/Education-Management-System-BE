@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
+            integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/format.css"/>
+    <link rel="stylesheet" href="../../css/notifications.css"/>
+</head>
+<body id="content-wrapper">
+<div th:insert="~{common/header :: header}"></div>
+<section id="title-wrapper">
+    <h2 id="title">공지사항</h2>
+</section>
+<section id="setNotifications-section">
+    <article class="setNotification-contents">
+        <div class="setNotification-set-wrapper">
+            <div class="setNotification-title-wrapper">
+                <h3>제목</h3>
+                <div class="setNotification-title-input-wrapper">
+                    <input/>
+                </div>
+            </div>
+        </div>
+        <div class="setNotification-input-wrapper">
+            <input/>
+        </div>
+        <div id="setNotification-btn-wrapper">
+            <button id="enroll-btn" class="setNotification-btn-setting">
+                등록
+            </button>
+            <button id="delete-btn" class="setNotification-btn-setting">
+                취소
+            </button>
+        </div>
+    </article>
+</section>
+<footer></footer>
+</body>
+</html>

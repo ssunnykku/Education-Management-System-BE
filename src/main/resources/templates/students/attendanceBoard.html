@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
+            integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/format.css"/>
+    <link rel="stylesheet" href="../../css/students.css"/>
+</head>
+<body id="content-wrapper">
+<div th:insert="~{common/header :: header}"></div>
+<div th:insert="~{common/title :: title ('출결 관리')}"></div>
+<section id="title-wrapper">
+    <h2 id="title">출결 관리</h2>
+</section>
+<section id="attendance-contents">
+    <article class="attendance-search-btn-wrapper">
+        <div class="attendance-search-form-wrapper">
+            <!-- form???? -->
+            <input type="date" id="search-date-input"/>
+            <select name="courseId-filter" class="courseId-filter">
+                <option value="none">기수</option>
+                <option value="227">227</option>
+                <option value="191">191</option>
+            </select>
+            <input placeholder="수강생을 입력하세요" class="search-input"/>
+            <button type="button" class="filter-search-btn">검색</button>
+        </div>
+        <div class="attendance-btn-wrapper">
+            <button type="button" id="enroll-btn" class="attendance-btn-setting">
+                입력
+            </button>
+            <button
+                    type="button"
+                    id="long-enroll-btn"
+                    class="attendance-btn-setting"
+            >
+                일괄등록
+            </button>
+            <button type="button" id="edit-btn" class="attendance-btn-setting">
+                수정
+            </button>
+        </div>
+    </article>
+    <article>
+        <div class="board-table">
+            <div class="board-row" id="board-title-row">
+                <div class="attendance-checkbox">
+                    <input type="checkbox" name=""/>
+                </div>
+                <div class="attendance-courseId">
+                    <span>기수</span>
+                </div>
+                <div class="attendance-name">
+                    <span>이름</span>
+                </div>
+                <div class="attendance-birth">
+                    <span>생년월일</span>
+                </div>
+                <div class="attendance-duration">
+                    <span>과정 기간(일)</span>
+                </div>
+                <div class="attendance-cnt">
+                    <span>출석(일)</span>
+                </div>
+                <div class="attendance-cnt-late">
+                    <span>지각</span>
+                </div>
+                <div class="attendance-cnt-early-leave">
+                    <span>조퇴</span>
+                </div>
+                <div class="attendance-cnt-go-out">
+                    <span>외출</span>
+                </div>
+                <div class="attendance-cnt-absence">
+                    <span>결석(일)</span>
+                </div>
+                <div class="attendance-total">
+                    <span>출석 인정일</span>
+                </div>
+            </div>
+            <div class="board-row">
+                <div class="attendance-checkbox">
+                    <input type="checkbox" name=""/>
+                </div>
+                <div class="attendance-courseId">
+                    <span>227</span>
+                </div>
+                <div class="attendance-name">
+                    <span>김선희</span>
+                </div>
+                <div class="attendance-birth">
+                    <span>930628</span>
+                </div>
+                <div class="attendance-duration">
+                    <span>100</span>
+                </div>
+                <div class="attendance-cnt">
+                    <span>55</span>
+                </div>
+                <div class="attendance-cnt-late">
+                    <span>5</span>
+                </div>
+                <div class="attendance-cnt-early-leave">
+                    <span>3</span>
+                </div>
+                <div class="attendance-cnt-go-out">
+                    <span>1</span>
+                </div>
+                <div class="attendance-cnt-absence">
+                    <span>0</span>
+                </div>
+                <div class="attendance-total-absence">
+                    <span>53</span>
+                </div>
+            </div>
+        </div>
+    </article>
+</section>
+<section id="content-section">
+    <article>
+        <div class="student-cnt-pages">
+            <span>총 13건</span>
+        </div>
+    </article>
+</section>
+<footer></footer>
+</body>
+</html>

@@ -1,0 +1,775 @@
+@import "reset.css";
+
+/************pointBoard*****************/
+
+/***** button/ search *******/
+
+#scholarship-search-btn-wrapper {
+	width: 100%;
+	display: flex;
+	flex-direction:row;
+	justify-content: space-between;
+	padding-left: 35%;;
+}
+
+.search-form-wrapper {
+  padding-top: 12px;
+  display: flex;
+  width: 450px;
+  gap: 8px;
+}
+
+
+.btn-wrapper {
+  padding-top: 12px;
+  width: 250px;
+  height: 53px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+#setting-btn-wrapper {
+  padding-bottom: 5px;
+}
+
+#get-settlement-list-btn {
+  background-color: rgb(255, 255, 255);
+  width: 100px;
+  height: 90%;
+  border-radius: 8px;
+}
+
+#settlement-btn {
+  color: #ffffff;
+  background-color: rgb(64, 64, 64);
+  width: 60px;
+  height: 90%;
+  border-radius: 8px;
+}
+
+.btn-setting {
+  /* border-radius: 6px; */
+  font-style: normal;
+
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 144%;
+
+  height: 32px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 16px;
+  gap: 10px;
+
+  float: right;
+  background: #eee;
+  padding: 5px;
+  box-shadow: 0px 0px 3px #888;
+  line-height: 1.5em;
+}
+
+
+
+/*************************************/
+
+
+#button-wrapper {
+  height: 55px;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+
+  display: flex;
+  justify-content: end;
+
+  padding-right: 130px;
+}
+
+#enroll-btn {
+  width: 96px;
+  color: #ffffff;
+  background-color: rgb(64, 64, 64);
+  border-radius: 8px;
+}
+
+#point-search-btn {
+  font-weight: 600;
+  color: rgb(64, 64, 64);
+  background-color: rgb(255, 255, 255);
+  border-radius: 8px;
+}
+
+#filter-button-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 60px;
+}
+
+.filter-search-btn {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 144%;
+
+  width: 100px;
+  height: 40px;
+  padding: 10px 16px;
+  gap: 10px;
+
+  line-height: 1.5em;
+  border-radius: 8px;
+
+  /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15); */
+
+  box-shadow: 0px 0px 2px #888;
+  line-height: 1.5em;
+
+  background: rgba(244, 244, 244, 1);
+  color: #000000;
+}
+
+#search-date-input {
+  background: #ffffff;
+
+  border: 1px solid #cfcfcf;
+  border-radius: 5px;
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 144%;
+}
+
+.courseId-filter {
+  width: 90px;
+  height: 41px;
+
+  background: #ffffff;
+
+  border: 1px solid #cfcfcf;
+  border-radius: 5px;
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 144%;
+
+  padding-left: 18px;
+  margin-right: 7px;
+
+  color: #000000;
+
+  background-image: url("../assets/Polygon.svg");
+  background-repeat: no-repeat;
+  background-size: 12px;
+  background-position: right;
+  background-position: 60px;
+}
+
+.search-input {
+  width: 300px;
+  height: 41px;
+
+  background: #ffffff;
+
+  border: 1px solid #cfcfcf;
+  border-radius: 10px;
+
+  z-index: 1;
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 144%;
+
+  padding-left: 15px;
+  margin-right: 5px;
+
+  color: #000000;
+  text-align: center;
+}
+
+.search-input::placeholder {
+  background-image: url("../assets/search.svg");
+  background-repeat: no-repeat;
+  background-size: 19px;
+  background-position: left;
+}
+
+/**************table***********************/
+
+#point-table-wrapper {
+  margin: 0 10% 0 10%;
+}
+
+.point-table {
+  width: 100%;
+  padding: 0 200px 0 200px;
+  /* 왜안됨... */
+}
+
+.point-table-row {
+  display: flex;
+  flex-direction: row;
+  height: 60px;
+  width: 100%;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+
+  font-style: normal;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 144%;
+
+  color: #1d1d1d;
+}
+
+#point-title-row {
+  font-style: normal !important;
+  font-weight: 500 !important;
+  font-size: 15px;
+  line-height: 144% !important;
+  text-align: center;
+
+  color: #1d1d1d;
+
+  box-sizing: border-box;
+
+  width: 100%;
+  height: 60px;
+
+  background: #ffffff;
+  border-bottom: 1px solid #f3f5f9;
+  border-radius: 10px 10px 0px 0px;
+}
+
+#point-radio-btn {
+  width: 25%;
+}
+
+#point-table-courseId {
+  width: 25%;
+}
+
+#point-table-birth {
+  width: 25%;
+}
+
+#point-table-name {
+  width: 25%;
+}
+
+#point-table-total-point {
+  width: 25%;
+}
+
+.point-cnt-pages {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+
+  margin-top: 5%;
+  margin-left: 10%;
+
+  color: #999999;
+}
+
+/*****************scholarship settlement***********/
+#scholarship-contents {
+  padding: 0 10% 0 10%;
+  /*   display: flex;
+     */
+}
+/* button, search */
+
+.scholarship-search-form-wrapper {
+  width: 520px;
+  margin: 20px 0 20px 0;
+  margin-left: 35%;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.scholarship-courseId-filter {
+  width: 90px;
+  height: 41px;
+
+  background: #ffffff;
+
+  border: 1px solid #cfcfcf;
+  border-radius: 5px;
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 144%;
+
+  padding-left: 18px;
+  padding-right: 37px;
+  margin-left: 4px;
+
+  color: #000000;
+
+  background-image: url("../assets/Polygon.svg");
+  background-repeat: no-repeat;
+  background-size: 12px;
+  background-position: right;
+  background-position: 60px;
+}
+
+#scholarshipBoard-table {
+  width: 100%;
+  /* padding: 0 100px 0 100px; */
+}
+.scholarshipBoard-row {
+  display: flex;
+  flex-direction: row;
+  height: 60px;
+  width: 100%;
+  align-items: center;
+  /*   text-align: center; */
+  justify-content: space-between;
+
+  font-style: normal;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 144%;
+
+  color: #1d1d1d;
+}
+
+.scholarshipBoard-checkbox {
+  width: 50px;
+  text-align: center;
+}
+
+#scholarshipBoard-title-row {
+  font-style: normal !important;
+  font-weight: 500 !important;
+  font-size: 15px;
+  line-height: 144% !important;
+  text-align: center;
+
+  color: #1d1d1d;
+
+  box-sizing: border-box;
+
+  /*   width: 100%; */
+  height: 60px;
+
+  background: #ffffff;
+  border-bottom: 1px solid #f3f5f9;
+  border-radius: 10px 10px 0px 0px;
+}
+
+/* 버튼 */
+.board-filter-search-btn {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 144%;
+
+  width: 100px;
+  height: 40px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 16px;
+  gap: 10px;
+
+  line-height: 1.5em;
+  border-radius: 8px;
+
+  /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15); */
+
+  box-shadow: 0px 0px 2px #888;
+  line-height: 1.5em;
+
+  background: rgba(244, 244, 244, 1);
+  color: #000000;
+
+  flex: none;
+  order: 0;
+  flex-grow: 1;
+}
+
+.scholarshipBoard-corseId {
+  width: 50px;;
+  text-align: center;
+}
+
+.scholarshipBoard-course-name {
+  width: 35%;
+}
+
+.scholarshipBoard-birth {
+  width: 12%;
+}
+
+.scholarshipBoard-name {
+  width: 5%;
+}
+
+.scholarshipBoard-bank {
+  width: 5%;
+}
+
+.scholarshipBoard-account {
+  width: 15%;
+}
+
+.scholarshipBoard-point {
+  width: 5%;
+
+}
+
+.scholarshipBoard-total-amount {
+  width: 10%;
+}
+
+/************************scholarshipResultBoard  ************/
+#scholoarshipResult-contents {
+  padding: 0 10% 0 10%;
+}
+
+/* 검색, 버튼 */
+
+.scholarshipResult-search-form-wrapper {
+  margin: 20px 0 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.scholarshipResult-search-btn-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-right: 4%;
+}
+
+.scholarshipResult-courseId-filter {
+  width: 90px;
+  height: 41px;
+
+  background: #ffffff;
+
+  border: 1px solid #cfcfcf;
+  border-radius: 5px;
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 144%;
+
+  padding-left: 18px;
+  margin-left: 4px;
+
+  color: #000000;
+
+  background-image: url("../assets/Polygon.svg");
+  background-repeat: no-repeat;
+  background-size: 12px;
+  background-position: right;
+  background-position: 60px;
+}
+
+/* table */
+
+#scholarshipResultBoard-table {
+  width: 100%;
+  /* padding: 0 100px 0 100px; */
+}
+.scholarshipResultBoard-row {
+  display: flex;
+  display: flex;
+  flex-direction: row;
+  height: 60px;
+  width: 100%;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+
+  font-style: normal;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 144%;
+
+  color: #1d1d1d;
+}
+
+.scholarshipResultBoard-checkbox {
+  width: 10px;
+}
+
+#scholarshipResultBoard-title-row {
+  font-style: normal !important;
+  font-weight: 500 !important;
+  font-size: 15px;
+  line-height: 144% !important;
+  text-align: center;
+
+  color: #1d1d1d;
+
+  box-sizing: border-box;
+
+  width: 100%;
+  height: 60px;
+
+  background: #ffffff;
+  border-bottom: 1px solid #f3f5f9;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.scholarshipResultBoard-checkbox {
+  width: 5%;
+}
+.scholarshipResultBoard-courseId {
+  width: 7%;
+}
+.scholarshipResultBoard-birth {
+  width: 12%;
+}
+.scholarshipResultBoard-name {
+  width: 12%;
+}
+.scholarshipResultBoard-bank {
+  width: 12%;
+}
+.scholarshipResultBoard-account {
+  width: 16%;
+}
+.scholarshipResultBoard-total-amount {
+  width: 16%;
+}
+.scholarshipResultBoard-settlement-date {
+  width: 13%;
+}
+
+/********** addPointModal**********/
+
+body {
+  font-family: "Pretendard";
+}
+
+#addpoint-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  width: 100%;
+  height: 650px;
+}
+
+#main-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 100px;
+}
+
+#addpoint-wrapper1,
+#addpoint-wrapper2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+}
+
+.info-title {
+  width: 100%;
+  height: 40px;
+  left: 46px;
+  top: 43px;
+
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 144%;
+  /* or 24px */
+  text-align: center;
+
+  /* Text/Text_900 */
+  color: #1d1d1d;
+}
+
+.underline {
+  background: #ffffff;
+  border-bottom: 1px solid #f3f5f9;
+  border-radius: 10px 10px 0px 0px;
+  padding-bottom: 20px;
+}
+
+.underline > h4 {
+  font-weight: bold;
+}
+
+.total-point > h3,
+.line > h3 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+body {
+  font-family: "Pretendard";
+}
+
+/* 적용 안됨 */
+#point-info-name {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.student-info,
+.choose-point-info,
+.point-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 350px;
+  gap: 40px;
+}
+
+.student-info-detail {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  gap: 30px;
+}
+
+.choose-point-info-detail,
+.point-info-detail {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  gap: 30px;
+}
+
+.student-info-detail > div,
+.choose-point-info-detail > div,
+.point-info-detail > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#point-btn-wrapper {
+  height: 55px;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+
+  display: flex;
+  align-items: center;
+}
+
+.point-btn-setting {
+  font-style: normal;
+
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 144%;
+
+  color: #ffffff;
+
+  width: 57px;
+  height: 32px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  float: right;
+  background: #eee;
+  padding: 5px;
+  box-shadow: 0px 0px 3px #888;
+  line-height: 1.5em;
+}
+
+#point-enroll-btn {
+  color: #ffffff;
+  background-color: rgb(64, 64, 64);
+  border-radius: 8px;
+}
+
+#edit-btn,
+#delete-btn {
+  font-weight: 600;
+  color: rgb(64, 64, 64);
+  background-color: rgb(255, 255, 255);
+  border-radius: 8px;
+}
+/*********PointModal **********/
+
+#point-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  width: 1000px;
+  height: 400px;
+}
+
+.total-point-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 350px;
+  gap: 40px;
+}
+
+.total-point-info-detail {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  gap: 20px;
+}
+
+.total-point-info-detail > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.total-point {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.total-point > h1 {
+  font-size: 17;
+}
+
+/*  studentBoard page */
+.student-cnt-pages {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+
+  margin-top: 5%;
+
+  color: #999999;
+}
