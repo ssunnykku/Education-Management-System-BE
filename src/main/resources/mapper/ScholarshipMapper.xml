@@ -44,5 +44,39 @@
             where student_id = s.student_id
               and course_seq = sc.course_seq) is null;
     </select>
+    <insert id="insertScholarshipSettlementDate" parameterType="Long">
+        insert into scholarship_settlement_date (student_course_seq)
+        values (#{studentCourseSeq})
+    </insert>
+
+
+    <select id="selectScholarshipSettlementResultList"
+            resultType="com.kosta.ems.scholarship.ScholarshipSettlementResultDTO">
+        SELECT s.student_id          AS studentId,
+               s.hrd_net_id          AS hrdNetId,
+               s.name,
+               s.bank,
+               s.account,
+               s.manager_id          AS managerId,
+               s.is_active           AS isActive,
+               sc.student_course_seq AS studentCourseSeq,
+               sc.course_seq         AS courseSeq,
+               c.course_number       AS courseNumber,
+               c.course_name         AS courseName,
+               ssd.scholarship_date  AS scholarshipDate,
+               500000                as scholarshipAmount
+        FROM students s
+                 LEFT JOIN students_courses sc ON s.student_id = sc.student_id
+                 LEFT JOIN courses c ON c.course_seq = sc.course_seq
+                 LEFT JOIN scholarship_settlement_date ssd ON ssd.student_course_seq = sc.student_course_seq
+        WHERE c.course_number = #{courseNumber}
+          and s.is_active = 'T'
+          and c.academy_location = #{academyLocation}
+          AND s.name like CONCAT('%', #{name}, '%')
+          AND s.is_active = 'T'
+          AND scholarship_date like CONCAT('%', #{scholarshipDate}, '%')
+          AND scholarship_date != '';
+
+    </select>
 
 </mapper>
