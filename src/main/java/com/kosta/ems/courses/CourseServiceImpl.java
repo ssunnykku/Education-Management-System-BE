@@ -1,4 +1,4 @@
-package com.kosta.ems.course;
+package com.kosta.ems.courses;
 
 import java.util.List;
 import java.util.Objects;
@@ -13,12 +13,11 @@ public class CourseServiceImpl implements CourseService {
 	private final CourseMapper courseMapper;
 
 	@Override
-	public CourseDTO getCourse(int courseNumber, String academyLocation) {
-		CourseDTO course = courseMapper.getCourse(courseNumber);
+	public CourseDTO getCourse(int courseSeq, String academyLocation) {
+		CourseDTO course = courseMapper.getCourse(courseSeq);
 		//권한 검사
-		if(Objects.nonNull(course) && !course.getAcademyLocation().equals(academyLocation))
+		if(course == null || !course.getAcademyLocation().equals(academyLocation))
 			return null;
-		
 		return course;
 	}
 

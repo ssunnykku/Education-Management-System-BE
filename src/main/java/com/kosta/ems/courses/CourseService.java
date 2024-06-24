@@ -1,4 +1,4 @@
-package com.kosta.ems.course;
+package com.kosta.ems.courses;
 
 import org.springframework.stereotype.Service;
 

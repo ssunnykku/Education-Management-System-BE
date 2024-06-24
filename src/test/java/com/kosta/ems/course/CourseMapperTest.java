@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kosta.ems.courses.CourseDTO;
+import com.kosta.ems.courses.CourseMapper;
+
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
@@ -30,8 +33,9 @@ public class CourseMapperTest {
 	@Test
 	@Transactional
 	public void GetCourse() {
-		CourseDTO course = mapper.getCourse(277);
-		assertThat(course.getCourseSeq()).isEqualTo(19);
+		CourseDTO course = mapper.getCourse(27);
+		System.out.println(course.toString());
+		assertThat(course.getCourseSeq()).isEqualTo(27);
 	}
 
 
