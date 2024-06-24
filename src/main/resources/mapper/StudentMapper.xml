@@ -21,5 +21,13 @@
         where s.name = '%' + #{name} + '%'
           and is_active = 'T'
     </select>
-
+	<select id="findByStudentNameOrCourseNumber" resultType="com.kosta.ems.student.StudentBasicInfoDTO">
+		SELECT s.student_id AS studentId, s.hrd_net_id AS hrdNetId, c.course_number AS courseNumber, s.name , s.birth,
+	s.address, s.bank, s.account, s.phone_number AS phoneNumber, s.email
+FROM students s, courses c, students_courses sc
+WHERE s.student_id=sc.student_id AND c.course_seq=sc.course_seq AND 
+	(s.student_id IN (SELECT student_id FROM students WHERE name LIKE CONCAT('%', #{name}, '%'))
+	OR c.course_seq=(SELECT course_seq FROM courses WHERE course_number=#{courseNumber}))
+LIMIT #{start}, #{size}
+	</select>
 </mapper>
