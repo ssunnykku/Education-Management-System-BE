@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kosta.ems.scholarship.ScholarshipMapper">
+    <select id="selectScholarshipTargetList" resultType="com.kosta.ems.scholarship.ScholarshipTargetDTO">
+        SELECT distinct s.student_id                      AS studentId,
+                        s.hrd_net_id                      AS hrdNetId,
+                        s.name,
+                        s.bank,
+                        s.account,
+                        s.manager_id                      AS managerId,
+                        s.is_active                       AS isActive,
+                        sc.student_course_seq             AS studentCourseSeq,
+                        sc.course_seq                     AS courseSeq,
+                        c.course_number                   AS courseNumber,
+                        c.academy_location                AS academyLocation,
+                        c.course_name                     AS courseName,
+                        (select scholarship_date
+                        from view_students_course_scholarship_settlement_Date
+                        where student_id = s.student_id
+                          and course_seq = sc.course_seq) as scholarshipDate,
+                        (select totalPoint
+                        from view_students_course_point
+                        where student_id = s.student_id
+                          and course_seq = sc.course_seq
+                          and pc.is_active = 'T')         as totalPoint,
+                        500000                            as scholarshipAmount
+        FROM students s
+                 LEFT JOIN students_courses sc ON s.student_id = sc.student_id
+                 LEFT JOIN courses c on c.course_seq = sc.course_seq
+                 LEFT JOIN students_points sp on sp.student_course_seq = sc.student_course_seq
+                 LEFT JOIN point_categories pc on sp.point_seq = pc.point_seq
+        WHERE c.academy_location = #{academyLocation}
+            AND #{name} IS NULL
+           OR s.name LIKE CONCAT('%', #{name}, '%')
+            AND s.is_active = 'T'
+            AND sc.course_seq = #{courseSeq}
+            AND (select totalPoint
+            from view_students_course_point
+            where student_id = s.student_id
+              and course_seq = sc.course_seq
+              and pc.is_active = 'T') >= 50
+            AND (select scholarship_date
+            from view_students_course_scholarship_settlement_Date
+            where student_id = s.student_id
+              and course_seq = sc.course_seq) is null;
+    </select>
+    <insert id="insertScholarshipSettlementDate" parameterType="Long">
+        insert into scholarship_settlement_date (student_course_seq)
+        values (#{studentCourseSeq})
+    </insert>
+
+
+    <select id="selectScholarshipSettlementResultList"
+            resultType="com.kosta.ems.scholarship.ScholarshipSettlementResultDTO">
+        SELECT s.student_id          AS studentId,
+               s.hrd_net_id          AS hrdNetId,
+               s.name,
+               s.bank,
+               s.account,
+               s.manager_id          AS managerId,
+               s.is_active           AS isActive,
+               sc.student_course_seq AS studentCourseSeq,
+               sc.course_seq         AS courseSeq,
+               c.course_number       AS courseNumber,
+               c.course_name         AS courseName,
+               ssd.scholarship_date  AS scholarshipDate,
+               500000                as scholarshipAmount
+        FROM students s
+                 LEFT JOIN students_courses sc ON s.student_id = sc.student_id
+                 LEFT JOIN courses c ON c.course_seq = sc.course_seq
+                 LEFT JOIN scholarship_settlement_date ssd ON ssd.student_course_seq = sc.student_course_seq
+        WHERE c.course_number = #{courseNumber}
+          and s.is_active = 'T'
+          and c.academy_location = #{academyLocation}
+          AND s.name like CONCAT('%', #{name}, '%')
+          AND s.is_active = 'T'
+          AND scholarship_date like CONCAT('%', #{scholarshipDate}, '%')
+          AND scholarship_date != '';
+
+    </select>
+
+</mapper>

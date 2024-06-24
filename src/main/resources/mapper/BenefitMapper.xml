@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kosta.ems.benefit.BenefitMapper">
+    <select id="selectBenefitTarget" resultType="com.kosta.ems.benefit.BenefitTargetDTO">
+        <![CDATA[
+        select c.course_seq                     as courseSeq,
+               c.manager_id                     as managerId,
+               c.course_number                  as courseNumber,
+               c.course_name                    as courseName,
+               c.is_active                      as isActive,
+               s.student_id                     as studentId,
+               s.name,
+               s.hrd_net_id                     as hrdNetId,
+               s.bank,
+               s.account,
+               (select settlement_aid_amount
+               from view_check_settlement_aid_target
+               where student_id = s.student_id) as settlementAidAmount
+        from courses c
+                 LEFT JOIN students_courses sc ON c.course_seq = sc.course_seq
+                 LEFT JOIN students s ON s.student_id = sc.student_id
+        WHERE c.academy_location = #{academyLocation}
+          AND course_start_date <= #{startDate}
+          and course_end_date >= #{endDate}
+          AND s.student_id != ''
+          AND c.is_active = 'T'
+          AND c.course_number = #{courseNumber}
+        ]]>
+    </select>
+</mapper>
