@@ -13,8 +13,14 @@ class StudentMapperTest {
     @Autowired
     StudentMapper studentMapper;
 
-    @Test
+    // @Test
     public void selectStudentByName() {
         log.info(studentMapper.selectStudentByName("김선").toString());
+    }
+    
+    @Test
+    public void findByStudentNameOrCourseNumber() {
+    	// log.info(studentMapper.findByStudentNameOrCourseNumber("진", 5).toString());
+    	log.info(studentMapper.findByStudentNameOrCourseNumber("진", 277, 0, 10).toString());
     }
 }
