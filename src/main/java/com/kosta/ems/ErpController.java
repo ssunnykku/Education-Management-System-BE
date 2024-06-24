@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/ui")
 
-public class EmpController {
+public class ErpController {
 
     @GetMapping("/benefits")
     public String benefitBoard() {
