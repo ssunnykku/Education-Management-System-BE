@@ -25,6 +25,21 @@
           AND s.student_id != ''
           AND c.is_active = 'T'
           AND c.course_number = #{courseNumber}
+        ORDER BY name desc
+        limit #{limit} offset #{offset};
         ]]>
     </select>
+
+    <insert id="insertBenefitSettlementDuration" useGeneratedKeys="true"
+            parameterType="com.kosta.ems.benefit.SettlementDurationDTO"
+            keyProperty="settlementDurationSeq">
+        insert into settlement_durations (settlement_duration_start_date, settlement_duration_end_date, course_seq,
+                                          manager_id)
+        values (#{settlementDurationStartDate}, #{settlementDurationEndDate}, #{courseSeq}, #{managerId})
+    </insert>
+    <insert id="insertBenefitSettlementAmount" parameterType="com.kosta.ems.benefit.BenefitDTO">
+        insert into benefits (training_aid_amount, meal_aid_amount, settlement_aid_amount, student_id,
+                              settlement_duration_seq)
+        values (#{trainingAidAmount}, #{mealAidAmount}, #{settlementAidAmount}, #{studentId}, #{settlementDurationSeq})
+    </insert>
 </mapper>

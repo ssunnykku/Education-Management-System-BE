@@ -1,13 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kosta.ems.attendance.AttendanceMapper">
-    <select id="selectAttendanceByStudentId" resultType="com.kosta.ems.attendance.AttendanceStudentCourseDTO">
-        select attendance_date, a.student_course_seq, attendance_status, student_id, course_seq
+    <select id="selectAttendanceByStudentIdAndDuration"
+            resultType="com.kosta.ems.attendance.AttendanceStudentCourseDTO">
+        select attendance_date      as attendanceDate,
+               a.student_course_seq as studentCourseSeq,
+               attendance_status    as attendanceStatus,
+               student_id           as studentId,
+               course_seq           as courseSeq
+        from attendances a
+                 left join students_courses sc on a.student_course_seq = sc.student_course_seq
+        where student_id = #{studentId}
+          and attendance_date <![CDATA[>=]]> #{startDate}
+          and attendance_date <![CDATA[<=]]> #{endDate}
+    </select>
+
+    <select id="selectCountAttendance" resultType="int">
+        select count(attendance_date) as countAttencance
         from attendances a
                  left join students_courses sc on a.student_course_seq = sc.student_course_seq
         where attendance_date <![CDATA[>=]]> #{startDate}
           and attendance_date <![CDATA[<=]]> #{endDate}
           and student_id = #{studentId}
-
+          and attendance_status = '출석';
+    </select>
+    <select id="selectCountLeave" resultType="int">
+        select count(attendance_date) countLeave
+        from attendances a
+                 left join students_courses sc on a.student_course_seq = sc.student_course_seq
+        where attendance_date <![CDATA[>=]]> #{startDate}
+          and attendance_date <![CDATA[<=]]> #{endDate}
+          and student_id = #{studentId}
+          and attendance_status != '출석';
     </select>
 </mapper>
