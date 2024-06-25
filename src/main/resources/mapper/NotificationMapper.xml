@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kosta.ems.notification.NotificationMapper">
+<select id="selectAll" resultType="com.kosta.ems.notification.NotificationDTO">
+	SELECT n.notification_seq,m.manager_id, n.title,n.description,n.notification_date,m.NAME,n.is_active,n.view_count 
+FROM notifications n 
+LEFT JOIN managers m ON n.manager_id = m.manager_id 
+WHERE n.is_active='T' AND m.academy_location=(SELECT academy_location 
+FROM managers 
+WHERE manager_id = #{managerId})
+	</select>
+	<select id="findByKeyword" resultType="com.kosta.ems.notification.NotificationDTO">
+	SELECT n.notification_seq,m.manager_id, n.title,n.description,n.notification_date,m.NAME,n.is_active,n.view_count
+FROM notifications n 
+LEFT JOIN managers m ON n.manager_id = m.manager_id 
+WHERE  n.is_active='T' AND m.academy_location=(SELECT academy_location 
+FROM managers 
+WHERE manager_id = #{managerId}) AND (title LIKE '%${keyword}%'  OR DESCRIPTION LIKE '%${keyword}%' )
+	</select>
+		<insert id="insertNotification" parameterType="com.kosta.ems.notification.NotificationDTO">
+	INSERT INTO notifications (manager_id, title, description)
+VALUES (#{managerId}, #{title}, #{description})
+	</insert>
+	<update id="inActivateNotificaiotn" parameterType="java.lang.Integer">
+	UPDATE notifications set is_active='F' WHERE notification_seq=#{notificationSeq}
+	</update>
+	<update id="updateNotification" parameterType="com.kosta.ems.notification.NotificationDTO">
+	UPDATE notifications set description=#{description} WHERE notification_seq=#{notificationSeq}
+	</update>
+	<select id="getDescription" resultType="com.kosta.ems.notification.NotificationDTO">
+SELECT DESCRIPTION FROM notifications WHERE notification_seq=#{notificationSeq}
+	</select>
+</mapper>
