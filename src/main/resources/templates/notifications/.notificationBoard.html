@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
+            integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/notifications.css"/>
+    <link rel="stylesheet" href="../../css/button.css"/>
+    <link rel="stylesheet" href="../../css/format.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+</head>
+<body id="notification-body">
+<div th:insert="~{common/header :: header}"></div>
+<div th:insert="~{common/title :: title ('공지사항')}"></div>
+<section id="notification-section">
+    <article class="notification-contents">
+        <div id="notification-btn-wrapper">
+            <button id="notification-enroll-btn" class="btn-setting">등록</button>
+            <button id="notification-delete-btn" class="btn-setting">삭제</button>
+        </div>
+        <div id="notification-table">
+            <div class="notification-table-row table-first-row">
+                <div class="notificationBoard-checkbox">
+                    <input type="checkbox" name="" id="title-checkbox"/>
+                </div>
+                <div class="notificationBoard-no">
+                    <span>NO</span>
+                </div>
+                <div class="notificationBoard-title">
+                    <span>제목</span>
+                </div>
+                <div class="notificationBoard-enroll-date">
+                    <span>등록일</span>
+                </div>
+                <div class="notificationBoard-writer">
+                    <span>작성자</span>
+                </div>
+            </div>
+            <div class="notification-table-row">
+                <div class="notificationBoard-checkbox">
+                    <input type="checkbox" name=""/>
+                </div>
+                <div class="notificationBoard-no">
+                    <span>NO</span>
+                </div>
+                <div class="notificationBoard-title">
+                    <span>제목</span>
+                </div>
+                <div class="notificationBoard-enroll-date">
+                    <span>등록일</span>
+                </div>
+                <div class="notificationBoard-writer">
+                    <span>작성자</span>
+                </div>
+            </div>
+        </div>
+    </article>
+</section>
+<section id="notificationBoard-pagenation-section">
+    <article class="notificationBoard-page-information">
+        <div class=page-arrow-wrapper>
+            <button id="double_arrow_left" class="page-arrow-btn">
+                <i class="bi bi-chevron-double-left"></i>
+            </button>
+            <button id="arrow_left" class="page-arrow-btn">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+        </div>
+        <div class="pages">
+            <div class="page_number-wrapper">
+                <span class="page_number">1</span>
+            </div>
+            <div class="page_number-wrapper">
+                <span class="page_number">2</span>
+            </div>
+            <div class="page_number-wrapper">
+                <span class="page_number">3</span>
+            </div>
+            <div class="page_number-wrapper">
+                <span class="page_number">4</span>
+            </div>
+            <div class="page_number-wrapper">
+                <span class="page_number">5</span>
+            </div>
+        </div>
+        <div class=page-arrow-wrapper>
+            <button id="arrow_right" class="page-arrow-btn">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+            <button id="double_arrow_right" class="page-arrow-btn">
+                <i class="bi bi-chevron-double-right"></i>
+            </button>
+        </div>
+    </article>
+    <article class="cnt-pages-wrapper">
+        <div class="cnt-pages">
+        </div>
+    </article>
+</section>
+<footer></footer>
+</body>
+</html>
