@@ -10,6 +10,6 @@ public interface CourseService {
     List<CourseDTO> searchCourseList(int courseNumber, String academyLocation, int page, int pageSize);
     
     boolean addCourse(CourseDTO course);
-    boolean editCourse(CourseDTO course, String academyLocation);
+    boolean editCourse(CourseDTO course);
     boolean deleteCourse(int courseSeq, String academyLocationOfManager);
 }

@@ -13,10 +13,10 @@ public class CourseServiceImpl implements CourseService {
 	private final CourseMapper courseMapper;
 
 	@Override
-	public CourseDTO getCourse(int courseSeq, String academyLocation) {
+	public CourseDTO getCourse(int courseSeq, String academyLocationOfManager) {
 		CourseDTO course = courseMapper.getCourse(courseSeq);
 		//권한 검사
-		if(course == null || !course.getAcademyLocation().equals(academyLocation))
+		if(course == null || !course.getAcademyLocation().equals(academyLocationOfManager))
 			return null;
 		return course;
 	}
@@ -32,10 +32,11 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public boolean editCourse(CourseDTO course, String academyLocationOfManager) {
-		if(course.getAcademyLocation().equals(academyLocationOfManager))
+	public boolean editCourse(CourseDTO course) {
+		CourseDTO ori = courseMapper.getCourse(course.getCourseSeq()); 
+		if(course.getAcademyLocation().equals(ori.getAcademyLocation()))
 			return courseMapper.updateCourse(course);
-		//보안 런타임 오류
+		//TODO:보안 런타임 오류 
 		return false;
 	}
 
