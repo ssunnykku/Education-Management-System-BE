@@ -53,11 +53,14 @@ public class StudentServiceTest {
 	}
 	
 	// 수강생 정보 수정
-	@Test
+	// @Test
 	void updateSelectedStudentInfo() {
 		studentServiceImpl.updateSelectedStudentInfo("박기영","부산광역시 사상구", "부산", "110583195038", "01059341921", "syc1234@gmail.com", "78b21862-32bf-11ef-b0b2-0206f94be675");
 	}
 	
 	// 수강생 삭제
-	
+	// @Test
+	void deleteSelectedStudent() {
+		studentServiceImpl.deleteSelectedStudent("8b48e083-2fa8-11ef-b0b2-0206f94be675");
+	}
 }
