@@ -1,10 +1,6 @@
 package com.kosta.ems.student;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -13,10 +9,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @ToString
 @Builder
-public class StudentBasicInfoDTO {
-    private String studentId;
+public class AddStudentBasicInfoDTO {
     private String hrdNetId;
-    private int courseNumber;
     private String name;
     private LocalDate birth;
     private String address;
@@ -24,4 +18,6 @@ public class StudentBasicInfoDTO {
     private String account;
     private String phoneNumber;
     private String email;
+    private char gender;
+    private String managerId;
 }

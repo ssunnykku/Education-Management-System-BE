@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kosta.ems.student.StudentMapper">
-    <select id="selectStudentByName" parameterType="string" resultType="com.kosta.ems.student.StudentCourseInfoDTO">
+	<select id="selectStudentByName" parameterType="string" resultType="com.kosta.ems.student.StudentCourseInfoDTO">
         select s.student_id         as studentId,
                hrd_net_id           as hrdNetID,
                name,
@@ -21,6 +21,12 @@
         where s.name = '%' + #{name} + '%'
           and is_active = 'T'
     </select>
+    <select id="findByStudentNumberOrCourseNumberAll" resultType="int">
+    	SELECT COUNT(s.student_id) AS count
+FROM students s, courses c, students_courses sc
+WHERE s.student_id=sc.student_id AND c.course_seq=sc.course_seq AND 
+	(s.student_id IN (SELECT student_id FROM students WHERE NAME LIKE CONCAT('%', #{name}, '%')) OR c.course_seq=(SELECT course_seq FROM courses WHERE course_number=#{courseNumber}));
+    </select>
 	<select id="findByStudentNameOrCourseNumber" resultType="com.kosta.ems.student.StudentBasicInfoDTO">
 		SELECT s.student_id AS studentId, s.hrd_net_id AS hrdNetId, c.course_number AS courseNumber, s.name , s.birth,
 	s.address, s.bank, s.account, s.phone_number AS phoneNumber, s.email
@@ -30,4 +36,35 @@ WHERE s.student_id=sc.student_id AND c.course_seq=sc.course_seq AND
 	OR c.course_seq=(SELECT course_seq FROM courses WHERE course_number=#{courseNumber}))
 LIMIT #{start}, #{size}
 	</select>
+	<!--입력 hrdNetId인지 확인-->
+    <select id="findByHrdNetId" parameterType="string" resultType="int">
+        SELECT COUNT(hrd_net_id) FROM students
+        WHERE hrd_net_id=#{hrdNetId};
+    </select>
+    <!--기존 수강생 정보 가져오기-->
+    <select id="getRegisteredStudentBasicInfo" resultType="com.kosta.ems.student.RegisteredStudentInfoDTO">
+    	SELECT student_id AS studentId, name, birth, address, bank, account, phone_number AS phoneNumber, email
+FROM students
+WHERE hrd_net_id=#{hrdNetId};
+    </select>
+    <!--수강생 등록(students 테이블)-->
+    <insert id="addStudentBasicInfo" parameterType="com.kosta.ems.student.AddStudentBasicInfoDTO">
+        INSERT INTO students (hrd_net_id, NAME, birth, address, bank, ACCOUNT, phone_number, email, gender, manager_id)
+        VALUES
+            (#{hrdNetId}, #{name}, #{birth}, #{address}, #{bank}, #{account}, #{phoneNumber}, #{email}, #{gender}, #{managerId})
+    </insert>
+    <!--수강생 등록(students_courses 테이블)-->
+    <insert id="addStudentCourseSeqInfo" parameterType="com.kosta.ems.student.AddStudentCourseSeqDTO">
+        INSERT INTO students_courses (student_id, course_seq)
+        VALUES (
+                       (SELECT student_id FROM students WHERE hrd_net_id=#{hrdNetId}),
+                       (SELECT course_seq FROM courses WHERE course_number=#{courseNumber})
+               )
+    </insert>
+    <!--선택한 수강생 정보 수정-->
+    <update id="updateSelectedStudentInfo">
+    	UPDATE students
+SET NAME=#{dto.name}, address=#{dto.address}, bank=#{dto.bank}, ACCOUNT=#{dto.account}, phone_number=#{dto.phoneNumber}, email=#{dto.email}
+WHERE student_id=#{studentId}; 
+    </update>
 </mapper>
