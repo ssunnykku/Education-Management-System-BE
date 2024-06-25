@@ -1,4 +1,4 @@
-package com.kosta.ems.manager;
+package com.kosta.ems.managers;
 
 import java.io.IOException;
 import java.util.Map;
