@@ -1,4 +1,4 @@
-package com.kosta.ems.course;
+package com.kosta.ems.courses;
 
 import org.springframework.stereotype.Service;
 
@@ -6,7 +6,7 @@ import java.util.List;
 
 @Service
 public interface CourseService {
-	CourseDTO getCourse(int courseNumber, String academyLocation);
+	CourseDTO getCourse(int courseSeq, String academyLocation);
     List<CourseDTO> searchCourseList(int courseNumber, String academyLocation, int page, int pageSize);
     
     boolean addCourse(CourseDTO course);
