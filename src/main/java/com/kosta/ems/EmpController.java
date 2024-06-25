@@ -1,13 +1,26 @@
 package com.kosta.ems;
 
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.kosta.ems.courses.CourseDTO;
+import com.kosta.ems.courses.CourseService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/ui")
-
+@RequiredArgsConstructor
 public class EmpController {
+	private final CourseService courseService;
 
     @GetMapping("/benefits")
     public String benefitBoard() {
@@ -25,9 +38,20 @@ public class EmpController {
     }
 
     @GetMapping("/courses")
-    public String addCourseModal() {
+    public String addCourseModal(@RequestParam(value="page", defaultValue = "1") int page, @RequestParam(value="pageSize", defaultValue = "10") int pageSize, @RequestParam(value="courseNumber", defaultValue = "0") int courseNumber,@RequestParam(value="excludeExpired", defaultValue = "true") boolean excludeExpired, HttpServletRequest request, Model model) {
+    	//                                                         (         277,                          "가산",    1,       10);
+    	List<CourseDTO> courseList = courseService.searchCourseList(courseNumber, getAcademyOfLoginUser(request), page, pageSize, excludeExpired);
+    	List<Integer> courseNumberList = courseService.getCourseNumberList(getAcademyOfLoginUser(request), excludeExpired);
+    	model.addAttribute("courseNumberList",courseNumberList);
+    	model.addAttribute("courseList",courseList);
         return "courses/courseBoard";
     }
+
+	private String getAcademyOfLoginUser(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+//    	return (String) session.getAttribute("academyLocation");
+		return "가산";
+	}
 
     @GetMapping("/login")
     public String login() {

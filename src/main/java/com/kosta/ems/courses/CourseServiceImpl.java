@@ -22,8 +22,8 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public List<CourseDTO> searchCourseList(int courseNumber, String academyLocation, int page, int pageSize) {
-		return courseMapper.searchCourseList(courseNumber, academyLocation, (page-1) * pageSize, pageSize);
+	public List<CourseDTO> searchCourseList(int courseNumber, String academyLocation, int page, int pageSize, boolean excludeExpired) {
+		return courseMapper.searchCourseList(courseNumber, academyLocation, (page-1) * pageSize, pageSize, excludeExpired);
 	}
 
 	@Override
@@ -48,6 +48,11 @@ public class CourseServiceImpl implements CourseService {
 			return false;
 		}
 		return courseMapper.inactivateCourse(courseSeq);
+	}
+
+	@Override
+	public List<Integer> getCourseNumberList(String academyLocation, boolean excludeExpired) {
+		return courseMapper.getCourseNumberList(academyLocation, excludeExpired);
 	}
 
 }

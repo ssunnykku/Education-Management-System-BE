@@ -21,13 +21,13 @@
           <!-- form???? -->
           <select name="courseId-filter" class="data-filter">
             <option value="none">기수</option>
-            <option value="227">227</option>
-            <option value="191">191</option>
+            <div style="display: contents;" th:each="courseNumber: ${courseNumberList}">
+              <option th:text="${courseNumber}" th:attr="value=${courseNumber}">기수 alt</option>
+            </div>
           </select>
           <select name="location-filter" class="data-filter">
-            <option value="none">강의장</option>
-            <option value="227">가산</option>
-            <option value="191">성남</option>
+            <option value="true">종료된 강의 미포함</option>
+            <option value="false">종료된 강의 포함</option>
           </select>
           <button type="button" class="filter-search-btn">검색</button>
         </div>
@@ -48,16 +48,13 @@
               <span>주제명</span>
             </div>
             <div id="courseBoard-course-name">
-              <span>과정명</span>
+              <span>과정명</span> 
             </div>
             <div id="courseBoard-duration">
               <span>기간</span>
             </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
             <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
+              <span>총 교육일수<span>
             </div>
             <div id="courseBoard-total-days">
               <span>교육시간(일)</span>
@@ -69,349 +66,43 @@
               <span> 수정하기 </span>
             </div>
           </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
+          <div th:each="course : ${courseList}" th:attr="data-courseSeq=${course.courseSeq}" style="display: contents;">
+            <div class="courseBoard-row" >
+              <div id="courseBoard-no">
+                <input type="checkbox" name="" />
+              </div>
+              <div id="courseBoard-classification">
+                <span th:text="${course.courseType}">과정 구분 alt</span>
+              </div>
+              <div id="courseBoard-course-id">
+                <span th:text="${course.courseNumber}">기수 alt</span>
+              </div>
+              <div id="courseBoard-subject">
+                <span th:text="${course.subject}">과목 alt</span>
+              </div>
+              <div id="courseBoard-course-name">
+                <span th:text="${course.courseName}">Java 기반 클라우드 개발자 양성 과정</span>
+              </div>
+              <div id="courseBoard-duration">
+                <span th:text="${course.getCourseStartDate().toString() + ' ~ ' + course.getCourseEndDate().toString()}" th:attr="data-start-date=${course.getCourseStartDate()},data-end-date=${course.getCourseEndDate()}">2024.02.27 ~ 2024.07.31</span>
+              </div>
+              <div id="courseBoard-total-hours">
+                <!-- 총 시간 대신 교육일수 적기 -->
+                <span th:text="${course.totalTrainingDays}">교육일수 alt<span>
+              </div>
+              <div id="courseBoard-total-days">
+                <!-- 교육시간 -->
+                <span th:text="${course.trainingHoursOfDate}">일당 교육시간 alt</span>
+              </div>
+              <div id="courseBoard-location">
+                <span th:text="${course.academyLocation}">강의장 alt</span>
+              </div>
+              <div id="courseBoard-edit">
+                <button id="edit-btn" class="btn-setting">수정</button>
+              </div>
+            </div>
+            
             </div>
-            <div id="courseBoard-classification">
-              <span>채용 예정자 무료</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>277</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>Java Web</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>Java 기반 클라우드 개발자 양성 과정</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>2024.02.27 ~ 2024.07.31</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>5</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>800<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>8</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>가산</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>
-          </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>        
-           </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>          </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>          </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>          </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>          </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>          </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>          </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>          </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>         
-           </div>
           </div>
       </article>
 

@@ -28,8 +28,8 @@ public class CourseServiceTest {
 	@Test
 	@Transactional
     public void searchCourseList() {
-		assertThat(service.searchCourseList(277, "가산", 1, 10).size()).isEqualTo(1);
-		assertThat(service.searchCourseList(0, "가산", 1, 10).size()).isGreaterThan(2);
+		assertThat(service.searchCourseList(277, "가산", 1, 10, false).size()).isEqualTo(1);
+		assertThat(service.searchCourseList(0, "가산", 1, 10, false).size()).isGreaterThan(2);
 	}
     
 	@Test
@@ -71,7 +71,7 @@ public class CourseServiceTest {
 				.maxStudents(100)
 				.build();
 		service.addCourse(course);
-		course = service.searchCourseList(3000, "가산", 1, 10).get(0);
+		course = service.searchCourseList(3000, "가산", 1, 10, false).get(0);
 		System.out.println(course);
 		course.setCourseName("새로 수정된 이름");
 		assertThat(service.editCourse(course)).isTrue();
