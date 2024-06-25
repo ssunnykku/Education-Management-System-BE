@@ -23,4 +23,8 @@ public interface StudentMapper {
     void updateSelectedStudentInfo(UpdateSelectedStudentInfoDTO dto, String studentId); 
     // 수강생 삭제 (isActive 업데이트)
     void deleteSelectedStudent(String studentId);
+    // [출결] - 수강생 출석 조회 목록 조회
+    Collection<StudentAttendanceListDTO> selectStudentAttendanceList(String name, int courseNumber);
+    // [출결] - 선택한 수강생 출석 상태 수정
+    void updateStudentAttendance(UpdateStudentAttendanceStatusDTO dto);
 }

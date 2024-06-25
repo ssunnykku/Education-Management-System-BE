@@ -101,4 +101,20 @@ public class StudentServiceImpl implements StudentService {
     public void deleteSelectedStudent(String studentId) {
     	studentMapper.deleteSelectedStudent(studentId);
     }
+    
+    // [출결] - 수강생 출석 조회 목록 조회
+    @Override
+    public Collection<StudentAttendanceListDTO> getStudentAttendanceList(String name, String courseNumber) {
+    	return studentMapper.selectStudentAttendanceList(name, Integer.parseInt(courseNumber));
+    }
+    
+    // [출결] - 선택한 수강생의 출석 상태 수정
+    @Override
+    public void updateStudentAttendance(String attendanceStatus, String attendanceDate, String studentId) {
+    	int year = Integer.parseInt(attendanceDate.split("-")[0]);
+        int month = Integer.parseInt(attendanceDate.split("-")[1]);
+        int day = Integer.parseInt(attendanceDate.split("-")[2]);
+    	UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus(attendanceStatus).attendanceDate(LocalDate.of(year, month, day)).studentId(studentId).build();
+    	studentMapper.updateStudentAttendance(dto);
+    }
 }

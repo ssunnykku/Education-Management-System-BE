@@ -1,5 +1,7 @@
 package com.kosta.ems.student;
 
+import java.util.Collection;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -63,4 +65,16 @@ public class StudentServiceTest {
 	void deleteSelectedStudent() {
 		studentServiceImpl.deleteSelectedStudent("8b48e083-2fa8-11ef-b0b2-0206f94be675");
 	}
+	
+	// [출결] - 수강생 출석 조회 목록 조회
+    // @Test
+    void getStudentAttendanceList() {
+    	log.info(studentServiceImpl.getStudentAttendanceList("유", "277").toString());
+    }
+	
+	// [출결] - 선택한 수강생의 출석 상태 수정
+	// @Test
+    void updateStudentAttendance() {
+    	studentServiceImpl.updateStudentAttendance("외출", "2024-06-21", "efa148aa-2fa7-11ef-b0b2-0206f94be675");
+    }
 }
