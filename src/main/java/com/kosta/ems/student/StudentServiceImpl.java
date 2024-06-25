@@ -95,4 +95,10 @@ public class StudentServiceImpl implements StudentService {
     	UpdateSelectedStudentInfoDTO dto = UpdateSelectedStudentInfoDTO.builder().name(name).address(address).bank(bank).account(account).phoneNumber(phoneNumber).email(email).build();
     	studentMapper.updateSelectedStudentInfo(dto, studentId);
     }
+    
+    // 수강생 삭제
+    @Override
+    public void deleteSelectedStudent(String studentId) {
+    	studentMapper.deleteSelectedStudent(studentId);
+    }
 }

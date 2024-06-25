@@ -67,4 +67,10 @@ WHERE hrd_net_id=#{hrdNetId};
 SET NAME=#{dto.name}, address=#{dto.address}, bank=#{dto.bank}, ACCOUNT=#{dto.account}, phone_number=#{dto.phoneNumber}, email=#{dto.email}
 WHERE student_id=#{studentId}; 
     </update>
+    <!--선택한 수강생 삭제(isActive -> F)-->
+    <update id="deleteSelectedStudent">
+    	UPDATE students
+SET is_active='F'
+WHERE student_id=#{studentId};
+    </update>
 </mapper>

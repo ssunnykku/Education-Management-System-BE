@@ -32,5 +32,5 @@ public interface StudentService {
     void updateSelectedStudentInfo(String name, String address, String bank, String account, String phoneNumber, String email, String studentId);
     
     // 수강생 삭제(isActive 값 수정)
-    
+    void deleteSelectedStudent(String studentId);
 }
