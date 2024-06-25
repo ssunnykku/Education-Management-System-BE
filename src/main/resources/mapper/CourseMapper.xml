@@ -8,7 +8,7 @@
 <select id="searchCourseList" resultType="com.kosta.ems.courses.CourseDTO">
 	SELECT course_seq courseSeq, manager_id managerId, course_number courseNumber, academy_location academyLocation, course_name courseName, course_start_date courseStartDate, course_end_date courseEndDate, subject, course_type courseType, total_training_days totalTrainingDays, training_hours_of_date trainingHoursOfDate, professor_name professorName, max_students maxStudents, is_active isActive FROM courses
 	WHERE (IF(#{courseNumber}, 0,'전체') = '전체' or course_number = #{courseNumber})
-	AND academy_location = #{academyLocation}
+	AND (IF(#{academyLocation}, null,'전체') = '전체' or academy_location =#{academyLocation})
 	ORDER BY course_number
 	LIMIT #{offset}, #{pageSize} 
 	</select>

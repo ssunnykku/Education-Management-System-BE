@@ -32,8 +32,11 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public boolean editCourse(CourseDTO course) {
-		return courseMapper.updateCourse(course);
+	public boolean editCourse(CourseDTO course, String academyLocationOfManager) {
+		if(course.getAcademyLocation().equals(academyLocationOfManager))
+			return courseMapper.updateCourse(course);
+		//보안 런타임 오류
+		return false;
 	}
 
 	@Override

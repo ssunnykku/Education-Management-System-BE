@@ -52,7 +52,7 @@ public class CourseServiceTest {
 				.build();
 		assertThat(service.addCourse(course));
 	}
-//	@Test
+	@Test
 	@Transactional
 	public void editCourse() {
 		CourseDTO course = 
@@ -71,9 +71,10 @@ public class CourseServiceTest {
 				.maxStudents(100)
 				.build();
 		service.addCourse(course);
-		course = service.getCourse(3000, "가산");
-		course.setAcademyLocation("강남");
-		assertThat(service.editCourse(course)).isTrue();
+		course = service.searchCourseList(3000, "가산", 1, 10).get(0);
+		System.out.println(course);
+		course.setCourseName("새로 수정된 이름");
+		assertThat(service.editCourse(course, "가산")).isTrue();
 	}
 	@Test
 	@Transactional
