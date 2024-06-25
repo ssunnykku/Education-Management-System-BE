@@ -13,8 +13,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class AttendanceStudentCourseDTO {
     private LocalDate attendanceDate;
-    private Long studentCourseSeq;
+    private int studentCourseSeq;
     private String attendanceStatus;
     private String studentId;
-    private Long courseSeq;
+    private int courseSeq;
 }

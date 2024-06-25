@@ -18,6 +18,19 @@ public interface StudentService {
     // Collection<StudentBasicInfoDTO> getStudentsByNameOrCourseNumber(String name, int courseNumber);
     // Map<String, Collection> getStudentsByNameOrCourseNumber(String name, int courseNumber);
     // List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumber(String name, int courseNumber);
+    int getStudentsByNameOrCourseNumberAmount(String name, String courseNumber);
     List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumber(String name, int courseNumber, int page, int size);
     // List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumber(String name, int courseNumber, Pageable);
+
+    // 수강생 등록
+    boolean findByHrdNetId(String hrdNetId);
+    RegisteredStudentInfoDTO getRegisteredStudentBasicInfo(String hrdNetId);
+    void addStudentBasicInfo(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId);
+    void addStudentCourseSeqInfo(String hrdNetId, String courseNumber);
+
+    // 수강생 정보 수정
+    void updateSelectedStudentInfo(String name, String address, String bank, String account, String phoneNumber, String email, String studentId);
+    
+    // 수강생 삭제(isActive 값 수정)
+    void deleteSelectedStudent(String studentId);
 }

@@ -7,7 +7,9 @@ import java.util.Collection;
 
 @Mapper
 public interface AttendanceMapper {
+    Collection<AttendanceStudentCourseDTO> selectAttendanceByStudentIdAndDuration(String startDate, String endDate, String studentId);
 
-    /*null 반환중*/
-    Collection<AttendanceStudentCourseDTO> selectAttendanceByStudentId(String startDate, String endDate, String studentId);
+    int selectCountAttendance(LocalDate startDate, LocalDate endDate, String studentId);
+
+    int selectCountLeave(LocalDate startDate, LocalDate endDate, String studentId);
 }

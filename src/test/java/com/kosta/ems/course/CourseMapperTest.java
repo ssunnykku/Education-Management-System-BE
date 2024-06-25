@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kosta.ems.courses.CourseDTO;
+import com.kosta.ems.courses.CourseMapper;
+
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
@@ -21,17 +24,18 @@ public class CourseMapperTest {
 	@Test
 	@Transactional
 	public void GetCoursesList() {
-		List<CourseDTO> list = mapper.searchCourseList(277, "가산", 0, 10);
+		List<CourseDTO> list = mapper.searchCourseList(277, "가산", 0, 10, false);
 		assertThat(list.get(0).getCourseSeq()).isEqualTo(19);
-		list = mapper.searchCourseList(0, "가산", 0, 10);
+		list = mapper.searchCourseList(0, "가산", 0, 10, false);
 		assertThat(list.size()).isGreaterThan(1);
 	}
 	
 	@Test
 	@Transactional
 	public void GetCourse() {
-		CourseDTO course = mapper.getCourse(277);
-		assertThat(course.getCourseSeq()).isEqualTo(19);
+		CourseDTO course = mapper.getCourse(27);
+		System.out.println(course.toString());
+		assertThat(course.getCourseSeq()).isEqualTo(27);
 	}
 
 
@@ -75,7 +79,7 @@ public class CourseMapperTest {
 				.maxStudents(100)
 				.build();
 		mapper.insertCourse(course);
-		course = mapper.searchCourseList(3000, "가산", 0, 10).get(0);
+		course = mapper.searchCourseList(3000, "가산", 0, 10, false).get(0);
 		course.setCourseName("수정된 이름");
 		assertThat(mapper.updateCourse(course)).isTrue();
 	}
@@ -99,7 +103,7 @@ public class CourseMapperTest {
 				.maxStudents(100)
 				.build();
 		mapper.insertCourse(course);
-		int seq = mapper.searchCourseList(3000, "가산", 0, 10).get(0).getCourseSeq();
+		int seq = mapper.searchCourseList(3000, "가산", 0, 10, false).get(0).getCourseSeq();
 		assertThat(mapper.inactivateCourse(seq)).isTrue();
 	}
 	

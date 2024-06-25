@@ -1,4 +1,4 @@
-package com.kosta.ems.manager;
+package com.kosta.ems.managers;
 
 import org.springframework.stereotype.Service;
 
