@@ -24,9 +24,9 @@ public class CourseMapperTest {
 	@Test
 	@Transactional
 	public void GetCoursesList() {
-		List<CourseDTO> list = mapper.searchCourseList(277, "가산", 0, 10);
+		List<CourseDTO> list = mapper.searchCourseList(277, "가산", 0, 10, false);
 		assertThat(list.get(0).getCourseSeq()).isEqualTo(19);
-		list = mapper.searchCourseList(0, "가산", 0, 10);
+		list = mapper.searchCourseList(0, "가산", 0, 10, false);
 		assertThat(list.size()).isGreaterThan(1);
 	}
 	
@@ -79,7 +79,7 @@ public class CourseMapperTest {
 				.maxStudents(100)
 				.build();
 		mapper.insertCourse(course);
-		course = mapper.searchCourseList(3000, "가산", 0, 10).get(0);
+		course = mapper.searchCourseList(3000, "가산", 0, 10, false).get(0);
 		course.setCourseName("수정된 이름");
 		assertThat(mapper.updateCourse(course)).isTrue();
 	}
@@ -103,7 +103,7 @@ public class CourseMapperTest {
 				.maxStudents(100)
 				.build();
 		mapper.insertCourse(course);
-		int seq = mapper.searchCourseList(3000, "가산", 0, 10).get(0).getCourseSeq();
+		int seq = mapper.searchCourseList(3000, "가산", 0, 10, false).get(0).getCourseSeq();
 		assertThat(mapper.inactivateCourse(seq)).isTrue();
 	}
 	
