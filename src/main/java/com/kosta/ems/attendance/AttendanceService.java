@@ -1,8 +1,11 @@
 package com.kosta.ems.attendance;
 
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.Collection;
 
+@Service
 public interface AttendanceService {
     int getNumberOfAttendance(LocalDate startDate, LocalDate endDate, String studentId);
 

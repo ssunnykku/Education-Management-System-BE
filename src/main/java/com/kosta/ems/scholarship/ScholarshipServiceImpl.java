@@ -2,6 +2,7 @@ package com.kosta.ems.scholarship;
 
 import com.kosta.ems.benefit.BenefitMapper;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class ScholarshipServiceImpl implements ScholarshipService {
 
