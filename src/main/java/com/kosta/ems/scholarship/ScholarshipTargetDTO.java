@@ -19,8 +19,8 @@ public class ScholarshipTargetDTO {
     private String account;
     private String managerId;
     private char isActive;
-    private Long studentCourseSeq;
-    private Long courseSeq;
+    private int studentCourseSeq;
+    private int courseSeq;
     private int courseNumber;
     private String academyLocation;
     private String courseName;

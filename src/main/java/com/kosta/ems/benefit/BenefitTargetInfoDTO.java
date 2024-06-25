@@ -1,15 +1,17 @@
 package com.kosta.ems.benefit;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Builder
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BenefitTargetDTO {
+@Getter
+@Service
+@ToString
+public class BenefitTargetInfoDTO {
     private int courseSeq;
     private String managerId;
     private int courseNumber;
@@ -21,4 +23,11 @@ public class BenefitTargetDTO {
     private String bank;
     private String account;
     private int settlementAidAmount;
+    private int trainingAidAmount;
+    private int mealAidAmount;
+    /**/
+    private String academyLocation;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private int lectureDays;
 }
