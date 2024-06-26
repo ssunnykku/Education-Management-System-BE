@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("/manager")
+@RequestMapping("/managers")
 @RequiredArgsConstructor
 @Slf4j
 public class ManagerController {
