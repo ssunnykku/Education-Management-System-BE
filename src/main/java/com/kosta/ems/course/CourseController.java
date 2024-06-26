@@ -24,8 +24,8 @@ public class CourseController {
 	private final CourseService service;
 	
 	@GetMapping("/course")
-	public CourseDTO getCourse(@RequestParam int courseSeq, HttpServletRequest request) {
-		return service.getCourse(courseSeq, getAcademyOfLoginUser(request));
+	public Map<String, CourseDTO> getCourse(@RequestParam int courseSeq, HttpServletRequest request) {
+		return Map.of("result", service.getCourse(courseSeq, getAcademyOfLoginUser(request)));
 	}
 	
 	@GetMapping("/courseNumberList")
