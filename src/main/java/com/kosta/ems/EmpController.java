@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kosta.ems.courses.CourseDTO;
 import com.kosta.ems.courses.CourseService;
+import com.kosta.ems.notification.NotificationService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -21,7 +23,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EmpController {
 	private final CourseService courseService;
-
+	@Autowired
+	private NotificationService notification;
+	
     @GetMapping("/benefits")
     public String benefitBoard() {
         return "benefits/benefitBoard";
@@ -58,14 +62,22 @@ public class EmpController {
         return "login/login";
     }
 
-    @GetMapping("/notifications")
-    public String notificationBoard() {
+    @GetMapping("/notifications") //@AuthenticationPrincipal 사용할수있음.
+    public String notificationBoard(Model model, HttpSession session) {
+    	String managerId="d893bf71-2f8f-11ef-b0b2-0206f94be675";
+    	//String managerId = (String) session.getAttribute("managerId");
+    	model.addAttribute("notification",notification.searchAll(managerId));
         return "notifications/notificationBoard";
     }
 
     @GetMapping("/notifications/post")
     public String notificationPost() {
         return "notifications/notificationPost";
+    }
+    
+    @GetMapping("/notifications/write")
+    public String notificationWrite() {
+    	return "notifications/addNotification";
     }
 
     @GetMapping("/scholarships")

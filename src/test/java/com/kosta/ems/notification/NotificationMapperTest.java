@@ -20,7 +20,7 @@ NotificationMapper notificationMapper;
 
 	@Test
 	void testFindByKeyword() {
-		log.info(notificationMapper.findByKeyword("2025","d893c29b-2f8f-11ef-b0b2-0206f94be675" ).toString());
+		log.info(notificationMapper.selectByKeyword("2025","d893c29b-2f8f-11ef-b0b2-0206f94be675" ).toString());
 	}
 
 	@Test
@@ -55,7 +55,7 @@ NotificationMapper notificationMapper;
 
 	@Test
 	void testGetDescription() {
-		log.info(notificationMapper.getDescription(160).toString());
+		log.info(notificationMapper.selectDescription(160).toString());
 	}
 
 }
