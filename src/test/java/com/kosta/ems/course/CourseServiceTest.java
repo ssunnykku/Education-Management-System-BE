@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kosta.ems.courses.CourseDTO;
-import com.kosta.ems.courses.CourseService;
+import com.kosta.ems.course.CourseDTO;
+import com.kosta.ems.course.CourseService;
 
 @SpringBootTest
 public class CourseServiceTest {

@@ -1,4 +1,4 @@
-package com.kosta.ems.courses;
+package com.kosta.ems.course;
 
 import java.util.List;
 import java.util.Map;

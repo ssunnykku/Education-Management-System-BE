@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kosta.ems.managers.ManagerService;
+import com.kosta.ems.manager.ManagerService;
 
 @SpringBootTest
 public class ManagerServiceTest {
