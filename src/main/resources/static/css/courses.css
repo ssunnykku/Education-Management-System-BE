@@ -7,6 +7,10 @@ body {
 }
 
 /******* addCourseModal / setCourseModal.html ********/
+#addCourseModal{
+  margin:auto;
+  border:solid;
+}
 
 #course-wrapper {
   display: flex;

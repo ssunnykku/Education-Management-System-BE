@@ -14,7 +14,7 @@
     <section id="content-section">
       <article id="courseBoard-btns-container">
         <div id="courseBoard-btn-wrapper">
-          <button id="enroll-btn" class="btn-setting">등록</button>
+          <button id="enroll-btn" class="btn-setting" popovertarget="addCourseModal">등록</button>
           <button id="delete-btn" class="btn-setting">삭제</button>
         </div>
         <div class="search-form-wrapper">
@@ -108,10 +108,163 @@
 
       <article class="page-information">
         <div class="cnt-pages">
-          <span>총 14건</span>
+          <!-- <span>총 14건</span> -->
         </div>
       </article>
     </section>
     <footer></footer>
+
+
+
+    <!-- 과정등록 모달 -->
+    <div id="addCourseModal" popover>
+      <div id="course-wrapper">
+        <div>
+            <h1>과정 등록</h1>
+            <form method="post" class="course-form-row">
+                <h4>과정 구분</h4>
+                <select name="course_type" id="course_type">
+                    <option>과정 구분을 선택하세요.</option>
+                    <option value="job_seeker">채용 예정자 무료</option>
+                    <option value="SMEs">중소기업 재직자 무료</option>
+                </select>
+            </form>
+            <form method="post" class="course-form-row">
+                <h4>기수</h4>
+                <input type="text" id="course_number"/>
+            </form>
+            <form method="post" class="course-form-row">
+                <h4>주제명</h4>
+                <input type="text" id="subject"/>
+            </form>
+            <form method="post" class="course-form-row">
+                <h4>과정명</h4>
+                <input type="text" id="course_name"/>
+            </form>
+            <form method="post" class="course-form-row">
+                <h4>시작일</h4>
+                <input type="date" id="course_start_date"/>
+            </form>
+            <form method="post" class="course-form-row">
+                <h4>종료일</h4>
+                <input type="date" id="course_end_date"/>
+            </form>
+            <form method="post" class="course-form-row">
+                <h4>총 교육 시간</h4>
+                <input type="text" id="total_training_hours"/>
+            </form>
+            <form method="post" class="course-form-row">
+                <h4>총 개월 수</h4>
+                <input type="text" id="number_of_months"/>
+            </form>
+            <form method="post" class="course-form-row">
+                <h4>교육 시간(일)</h4>
+                <input type="text" id="training_hours_of_day"/>
+            </form>
+            <form method="post" class="course-form-row">
+                <h4>강의장</h4>
+                <select name="academy_location" id="academy_location">
+                    <option>강의장을 선택하세요.</option>
+                    <option value="gasan">가산</option>
+                    <option value="seongnam">성남</option>
+                </select>
+            </form>
+            <div id="btn-wrapper">
+                <button id="enroll-btn" class="btn-setting">등록</button>
+                <button id="edit-btn" class="btn-setting">취소</button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- 과정수정 모달 -->
+    <div id="editCourseModal" popover>
+      <div>
+        <h1>과정 수정</h1>
+        <form method="post" class="course-form-row">
+          <h4>과정 구분</h4>
+          <select name="course_type" id="course_type">
+            <option>과정 구분을 선택하세요.</option>
+            <option value="job_seeker" selected>채용 예정자 무료</option>
+            <option value="SMEs">중소기업 재직자 무료</option>
+          </select>
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>기수</h4>
+          <input type="text" id="course_number" value="277" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>주제명</h4>
+          <input type="text" id="subject" value="Java Web" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>과정명</h4>
+          <input
+            type="text"
+            id="course_name"
+            value="Java 기반 클라우드 개발자 양성 과정"
+          />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>시작일</h4>
+          <input type="date" id="course_start_date" value="2024-02-27" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>종료일</h4>
+          <input type="date" id="course_end_date" value="2024-07-31" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>총 교육 시간</h4>
+          <input type="text" id="total_training_hours" value="800" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>총 개월 수</h4>
+          <input type="text" id="number_of_months" value="5" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>교육 시간(일)</h4>
+          <input type="text" id="training_hours_of_day" value="8" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>강의장</h4>
+          <select name="academy_location" id="academy_location">
+            <option>강의장을 선택하세요.</option>
+            <option value="gasan" selected>가산</option>
+            <option value="seongnam">성남</option>
+          </select>
+        </form>
+        <div id="btn-wrapper">
+          <button id="enroll-btn" class="btn-setting">수정</button>
+          <button id="edit-btn" class="btn-setting">취소</button>
+        </div>
+      </div>
+    </div>
+    </div>
+    <!-- 과정삭제 모달 -->
+    <div id="removeCourseModal" popover>
+      <div class="removecourse-wrapper">
+        <div class="removecourse-info">
+          <h1 class="upperline title">삭제 확인</h1>
+          <h1>선택하신 과정을 삭제하겠습니까?</h1>
+        </div>
+        <div id="btn-wrapper">
+          <button id="enroll-btn-format" class="btn-setting-format">삭제</button>
+          <button id="edit-btn" class="btn-setting">취소</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 과정삭제 완료 모달 -->
+    <div id="removeCourseCompleteModal" popover>
+      <div class="removecourse-wrapper">
+        <div class="removecourse-info">
+          <h1 class="upperline title">삭제 확인</h1>
+          <h1>삭제되었습니다.</h1>
+        </div>
+        <div id="btn-wrapper">
+          <button id="enroll-btn-format" class="btn-setting-format">확인</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

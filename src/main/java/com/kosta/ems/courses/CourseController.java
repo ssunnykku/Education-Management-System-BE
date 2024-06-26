@@ -29,8 +29,8 @@ public class CourseController {
 	}
 	
 	@GetMapping("/courseNumberList")
-	public List<Integer> getCourseNumberList(@RequestParam(value="excludeExpired", defaultValue = "true") boolean excludeExpired, HttpServletRequest request) {
-		return service.getCourseNumberList(getAcademyOfLoginUser(request), excludeExpired);
+	public Map getCourseNumberList(@RequestParam(value="excludeExpired", defaultValue = "true") boolean excludeExpired, HttpServletRequest request) {
+		return Map.of("result", service.getCourseNumberList(getAcademyOfLoginUser(request), excludeExpired));
 	}
 	
 	
