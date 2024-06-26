@@ -37,7 +37,14 @@ public class CourseServiceImpl implements CourseService {
 
 	@Override
 	public boolean addCourse(CourseDTO course) {
-		return courseMapper.insertCourse(course);
+		boolean result = false;
+		try {
+			if(courseMapper.insertCourse(course) == true) {
+				result = true;
+			}
+		}catch (Exception e) {
+		}
+		return result;
 	}
 
 	@Override
