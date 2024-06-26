@@ -35,7 +35,7 @@ class BenefitServiceImplTest {
         List<BenefitTargetInfoDTO> dto = (ArrayList<BenefitTargetInfoDTO>) benefitServiceImpl.getBenefitTargetList(BenefitTargetInfoDTO.builder().startDate(LocalDate.parse("2024-03-03")).endDate(LocalDate.parse("2024-04-04")).courseNumber(277).lectureDays(20).build(), 1, 10);
 
         for (BenefitTargetInfoDTO data : dto) {
-            assertThat(data.getMealAidAmount()).isEqualTo(benefitServiceImpl.mealAid(LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-04"), data.getStudentId()));
+            assertThat(data.getMealAidAmount()).isEqualTo(benefitServiceImpl.mealAid(LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-04"), data.getStudentId(), 20));
         }
     }
 
@@ -51,7 +51,7 @@ class BenefitServiceImplTest {
 
     @Test
     void countMealAidTest() {
-        int data = benefitServiceImpl.mealAid(LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-04"), "efa146c5-2fa7-11ef-b0b2-0206f94be675");
+        int data = benefitServiceImpl.mealAid(LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-04"), "efa146c5-2fa7-11ef-b0b2-0206f94be675", 20);
         log.info(String.valueOf(data));
         assertThat(data).isEqualTo(130000);
     }
