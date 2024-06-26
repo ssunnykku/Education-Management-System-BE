@@ -18,7 +18,7 @@
     <article id="courseBoard-btns-container">
       <div id="courseBoard-btn-wrapper">
         <button id="enroll-btn" class="btn-setting" popovertarget="addCourseModal">등록</button>
-        <button id="delete-btn" class="btn-setting">삭제</button>
+        <button id="delete-btn" class="btn-setting" popovertarget="removeCourseModal">삭제</button>
       </div>
       <div class="search-form-wrapper">
         <!-- form???? -->
@@ -39,7 +39,7 @@
       <div id="courseBoard-table">
         <div class="courseBoard-row" id="courseBoard-title-row">
           <div id="courseBoard-no">
-            <input type="checkbox" name="" />
+            <input type="checkbox" id="all-checkbox" name="" />
           </div>
           <div id="courseBoard-classification">
             <span>과정구분</span>
@@ -263,8 +263,9 @@
         <h1>선택하신 과정을 삭제하겠습니까?</h1>
       </div>
       <div id="btn-wrapper">
-        <button id="enroll-btn-format" class="btn-setting-format">삭제</button>
-        <button id="edit-btn" class="btn-setting">취소</button>
+        <button id="enroll-btn-format" class="btn-setting-format" onclick="removeCourse()">삭제</button>
+        <button id="edit-btn" class="btn-setting" popovertarget="removeCourseModal"
+          popovertargetaction="hide">취소</button>
       </div>
     </div>
   </div>
@@ -289,7 +290,12 @@
         a.removeAttr("href");
       }
     });
+    $("#all-checkbox").on("change", toggleAll);
 
+    function toggleAll() {
+      const isChecked = $("#all-checkbox").prop('checked');
+      $("#courseBoard-table input[type=checkbox]").prop('checked', isChecked);
+    }
     async function initEditCourseModal(e) {
       const courseDiv = $(e.target).closest(".courseBoard-row");
       const editCourseModalDiv = $("#editCourseModal");
@@ -492,6 +498,44 @@
       }
     }
 
+    async function removeCourse() {
+      let selectedCourseSeqList = [];
+      $("div.courseBoard-row").not("#courseBoard-title-row").each((index, item) => {
+        if ($(item).find("input[type=checkbox]").prop("checked")) {
+          const courseSeq = $(item).data("courseSeq");
+          selectedCourseSeqList.push(courseSeq);
+        }
+      });
+      if(!selectedCourseSeqList.length){
+        showMessage("삭제할 과정을 선택해주십시오.");
+        return;
+      }
+
+      let result = await deleteCourse(selectedCourseSeqList);
+      if(result){
+        showMessage("삭제되었습니다.");
+      }else{
+        showMessage("삭제 중 오류가 발생하였습니다.\n같은 현상이 반복되면 관리자에게 문의해주시기 바랍니다.");
+      }
+    }
+
+    async function deleteCourse(courseSeqList) {
+      let promiseList = [];
+      courseSeqList.forEach(courseSeq => {
+        const requestOptions = {
+          method: "PATCH"
+        };
+        promiseList.push(fetch("/courses/course/" + courseSeq, requestOptions));
+      });
+
+      let resList = await Promise.all(promiseList);
+      resList.forEach(element => {
+        if(element == false){
+          return false;
+        }
+      });
+      return true;
+    }
     function showMessage(msg) {
       const messageModal = $("#removeCourseCompleteModal").get()[0];
       messageModal.querySelector("#message").innerText = msg;
