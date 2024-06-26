@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-import com.kosta.ems.courses.CourseDTO;
-import com.kosta.ems.courses.CourseService;
+import com.kosta.ems.course.CourseDTO;
+import com.kosta.ems.course.CourseService;
 import com.kosta.ems.notification.NotificationService;
 
 
