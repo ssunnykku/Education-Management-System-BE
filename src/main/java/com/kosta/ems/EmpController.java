@@ -56,6 +56,7 @@ public class EmpController {
     	model.addAttribute("courseNumberList",courseNumberList);
     	model.addAttribute("paging", paging);
     	model.addAttribute("courseList",courseList);
+    	model.addAttribute("courseTypeList", courseService.getCourseTypeList());
     	
         return "courses/courseBoard";
     }

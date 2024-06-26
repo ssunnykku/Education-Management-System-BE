@@ -69,8 +69,8 @@
             <span> 수정하기 </span>
           </div>
         </div>
-        <div th:each="course : ${courseList}" th:attr="data-courseSeq=${course.courseSeq}" style="display: contents;">
-          <div class="courseBoard-row">
+        <div th:each="course : ${courseList}" style="display: contents;">
+          <div class="courseBoard-row" th:attr="data-course-seq=${course.courseSeq}">
             <div id="courseBoard-no">
               <input type="checkbox" name="" />
             </div>
@@ -103,7 +103,8 @@
               <span th:text="${course.academyLocation}">강의장 alt</span>
             </div>
             <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
+              <button id="edit-btn" class="btn-setting" onclick="initEditCourseModal(event)"
+                popovertarget="editCourseModal">수정</button>
             </div>
           </div>
 
@@ -117,17 +118,21 @@
       </div>
       <ul id="pagination">
         <li th:classappend="${paging.pageOffset == 1} ? 'inactivePage'">
-          <a class="page-link" th:href="@{|?page=${paging.pageOffset-1}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}">
+          <a class="page-link"
+            th:href="@{|?page=${paging.pageOffset-1}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}">
             <span>이전</span>
           </a>
         </li>
-        <li th:each="page: ${#numbers.sequence(0, 9)}" 
+        <li th:each="page: ${#numbers.sequence(0, 9)}"
           th:if="${(paging.pageOffset + page) <= ((paging.totalCourseCount/paging.pageSize) + 1)}"
           th:classappend="${(paging.pageOffset + page) == paging.page} ? 'activePage'" class="page-item">
-          <a th:text="${paging.pageOffset + page}" class="page-link" th:href="@{|?page=${paging.pageOffset + page}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}"></a>
+          <a th:text="${paging.pageOffset + page}" class="page-link"
+            th:href="@{|?page=${paging.pageOffset + page}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}"></a>
         </li>
-        <li class="page-item" th:classappend="${(paging.pageOffset + 10) > (paging.totalCourseCount/paging.pageSize)} ? 'inactivePage'">
-          <a class="page-link" th:href="@{|?page=${paging.pageOffset + 10}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}">
+        <li class="page-item"
+          th:classappend="${(paging.pageOffset + 10) > (paging.totalCourseCount/paging.pageSize)} ? 'inactivePage'">
+          <a class="page-link"
+            th:href="@{|?page=${paging.pageOffset + 10}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}">
             <span>다음</span>
           </a>
         </li>
@@ -141,7 +146,7 @@
 
 
   <!-- 과정등록 모달 -->
-  <div id="addCourseModal" popover>
+  <div id="addCourseModal" class="course-modal" popover>
     <div id="course-wrapper">
       <div>
         <h1>과정 등록</h1>
@@ -149,8 +154,7 @@
           <h4>과정 구분</h4>
           <select name="course_type" id="course_type">
             <option>과정 구분을 선택하세요.</option>
-            <option value="job_seeker">채용 예정자 무료</option>
-            <option value="SMEs">중소기업 재직자 무료</option>
+            <option th:each="type : ${courseTypeList}" th:attr="value=${type}" th:text="${type}">타입 alt</option>
           </select>
         </form>
         <form method="post" class="course-form-row">
@@ -202,66 +206,60 @@
   </div>
 
   <!-- 과정수정 모달 -->
-  <div id="editCourseModal" popover>
-    <div>
-      <h1>과정 수정</h1>
-      <form method="post" class="course-form-row">
-        <h4>과정 구분</h4>
-        <select name="course_type" id="course_type">
-          <option>과정 구분을 선택하세요.</option>
-          <option value="job_seeker" selected>채용 예정자 무료</option>
-          <option value="SMEs">중소기업 재직자 무료</option>
-        </select>
-      </form>
-      <form method="post" class="course-form-row">
-        <h4>기수</h4>
-        <input type="text" id="course_number" value="277" />
-      </form>
-      <form method="post" class="course-form-row">
-        <h4>주제명</h4>
-        <input type="text" id="subject" value="Java Web" />
-      </form>
-      <form method="post" class="course-form-row">
-        <h4>과정명</h4>
-        <input type="text" id="course_name" value="Java 기반 클라우드 개발자 양성 과정" />
-      </form>
-      <form method="post" class="course-form-row">
-        <h4>시작일</h4>
-        <input type="date" id="course_start_date" value="2024-02-27" />
-      </form>
-      <form method="post" class="course-form-row">
-        <h4>종료일</h4>
-        <input type="date" id="course_end_date" value="2024-07-31" />
-      </form>
-      <form method="post" class="course-form-row">
-        <h4>총 교육 시간</h4>
-        <input type="text" id="total_training_hours" value="800" />
-      </form>
-      <form method="post" class="course-form-row">
-        <h4>총 개월 수</h4>
-        <input type="text" id="number_of_months" value="5" />
-      </form>
-      <form method="post" class="course-form-row">
-        <h4>교육 시간(일)</h4>
-        <input type="text" id="training_hours_of_day" value="8" />
-      </form>
-      <form method="post" class="course-form-row">
-        <h4>강의장</h4>
-        <select name="academy_location" id="academy_location">
-          <option>강의장을 선택하세요.</option>
-          <option value="gasan" selected>가산</option>
-          <option value="seongnam">성남</option>
-        </select>
-      </form>
-      <div id="btn-wrapper">
-        <button id="enroll-btn" class="btn-setting">수정</button>
-        <button id="edit-btn" class="btn-setting">취소</button>
+  <div id="editCourseModal" class="course-modal" popover>
+    <div id="course-wrapper">
+      <div>
+        <h1>과정 등록</h1>
+        <form method="post" class="course-form-row">
+          <h4>과정 구분</h4>
+          <select name="course_type" id="course_type">
+            <option>과정 구분을 선택하세요.</option>
+            <option th:each="type : ${courseTypeList}" th:attr="value=${type}" th:text="${type}">타입 alt</option>
+          </select>
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>기수</h4>
+          <input type="text" id="course_number" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>주제명</h4>
+          <input type="text" id="subject" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>과정명</h4>
+          <input type="text" id="course_name" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>시작일</h4>
+          <input type="date" id="course_start_date" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>종료일</h4>
+          <input type="date" id="course_end_date" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>교수자 이름</h4>
+          <input type="text" id="professor_name" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>총 교육일</h4>
+          <input type="text" id="total_training_hours" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>교육 시간(일)</h4>
+          <input type="text" id="training_hours_of_day" />
+        </form>
+        
+        <div id="btn-wrapper">
+          <button id="enroll-btn" class="btn-setting">등록</button>
+          <button id="edit-btn" class="btn-setting">취소</button>
+        </div>
       </div>
     </div>
   </div>
   </div>
   <!-- 과정삭제 모달 -->
-  <div id="removeCourseModal" popover>
+  <div id="removeCourseModal" class="course-modal" popover>
     <div class="removecourse-wrapper">
       <div class="removecourse-info">
         <h1 class="upperline title">삭제 확인</h1>
@@ -275,7 +273,7 @@
   </div>
 
   <!-- 과정삭제 완료 모달 -->
-  <div id="removeCourseCompleteModal" popover>
+  <div id="removeCourseCompleteModal" class="course-modal" popover>
     <div class="removecourse-wrapper">
       <div class="removecourse-info">
         <h1 class="upperline title">삭제 확인</h1>
@@ -289,12 +287,71 @@
 
   <script>
     $("#pagination li").each((index, item) => {
-      if($(item).hasClass("inactivePage")){
+      if ($(item).hasClass("inactivePage")) {
         let a = $(item).children("a");
         a.removeAttr("href");
       }
     });
-    
+
+    async function initEditCourseModal(e) {
+      const courseDiv = $(e.target).closest(".courseBoard-row");
+      const editCourseModalDiv = $("#editCourseModal");
+
+      const courseSeq = courseDiv.data("courseSeq");
+
+      const res = await fetch("/courses/course?courseSeq=" + courseSeq);
+      const data = await res.json();
+      setCourseData(data.result);
+
+
+
+      function setCourseData(courseDTO) {
+        setCourseType(courseDTO.courseType);
+        setcourseNumber(courseDTO.courseNumber)
+        setCourseName(courseDTO.courseName)
+        setCourseStartDate(courseDTO.courseStartDate)
+        setCourseEndDate(courseDTO.courseEndDate)
+        setCourseSubject(courseDTO.subject)
+        setCourseTotalTrainingDays(courseDTO.totalTrainingDays)
+        setCourseTrainingHoursOfDate(courseDTO.trainingHoursOfDate)
+        setCourseProfessorName(courseDTO.professorName)
+        setCourseMaxStudents(courseDTO.maxStudents)
+
+      }
+      function setcourseNumber(data) {
+        editCourseModalDiv.find("#course_number").val(data)
+      }
+      function setCourseName(data) {
+        editCourseModalDiv.find("#course_name").val(data)
+      }
+      function setCourseStartDate(data) {
+        editCourseModalDiv.find("#course_start_date").val(data)
+      }
+      function setCourseEndDate(data) {
+        editCourseModalDiv.find("#course_end_date").val(data)
+      }
+      function setCourseSubject(data) {
+        editCourseModalDiv.find("#subject").val(data)
+      }
+      function setCourseTotalTrainingDays(data) {
+        editCourseModalDiv.find("#total_training_hours").val(data)
+      }
+      function setCourseTrainingHoursOfDate(data) {
+        editCourseModalDiv.find("#training_hours_of_day").val(data)
+      }
+      function setCourseProfessorName(data) {
+        editCourseModalDiv.find("#professor_name").val(data)
+      }
+      function setCourseMaxStudents(data) {
+        editCourseModalDiv.find("#course_max_students").val(data)
+      }
+      function setCourseType(data) {
+        // editCourseModalDiv.find("#course_type").val(data)
+        // $("#editCourseModal #course_type [value='SMEs']").prop("selected", true);
+        $("#editCourseModal #course_type [value='" + data + "']").prop("selected", true);
+
+      }
+    }
   </script>
 </body>
 

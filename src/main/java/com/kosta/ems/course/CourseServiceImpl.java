@@ -64,4 +64,9 @@ public class CourseServiceImpl implements CourseService {
 		return courseMapper.getCourseNumberList(academyLocation, excludeExpired);
 	}
 
+	@Override
+	public List<String> getCourseTypeList() {
+		return courseMapper.getCourseTypeList();
+	}
+
 }

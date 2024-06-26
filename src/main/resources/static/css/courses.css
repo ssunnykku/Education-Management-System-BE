@@ -7,7 +7,7 @@ body {
 }
 
 /******* addCourseModal / setCourseModal.html ********/
-#addCourseModal{
+.course-modal{
   margin:auto;
   border:solid;
 }
