@@ -24,8 +24,10 @@
 
 
 .scholarship-btn-wrapper {
-    padding-top: 12px;
     height: 53px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .btn-wrapper {
@@ -52,7 +54,7 @@
     color: #ffffff;
     background-color: rgb(64, 64, 64);
     width: 60px;
-    height: 90%;
+    height: 32px;
     border-radius: 8px;
 }
 
@@ -74,7 +76,6 @@
 
     float: right;
     background: #eee;
-    padding: 5px;
     box-shadow: 0px 0px 3px #888;
     line-height: 1.5em;
 }
@@ -292,7 +293,8 @@
 /*****************scholarship settlement***********/
 .scholarship-page-information {
     height: 30px;
-
+    display: flex;
+    align-items: center;
 }
 
 .scholarship-cnt-pages {
@@ -303,7 +305,8 @@
 
     color: #999999;
     display: flex;
-    flex
+    height: 10px;
+
 }
 
 #scholarship-contents {
