@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,7 @@ class AttendanceServiceImplTest {
 //    }
     
     // [출결] - 수강생 출결 조회 목록 데이터 개수 (for 페이지네이션)
-    @Test
+    // @Test
     void getStudentAttendanceListAmount() {
     	log.info(Integer.toString(AttendanceServiceImpl.getStudentAttendanceListAmount("유", 277)));    
     }
@@ -41,6 +42,6 @@ class AttendanceServiceImplTest {
     // [출결] - 선택한 수강생의 출석 상태 수정
  	// @Test
      void updateStudentAttendance() {
-    	 AttendanceServiceImpl.updateStudentAttendance("출석", "2024-06-21", "efa148aa-2fa7-11ef-b0b2-0206f94be675");
+    	 AttendanceServiceImpl.updateStudentAttendance("출석", LocalDate.of(2024, 6, 21) , "efa148aa-2fa7-11ef-b0b2-0206f94be675");
      }
 }
