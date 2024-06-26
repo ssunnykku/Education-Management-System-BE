@@ -2,15 +2,21 @@ package com.kosta.ems;
 
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 import com.kosta.ems.courses.CourseDTO;
 import com.kosta.ems.courses.CourseService;
+import com.kosta.ems.notification.NotificationService;
+
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -21,7 +27,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EmpController {
 	private final CourseService courseService;
-
+	@Autowired
+	private NotificationService notification;
+	
     @GetMapping("/benefits")
     public String benefitBoard() {
         return "benefits/benefitBoard";
@@ -41,9 +49,20 @@ public class EmpController {
     public String addCourseModal(@RequestParam(value="page", defaultValue = "1") int page, @RequestParam(value="pageSize", defaultValue = "10") int pageSize, @RequestParam(value="courseNumber", defaultValue = "0") int courseNumber,@RequestParam(value="excludeExpired", defaultValue = "true") boolean excludeExpired, HttpServletRequest request, Model model) {
     	//                                                         (         277,                          "가산",    1,       10);
     	List<CourseDTO> courseList = courseService.searchCourseList(courseNumber, getAcademyOfLoginUser(request), page, pageSize, excludeExpired);
+    	Integer totalCourseCount = courseService.getSearchCourseListSize(courseNumber, getAcademyOfLoginUser(request), page, pageSize, excludeExpired);
     	List<Integer> courseNumberList = courseService.getCourseNumberList(getAcademyOfLoginUser(request), excludeExpired);
+    	
+    	Map<String, Integer> paging = new HashMap<>();
+    	paging.put("totalCourseCount", totalCourseCount);
+    	paging.put("page", page);
+    	paging.put("pageSize", pageSize);
+    	paging.put("pageOffset", (((page-1) / 10) * 10) + 1);//현재 페이지가 27이라면 offset은 21을 가리킨다.
+    	paging.put("excludeExpired", excludeExpired ? 1 : 0);
+    	
     	model.addAttribute("courseNumberList",courseNumberList);
+    	model.addAttribute("paging", paging);
     	model.addAttribute("courseList",courseList);
+    	
         return "courses/courseBoard";
     }
 
@@ -58,14 +77,22 @@ public class EmpController {
         return "login/login";
     }
 
-    @GetMapping("/notifications")
-    public String notificationBoard() {
+    @GetMapping("/notifications") //@AuthenticationPrincipal 사용할수있음.
+    public String notificationBoard(Model model, HttpSession session) {
+    	String managerId="d893bf71-2f8f-11ef-b0b2-0206f94be675";
+    	//String managerId = (String) session.getAttribute("managerId");
+    	model.addAttribute("notification",notification.searchAll(managerId));
         return "notifications/notificationBoard";
     }
 
     @GetMapping("/notifications/post")
     public String notificationPost() {
         return "notifications/notificationPost";
+    }
+    
+    @GetMapping("/notifications/write")
+    public String notificationWrite() {
+    	return "notifications/addNotification";
     }
 
     @GetMapping("/scholarships")

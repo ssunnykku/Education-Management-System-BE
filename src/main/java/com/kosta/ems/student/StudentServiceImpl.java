@@ -1,13 +1,11 @@
 package com.kosta.ems.student;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 // import org.springframework.data.domain.Page;
 
-import com.kosta.ems.attendance.StudentAttendanceListDTO;
-import com.kosta.ems.attendance.UpdateStudentAttendanceStatusDTO;
+
 
 import java.time.LocalDate;
 import java.util.ArrayList;

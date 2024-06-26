@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="../../css/format.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
 </head>
-
 <body id="notification-body">
 <div th:insert="~{common/header :: header}"></div>
 <div th:insert="~{common/title :: title ('공지사항')}"></div>
@@ -30,7 +29,7 @@
                     <span>NO</span>
                 </div>
                 <div class="notificationBoard-title">
-                    <span text="${notification.title}"></span>
+                    <span>제목</span>
                 </div>
                 <div class="notificationBoard-enroll-date">
                     <span>등록일</span>
@@ -39,25 +38,23 @@
                     <span>작성자</span>
                 </div>
             </div>
-           <th:block th:each="notification : ${notifications}">
-    <div class="notification-table-row">
-      <div class="notificationBoard-checkbox">
-        <input type="checkbox" name="" id="title-checkbox"/>
-      </div>
-      <div class="notificationBoard-no">
-        <span th:text="${notification.seq}"></span>
-      </div>
-      <div class="notificationBoard-title">
-        <span th:text="${notification.title}"></span>
-      </div>
-      <div class="notificationBoard-enroll-date">
-        <span th:text="${notification.notificationDate}"></span>
-      </div>
-      <div class="notificationBoard-writer">
-        <span th:text="${notification.name}"></span>
-      </div>
-    </div>
-  </th:block>
+            <div class="notification-table-row">
+                <div class="notificationBoard-checkbox">
+                    <input type="checkbox" name=""/>
+                </div>
+                <div class="notificationBoard-no">
+                    <span>NO</span>
+                </div>
+                <div class="notificationBoard-title">
+                    <span>제목</span>
+                </div>
+                <div class="notificationBoard-enroll-date">
+                    <span>등록일</span>
+                </div>
+                <div class="notificationBoard-writer">
+                    <span>작성자</span>
+                </div>
+            </div>
         </div>
     </article>
 </section>

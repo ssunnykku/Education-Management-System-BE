@@ -1,4 +1,4 @@
-package com.kosta.ems.managers;
+package com.kosta.ems.manager;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

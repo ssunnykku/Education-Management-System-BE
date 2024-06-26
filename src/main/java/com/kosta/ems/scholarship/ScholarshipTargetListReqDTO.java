@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -15,5 +17,9 @@ public class ScholarshipTargetListReqDTO {
     private String academyLocation;
     private int limit;
     private int offset;
+
+    /*getScholarshipSettlementResultList + name*/
+    private int courseNumber;
+    private LocalDate scholarshipDate;
 
 }

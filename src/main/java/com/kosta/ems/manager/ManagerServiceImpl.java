@@ -1,4 +1,4 @@
-package com.kosta.ems.managers;
+package com.kosta.ems.manager;
 
 import java.util.List;
 import java.util.Map;
