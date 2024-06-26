@@ -8,9 +8,9 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface NotificationMapper {
 	Collection<NotificationDTO> selectAll(String managerId);//
-	Collection<NotificationDTO> findByKeyword(@Param("keyword")String keyword,String managerId);//
+	Collection<NotificationDTO> selectByKeyword(@Param("keyword")String keyword,String managerId);//
 	boolean insertNotification(NotificationDTO notification);
 	boolean inActivateNotificaiotn(int notificationSeq);
 	boolean updateNotification(NotificationDTO notification);
-	NotificationDTO getDescription(int notificationSeq);  
+	NotificationDTO selectDescription(int notificationSeq);  
 }

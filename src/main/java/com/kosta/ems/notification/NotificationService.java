@@ -10,10 +10,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 public interface NotificationService {
 
-	Collection<NotificationDTO> selectAll(String managerId);
-	Collection<NotificationDTO> findByKeyword(String keyword,String managerId);//
-	boolean insertNotification(NotificationDTO notification);
-	boolean inActivateNotificaiotn(int notificationSeq);
+	Collection<NotificationDTO> searchAll(String managerId);
+	Collection<NotificationDTO> searchByKeyword(String keyword,String managerId) throws NoResultsFoundException;
+	boolean addNotification(NotificationDTO notification);
+	boolean deleteNotificaiotn(int notificationSeq);
 	boolean updateNotification(NotificationDTO notification);
 	NotificationDTO getDescription(int notificationSeq);
 	
