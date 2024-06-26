@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kosta.ems.managers.ManagerMapper">
+<mapper namespace="com.kosta.ems.manager.ManagerMapper">
 <select id="login" resultType="java.util.Map">
 	SELECT manager_id managerId, academy_location academyLocation FROM managers
 	WHERE employee_number = #{employeeNumber} and password = #{password}
