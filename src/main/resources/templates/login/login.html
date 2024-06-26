@@ -20,21 +20,21 @@
 
 <div class="login-wrapper">
     <h2>관리자 로그인</h2>
-    <form method="post" id="login-form">
+    <form action="/managers/login" method="post" id="login-form">
         <div>
             <h4>Manager ID</h4>
-            <input type="text" id="manager_id"/>
+            <input type="text" id="manager_id" name="employeeNumber"/>
         </div>
         <div>
             <h4>Password</h4>
-            <input type="password" id="password"/>
+            <input type="password" id="password" name="password"/>
         </div>
-        <button type="button">Login</button>
+        <button type="submit">Login</button>
     </form>
 </div>
 
 <script type="text/javascript">
-    document.querySelector("button").addEventListener("click", check());
+    // document.querySelector("button").addEventListener("click", check());
 </script>
 </body>
 </html>
