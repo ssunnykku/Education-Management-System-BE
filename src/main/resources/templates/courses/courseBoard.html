@@ -22,17 +22,17 @@
       </div>
       <div class="search-form-wrapper">
         <!-- form???? -->
-        <select name="courseId-filter" class="data-filter">
-          <option value="none">기수</option>
-          <div style="display: contents;" th:each="courseNumber: ${courseNumberList}">
-            <option th:text="${courseNumber}" th:attr="value=${courseNumber}">기수 alt</option>
-          </div>
-        </select>
-        <select name="location-filter" class="data-filter">
-          <option value="true">종료된 강의 미포함</option>
-          <option value="false">종료된 강의 포함</option>
-        </select>
-        <button type="button" class="filter-search-btn">검색</button>
+        <form action="/ui/courses">
+          <select id="courseNumberSelect" name="courseNumber" class="data-filter">
+            <option value="0">기수</option>
+            <option th:each="courseNumber: ${courseNumberList}" th:text="${courseNumber}" th:attr="value=${courseNumber}" th:selected="${selectedCourseNumber} == ${courseNumber}">기수 alt</option>
+          </select>
+          <select name="excludeExpired" class="data-filter" onChange="updateCourseNumber(event)">
+            <option value="true" th:selected="${paging.excludeExpired} == 1">진행중</option>
+            <option value="false" th:selected="${paging.excludeExpired} == 0">전체</option>
+          </select>
+          <button type="submit" class="filter-search-btn">검색</button>
+        </form>
       </div>
     </article>
     <article>
@@ -536,6 +536,23 @@
       });
       return true;
     }
+    async function updateCourseNumber(e){
+      const courseNumberList = await getCourseNumberList(e.target.value);
+      const courseNumberSelect = $("#courseNumberSelect");
+      courseNumberSelect.html("");
+      let element = `<option value="` + 0 +`">` + "기수" + `</option>`;
+      courseNumberList.forEach(courseNumber => {
+        element += `<option value="` + courseNumber +`">` + courseNumber + `</option>`;
+      });
+      courseNumberSelect.get()[0].innerHTML = element;
+    }
+
+    async function getCourseNumberList(excludeExpired){
+      const res = await fetch("/courses/courseNumberList?excludeExpired=" + excludeExpired);
+      const data = await res.json();
+      return data.result;
+    }
+
     function showMessage(msg) {
       const messageModal = $("#removeCourseCompleteModal").get()[0];
       messageModal.querySelector("#message").innerText = msg;
