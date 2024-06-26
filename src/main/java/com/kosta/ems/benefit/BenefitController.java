@@ -14,18 +14,18 @@ public class BenefitController {
 
     private final BenefitService benefitService;
 
-    @PostMapping("/{page}")
-    public Map<String, ArrayList<BenefitTargetInfoDTO>> getBenefitTargetList(@RequestBody BenefitTargetInfoDTO dto, @PathVariable int page) {
+    @GetMapping
+    public Map<String, ArrayList<BenefitTargetInfoDTO>> getBenefitTargetList(@RequestBody BenefitTargetInfoDTO dto, @RequestParam int page) {
         return Map.of("result", (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitTargetList(dto, page, 10));
     }
 
-    @PostMapping("/settlement")
+    @PostMapping
     public void setBenefitSettlement(@RequestBody BenefitSettlementReqDTO dto) {
         benefitService.setBenefitSettlement(dto);
     }
 
-    @PostMapping("/result/{page}")
-    public Map<String, ArrayList<BenefitSettlementResultDTO>> getBenefitSettlementResult(@RequestBody BenefitSettlementReqDTO dto, @PathVariable int page) {
+    @PostMapping("/result")
+    public Map<String, ArrayList<BenefitSettlementResultDTO>> getBenefitSettlementResult(@RequestBody BenefitSettlementReqDTO dto, @RequestParam int page) {
         return Map.of("result", (ArrayList<BenefitSettlementResultDTO>) benefitService.getBenefitSettlementResult(dto, page, 10));
     }
 }
