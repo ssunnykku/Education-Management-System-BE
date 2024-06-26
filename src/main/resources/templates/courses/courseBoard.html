@@ -286,6 +286,16 @@
       </div>
     </div>
   </div>
+
+  <script>
+    $("#pagination li").each((index, item) => {
+      if($(item).hasClass("inactivePage")){
+        let a = $(item).children("a");
+        a.removeAttr("href");
+      }
+    });
+    
+  </script>
 </body>
 
 </html>
