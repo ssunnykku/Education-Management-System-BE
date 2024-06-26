@@ -2,7 +2,9 @@ package com.kosta.ems;
 
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,8 +46,14 @@ public class EmpController {
     	Integer totalCourseCount = courseService.getsearchCourseListSize(courseNumber, getAcademyOfLoginUser(request), page, pageSize, excludeExpired);
     	List<Integer> courseNumberList = courseService.getCourseNumberList(getAcademyOfLoginUser(request), excludeExpired);
     	
+    	Map<String, Integer> paging = new HashMap<>();
+    	paging.put("totalCourseCount", totalCourseCount);
+    	paging.put("page", page);
+    	paging.put("pageSize", pageSize);
+    	paging.put("pageOffset", ((page / 10) * 10) + 1);//현재 페이지가 27이라면 offset은 21을 가리킨다. 
+    	
     	model.addAttribute("courseNumberList",courseNumberList);
-    	model.addAttribute("totalCourseCount", totalCourseCount);
+    	model.addAttribute("paging", paging);
     	model.addAttribute("courseList",courseList);
     	
         return "courses/courseBoard";
