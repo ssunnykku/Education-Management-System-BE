@@ -7,8 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Slf4j
@@ -24,7 +26,7 @@ class BenefitMapperTest {
     @Test
     @Transactional
     public void insertBenefitSettlementDurationTest() {
-        BenefitSettlementDurationDTO build = BenefitSettlementDurationDTO.builder().settlementDurationEndDate(LocalDate.parse("2024-07-30")).settlementDurationStartDate(LocalDate.parse("2024-07-02")).courseSeq(19).managerId("d893bf71-2f8f-11ef-b0b2-0206f94be675").build();
+        BenefitSettlementReqDTO build = BenefitSettlementReqDTO.builder().settlementDurationEndDate(LocalDate.parse("2024-07-30")).settlementDurationStartDate(LocalDate.parse("2024-07-02")).courseSeq(19).managerId("d893bf71-2f8f-11ef-b0b2-0206f94be675").build();
         log.info(build.toString());
         benefitMapper.insertBenefitSettlementDuration(build);
         log.info(String.valueOf(build.getSettlementDurationSeq()));
@@ -35,6 +37,32 @@ class BenefitMapperTest {
     public void insertBenefitSettlementAmountTest() {
         BenefitDTO build = BenefitDTO.builder().trainingAidAmount(200000).mealAidAmount(9500).settlementAidAmount(200000).studentId("efa1441a-2fa7-11ef-b0b2-0206f94be675").settlementDurationSeq(4).build();
         benefitMapper.insertBenefitSettlementAmount(build);
+    }
+
+    @Test
+    void selectBenefitSettlementResultPageTest() {
+        List<BenefitSettlementResultDTO> dto = (ArrayList<BenefitSettlementResultDTO>) benefitMapper.selectBenefitSettlementResult("", "", null, 5, 0);
+        for (BenefitSettlementResultDTO d : dto) {
+            log.info(d.getBenefitSettlementDate().toString());
+        }
+
+        assertThat(dto.size()).isEqualTo(5);
+    }
+
+    @Test
+    void selectBenefitSettlementResultTest() {
+        List<BenefitSettlementResultDTO> dto = (ArrayList<BenefitSettlementResultDTO>) benefitMapper.selectBenefitSettlementResult("", "227", LocalDate.parse("2024-03-21"), 5, 0);
+        for (BenefitSettlementResultDTO d : dto) {
+            assertThat(d.getBenefitSettlementDate()).isEqualTo(LocalDate.parse("2024-03-21"));
+        }
+    }
+
+    @Test
+    void selectBenefitSettlementResultTest2() {
+        List<BenefitSettlementResultDTO> dto = (ArrayList<BenefitSettlementResultDTO>) benefitMapper.selectBenefitSettlementResult("", "227", LocalDate.parse("2024-03-21"), 5, 0);
+        for (BenefitSettlementResultDTO d : dto) {
+            assertThat(d.getCourseNumber()).isEqualTo(277);
+        }
     }
 
 }
