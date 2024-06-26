@@ -1,4 +1,4 @@
-package com.kosta.ems.courses;
+package com.kosta.ems.course;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

@@ -1,4 +1,4 @@
-package com.kosta.ems.courses;
+package com.kosta.ems.course;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

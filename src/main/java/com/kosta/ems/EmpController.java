@@ -11,8 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.kosta.ems.courses.CourseDTO;
-import com.kosta.ems.courses.CourseService;
+import com.kosta.ems.course.CourseDTO;
+import com.kosta.ems.course.CourseService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

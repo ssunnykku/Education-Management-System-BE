@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kosta.ems.managers.ManagerMapper;
+import com.kosta.ems.manager.ManagerMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
