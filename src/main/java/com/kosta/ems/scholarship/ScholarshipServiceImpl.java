@@ -1,13 +1,10 @@
 package com.kosta.ems.scholarship;
 
-import com.kosta.ems.benefit.BenefitMapper;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -22,10 +19,29 @@ public class ScholarshipServiceImpl implements ScholarshipService {
         int limit = size;
         int offset = size * (page - 1);
 
-        List<ScholarshipTargetDTO> resultData = new ArrayList<>();
         dto.setLimit(limit);
         dto.setOffset(offset);
+        dto.setAcademyLocation("가산");
 
-        return (ArrayList<ScholarshipTargetDTO>) scholarshipMapper.selectScholarshipTargetList(dto);
+        return (ArrayList<ScholarshipTargetDTO>) scholarshipMapper.selectScholarshipTargetList(dto.getAcademyLocation(), dto.getName(), String.valueOf(dto.getCourseNumber()), limit, offset);
     }
+
+    @Override
+    public void setScholarshipSettlementDate(int studentCourseSeq) {
+        scholarshipMapper.insertScholarshipSettlementDate(studentCourseSeq);
+    }
+
+    @Override
+    public List<ScholarshipSettlementResultDTO> getScholarshipSettlementResultList(ScholarshipTargetListReqDTO dto, int page, int size) {
+        int limit = size;
+        int offset = size * (page - 1);
+
+        dto.setLimit(limit);
+        dto.setOffset(offset);
+        dto.setAcademyLocation("가산");
+
+        return (ArrayList<ScholarshipSettlementResultDTO>) scholarshipMapper.selectScholarshipSettlementResultList(String.valueOf(dto.getCourseNumber()), dto.getAcademyLocation(), dto.getName(), dto.getScholarshipDate(), limit, offset);
+    }
+
+
 }

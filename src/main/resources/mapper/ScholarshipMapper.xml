@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kosta.ems.scholarship.ScholarshipMapper">
-    <select id="selectScholarshipTargetList" resultType="com.kosta.ems.scholarship.ScholarshipTargetDTO"
-            parameterType="com.kosta.ems.scholarship.ScholarshipTargetListReqDTO">
+    <select id="selectScholarshipTargetList" resultType="com.kosta.ems.scholarship.ScholarshipTargetDTO">
         SELECT distinct s.student_id                      AS studentId,
                         s.hrd_net_id                      AS hrdNetId,
                         s.name,
@@ -31,23 +30,23 @@
                  LEFT JOIN students_points sp on sp.student_course_seq = sc.student_course_seq
                  LEFT JOIN point_categories pc on sp.point_seq = pc.point_seq
         WHERE c.academy_location = #{academyLocation}
-            AND #{name} IS NULL
-           OR s.name LIKE CONCAT('%', #{name}, '%')
-            AND s.is_active = 'T'
-            AND c.is_active = 'T'
-            AND sc.course_seq = #{courseSeq}
-            AND (select totalPoint
-            from view_students_course_point
-            where student_id = s.student_id
-              and course_seq = sc.course_seq
-              and pc.is_active = 'T') >= 50
-            AND (select scholarship_date
-            from view_students_course_scholarship_settlement_Date
-            where student_id = s.student_id
-              and course_seq = sc.course_seq) is null
+          AND s.name LIKE CONCAT('%', #{name}, '%')
+          AND s.is_active = 'T'
+          AND c.is_active = 'T'
+          AND (#{courseNumber} IS NULL OR #{courseNumber} = '' OR c.course_number = #{courseNumber})
+          AND (select totalPoint
+        from view_students_course_point
+        where student_id = s.student_id
+          and course_seq = sc.course_seq
+          and pc.is_active = 'T') >= 50
+          AND (select scholarship_date
+        from view_students_course_scholarship_settlement_Date
+        where student_id = s.student_id
+          and course_seq = sc.course_seq) is null
         ORDER BY name desc
         limit #{limit} offset #{offset}
     </select>
+
     <insert id="insertScholarshipSettlementDate" parameterType="int">
         insert into scholarship_settlement_date (student_course_seq)
         values (#{studentCourseSeq})
@@ -72,15 +71,17 @@
                  LEFT JOIN students_courses sc ON s.student_id = sc.student_id
                  LEFT JOIN courses c ON c.course_seq = sc.course_seq
                  LEFT JOIN scholarship_settlement_date ssd ON ssd.student_course_seq = sc.student_course_seq
-        WHERE c.course_number = #{courseNumber}
+        WHERE (#{courseNumber} IS NULL OR #{courseNumber} = '' OR c.course_number = #{courseNumber})
           and s.is_active = 'T'
           and c.academy_location = #{academyLocation}
           AND s.name like CONCAT('%', #{name}, '%')
           AND s.is_active = 'T'
-          AND scholarship_date like CONCAT('%', #{scholarshipDate}, '%')
+          AND c.is_active = 'T'
+          AND (#{scholarshipDate} IS NULL OR #{scholarshipDate} = '' OR
+               scholarship_date = #{scholarshipDate})
           AND scholarship_date != ''
         ORDER BY s.name desc
-        limit 10 offset 0;
+        limit #{limit} offset #{offset};
     </select>
 
 </mapper>

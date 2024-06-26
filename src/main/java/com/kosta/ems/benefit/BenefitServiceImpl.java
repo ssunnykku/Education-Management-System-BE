@@ -1,7 +1,6 @@
 package com.kosta.ems.benefit;
 
 import com.kosta.ems.attendance.AttendanceServiceImpl;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -9,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -25,19 +25,28 @@ public class BenefitServiceImpl implements BenefitService {
 
     @Override
     @Transactional
-    public void setBenefitSettlement(BenefitSettlementDurationDTO benefitSettlementDurationDTO, BenefitDTO benefitDTO) {
+    public void setBenefitSettlement(BenefitSettlementReqDTO benefitSettlementReqDTO) {
 
-        benefitMapper.insertBenefitSettlementDuration(benefitSettlementDurationDTO);
+        benefitMapper.insertBenefitSettlementDuration(benefitSettlementReqDTO);
         BenefitDTO benefit = BenefitDTO.builder()
-                .trainingAidAmount(benefitDTO.getTrainingAidAmount())
-                .mealAidAmount(benefitDTO.getMealAidAmount())
-                .settlementAidAmount(benefitDTO.getSettlementAidAmount())
-                .studentId(benefitDTO.getStudentId())
-                .settlementDurationSeq(benefitSettlementDurationDTO.getSettlementDurationSeq())
+                .trainingAidAmount(benefitSettlementReqDTO.getTrainingAidAmount())
+                .mealAidAmount(benefitSettlementReqDTO.getMealAidAmount())
+                .settlementAidAmount(benefitSettlementReqDTO.getSettlementAidAmount())
+                .studentId(benefitSettlementReqDTO.getStudentId())
+                .settlementDurationSeq(benefitSettlementReqDTO.getSettlementDurationSeq())
                 .build();
 
-        log.info(String.valueOf(benefitSettlementDurationDTO.getSettlementDurationSeq()));
+        log.info(String.valueOf(benefitSettlementReqDTO.getSettlementDurationSeq()));
         benefitMapper.insertBenefitSettlementAmount(benefit);
+    }
+
+    @Override
+    public List<BenefitSettlementResultDTO> getBenefitSettlementResult(BenefitSettlementReqDTO dto, int page, int size) {
+        int limit = size;
+        int offset = size * (page - 1);
+
+        List<BenefitSettlementResultDTO> result = (ArrayList<BenefitSettlementResultDTO>) benefitMapper.selectBenefitSettlementResult(dto.getName(), dto.getCourseNumber(), dto.getBenefitSettlementDate(), limit, offset);
+        return result;
     }
 
     @Override

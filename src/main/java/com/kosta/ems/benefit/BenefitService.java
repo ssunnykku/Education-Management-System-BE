@@ -9,7 +9,8 @@ public interface BenefitService {
 
     Collection<BenefitTargetInfoDTO> getBenefitTargetList(BenefitTargetInfoDTO dto, int limit, int offset);
 
-    void setBenefitSettlement(BenefitSettlementDurationDTO benefitSettlementDurationDTO, BenefitDTO benefitDTO);
+    void setBenefitSettlement(BenefitSettlementReqDTO benefitSettlementReqDTO);
 
+    Collection<BenefitSettlementResultDTO> getBenefitSettlementResult(BenefitSettlementReqDTO benefitSettlementReqDTO, int page, int size);
 
 }

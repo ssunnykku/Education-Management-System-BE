@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BenefitSettlementDurationDTO {
+public class BenefitSettlementReqDTO {
     private int settlementDurationSeq;
     private LocalDate settlementDurationStartDate;
     private LocalDate settlementDurationEndDate;
@@ -23,6 +23,8 @@ public class BenefitSettlementDurationDTO {
     private int settlementAidAmount;
     private LocalDate benefitSettlementDate;
     private String studentId;
+    private String name;
+    private String courseNumber;
 
 
 }
