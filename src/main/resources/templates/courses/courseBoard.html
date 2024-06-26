@@ -16,10 +16,6 @@
   <div th:insert="~{common/title :: title ('과정 관리')}"></div>
   <section id="content-section">
     <article id="courseBoard-btns-container">
-      <div id="courseBoard-btn-wrapper">
-        <button id="enroll-btn" class="btn-setting" popovertarget="addCourseModal">등록</button>
-        <button id="delete-btn" class="btn-setting" popovertarget="removeCourseModal">삭제</button>
-      </div>
       <div class="search-form-wrapper">
         <!-- form???? -->
         <form action="/ui/courses">
@@ -34,6 +30,11 @@
           <button type="submit" class="filter-search-btn">검색</button>
         </form>
       </div>
+      <div id="courseBoard-btn-wrapper">
+        <button id="enroll-btn" class="btn-setting" popovertarget="addCourseModal">등록</button>
+        <button id="delete-btn" class="btn-setting" popovertarget="removeCourseModal">삭제</button>
+      </div>
+      
     </article>
     <article>
       <div id="courseBoard-table">
