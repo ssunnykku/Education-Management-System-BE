@@ -26,10 +26,16 @@ class AttendanceServiceImplTest {
 //        }
 //    }
     
+    // [출결] - 수강생 출결 조회 목록 데이터 개수 (for 페이지네이션)
+    @Test
+    void getStudentAttendanceListAmount() {
+    	log.info(Integer.toString(AttendanceServiceImpl.getStudentAttendanceListAmount("유", 277)));    
+    }
+    
     // [출결] - 수강생 출석 조회 목록 조회
     // @Test
     void getStudentAttendanceList() {
-    	log.info(AttendanceServiceImpl.getStudentAttendanceList("유", "277").toString());
+    	log.info(AttendanceServiceImpl.getStudentAttendanceList("유", 277, 3, 2).toString());
     }
     
     // [출결] - 선택한 수강생의 출석 상태 수정

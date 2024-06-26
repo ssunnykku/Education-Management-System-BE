@@ -35,7 +35,7 @@ FROM students s, courses c, students_courses sc
 WHERE s.student_id=sc.student_id AND c.course_seq=sc.course_seq AND 
 	(s.student_id IN (SELECT student_id FROM students WHERE name LIKE CONCAT('%', #{name}, '%'))
 	OR c.course_seq=(SELECT course_seq FROM courses WHERE course_number=#{courseNumber}))
-LIMIT #{start}, #{size}
+LIMIT #{page}, #{size}
 	</select>
 	<!--입력 hrdNetId인지 확인-->
     <select id="findByHrdNetId" parameterType="string" resultType="int">
@@ -55,7 +55,7 @@ WHERE hrd_net_id=#{hrdNetId};
             (#{hrdNetId}, #{name}, #{birth}, #{address}, #{bank}, #{account}, #{phoneNumber}, #{email}, #{gender}, #{managerId})
     </insert>
     <!--수강생 등록(students_courses 테이블)-->
-    <insert id="addStudentCourseSeqInfo" parameterType="com.kosta.ems.student.AddStudentCourseSeqDTO">
+    <insert id="addStudentCourseSeqInfo" parameterType="com.kosta.ems.student.AddStudentBasicInfoDTO">
         INSERT INTO students_courses (student_id, course_seq)
         VALUES (
                        (SELECT student_id FROM students WHERE hrd_net_id=#{hrdNetId}),
@@ -65,7 +65,7 @@ WHERE hrd_net_id=#{hrdNetId};
     <!--선택한 수강생 정보 수정-->
     <update id="updateSelectedStudentInfo">
     	UPDATE students
-SET NAME=#{dto.name}, address=#{dto.address}, bank=#{dto.bank}, ACCOUNT=#{dto.account}, phone_number=#{dto.phoneNumber}, email=#{dto.email}
+SET NAME=#{name}, address=#{address}, bank=#{bank}, ACCOUNT=#{account}, phone_number=#{phoneNumber}, email=#{email}
 WHERE student_id=#{studentId}; 
     </update>
     <!--선택한 수강생 삭제(isActive -> F)-->

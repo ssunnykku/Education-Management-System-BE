@@ -9,16 +9,16 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @ToString
 @Builder
-public class AddStudentBasicInfoDTO {
+public class RequestAddStudentBasicInfoDTO {
     private String hrdNetId;
     private String name;
-    private LocalDate birth;
+    private String birth;
     private String address;
     private String bank;
     private String account;
     private String phoneNumber;
     private String email;
-    private char gender;
+    private String gender;
     private String managerId;
-    private int courseNumber;
+    private String courseNumber;
 }

@@ -16,10 +16,16 @@ class AttendanceMapperTest {
     @Autowired
     private AttendanceMapper attendanceMapper;
     
+    // [출결] - 수강생 출석 조회 목록 데이터 개수 (for 페이지네이션)
+    @Test
+    public void selectStudentAttendanceListAmount() {
+    	log.info(attendanceMapper.selectStudentAttendanceListAmount("유", 277).toString());
+    }
+    
     // [출결] - 수강생 출석 조회 목록 조회
     // @Test
     public void selectStudentAttendanceList() {
-    	log.info(attendanceMapper.selectStudentAttendanceList("유", 277).toString());
+    	log.info(attendanceMapper.selectStudentAttendanceList("유", 277, 0, 2).toString());
     }
     
     // [출결] - 선택한 수강생의 출석 상태 수정

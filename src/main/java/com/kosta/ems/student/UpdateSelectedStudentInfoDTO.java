@@ -14,6 +14,7 @@ import lombok.ToString;
 @ToString
 @Builder
 public class UpdateSelectedStudentInfoDTO {
+	private String studentId;
 	private String name;
 	private String address;
 	private String bank;
