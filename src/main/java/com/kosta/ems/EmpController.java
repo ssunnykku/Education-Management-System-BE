@@ -41,9 +41,13 @@ public class EmpController {
     public String addCourseModal(@RequestParam(value="page", defaultValue = "1") int page, @RequestParam(value="pageSize", defaultValue = "10") int pageSize, @RequestParam(value="courseNumber", defaultValue = "0") int courseNumber,@RequestParam(value="excludeExpired", defaultValue = "true") boolean excludeExpired, HttpServletRequest request, Model model) {
     	//                                                         (         277,                          "가산",    1,       10);
     	List<CourseDTO> courseList = courseService.searchCourseList(courseNumber, getAcademyOfLoginUser(request), page, pageSize, excludeExpired);
+    	Integer totalCourseCount = courseService.getsearchCourseListSize(courseNumber, getAcademyOfLoginUser(request), page, pageSize, excludeExpired);
     	List<Integer> courseNumberList = courseService.getCourseNumberList(getAcademyOfLoginUser(request), excludeExpired);
+    	
     	model.addAttribute("courseNumberList",courseNumberList);
+    	model.addAttribute("totalCourseCount", totalCourseCount);
     	model.addAttribute("courseList",courseList);
+    	
         return "courses/courseBoard";
     }
 

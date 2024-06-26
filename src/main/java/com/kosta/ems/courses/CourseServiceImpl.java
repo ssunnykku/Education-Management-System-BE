@@ -25,6 +25,11 @@ public class CourseServiceImpl implements CourseService {
 	public List<CourseDTO> searchCourseList(int courseNumber, String academyLocation, int page, int pageSize, boolean excludeExpired) {
 		return courseMapper.searchCourseList(courseNumber, academyLocation, (page-1) * pageSize, pageSize, excludeExpired);
 	}
+	
+	@Override
+	public int getsearchCourseListSize(int courseNumber, String academyLocation, int page, int pageSize, boolean excludeExpired) {
+		return courseMapper.getsearchCourseListSize(courseNumber, academyLocation, (page-1) * pageSize, pageSize, excludeExpired);
+	}
 
 	@Override
 	public boolean addCourse(CourseDTO course) {
