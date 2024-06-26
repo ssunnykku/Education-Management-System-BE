@@ -19,7 +19,7 @@ class ScholarshipServiceImplTest {
 
     @Test
     void getScholarshipTargetListTest() {
-        ScholarshipTargetListReqDTO dto = ScholarshipTargetListReqDTO.builder().name("").courseSeq(19).academyLocation("가산").build();
+        ScholarshipTargetListReqDTO dto = ScholarshipTargetListReqDTO.builder().name("").courseNumber(277).academyLocation("가산").build();
         log.info(scholarshipService.getScholarshipTargetList(dto, 1, 10).toString());
         log.info(String.valueOf(scholarshipService.getScholarshipTargetList(dto, 2, 10).size()));
     }
@@ -33,7 +33,9 @@ class ScholarshipServiceImplTest {
     @Test
     void getScholarshipSettlementResultListTest() {
 
-        ArrayList<ScholarshipSettlementResultDTO> list = (ArrayList<ScholarshipSettlementResultDTO>) scholarshipService.getScholarshipSettlementResultList(ScholarshipTargetListReqDTO.builder().courseNumber(277).name("손").scholarshipDate(LocalDate.parse("2024-06-21")).build(), 1, 10);
+        ArrayList<ScholarshipSettlementResultDTO> list =
+                (ArrayList<ScholarshipSettlementResultDTO>) scholarshipService.getScholarshipSettlementResultList(ScholarshipTargetListReqDTO.builder()
+                        .courseNumber(277).name("손").scholarshipDate(LocalDate.parse("2024-06-21")).build(), 1, 10);
 
         for (ScholarshipSettlementResultDTO dto : list) {
             assertThat(dto.getName()).contains("손");

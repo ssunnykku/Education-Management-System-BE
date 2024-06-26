@@ -13,19 +13,20 @@ public class ScholarshipController {
 
     private final ScholarshipService scholarshipService;
 
-    @PostMapping
-    public Map<String, Collection> getScholarshipSettlementList(@RequestBody ScholarshipTargetListReqDTO dto, @PathVariable int page, @PathVariable int size) {
+    @PostMapping("/{page}")
+    public Map<String, Collection> getScholarshipSettlementList(@RequestBody ScholarshipTargetListReqDTO dto, @PathVariable int page) {
 
-        return Map.of("result", scholarshipService.getScholarshipTargetList(dto, page, size));
+        return Map.of("result", scholarshipService.getScholarshipTargetList(dto, page, 10));
     }
 
-    @PostMapping("/settlement")
-    public void scholarshipSettlement(@RequestParam int studentCourseSeq) {
+    @PostMapping("/settlement/{studentCourseSeq}")
+    public void scholarshipSettlement(@PathVariable int studentCourseSeq) {
+        scholarshipService.setScholarshipSettlementDate(studentCourseSeq);
     }
 
-    @PostMapping("/result")
-    public Map<String, Collection> getScholarshipSettlementResultList(@RequestBody ScholarshipTargetListReqDTO dto, @PathVariable int page, @PathVariable int size) {
-        return Map.of("result", scholarshipService.getScholarshipSettlementResultList(dto, page, size));
+    @PostMapping("/result/{page}")
+    public Map<String, Collection> getScholarshipSettlementResultList(@RequestBody ScholarshipTargetListReqDTO dto, @PathVariable int page) {
+        return Map.of("result", scholarshipService.getScholarshipSettlementResultList(dto, page, 10));
     }
 
 
