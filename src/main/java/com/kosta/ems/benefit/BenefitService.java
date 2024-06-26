@@ -7,9 +7,10 @@ import java.util.Collection;
 @Service
 public interface BenefitService {
 
-    Collection<BenefitTargetInfoDTO> getBenefitTargetList(BenefitTargetInfoDTO dto, int limit, int offset);
+    Collection<BenefitTargetInfoDTO> getBenefitTargetList(BenefitTargetInfoDTO dto, int page, int size);
 
-    void setBenefitSettlement(BenefitSettlementDurationDTO benefitSettlementDurationDTO, BenefitDTO benefitDTO);
+    void setBenefitSettlement(BenefitSettlementReqDTO benefitSettlementReqDTO);
 
+    Collection<BenefitSettlementResultDTO> getBenefitSettlementResult(BenefitSettlementReqDTO benefitSettlementReqDTO, int page, int size);
 
 }
