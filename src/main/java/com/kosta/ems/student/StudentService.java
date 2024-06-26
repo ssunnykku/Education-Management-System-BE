@@ -5,8 +5,11 @@ import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.P
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kosta.ems.attendance.StudentAttendanceListDTO;
+
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -15,22 +18,26 @@ import java.util.Map;
 public interface StudentService {
 	
     Map<String, Collection> getStudentByName(String name);
-    // Collection<StudentBasicInfoDTO> getStudentsByNameOrCourseNumber(String name, int courseNumber);
-    // Map<String, Collection> getStudentsByNameOrCourseNumber(String name, int courseNumber);
-    // List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumber(String name, int courseNumber);
-    int getStudentsByNameOrCourseNumberAmount(String name, String courseNumber);
-    List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumber(String name, int courseNumber, int page, int size);
-    // List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumber(String name, int courseNumber, Pageable);
+    
+    // 수강생 검색 결과 총 개수
+    int getStudentsByNameOrCourseNumberAmount(String name, int courseNumber);
+    
+    // 수강생 검색 결과 목록
+    List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumberList(String name, int courseNumber, int page, int size);
 
     // 수강생 등록
     boolean findByHrdNetId(String hrdNetId);
     RegisteredStudentInfoDTO getRegisteredStudentBasicInfo(String hrdNetId);
-    void addStudentBasicInfo(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId);
-    void addStudentCourseSeqInfo(String hrdNetId, String courseNumber);
+    // 신규 수강생 등록
+    void setStudentWithCourse(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber);
+    // void setStudentWithCourse(String hrdNetId, String name, LocalDate birth, String address, String bank, String account, String phoneNumber, String email, char gender, String managerId, int courseNumber);
+    void setStudentBasicInfo(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber);
+    void setStudentCourseSeqInfo(String hrdNetId, String courseNumber);
 
     // 수강생 정보 수정
     void updateSelectedStudentInfo(String name, String address, String bank, String account, String phoneNumber, String email, String studentId);
     
     // 수강생 삭제(isActive 값 수정)
-    void deleteSelectedStudent(String studentId);
+    void removeSelectedStudent(String studentId);
+    
 }

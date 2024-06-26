@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
+@Builder
 public class PageRequestDTO {
 	@Builder.Default
 	private int page = 1;
@@ -19,4 +19,5 @@ public class PageRequestDTO {
 	@Builder.Default
 	private int size = 10;
 
+	private int currentPage;
 }

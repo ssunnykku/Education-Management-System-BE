@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 // import org.springframework.data.domain.Page;
 
 
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,21 +32,21 @@ public class StudentServiceImpl implements StudentService {
     
     // 수강생 정보 검색 결과 데이터 개수 (for 페이지네이션)
     @Override
-    public int getStudentsByNameOrCourseNumberAmount(String name, String courseNumber) {
-    	return studentMapper.findByStudentNumberOrCourseNumberAll(name, Integer.parseInt(courseNumber));
+    public int getStudentsByNameOrCourseNumberAmount(String name, int courseNumber) {
+    	return studentMapper.findByStudentNumberOrCourseNumberAll(name, courseNumber);
     }
     
     // 수강생 정보 검색 결과 데이터 불러오기
     @Override
     // public Map<String, Collection> getStudentsByNameOrCourseNumber(String name, int courseNumber) {
-    public List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumber(String name, int courseNumber, int page, int size) {
+    public List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumberList(String name, int courseNumber, int page, int size) {
 		/*
 		 * Map<String, Collection> result = new HashMap<String, Collection>();
 		 * result.put("data", studentMapper.findByStudentNameOrCourseNumber(name,
 		 * courseNumber)); return result;
 		 */
     	// return studentMapper.findByStudentNameOrCourseNumber(name, courseNumber);
-    	return studentMapper.findByStudentNameOrCourseNumber(name, courseNumber, page-1, size);
+    	return studentMapper.findByStudentNameOrCourseNumberList(name, courseNumber, page-1, size);
     }
 
     // * 수강생 등록
@@ -66,39 +67,63 @@ public class StudentServiceImpl implements StudentService {
     // * 기존 수강생인 경우, 수강생 기본 정보 불러오기
     @Override
     public RegisteredStudentInfoDTO getRegisteredStudentBasicInfo(String hrdNetId) {
-    	return studentMapper.getRegisteredStudentBasicInfo(hrdNetId);
+    	return studentMapper.selectRegisteredStudentBasicInfo(hrdNetId);
     }
     
     // * 수강생 등록
+    // ** 신규 수강생 등록    
+    @Override
+    public void setStudentWithCourse(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber) {
+    	int year = Integer.parseInt(birth.split("-")[0]);
+        int month = Integer.parseInt(birth.split("-")[1]);
+        int day = Integer.parseInt(birth.split("-")[2]);
+        char g = gender.toCharArray()[0];
+    	
+        AddStudentBasicInfoDTO dto = AddStudentBasicInfoDTO.builder().hrdNetId(hrdNetId).name(name).birth(LocalDate.of(year, month, day)).address(address).bank(bank).account(account).phoneNumber(phoneNumber).email(email).gender(g).managerId(managerId).courseNumber(Integer.parseInt(courseNumber)).build();
+       
+        int result1 = studentMapper.addStudentBasicInfo(dto);
+        if(result1 == 0) {
+        	throw new NoSuchDataException("Fail:: Add new student");
+        }
+        
+        int result2 = studentMapper.addStudentCourseSeqInfo(dto);
+        if(result2 == 0) {
+        	throw new NoSuchDataException("Fail:: Add student_course");
+        }
+    }
+    
     // ** students 테이블에 수강생 데이터 등록
     @Override
-    public void addStudentBasicInfo(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId) {
+    public void setStudentBasicInfo(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber) {
         int year = Integer.parseInt(birth.split("-")[0]);
         int month = Integer.parseInt(birth.split("-")[1]);
         int day = Integer.parseInt(birth.split("-")[2]);
         char g = gender.toCharArray()[0];
-        AddStudentBasicInfoDTO dto = AddStudentBasicInfoDTO.builder().hrdNetId(hrdNetId).name(name).birth(LocalDate.of(year, month, day)).address(address).bank(bank).account(account).phoneNumber(phoneNumber).email(email).gender(g).managerId(managerId).build();
+        AddStudentBasicInfoDTO dto = AddStudentBasicInfoDTO.builder().hrdNetId(hrdNetId).name(name).birth(LocalDate.of(year, month, day)).address(address).bank(bank).account(account).phoneNumber(phoneNumber).email(email).gender(g).managerId(managerId).courseNumber(Integer.parseInt(courseNumber)).build();
         studentMapper.addStudentBasicInfo(dto);
     }
     
     // * 수강생 등록
     // ** students_courses 테이블에 수강생 데이터 등록
     @Override
-    public void addStudentCourseSeqInfo(String hrdNetId, String courseNumber) {
-        AddStudentCourseSeqDTO dto = AddStudentCourseSeqDTO.builder().hrdNetId(hrdNetId).courseNumber(Integer.parseInt(courseNumber)).build();
+    public void setStudentCourseSeqInfo(String hrdNetId, String courseNumber) {
+        // AddStudentCourseSeqDTO dto = AddStudentCourseSeqDTO.builder().hrdNetId(hrdNetId).courseNumber(Integer.parseInt(courseNumber)).build();
+        // studentMapper.addStudentCourseSeqInfo(dto);
+    	AddStudentBasicInfoDTO dto = AddStudentBasicInfoDTO.builder().hrdNetId(hrdNetId).courseNumber(Integer.parseInt(courseNumber)).build();
         studentMapper.addStudentCourseSeqInfo(dto);
     }
     
     // 수강생 정보 수정
     @Override
     public void updateSelectedStudentInfo(String name, String address, String bank, String account, String phoneNumber, String email, String studentId) {
-    	UpdateSelectedStudentInfoDTO dto = UpdateSelectedStudentInfoDTO.builder().name(name).address(address).bank(bank).account(account).phoneNumber(phoneNumber).email(email).build();
-    	studentMapper.updateSelectedStudentInfo(dto, studentId);
+    	UpdateSelectedStudentInfoDTO dto = UpdateSelectedStudentInfoDTO.builder().name(name).address(address).bank(bank).account(account).phoneNumber(phoneNumber).email(email).studentId(studentId).build();
+    	studentMapper.updateSelectedStudentInfo(dto);
     }
     
     // 수강생 삭제
     @Override
-    public void deleteSelectedStudent(String studentId) {
+    public void removeSelectedStudent(String studentId) {
     	studentMapper.deleteSelectedStudent(studentId);
     }
+    
 }

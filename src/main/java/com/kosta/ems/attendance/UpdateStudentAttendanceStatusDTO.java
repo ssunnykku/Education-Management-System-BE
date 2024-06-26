@@ -1,4 +1,4 @@
-package com.kosta.ems.student;
+package com.kosta.ems.attendance;
 
 import java.time.LocalDate;
 
@@ -13,12 +13,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Builder
-public class UpdateSelectedStudentInfoDTO {
+public class UpdateStudentAttendanceStatusDTO {
+	private String attendanceStatus;
+	private LocalDate attendanceDate;
 	private String studentId;
-	private String name;
-	private String address;
-	private String bank;
-	private String account;
-	private String phoneNumber;
-	private String email;
 }
