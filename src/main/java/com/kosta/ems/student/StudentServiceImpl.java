@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 // import org.springframework.data.domain.Page;
 
+import com.kosta.ems.attendance.StudentAttendanceListDTO;
+import com.kosta.ems.attendance.UpdateStudentAttendanceStatusDTO;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,14 +41,14 @@ public class StudentServiceImpl implements StudentService {
     // 수강생 정보 검색 결과 데이터 불러오기
     @Override
     // public Map<String, Collection> getStudentsByNameOrCourseNumber(String name, int courseNumber) {
-    public List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumber(String name, int courseNumber, int page, int size) {
+    public List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumberList(String name, int courseNumber, int page, int size) {
 		/*
 		 * Map<String, Collection> result = new HashMap<String, Collection>();
 		 * result.put("data", studentMapper.findByStudentNameOrCourseNumber(name,
 		 * courseNumber)); return result;
 		 */
     	// return studentMapper.findByStudentNameOrCourseNumber(name, courseNumber);
-    	return studentMapper.findByStudentNameOrCourseNumber(name, courseNumber, page-1, size);
+    	return studentMapper.findByStudentNameOrCourseNumberList(name, courseNumber, page-1, size);
     }
 
     // * 수강생 등록
@@ -66,13 +69,13 @@ public class StudentServiceImpl implements StudentService {
     // * 기존 수강생인 경우, 수강생 기본 정보 불러오기
     @Override
     public RegisteredStudentInfoDTO getRegisteredStudentBasicInfo(String hrdNetId) {
-    	return studentMapper.getRegisteredStudentBasicInfo(hrdNetId);
+    	return studentMapper.selectRegisteredStudentBasicInfo(hrdNetId);
     }
     
     // * 수강생 등록
     // ** students 테이블에 수강생 데이터 등록
     @Override
-    public void addStudentBasicInfo(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId) {
+    public void setStudentBasicInfo(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId) {
         int year = Integer.parseInt(birth.split("-")[0]);
         int month = Integer.parseInt(birth.split("-")[1]);
         int day = Integer.parseInt(birth.split("-")[2]);
@@ -84,7 +87,7 @@ public class StudentServiceImpl implements StudentService {
     // * 수강생 등록
     // ** students_courses 테이블에 수강생 데이터 등록
     @Override
-    public void addStudentCourseSeqInfo(String hrdNetId, String courseNumber) {
+    public void setStudentCourseSeqInfo(String hrdNetId, String courseNumber) {
         AddStudentCourseSeqDTO dto = AddStudentCourseSeqDTO.builder().hrdNetId(hrdNetId).courseNumber(Integer.parseInt(courseNumber)).build();
         studentMapper.addStudentCourseSeqInfo(dto);
     }
@@ -98,23 +101,8 @@ public class StudentServiceImpl implements StudentService {
     
     // 수강생 삭제
     @Override
-    public void deleteSelectedStudent(String studentId) {
+    public void removeSelectedStudent(String studentId) {
     	studentMapper.deleteSelectedStudent(studentId);
     }
     
-    // [출결] - 수강생 출석 조회 목록 조회
-    @Override
-    public Collection<StudentAttendanceListDTO> getStudentAttendanceList(String name, String courseNumber) {
-    	return studentMapper.selectStudentAttendanceList(name, Integer.parseInt(courseNumber));
-    }
-    
-    // [출결] - 선택한 수강생의 출석 상태 수정
-    @Override
-    public void updateStudentAttendance(String attendanceStatus, String attendanceDate, String studentId) {
-    	int year = Integer.parseInt(attendanceDate.split("-")[0]);
-        int month = Integer.parseInt(attendanceDate.split("-")[1]);
-        int day = Integer.parseInt(attendanceDate.split("-")[2]);
-    	UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus(attendanceStatus).attendanceDate(LocalDate.of(year, month, day)).studentId(studentId).build();
-    	studentMapper.updateStudentAttendance(dto);
-    }
 }

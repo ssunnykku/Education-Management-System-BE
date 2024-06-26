@@ -1,4 +1,4 @@
-package com.kosta.ems.student;
+package com.kosta.ems.attendance;
 
 import java.time.LocalDate;
 

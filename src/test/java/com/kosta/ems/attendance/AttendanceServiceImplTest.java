@@ -25,5 +25,16 @@ class AttendanceServiceImplTest {
 //            log.info(a.getAttendanceStatus());
 //        }
 //    }
-
+    
+    // [출결] - 수강생 출석 조회 목록 조회
+    // @Test
+    void getStudentAttendanceList() {
+    	log.info(AttendanceServiceImpl.getStudentAttendanceList("유", "277").toString());
+    }
+    
+    // [출결] - 선택한 수강생의 출석 상태 수정
+ 	// @Test
+     void updateStudentAttendance() {
+    	 AttendanceServiceImpl.updateStudentAttendance("출석", "2024-06-21", "efa148aa-2fa7-11ef-b0b2-0206f94be675");
+     }
 }

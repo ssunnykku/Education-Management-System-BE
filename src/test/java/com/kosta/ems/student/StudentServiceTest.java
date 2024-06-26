@@ -26,7 +26,7 @@ public class StudentServiceTest {
 	// @Test
 	void getStudentsByNameOrCourseNumber() {
 		// log.info(studentServiceImpl.getStudentsByNameOrCourseNumber("진", 5).toString());
-		log.info(studentServiceImpl.getStudentsByNameOrCourseNumber("진", 277, 1, 2).toString());
+		log.info(studentServiceImpl.getStudentsByNameOrCourseNumberList("진", 277, 1, 2).toString());
 	}
 
 	// 수강생 정보 - 수강생 등록
@@ -45,13 +45,13 @@ public class StudentServiceTest {
 	// -- students 테이블에 수강생 데이터 등록
 	// @Test
 	void addStudentBasicInfo() {
-		studentServiceImpl.addStudentBasicInfo("test0001", "테스터양씨", "1998-06-30", "서울시 용산구 이촌동 동부이촌2길, 대림아파트 101동 901호", "우리", "10029387655086", "01028768976", "test0001@naver.com", "M", "d893c3ad-2f8f-11ef-b0b2-0206f94be675");
+		studentServiceImpl.setStudentBasicInfo("test0001", "테스터양씨", "1998-06-30", "서울시 용산구 이촌동 동부이촌2길, 대림아파트 101동 901호", "우리", "10029387655086", "01028768976", "test0001@naver.com", "M", "d893c3ad-2f8f-11ef-b0b2-0206f94be675");
 	}
 
 	// -- students_courses 테이블에 수강생 데이터 등록
 	// @Test
 	void addStudentCourseSeqInfo() {
-		studentServiceImpl.addStudentCourseSeqInfo("youyou33", "283");
+		studentServiceImpl.setStudentCourseSeqInfo("youyou33", "283");
 	}
 	
 	// 수강생 정보 수정
@@ -63,18 +63,7 @@ public class StudentServiceTest {
 	// 수강생 삭제
 	// @Test
 	void deleteSelectedStudent() {
-		studentServiceImpl.deleteSelectedStudent("8b48e083-2fa8-11ef-b0b2-0206f94be675");
+		studentServiceImpl.removeSelectedStudent("8b48e083-2fa8-11ef-b0b2-0206f94be675");
 	}
 	
-	// [출결] - 수강생 출석 조회 목록 조회
-    // @Test
-    void getStudentAttendanceList() {
-    	log.info(studentServiceImpl.getStudentAttendanceList("유", "277").toString());
-    }
-	
-	// [출결] - 선택한 수강생의 출석 상태 수정
-	// @Test
-    void updateStudentAttendance() {
-    	studentServiceImpl.updateStudentAttendance("외출", "2024-06-21", "efa148aa-2fa7-11ef-b0b2-0206f94be675");
-    }
 }
