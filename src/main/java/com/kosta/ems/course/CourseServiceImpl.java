@@ -37,7 +37,14 @@ public class CourseServiceImpl implements CourseService {
 
 	@Override
 	public boolean addCourse(CourseDTO course) {
-		return courseMapper.insertCourse(course);
+		boolean result = false;
+		try {
+			if(courseMapper.insertCourse(course) == true) {
+				result = true;
+			}
+		}catch (Exception e) {
+		}
+		return result;
 	}
 
 	@Override
@@ -62,6 +69,11 @@ public class CourseServiceImpl implements CourseService {
 	@Override
 	public List<Integer> getCourseNumberList(String academyLocation, boolean excludeExpired) {
 		return courseMapper.getCourseNumberList(academyLocation, excludeExpired);
+	}
+
+	@Override
+	public List<String> getCourseTypeList() {
+		return courseMapper.getCourseTypeList();
 	}
 
 }

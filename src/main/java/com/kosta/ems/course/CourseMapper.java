@@ -11,6 +11,7 @@ public interface CourseMapper {
 	CourseDTO getCourse(@Param("courseSeq") int courseSeq);
     List<CourseDTO> searchCourseList(@Param("courseNumber") int courseNumber, @Param("academyLocation") String academyLocation, @Param("offset") int offset, @Param("pageSize") int pageSize, @Param("excludeExpired") boolean excludeExpired);
     Integer getSearchCourseListSize( @Param("courseNumber") int courseNumber, @Param("academyLocation") String academyLocation, @Param("offset") int offset, @Param("pageSize") int pageSize, @Param("excludeExpired") boolean excludeExpired);
+    List<String> getCourseTypeList();
     
     boolean insertCourse(CourseDTO course);
     boolean updateCourse(CourseDTO course);

@@ -59,9 +59,11 @@ public class EmpController {
     	paging.put("pageOffset", (((page-1) / 10) * 10) + 1);//현재 페이지가 27이라면 offset은 21을 가리킨다.
     	paging.put("excludeExpired", excludeExpired ? 1 : 0);
     	
+    	model.addAttribute("selectedCourseNumber",courseNumber);
     	model.addAttribute("courseNumberList",courseNumberList);
     	model.addAttribute("paging", paging);
     	model.addAttribute("courseList",courseList);
+    	model.addAttribute("courseTypeList", courseService.getCourseTypeList());
     	
         return "courses/courseBoard";
     }

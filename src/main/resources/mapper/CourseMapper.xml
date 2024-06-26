@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kosta.ems.course.CourseMapper">
+<select id="getCourseTypeList" resultType="String">
+	SELECT distinct course_type courseType FROM courses
+	</select>
 <select id="getCourseNumberList" resultType="int">
 	SELECT course_number courseNumber FROM courses
 	WHERE is_active = 'T' and academy_location =#{academyLocation}

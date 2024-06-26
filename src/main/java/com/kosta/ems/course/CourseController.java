@@ -24,13 +24,17 @@ public class CourseController {
 	private final CourseService service;
 	
 	@GetMapping("/course")
-	public CourseDTO getCourse(@RequestParam int courseSeq, HttpServletRequest request) {
-		return service.getCourse(courseSeq, getAcademyOfLoginUser(request));
+	public Map<String, CourseDTO> getCourse(@RequestParam int courseSeq, HttpServletRequest request) {
+		return Map.of("result", service.getCourse(courseSeq, getAcademyOfLoginUser(request)));
 	}
 	
 	@GetMapping("/courseNumberList")
 	public Map getCourseNumberList(@RequestParam(value="excludeExpired", defaultValue = "true") boolean excludeExpired, HttpServletRequest request) {
 		return Map.of("result", service.getCourseNumberList(getAcademyOfLoginUser(request), excludeExpired));
+	}
+	@GetMapping("/courseTypeList")
+	public Map getCourseTypeList() {
+		return Map.of("result", service.getCourseTypeList());
 	}
 	
 	

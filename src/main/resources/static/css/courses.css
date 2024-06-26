@@ -7,7 +7,7 @@ body {
 }
 
 /******* addCourseModal / setCourseModal.html ********/
-#addCourseModal{
+.course-modal{
   margin:auto;
   border:solid;
 }
@@ -200,7 +200,6 @@ select {
   height: 50px;
 
   align-items: center;
-  width: 200px;
 }
 
 .filter-search-btn {
@@ -287,6 +286,10 @@ select {
   flex-direction: row;
   width: 330px;
   justify-content: space-between;
+
+  form{
+    display: flex;
+  }
 }
 
 .data-filter {
