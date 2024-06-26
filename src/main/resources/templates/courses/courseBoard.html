@@ -116,17 +116,18 @@
         <span th:text="${'총 ' + paging.totalCourseCount +'개'}">총 개수 alt</span>
       </div>
       <ul>
-        <li th:classappend="${paging.page == 1} ? 'inactivePage'">
-          <a class="page-link" th:href="@{|?page=1|}">
+        <li th:classappend="${paging.pageOffset == 1} ? 'inactivePage'">
+          <a class="page-link" th:href="@{|?page=${paging.pageOffset-1}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}">
             <span>이전</span>
           </a>
         </li>
-        <li th:each="page: ${#numbers.sequence(0, 10)}"
-          th:classappend="${page == paging.page} ? 'activePage'" class="page-item">
-          <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+        <li th:each="page: ${#numbers.sequence(0, 9)}" 
+          th:if="${(paging.pageOffset + page) <= ((paging.totalCourseCount/paging.pageSize) + 1)}"
+          th:classappend="${(paging.pageOffset + page) == paging.page} ? 'activePage'" class="page-item">
+          <a th:text="${paging.pageOffset + page}" class="page-link" th:href="@{|?page=${paging.pageOffset + page}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}"></a>
         </li>
-        <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-          <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+        <li class="page-item" th:classappend="${(paging.pageOffset + 10) > (paging.totalCourseCount/paging.pageSize)} ? 'inactivePage'">
+          <a class="page-link" th:href="@{|?page=${paging.pageOffset + 10}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}">
             <span>다음</span>
           </a>
         </li>

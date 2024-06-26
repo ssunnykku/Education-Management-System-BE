@@ -43,14 +43,15 @@ public class EmpController {
     public String addCourseModal(@RequestParam(value="page", defaultValue = "1") int page, @RequestParam(value="pageSize", defaultValue = "10") int pageSize, @RequestParam(value="courseNumber", defaultValue = "0") int courseNumber,@RequestParam(value="excludeExpired", defaultValue = "true") boolean excludeExpired, HttpServletRequest request, Model model) {
     	//                                                         (         277,                          "가산",    1,       10);
     	List<CourseDTO> courseList = courseService.searchCourseList(courseNumber, getAcademyOfLoginUser(request), page, pageSize, excludeExpired);
-    	Integer totalCourseCount = courseService.getsearchCourseListSize(courseNumber, getAcademyOfLoginUser(request), page, pageSize, excludeExpired);
+    	Integer totalCourseCount = courseService.getSearchCourseListSize(courseNumber, getAcademyOfLoginUser(request), page, pageSize, excludeExpired);
     	List<Integer> courseNumberList = courseService.getCourseNumberList(getAcademyOfLoginUser(request), excludeExpired);
     	
     	Map<String, Integer> paging = new HashMap<>();
     	paging.put("totalCourseCount", totalCourseCount);
     	paging.put("page", page);
     	paging.put("pageSize", pageSize);
-    	paging.put("pageOffset", ((page / 10) * 10) + 1);//현재 페이지가 27이라면 offset은 21을 가리킨다. 
+    	paging.put("pageOffset", (((page-1) / 10) * 10) + 1);//현재 페이지가 27이라면 offset은 21을 가리킨다.
+    	paging.put("excludeExpired", excludeExpired ? 1 : 0);
     	
     	model.addAttribute("courseNumberList",courseNumberList);
     	model.addAttribute("paging", paging);
