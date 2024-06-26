@@ -59,7 +59,7 @@
                sd.settlement_duration_seq                                      as settlementDurationSeq,
                settlement_duration_start_date                                  as settlementDurationStartDate,
                settlement_duration_end_date                                    as settlementDurationEndDate,
-               c.manager_id,
+               c.manager_id                                                    as managerId,
                (training_aid_amount + meal_aid_amount + settlement_aid_amount) as totalAmount
         from benefits b
                  left join settlement_durations sd on b.settlement_duration_seq = sd.settlement_duration_seq

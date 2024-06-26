@@ -1,10 +1,7 @@
 package com.kosta.ems.scholarship;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.Map;
@@ -14,16 +11,22 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ScholarshipController {
 
-    private final ScholarshipService scholarshipServiceImpl;
+    private final ScholarshipService scholarshipService;
 
-//    @GetMapping
-//    public Map<String, Collection> getScholarshipSettlementList(@RequestBody ScholarshipTargetListReqDTO dto, int page, int size) {
-//        ScholarshipTargetListReqDTO.builder()
-//                .name(dto.getName())
-//                .
-//                .build()
-//        return Map.of("result", scholarshipServiceImpl.getScholarshipTargetList());
-//    }
+    @PostMapping
+    public Map<String, Collection> getScholarshipSettlementList(@RequestBody ScholarshipTargetListReqDTO dto, @PathVariable int page, @PathVariable int size) {
+
+        return Map.of("result", scholarshipService.getScholarshipTargetList(dto, page, size));
+    }
+
+    @PostMapping("/settlement")
+    public void scholarshipSettlement(@RequestParam int studentCourseSeq) {
+    }
+
+    @PostMapping("/result")
+    public Map<String, Collection> getScholarshipSettlementResultList(@RequestBody ScholarshipTargetListReqDTO dto, @PathVariable int page, @PathVariable int size) {
+        return Map.of("result", scholarshipService.getScholarshipSettlementResultList(dto, page, size));
+    }
 
 
 }
