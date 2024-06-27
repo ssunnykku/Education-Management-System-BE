@@ -15,4 +15,7 @@ public class RequestStudentAttendanceDTO {
 	private String attendanceStatus;
 	private String attendanceDate;
 	private String studentId;
+	private String name;
+	private int courseNumber;  // 추가
+	private String academyLocation;  // 추가
 }

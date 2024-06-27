@@ -61,6 +61,79 @@ GROUP BY c.course_number, s.name, s.hrd_net_id, c.total_training_days
 HAVING SUM(CASE WHEN a.attendance_status = '출석' THEN 1 ELSE 0 END) > 0
 LIMIT #{page}, #{size};
     </select>
+    <!--출결조건 검색 (기수+이름 입력)-->
+    <!--검색 결과 개수 가져오기 (for 페이지네이션)-->
+    <select id="selectCourseNumberAndStudentNameListAmount" resultType="int">
+    	SELECT COUNT(s.hrd_net_id) AS count
+FROM students_courses sc
+JOIN students s ON sc.student_id = s.student_id
+JOIN courses c ON sc.course_seq = c.course_seq
+LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocation}
+        AND (s.name LIKE CONCAT('%', #{name}, '%') AND c.course_number=#{courseNumber});
+    </select>
+    <!--검색 결과 데이터 목록 가져오기-->
+    <select id="selectCourseNumberAndStudentNameList" resultType="com.kosta.ems.attendance.AttendanceListBySearchFilterDTO">
+    	SELECT 
+    	c.course_number AS courseNumber, 
+    	s.hrd_net_id AS hrdNetId, 
+    	s.name as name, 
+    	c.academy_location AS academyLocation,
+    	 a.attendance_status AS attendanceStatus, 
+    	 a.attendance_date AS attendanceDate, 
+    	 sc.student_course_seq AS studentCourseSeq
+FROM students_courses sc
+JOIN students s ON sc.student_id = s.student_id
+JOIN courses c ON sc.course_seq = c.course_seq
+LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocation}
+        AND (s.name LIKE CONCAT('%', #{name}, '%') AND c.course_number=#{courseNumber})
+LIMIT #{page}, #{size};
+    </select>
+    <!--출결조건 검색 (기수 또는 이름 입력)-->
+    <!--검색 결과 개수 가져오기 (for 페이지네이션)-->
+    <select id="selectCourseNumberOrStudentNameListAmount" resultType="int">
+    	SELECT COUNT(s.hrd_net_id) AS count
+FROM students_courses sc
+JOIN students s ON sc.student_id = s.student_id
+JOIN courses c ON sc.course_seq = c.course_seq
+LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocation}
+  AND (s.name LIKE CONCAT('%', #{name}, '%') OR c.course_number=#{courseNumber});
+    </select>
+    <!--검색 결과 데이터 목록 가져오기-->
+    <select id="selectCourseNumberOrStudentNameList" resultType="com.kosta.ems.attendance.AttendanceListBySearchFilterDTO">
+    	SELECT c.course_number AS courseNumber, s.hrd_net_id AS hrdNetId, s.name, c.academy_location AS academyLocation, a.attendance_status AS attendanceStatus, a.attendance_date AS attendanceDate
+FROM students_courses sc
+JOIN students s ON sc.student_id = s.student_id
+JOIN courses c ON sc.course_seq = c.course_seq
+LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocation}
+  AND (s.name LIKE CONCAT('%', #{name}, '%') OR c.course_number=#{courseNumber})
+LIMIT #{page}, #{size};
+    </select>
+    <!--출결조건 검색 (기수, 이름 미입력)-->
+    <!--검색 결과 개수 가져오기 (for 페이지네이션)-->
+    <select id="selectDateAndLocationListAmount" resultType="int">
+    	SELECT COUNT(s.hrd_net_id) AS count
+FROM students_courses sc
+JOIN students s ON sc.student_id = s.student_id
+JOIN courses c ON sc.course_seq = c.course_seq
+LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocation}
+        OR (s.name LIKE CONCAT('%', #{name}, '%') OR c.course_number=#{courseNumber});
+    </select>
+    <!--검색 결과 데이터 목록 가져오기-->
+    <select id="selectDateAndLocationList" resultType="com.kosta.ems.attendance.AttendanceListBySearchFilterDTO">
+    	SELECT c.course_number, s.hrd_net_id, s.name, c.academy_location, a.attendance_status, a.attendance_date
+FROM students_courses sc
+JOIN students s ON sc.student_id = s.student_id
+JOIN courses c ON sc.course_seq = c.course_seq
+LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocation}
+	OR (s.name LIKE CONCAT('%', #{name}, '%') OR c.course_number=#{courseNumber})
+LIMIT #{page}, #{size}
+    </select>
     <!--수강생 출결 상태 수정-->
     <update id="updateStudentAttendance" parameterType="com.kosta.ems.attendance.UpdateStudentAttendanceStatusDTO">
     	UPDATE attendances
