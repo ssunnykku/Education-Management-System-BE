@@ -18,17 +18,20 @@
 <section id="notification-section">
     <article class="notification-contents">
         <div id="notification-btn-wrapper">
-            <button id="notification-enroll-btn" class="btn-setting">등록</button>
-    
+          <div class="search-form-wrapper">
+          <input placeholder="검색어를 입력하세요" class="search-input"/>
+            <button type="button" class="board-filter-search-btn">검색</button> </div>
+            <button id="notification-enroll-btn" class="btn-setting">글 등록</button>
         </div>
+        </article>
+        <article>
         <div id="notification-table">
-            <div class="notification-table-row table-first-row">
-                </div>
+            <div class="notification-row" id="notification-title-row">
                 <div class="notificationBoard-no">
                     <span>NO</span>
                 </div>
                 <div class="notificationBoard-title">
-                    <span text="${notification.title}"></span>
+                    <span>제목</span>
                 </div>
                 <div class="notificationBoard-enroll-date">
                     <span>등록일</span>
@@ -36,12 +39,11 @@
                 <div class="notificationBoard-writer">
                     <span>작성자</span>
                 </div>
+                <div class="notification-view-count">
+                <span>조회수</span>
             </div>
            <th:block th:each="notification : ${notifications}">
     <div class="notification-table-row">
-      <div class="notificationBoard-checkbox">
-        <input type="checkbox" name="" id="title-checkbox"/>
-      </div>
       <div class="notificationBoard-no">
         <span th:text="${notification.seq}"></span>
       </div>
@@ -59,47 +61,6 @@
         </div>
     </article>
 </section>
-<section id="notificationBoard-pagenation-section">
-    <article class="notificationBoard-page-information">
-        <div class=page-arrow-wrapper>
-            <button id="double_arrow_left" class="page-arrow-btn">
-                <i class="bi bi-chevron-double-left"></i>
-            </button>
-            <button id="arrow_left" class="page-arrow-btn">
-                <i class="bi bi-chevron-left"></i>
-            </button>
-        </div>
-        <div class="pages">
-            <div class="page_number-wrapper">
-                <span class="page_number">1</span>
-            </div>
-            <div class="page_number-wrapper">
-                <span class="page_number">2</span>
-            </div>
-            <div class="page_number-wrapper">
-                <span class="page_number">3</span>
-            </div>
-            <div class="page_number-wrapper">
-                <span class="page_number">4</span>
-            </div>
-            <div class="page_number-wrapper">
-                <span class="page_number">5</span>
-            </div>
-        </div>
-        <div class=page-arrow-wrapper>
-            <button id="arrow_right" class="page-arrow-btn">
-                <i class="bi bi-chevron-right"></i>
-            </button>
-            <button id="double_arrow_right" class="page-arrow-btn">
-                <i class="bi bi-chevron-double-right"></i>
-            </button>
-        </div>
-    </article>
-    <article class="cnt-pages-wrapper">
-        <div class="cnt-pages">
-        </div>
-    </article>
-</section>
+
 <footer></footer>
 </body>
-</html>
