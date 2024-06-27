@@ -10,7 +10,7 @@ import com.kosta.ems.course.CourseDTO;
 import com.kosta.ems.course.CourseMapper;
 import com.kosta.ems.studentPoint.dto.PointCategoryDTO;
 import com.kosta.ems.studentPoint.dto.PointHistoryDTO;
-import com.kosta.ems.studentPoint.dto.StudentWithPointDTO;
+import com.kosta.ems.studentPoint.dto.StudentCourseWithPointDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +21,7 @@ public class StudentPointServiceImpl implements StudentPointService {
 	private final CourseMapper courseMapper;
 
 	@Override
-	public List<StudentWithPointDTO> getStudentListWithPoint(int courseNumber, String name, int page, int pageSize, String academyLocationOfManager) {
+	public List<StudentCourseWithPointDTO> getStudentListWithPoint(int courseNumber, String name, int page, int pageSize, String academyLocationOfManager) {
 //		CourseDTO course = courseMapper.getCourse();
 //		if(course.getAcademyLocation().equals(academyLocationOfManager)) {
 //			return mapper.getStudentListWithPoint(courseNumber, name);

@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kosta.ems.studentPoint.dto.PointCategoryDTO;
 import com.kosta.ems.studentPoint.dto.PointHistoryDTO;
-import com.kosta.ems.studentPoint.dto.StudentWithPointDTO;
+import com.kosta.ems.studentPoint.dto.StudentCourseWithPointDTO;
 
 @SpringBootTest
 public class StudentPointMapperTest {
@@ -21,7 +21,7 @@ public class StudentPointMapperTest {
 	@Test
 	@Transactional
 	public void getStudentListWithPointTest() {
-		StudentWithPointDTO dto = mapper.getStudentListWithPoint(277, "손", 0, 5).get(0);
+		StudentCourseWithPointDTO dto = mapper.getStudentListWithPoint(277, "손", 0, 5).get(0);
 		assertThat(dto.getName()).isEqualTo("손유철");
 	}
 	

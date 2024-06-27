@@ -4,13 +4,13 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.kosta.ems.studentPoint.dto.PointCategoryDTO;
 import com.kosta.ems.studentPoint.dto.PointHistoryDTO;
-import com.kosta.ems.studentPoint.dto.StudentWithPointDTO;
+import com.kosta.ems.studentPoint.dto.StudentCourseWithPointDTO;
 
 import java.util.List;
 
 @Mapper
 public interface StudentPointMapper {
-	List<StudentWithPointDTO> getStudentListWithPoint(int courseNumber, String name, int offset, int pageSize);
+	List<StudentCourseWithPointDTO> getStudentListWithPoint(int courseNumber, String name, int offset, int pageSize);
 
 	List<PointHistoryDTO> getPointHistory(int studentCourseSeq);
 
