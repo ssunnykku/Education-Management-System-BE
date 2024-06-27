@@ -21,7 +21,7 @@ public class StudentPointServiceTest {
 	@Test
 	@Transactional
 	public void getStudentListWithPointTest() {
-		StudentWithPointDTO dto = service.getStudentListWithPoint(277, "손", "가산").get(0);
+		StudentWithPointDTO dto = service.getStudentListWithPoint(277, "손",1,5, "가산").get(0);
 		assertThat(dto.getName()).isEqualTo("손유철");
 	}
 	

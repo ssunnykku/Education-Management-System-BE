@@ -21,7 +21,7 @@ public class StudentPointServiceImpl implements StudentPointService {
 	private final CourseMapper courseMapper;
 
 	@Override
-	public List<StudentWithPointDTO> getStudentListWithPoint(int courseNumber, String name, String academyLocationOfManager) {
+	public List<StudentWithPointDTO> getStudentListWithPoint(int courseNumber, String name, int page, int pageSize, String academyLocationOfManager) {
 //		CourseDTO course = courseMapper.getCourse();
 //		if(course.getAcademyLocation().equals(academyLocationOfManager)) {
 //			return mapper.getStudentListWithPoint(courseNumber, name);
@@ -29,7 +29,8 @@ public class StudentPointServiceImpl implements StudentPointService {
 //			return null;//보안 예외 발생
 //			//throw new managerAuthorizationException();
 //		}
-		return mapper.getStudentListWithPoint(courseNumber, name);
+		int offset = (page - 1) * pageSize;
+		return mapper.getStudentListWithPoint(courseNumber, name, offset, pageSize);
 	}
 
 	@Override

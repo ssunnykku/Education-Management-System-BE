@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public interface StudentPointService {
-	List<StudentWithPointDTO> getStudentListWithPoint(int courseNumber, String name, String academyLocationOfManager);
+	List<StudentWithPointDTO> getStudentListWithPoint(int courseNumber, String name, int page, int pageSize, String academyLocationOfManager);
 
 	List<PointHistoryDTO> getPointHistory(int studentCourseSeq, String academyLocationOfManager);
 
