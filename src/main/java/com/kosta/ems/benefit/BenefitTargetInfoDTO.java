@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Service
+@Setter
 @ToString
 public class BenefitTargetInfoDTO {
     private int courseSeq;

@@ -1,6 +1,8 @@
 package com.kosta.ems.benefit;
 
-import com.kosta.ems.attendance.AttendanceServiceImpl;
+
+import com.kosta.ems.attendance.AttendanceMapper;
+import com.kosta.ems.student.StudentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -8,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.List;
 
 @Service
@@ -17,11 +19,8 @@ import java.util.List;
 public class BenefitServiceImpl implements BenefitService {
 
     private final BenefitMapper benefitMapper;
-    private final AttendanceServiceImpl attendanceService;
-    /*특정 기간의 특정 기수, 특정 이름을 가진 학생들의 수당 정보를 불러오기
-    훈련수당 계산 - 20만원 - 총 일수 입력받고 출석률 80%만 훈련수당 제공
-    식비 계산 - 입력된 기간의 (출석일수 - (지각+조퇴+외출)/3) x 5000
-    정착지원금 - 서울 경기, 인천 이외의 지역 20만원으로 가정*/
+    private final AttendanceMapper attendanceMapper;
+    private final StudentMapper studentMapper;
 
     @Override
     @Transactional
@@ -55,7 +54,7 @@ public class BenefitServiceImpl implements BenefitService {
         int offset = size * (page - 1);
 
         List<BenefitTargetDTO> targetList = (ArrayList<BenefitTargetDTO>) benefitMapper.selectBenefitTarget(
-                "가산",
+                dto.getAcademyLocation(),
                 dto.getStartDate(),
                 dto.getEndDate(),
                 dto.getCourseNumber(),
@@ -66,7 +65,7 @@ public class BenefitServiceImpl implements BenefitService {
 
         for (BenefitTargetDTO targetInfo : targetList) {
             BenefitTargetInfoDTO data = BenefitTargetInfoDTO.builder()
-                    .academyLocation("가산")
+                    .academyLocation(dto.getAcademyLocation())
                     .courseSeq(targetInfo.getCourseSeq())
                     .managerId(targetInfo.getManagerId())
                     .courseNumber(targetInfo.getCourseNumber())
@@ -77,9 +76,9 @@ public class BenefitServiceImpl implements BenefitService {
                     .hrdNetId(targetInfo.getHrdNetId())
                     .bank(targetInfo.getBank())
                     .account(targetInfo.getAccount())
-                    .settlementAidAmount(targetInfo.getSettlementAidAmount())
-                    .trainingAidAmount(trainingAid(dto.getStartDate(), dto.getEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
-                    .mealAidAmount(mealAid(dto.getStartDate(), dto.getEndDate(), targetInfo.getStudentId()))
+                    .settlementAidAmount(settlementAid(dto.getStartDate(), dto.getEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
+                    .trainingAidAmount((int) trainingAid(dto.getStartDate(), dto.getEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
+                    .mealAidAmount(mealAid(dto.getStartDate(), dto.getEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
                     .startDate(dto.getStartDate())
                     .endDate(dto.getEndDate())
                     .lectureDays(dto.getLectureDays())
@@ -90,23 +89,29 @@ public class BenefitServiceImpl implements BenefitService {
         return benefitTargetList;
     }
 
-    public int mealAid(LocalDate startDate, LocalDate endDate, String studentId) {
-        int countAttendance = attendanceService.getNumberOfAttendance(startDate, endDate, studentId);
-        int countLeave = (attendanceService.getNumberOfLeave(startDate, endDate, studentId) / 3);
-        int attendanceDays = countAttendance - countLeave;
-        int mealAid = attendanceDays * 5000;
-
-        return mealAid;
+    public int mealAid(LocalDate startDate, LocalDate endDate, String studentId, int lectureDays) {
+        int mealAid = attendanceDays(startDate, endDate, studentId) * 5000;
+        return attendanceDays(startDate, endDate, studentId) / lectureDays >= 0.8 ? mealAid : 0;
 
     }
 
     public int trainingAid(LocalDate startDate, LocalDate endDate, String studentId, int lectureDays) {
+        return attendanceDays(startDate, endDate, studentId) / (double) lectureDays >= 0.8 ? 200000 : 0;
+    }
 
-        int countAttendance = attendanceService.getNumberOfAttendance(startDate, endDate, studentId);
-        int countLeave = (attendanceService.getNumberOfLeave(startDate, endDate, studentId) / 3);
-        int attendanceDays = countAttendance - countLeave;
+    public int settlementAid(LocalDate startDate, LocalDate endDate, String studentId, int lectureDays) {
+        if (studentMapper.selectAddressByStudentId(studentId).contains("서울")
+                || studentMapper.selectAddressByStudentId(studentId).contains("경기")
+                || studentMapper.selectAddressByStudentId(studentId).contains("인천")) {
+            return 0;
+        }
+        return attendanceDays(startDate, endDate, studentId) / (double) lectureDays >= 0.8 ? 200000 : 0;
+    }
 
-        return attendanceDays / lectureDays >= 0.8 ? 200000 : 0;
+    public int attendanceDays(LocalDate startDate, LocalDate endDate, String studentId) {
+        int countAttendance = attendanceMapper.selectCountAttendance(startDate, endDate, studentId);
+        int countLeave = (attendanceMapper.selectCountLeave(startDate, endDate, studentId) / 3);
+        return countAttendance - countLeave;
     }
 
 

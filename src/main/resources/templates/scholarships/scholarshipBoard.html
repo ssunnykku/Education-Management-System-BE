@@ -17,7 +17,7 @@
         <div class="search-form-wrapper">
             <select name="scholarship-courseId-filter"
                     class="scholarship-courseId-filter">
-                <option value="none">기수</option>
+                <option value="course-number">기수</option>
                 <option value="227">227</option>
                 <option value="191">191</option>
             </select> <input placeholder="수강생을 입력하세요" class="search-input"/>
@@ -31,7 +31,6 @@
     </article>
     <article class="scholarship-page-information">
         <div class="scholarship-cnt-pages">
-            <span>총 2건</span>
         </div>
     </article>
     <article>
@@ -40,14 +39,14 @@
                 <div class="scholarshipBoard-checkbox">
                     <input type="checkbox" name=""/>
                 </div>
-                <div class="scholarshipBoard-corseId">
+                <div class="scholarshipBoard-courseId">
                     <span>기수</span>
                 </div>
                 <div class="scholarshipBoard-course-name">
                     <span>과정명</span>
                 </div>
-                <div class="scholarshipBoard-birth">
-                    <span>생년월일</span>
+                <div class="scholarshipBoard-hrd-net-id">
+                    <span>hrd-net-id</span>
                 </div>
                 <div class="scholarshipBoard-name">
                     <span>이름</span>
@@ -65,39 +64,33 @@
                     <span>금액(원)</span>
                 </div>
             </div>
-            <div class="scholarshipBoard-row">
-                <div class="scholarshipBoard-checkbox">
-                    <input type="checkbox" name=""/>
-                </div>
-                <div class="scholarshipBoard-corseId">
-                    <span>기수</span>
-                </div>
-                <div class="scholarshipBoard-course-name">
-                    <span>과정명</span>
-                </div>
-                <div class="scholarshipBoard-birth">
-                    <span>생년월일</span>
-                </div>
-                <div class="scholarshipBoard-name">
-                    <span>이름</span>
-                </div>
-                <div class="scholarshipBoard-bank">
-                    <span>은행</span>
-                </div>
-                <div class="scholarshipBoard-account">
-                    <span>계좌번호</span>
-                </div>
-                <div class="scholarshipBoard-point">
-                    <span>포인트</span>
-                </div>
-                <div class="scholarshipBoard-total-amount">
-                    <span>금액(원)</span>
-                </div>
+            <div style="display: contents" id="scholarship-table-contents">
             </div>
+        </div>
+    </article>
+
+    <article class="page-information">
+        <ul id="pagination">
+            <li>
+                <a class="page-link">
+                    <span>이전</span>
+                </a>
+            </li>
+            <!--// 이게 페이지 번호-->
+            <li class="page-item">
+                <a class="page-link">1</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link">
+                    <span>다음</span>
+                </a>
+            </li>
+        </ul>
         </div>
     </article>
 </section>
 <footer></footer>
+<script type="text/javascript" th:src="@{/scripts/scholarshipBoard.js}"></script>
 </body>
 
 </html>

@@ -3,19 +3,16 @@
 <mapper namespace="com.kosta.ems.benefit.BenefitMapper">
     <select id="selectBenefitTarget" resultType="com.kosta.ems.benefit.BenefitTargetDTO">
         <![CDATA[
-        select c.course_seq                     as courseSeq,
-               c.manager_id                     as managerId,
-               c.course_number                  as courseNumber,
-               c.course_name                    as courseName,
-               c.is_active                      as isActive,
-               s.student_id                     as studentId,
+        select c.course_seq    as courseSeq,
+               c.manager_id    as managerId,
+               c.course_number as courseNumber,
+               c.course_name   as courseName,
+               c.is_active     as isActive,
+               s.student_id    as studentId,
                s.name,
-               s.hrd_net_id                     as hrdNetId,
+               s.hrd_net_id    as hrdNetId,
                s.bank,
-               s.account,
-               (select settlement_aid_amount
-               from view_check_settlement_aid_target
-               where student_id = s.student_id) as settlementAidAmount
+               s.account
         from courses c
                  LEFT JOIN students_courses sc ON c.course_seq = sc.course_seq
                  LEFT JOIN students s ON s.student_id = sc.student_id
@@ -30,7 +27,6 @@
         limit #{limit} offset #{offset};
         ]]>
     </select>
-
     <insert id="insertBenefitSettlementDuration" useGeneratedKeys="true"
             parameterType="com.kosta.ems.benefit.SettlementDurationDTO"
             keyProperty="settlementDurationSeq">
