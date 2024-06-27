@@ -15,4 +15,6 @@ public interface ScholarshipService {
 
     int getCountTarget(ScholarshipTargetListReqDTO dto);
 
+    int countSettlementResult(ScholarshipTargetListReqDTO dto);
+
 }

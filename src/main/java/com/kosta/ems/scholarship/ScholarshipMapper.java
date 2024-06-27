@@ -16,4 +16,5 @@ public interface ScholarshipMapper {
 
     int countScholarshipTarget(String academyLocation, String name, String courseNumber);
 
+    int countScholarshipResult(String courseNumber, String academyLocation, String name, LocalDate scholarshipDate);
 }

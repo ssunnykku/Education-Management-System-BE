@@ -47,5 +47,8 @@ public class ScholarshipServiceImpl implements ScholarshipService {
         return (ArrayList<ScholarshipSettlementResultDTO>) scholarshipMapper.selectScholarshipResultList(String.valueOf(dto.getCourseNumber()), dto.getAcademyLocation(), dto.getName(), dto.getScholarshipDate(), limit, offset);
     }
 
-
+    @Override
+    public int countSettlementResult(ScholarshipTargetListReqDTO dto) {
+        return scholarshipMapper.countScholarshipResult(String.valueOf(dto.getCourseNumber()), dto.getAcademyLocation(), dto.getName(), dto.getScholarshipDate());
+    }
 }

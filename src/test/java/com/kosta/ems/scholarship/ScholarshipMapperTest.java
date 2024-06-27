@@ -49,4 +49,9 @@ class ScholarshipMapperTest {
         log.info(String.valueOf(scholarshipMapper.countScholarshipTarget("가산", "", "277")));
     }
 
+    //@Test
+    void countScholarshipResultTest() {
+        assertThat(scholarshipMapper.countScholarshipResult("", "가산", "", null)).isEqualTo(5);
+    }
+
 }
