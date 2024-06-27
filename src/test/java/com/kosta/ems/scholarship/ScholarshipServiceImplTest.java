@@ -64,4 +64,10 @@ class ScholarshipServiceImplTest {
         log.info(String.valueOf(list.size()));
 
     }
+
+    //@Test
+    void getCountTargetListTest() {
+        ScholarshipTargetListReqDTO dto = ScholarshipTargetListReqDTO.builder().name("").courseNumber(277).academyLocation("가산").build();
+        assertThat(scholarshipService.getCountTargetList(dto)).isEqualTo(11);
+    }
 }

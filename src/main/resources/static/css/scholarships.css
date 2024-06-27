@@ -812,3 +812,25 @@ body {
 
     color: #999999;
 }
+
+ul#pagination {
+    display: inline-flex;
+    justify-content: center;
+    width: 100%;
+    font-size: 1.3rem;
+
+    li {
+        display: inline;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
+
+    .activePage {
+        text-decoration: underline;
+        font-weight: bold;
+    }
+
+    .inactivePage a {
+        cursor: default;
+    }
+}

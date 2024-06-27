@@ -12,5 +12,7 @@ public interface ScholarshipService {
     void setScholarshipSettlementDate(int studentCourseSeq);
 
     Collection<ScholarshipSettlementResultDTO> getScholarshipSettlementResultList(ScholarshipTargetListReqDTO dto, int page, int size);
-    
+
+    int getCountTargetList(ScholarshipTargetListReqDTO dto);
+
 }

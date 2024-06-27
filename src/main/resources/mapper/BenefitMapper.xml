@@ -27,7 +27,6 @@
         limit #{limit} offset #{offset};
         ]]>
     </select>
-
     <insert id="insertBenefitSettlementDuration" useGeneratedKeys="true"
             parameterType="com.kosta.ems.benefit.SettlementDurationDTO"
             keyProperty="settlementDurationSeq">

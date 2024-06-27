@@ -1,18 +1,5 @@
-const myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
-// myHeaders.append("Cookie", "JSESSIONID=4CD420A430A1D6B50F9D8EA6691F2420");
+let urlParams = new URL(location.href).searchParams;
 
-const raw = JSON.stringify({
-    "name": "최",
-    "courseNumber": "277"
-});
-
-const requestOptions = {
-    method: "POST",
-    headers: myHeaders,
-    body: raw,
-    redirect: "follow"
-};
 
 async function getSettlementList(data) {
     let result = '';
@@ -47,20 +34,51 @@ async function getSettlementList(data) {
                         </div>
                     </div>`
     }
+
     $("#scholarship-table-contents").html("");
     $("#scholarship-table-contents").append(result);
+
+    return data.length;
 }
 
+function searchInput() {
+    return $(".search-input").val();
+}
+
+function courseNumber() {
+    return $(".scholarship-courseId-filter option:selected").text();
+}
 
 $(".board-filter-search-btn").click(function () {
-    fetch("/scholarships?page=1", requestOptions)
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+// myHeaders.append("Cookie", "JSESSIONID=4CD420A430A1D6B50F9D8EA6691F2420");
+
+    const raw = JSON.stringify({
+        "name": searchInput(),
+        "courseNumber": courseNumber() == "기수" ? "" : courseNumber()
+    });
+
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+    };
+
+
+    let page = urlParams.get('page');
+
+    fetch("/scholarships?page=" + page, requestOptions)
         .then((res) => res.json())
         .then(async (data) => {
-            // console.log(data.result);
+
             const dataList = data.result;
             const settlementHtml = await getSettlementList(dataList);
-            // $("#scholarshipBoard-table").append(settlementHtml);
+
+            $(".scholarship-cnt-pages").html(`<span>총 ${settlementHtml}</span>건`);
 
         }).catch((error) => console.error(error));
 
 })
+

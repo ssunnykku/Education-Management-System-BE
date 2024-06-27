@@ -18,7 +18,15 @@ public class ScholarshipController {
     @PostMapping
     public Map<String, ArrayList<ScholarshipTargetDTO>> getScholarshipSettlementList(@RequestBody ScholarshipTargetListReqDTO dto, @RequestParam int page) {
         dto.setAcademyLocation("가산");
+
         return Map.of("result", (ArrayList<ScholarshipTargetDTO>) scholarshipService.getScholarshipTargetList(dto, page, 10));
+    }
+
+    @PostMapping("/count")
+    public int countTargetList(@RequestBody ScholarshipTargetListReqDTO dto) {
+        dto.setAcademyLocation("가산");
+        
+        return scholarshipService.getCountTargetList(dto);
     }
 
     @PostMapping("/settlement/{studentCourseSeq}")

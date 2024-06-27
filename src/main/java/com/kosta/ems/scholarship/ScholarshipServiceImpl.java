@@ -22,7 +22,13 @@ public class ScholarshipServiceImpl implements ScholarshipService {
         dto.setLimit(limit);
         dto.setOffset(offset);
 
+
         return (ArrayList<ScholarshipTargetDTO>) scholarshipMapper.selectScholarshipTargetList(dto.getAcademyLocation(), dto.getName(), String.valueOf(dto.getCourseNumber()), limit, offset);
+    }
+
+    @Override
+    public int getCountTargetList(ScholarshipTargetListReqDTO dto) {
+        return scholarshipMapper.countScholarshipTargetList(dto.getAcademyLocation(), dto.getName(), String.valueOf(dto.getCourseNumber()));
     }
 
     @Override

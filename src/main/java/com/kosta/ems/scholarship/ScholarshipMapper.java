@@ -14,5 +14,6 @@ public interface ScholarshipMapper {
 
     Collection<ScholarshipSettlementResultDTO> selectScholarshipSettlementResultList(String courseNumber, String academyLocation, String name, LocalDate scholarshipDate, int limit, int offset);
 
+    int countScholarshipTargetList(String academyLocation, String name, String courseNumber);
 
 }
