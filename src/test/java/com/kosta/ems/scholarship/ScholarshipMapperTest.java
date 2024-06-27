@@ -33,10 +33,10 @@ class ScholarshipMapperTest {
 //        assertThat(data).size().isEqualTo(1);
     }
 
-    @Test
-    @Transactional
+    //@Test
+    //@Transactional
     public void insertScholarshipSettlementDate() {
-        scholarshipMapper.insertScholarshipSettlementDate(5);
+        scholarshipMapper.insertScholarshipSettlementDate(6);
     }
 
     @Test

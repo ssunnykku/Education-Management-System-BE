@@ -373,6 +373,8 @@
     line-height: 144%;
 
     color: #1d1d1d;
+
+    text-align: center;
 }
 
 .scholarshipBoard-checkbox {
@@ -432,17 +434,17 @@
     flex-grow: 1;
 }
 
-.scholarshipBoard-corseId {
+.scholarshipBoard-courseId {
     width: 50px;;
     text-align: center;
 }
 
 .scholarshipBoard-course-name {
-    width: 35%;
+    width: 20%;
 }
 
-.scholarshipBoard-birth {
-    width: 12%;
+.scholarshipBoard-hrd-net-id {
+    width: 10%;
 }
 
 .scholarshipBoard-name {

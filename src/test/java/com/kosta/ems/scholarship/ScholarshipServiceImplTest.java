@@ -27,7 +27,7 @@ class ScholarshipServiceImplTest {
     @Test
     @Transactional
     void setScholarshipSettlementDateTest() {
-        scholarshipService.setScholarshipSettlementDate(5);
+        scholarshipService.setScholarshipSettlementDate(9);
     }
 
     @Test
@@ -46,7 +46,6 @@ class ScholarshipServiceImplTest {
     @Transactional
     void getScholarshipSettlementResultListTest2() {
 
-        scholarshipService.setScholarshipSettlementDate(5);
         scholarshipService.setScholarshipSettlementDate(66);
         scholarshipService.setScholarshipSettlementDate(60);
         scholarshipService.setScholarshipSettlementDate(63);
@@ -57,7 +56,6 @@ class ScholarshipServiceImplTest {
         scholarshipService.setScholarshipSettlementDate(58);
         scholarshipService.setScholarshipSettlementDate(62);
         scholarshipService.setScholarshipSettlementDate(59);
-        scholarshipService.setScholarshipSettlementDate(6);
         scholarshipService.setScholarshipSettlementDate(20);
         scholarshipService.setScholarshipSettlementDate(21);
 

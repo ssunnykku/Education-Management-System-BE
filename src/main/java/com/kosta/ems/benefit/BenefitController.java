@@ -14,12 +14,13 @@ public class BenefitController {
 
     private final BenefitService benefitService;
 
-    @GetMapping
+    @PostMapping
     public Map<String, ArrayList<BenefitTargetInfoDTO>> getBenefitTargetList(@RequestBody BenefitTargetInfoDTO dto, @RequestParam int page) {
+        dto.setAcademyLocation("가산");
         return Map.of("result", (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitTargetList(dto, page, 10));
     }
 
-    @PostMapping
+    @PostMapping("/settlement")
     public void setBenefitSettlement(@RequestBody BenefitSettlementReqDTO dto) {
         benefitService.setBenefitSettlement(dto);
     }

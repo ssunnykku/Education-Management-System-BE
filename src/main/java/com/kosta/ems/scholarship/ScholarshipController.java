@@ -15,19 +15,20 @@ public class ScholarshipController {
 
     private final ScholarshipService scholarshipService;
 
-    @GetMapping
+    @PostMapping
     public Map<String, ArrayList<ScholarshipTargetDTO>> getScholarshipSettlementList(@RequestBody ScholarshipTargetListReqDTO dto, @RequestParam int page) {
-
+        dto.setAcademyLocation("가산");
         return Map.of("result", (ArrayList<ScholarshipTargetDTO>) scholarshipService.getScholarshipTargetList(dto, page, 10));
     }
 
-    @PostMapping("/{studentCourseSeq}")
+    @PostMapping("/settlement/{studentCourseSeq}")
     public void scholarshipSettlement(@PathVariable int studentCourseSeq) {
         scholarshipService.setScholarshipSettlementDate(studentCourseSeq);
     }
 
-    @GetMapping("/result")
+    @PostMapping("/result")
     public Map<String, ArrayList<ScholarshipSettlementResultDTO>> getScholarshipSettlementResultList(@RequestBody ScholarshipTargetListReqDTO dto, @RequestParam int page) {
+        dto.setAcademyLocation("가산");
         return Map.of("result", (ArrayList<ScholarshipSettlementResultDTO>) scholarshipService.getScholarshipSettlementResultList(dto, page, 10));
     }
 
