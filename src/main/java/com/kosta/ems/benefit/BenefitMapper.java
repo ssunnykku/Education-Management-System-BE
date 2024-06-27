@@ -14,4 +14,5 @@ public interface BenefitMapper {
     void insertBenefitSettlementAmount(BenefitDTO benefitDTO);
 
     Collection<BenefitSettlementResultDTO> selectBenefitSettlementResult(String name, String courseNumber, LocalDate benefitSettlementDate, int limit, int offset);
+
 }

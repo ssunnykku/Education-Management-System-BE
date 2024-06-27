@@ -21,9 +21,14 @@ public class ScholarshipServiceImpl implements ScholarshipService {
 
         dto.setLimit(limit);
         dto.setOffset(offset);
-        dto.setAcademyLocation("가산");
+
 
         return (ArrayList<ScholarshipTargetDTO>) scholarshipMapper.selectScholarshipTargetList(dto.getAcademyLocation(), dto.getName(), String.valueOf(dto.getCourseNumber()), limit, offset);
+    }
+
+    @Override
+    public int getCountTargetList(ScholarshipTargetListReqDTO dto) {
+        return scholarshipMapper.countScholarshipTargetList(dto.getAcademyLocation(), dto.getName(), String.valueOf(dto.getCourseNumber()));
     }
 
     @Override
@@ -38,7 +43,6 @@ public class ScholarshipServiceImpl implements ScholarshipService {
 
         dto.setLimit(limit);
         dto.setOffset(offset);
-        dto.setAcademyLocation("가산");
 
         return (ArrayList<ScholarshipSettlementResultDTO>) scholarshipMapper.selectScholarshipSettlementResultList(String.valueOf(dto.getCourseNumber()), dto.getAcademyLocation(), dto.getName(), dto.getScholarshipDate(), limit, offset);
     }

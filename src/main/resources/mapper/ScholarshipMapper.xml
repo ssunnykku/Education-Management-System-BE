@@ -33,7 +33,7 @@
           AND s.name LIKE CONCAT('%', #{name}, '%')
           AND s.is_active = 'T'
           AND c.is_active = 'T'
-          AND (#{courseNumber} IS NULL OR #{courseNumber} = '' OR c.course_number = #{courseNumber})
+          AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
           AND (select totalPoint
         from view_students_course_point
         where student_id = s.student_id
@@ -46,6 +46,32 @@
         ORDER BY name desc
         limit #{limit} offset #{offset}
     </select>
+
+
+    <select id="countScholarshipTargetList">
+        SELECT count(distinct s.student_id) as countBenefitTarget
+        FROM students s
+                 LEFT JOIN students_courses sc ON s.student_id = sc.student_id
+                 LEFT JOIN courses c on c.course_seq = sc.course_seq
+                 LEFT JOIN students_points sp on sp.student_course_seq = sc.student_course_seq
+                 LEFT JOIN point_categories pc on sp.point_seq = pc.point_seq
+        WHERE c.academy_location = #{academyLocation}
+          AND s.name LIKE CONCAT('%', #{name}, '%')
+          AND s.is_active = 'T'
+          AND c.is_active = 'T'
+          AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
+          AND (select totalPoint
+        from view_students_course_point
+        where student_id = s.student_id
+          and course_seq = sc.course_seq
+          and pc.is_active = 'T') >= 50
+          AND (select scholarship_date
+        from view_students_course_scholarship_settlement_Date
+        where student_id = s.student_id
+          and course_seq = sc.course_seq) is null
+        ORDER BY name desc;
+    </select>
+
 
     <insert id="insertScholarshipSettlementDate" parameterType="int">
         insert into scholarship_settlement_date (student_course_seq)
