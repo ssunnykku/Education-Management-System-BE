@@ -6,6 +6,8 @@ import java.util.List;
 
 @Mapper
 public interface StudentPointMapper {
-	List<StudentPointDTO> getStudentListWithPoint(int courseNumber, String name);
+	List<StudentWithPointDTO> getStudentListWithPoint(int courseNumber, String name);
+
+	List<PointHistoryDTO> getPointHistory(int studentCourseSeq);
 	
 }

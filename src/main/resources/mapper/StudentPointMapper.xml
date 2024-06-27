@@ -20,4 +20,12 @@
 		GROUP BY sc.student_course_seq
 		LIMIT 0, 5
 	</select>
+	<select id="getPointHistory"
+		resultType="com.kosta.ems.studentPoint.PointHistoryDTO">
+		SELECT sp.student_course_seq, sp.save_point_date, pc.category, pc.point
+		FROM students_points sp, point_categories pc
+		WHERE pc.point_seq=sp.point_seq
+		AND sp.student_course_seq= #{studentCourseSeq}
+		ORDER BY sp.save_point_date;
+	</select>
 </mapper>

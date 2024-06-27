@@ -11,11 +11,8 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentPointDTO {
-    private int studentCourseSeq;
-    private String hrdNetId;
-    private int courseNumber;
-    private String name;
-    private int totalPoint;
-    
+public class PointHistoryDTO {
+    private LocalDate saveDate;
+    private String categoryName;
+    private int point;
 }
