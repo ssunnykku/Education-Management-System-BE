@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kosta.ems.studentPoint.StudentPointMapper">
+	<select id="getStudentListWithPoint"
+		resultType="com.kosta.ems.studentPoint.StudentWithPointDTO">
+		SELECT sc.student_course_seq studentCourseSeq, s.hrd_net_id
+		hrdNetId, c.course_number courseNumber, s.name name,
+		sum(pc.point) AS
+		totalPoint
+		FROM courses c, students s, students_points sp,
+		point_categories pc,
+		students_courses sc
+		WHERE
+		sc.student_id=s.student_id AND sc.course_seq=c.course_seq AND
+		sc.student_course_seq=sp.student_course_seq AND
+		sp.point_seq=pc.point_seq
+		AND s.name LIKE CONCAT('%', #{name}, '%')
+		AND
+		c.course_number = #{courseNumber}
+		GROUP BY sc.student_course_seq
+		LIMIT 0, 5
+	</select>
+</mapper>

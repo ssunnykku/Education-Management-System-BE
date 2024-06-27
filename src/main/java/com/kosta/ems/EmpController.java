@@ -47,7 +47,7 @@ public class EmpController {
 
     @GetMapping("/courses")
     public String addCourseModal(@RequestParam(value="page", defaultValue = "1") int page, @RequestParam(value="pageSize", defaultValue = "10") int pageSize, @RequestParam(value="courseNumber", defaultValue = "0") int courseNumber,@RequestParam(value="excludeExpired", defaultValue = "true") boolean excludeExpired, HttpServletRequest request, Model model) {
-    	//                                                         (         277,                          "가산",    1,       10);
+    	//                                                         (         277,                          "가산",    1,       10,           true);
     	List<CourseDTO> courseList = courseService.searchCourseList(courseNumber, getAcademyOfLoginUser(request), page, pageSize, excludeExpired);
     	Integer totalCourseCount = courseService.getSearchCourseListSize(courseNumber, getAcademyOfLoginUser(request), page, pageSize, excludeExpired);
     	List<Integer> courseNumberList = courseService.getCourseNumberList(getAcademyOfLoginUser(request), excludeExpired);
