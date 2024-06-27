@@ -1,4 +1,4 @@
-package com.kosta.ems.studentPoint;
+package com.kosta.ems.studentPoint.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
