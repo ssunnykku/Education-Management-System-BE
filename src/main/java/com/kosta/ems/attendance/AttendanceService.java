@@ -21,5 +21,5 @@ public interface AttendanceService {
     Collection<StudentAttendanceListDTO> getStudentAttendanceList(String name, int courseNumber, int page, int size);
     
     // [출결] - 선택한 수강생의 출석 상태 수정
-    void updateStudentAttendance(String attendanceStatus, String attendanceDate, String studentId);
+    void updateStudentAttendance(String attendanceStatus, LocalDate attendanceDate, String studentId);
 }
