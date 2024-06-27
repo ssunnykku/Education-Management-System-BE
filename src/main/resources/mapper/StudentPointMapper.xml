@@ -3,22 +3,19 @@
 <mapper namespace="com.kosta.ems.studentPoint.StudentPointMapper">
 	<select id="getStudentListWithPoint"
 		resultType="com.kosta.ems.studentPoint.dto.StudentWithPointDTO">
-		SELECT sc.student_course_seq studentCourseSeq, s.hrd_net_id
-		hrdNetId, c.course_number courseNumber, s.name name,
-		sum(pc.point) AS
-		totalPoint
-		FROM courses c, students s, students_points sp,
-		point_categories pc,
-		students_courses sc
+		SELECT 
+			sc.student_course_seq AS studentCourseSeq
+			, s.hrd_net_id        AS hrdNetId
+			, c.course_number     AS courseNumber
+			, s.name              AS name
+			, sum(pc.point)       AS totalPoint
+		FROM courses c, students s, students_points sp, point_categories pc, students_courses sc
 		WHERE
-		sc.student_id=s.student_id AND sc.course_seq=c.course_seq AND
-		sc.student_course_seq=sp.student_course_seq AND
-		sp.point_seq=pc.point_seq
+		(sc.student_id=s.student_id AND sc.course_seq=c.course_seq AND sc.student_course_seq=sp.student_course_seq AND sp.point_seq=pc.point_seq)
 		AND s.name LIKE CONCAT('%', #{name}, '%')
-		AND
-		c.course_number = #{courseNumber}
+		AND c.course_number = #{courseNumber}
 		GROUP BY sc.student_course_seq
-		LIMIT 0, 5
+		LIMIT #{offset}, #{pageSize}
 	</select>
 	<select id="getPointHistory"
 		resultType="com.kosta.ems.studentPoint.dto.PointHistoryDTO">

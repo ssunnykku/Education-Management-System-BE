@@ -21,7 +21,7 @@ public class StudentPointMapperTest {
 	@Test
 	@Transactional
 	public void getStudentListWithPointTest() {
-		StudentWithPointDTO dto = mapper.getStudentListWithPoint(277, "손").get(0);
+		StudentWithPointDTO dto = mapper.getStudentListWithPoint(277, "손", 0, 5).get(0);
 		assertThat(dto.getName()).isEqualTo("손유철");
 	}
 	

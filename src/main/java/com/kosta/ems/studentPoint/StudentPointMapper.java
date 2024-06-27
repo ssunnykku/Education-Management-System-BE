@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface StudentPointMapper {
-	List<StudentWithPointDTO> getStudentListWithPoint(int courseNumber, String name);
+	List<StudentWithPointDTO> getStudentListWithPoint(int courseNumber, String name, int offset, int pageSize);
 
 	List<PointHistoryDTO> getPointHistory(int studentCourseSeq);
 
