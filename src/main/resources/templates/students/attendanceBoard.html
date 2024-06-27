@@ -21,7 +21,7 @@
             <!-- form???? -->
             <input type="date" id="search-date-input"/>
             <select name="courseId-filter" class="courseId-filter">
-                <option value="none">기수</option>
+                <option value="-1">기수</option>
                 <option value="227">227</option>
                 <option value="191">191</option>
             </select>
@@ -127,5 +127,55 @@
     </article>
 </section>
 <footer></footer>
+<script>
+    // 페이징 처리를 위한 pageRequest JSON
+    const pageRequest = JSON.stringify({
+        "page": 2,
+        "size": 10,
+        "currentPage": 1
+    });
+
+    // 특정일 기수(수강생명) 검색으로 출결상태 조회
+    function getAttendanceDate() {
+        return document.querySelector("#search-date-input").value;
+    }
+    function getCourseNumber() {
+        return parseInt(document.querySelector(".courseId-filter").value);
+    }
+    function getStudentName() {
+        return document.querySelector(".search-input").value;
+    }
+    const attendanceRequest = JSON.stringify({
+        "attendanceDate": getAttendanceDate(),
+        "courseNumber": getCourseNumber(),
+        "name": getStudentName()
+    });
+    async function searchAttendanceByFilter() {
+        try {
+            const combinedRequest = JSON.stringify({
+                "pageRequest": pageRequest,
+                "attendanceRequest": attendanceRequest
+            });
+            const response = await fetch('/attendances/search-list', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: combinedRequest
+            });
+
+            if(response.ok) {
+                const responseJSON = await response.json();
+                console.log(responseJSON);
+            } else {
+                console.error("검색 실패: ", response.status);
+            }
+        } catch(error) {
+            console.error("검색 오류: ", error);
+        }
+    }
+
+    document.querySelector(".filter-search-btn").addEventListener("click", searchAttendanceByFilter);
+</script>
 </body>
 </html>
