@@ -15,8 +15,8 @@
 		FROM courses c, students s, students_points sp, point_categories pc, students_courses sc
 		WHERE
 		(sc.student_id=s.student_id AND sc.course_seq=c.course_seq AND sc.student_course_seq=sp.student_course_seq AND sp.point_seq=pc.point_seq)
-		AND s.name LIKE CONCAT('%', #{name}, '%')
-		AND c.course_number = #{courseNumber}
+		AND (#{name} IS NULL OR #{name} = '' OR s.name LIKE CONCAT('%', #{name}, '%'))
+		AND (IF(#{courseNumber}, 0,'전체') = '전체' or c.course_number = #{courseNumber})
 		GROUP BY sc.student_course_seq
 		LIMIT #{offset}, #{pageSize}
 	</select>
