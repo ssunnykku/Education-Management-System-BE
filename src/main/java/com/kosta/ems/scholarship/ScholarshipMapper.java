@@ -12,8 +12,8 @@ public interface ScholarshipMapper {
 
     void insertScholarshipSettlementDate(int studentCourseSeq);
 
-    Collection<ScholarshipSettlementResultDTO> selectScholarshipSettlementResultList(String courseNumber, String academyLocation, String name, LocalDate scholarshipDate, int limit, int offset);
+    Collection<ScholarshipSettlementResultDTO> selectScholarshipResultList(String courseNumber, String academyLocation, String name, LocalDate scholarshipDate, int limit, int offset);
 
-    int countScholarshipTargetList(String academyLocation, String name, String courseNumber);
+    int countScholarshipTarget(String academyLocation, String name, String courseNumber);
 
 }

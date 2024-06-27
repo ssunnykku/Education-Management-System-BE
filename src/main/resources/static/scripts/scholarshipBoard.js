@@ -47,7 +47,8 @@ function courseNumber() {
     return $(".scholarship-courseId-filter option:selected").text();
 }
 
-$(".board-filter-search-btn").click(function () {
+$(".board-filter-search-btn").click(async function () {
+    $("#page_number").html("");
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 // myHeaders.append("Cookie", "JSESSIONID=4CD420A430A1D6B50F9D8EA6691F2420");
@@ -67,7 +68,74 @@ $(".board-filter-search-btn").click(function () {
 
     let page = urlParams.get('page');
 
-    fetch("/scholarships?page=" + page, requestOptions)
+    await fetchScholarshipBoard(1);
+
+    fetch("/scholarships/count", {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            $(".scholarship-cnt-pages").html(`<span>총 ${data.result}</span>건`)
+
+            const countPage = Math.ceil(data.result / 10);
+            // const countPage = 12;
+            if (countPage > 10) {
+                for (let i = 1; i < 11; i++) {
+                    let num = i;
+                    $("#page_number").append(`<a class="page-link" onclick={fetchScholarshipBoard(num)} >${num}</a>`)
+
+                }
+
+            } else {
+                for (let i = 1; i < countPage + 1; i++) {
+                    let num = i;
+
+                    $("#page_number").append(`<a class="page-link" onclick={fetchScholarshipBoard(num)} >num</a>`)
+
+                }
+            }
+
+        })
+        .catch((error) => console.error(error));
+
+})
+
+
+// $("#next").click(() => {
+//     const countPage = 12;
+//
+//     if (countPage > 10) {
+//         $("#page_number").html("");
+//         for (let i = 11; i < countPage + 1; i++) {
+//             let num = i;
+//             console.log(num);
+//             $("#page_number").append(`<a class="page-link" onclick={fetchScholarshipBoard(num)} >num</a>`)
+//         }
+//     }
+//
+// })
+
+
+async function fetchScholarshipBoard(param) {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+// myHeaders.append("Cookie", "JSESSIONID=4CD420A430A1D6B50F9D8EA6691F2420");
+
+    const raw = JSON.stringify({
+        "name": searchInput(),
+        "courseNumber": courseNumber() == "기수" ? "" : courseNumber()
+    });
+
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+    };
+
+    await fetch("/scholarships?page=" + param, requestOptions)
         .then((res) => res.json())
         .then(async (data) => {
 
@@ -76,20 +144,5 @@ $(".board-filter-search-btn").click(function () {
 
 
         }).catch((error) => console.error(error));
-
-    fetch("http://localhost:8080/scholarships/count", {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-    })
-        .then((res) => res.json())
-        .then((data) => {
-            $(".scholarship-cnt-pages").html(`<span>총 ${data.result}</span>건`)
-        })
-        .catch((error) => console.error(error));
-
-
-})
-
-
+}
 

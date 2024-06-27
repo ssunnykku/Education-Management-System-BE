@@ -47,8 +47,7 @@
         limit #{limit} offset #{offset}
     </select>
 
-
-    <select id="countScholarshipTargetList">
+    <select id="countScholarshipTarget">
         SELECT count(distinct s.student_id) as countBenefitTarget
         FROM students s
                  LEFT JOIN students_courses sc ON s.student_id = sc.student_id
@@ -72,13 +71,12 @@
         ORDER BY name desc;
     </select>
 
-
     <insert id="insertScholarshipSettlementDate" parameterType="int">
         insert into scholarship_settlement_date (student_course_seq)
         values (#{studentCourseSeq})
     </insert>
 
-    <select id="selectScholarshipSettlementResultList"
+    <select id="selectScholarshipResultList"
             resultType="com.kosta.ems.scholarship.ScholarshipSettlementResultDTO">
         SELECT s.student_id          AS studentId,
                s.hrd_net_id          AS hrdNetId,

@@ -41,12 +41,12 @@ class ScholarshipMapperTest {
 
     @Test
     public void selectScholarshipSettlementResultListTest() {
-        log.info(scholarshipMapper.selectScholarshipSettlementResultList("277", "가산", "손", LocalDate.parse("2024-06-21"), 10, 0).toString());
+        log.info(scholarshipMapper.selectScholarshipResultList("277", "가산", "손", LocalDate.parse("2024-06-21"), 10, 0).toString());
     }
 
     @Test
     void countScholarshipTargetListTest() {
-        log.info(String.valueOf(scholarshipMapper.countScholarshipTargetList("가산", "", "277")));
+        log.info(String.valueOf(scholarshipMapper.countScholarshipTarget("가산", "", "277")));
     }
 
 }
