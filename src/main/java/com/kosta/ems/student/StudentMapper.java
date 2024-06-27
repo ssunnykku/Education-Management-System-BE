@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.kosta.ems.attendance.AttendanceListBySearchFilterDTO;
 import com.kosta.ems.attendance.StudentAttendanceListDTO;
 import com.kosta.ems.attendance.UpdateStudentAttendanceStatusDTO;
 
@@ -28,4 +29,6 @@ public interface StudentMapper {
     int updateSelectedStudentInfo(UpdateSelectedStudentInfoDTO dto);
     // 수강생 삭제 (isActive 업데이트)
     void deleteSelectedStudent(String studentId);
+    // 유철님 요청:: scq로 수강생 기본 정보 가져오기
+    GetStudentInfoByScqDTO selectStudentInfoByScq(int studentCourseSeq);
 }
