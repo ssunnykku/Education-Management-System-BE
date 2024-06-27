@@ -37,8 +37,6 @@ async function getSettlementList(data) {
 
     $("#scholarship-table-contents").html("");
     $("#scholarship-table-contents").append(result);
-
-    return data.length;
 }
 
 function searchInput() {
@@ -76,9 +74,22 @@ $(".board-filter-search-btn").click(function () {
             const dataList = data.result;
             const settlementHtml = await getSettlementList(dataList);
 
-            $(".scholarship-cnt-pages").html(`<span>총 ${settlementHtml}</span>건`);
 
         }).catch((error) => console.error(error));
 
+    fetch("http://localhost:8080/scholarships/count", {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            $(".scholarship-cnt-pages").html(`<span>총 ${data.result}</span>건`)
+        })
+        .catch((error) => console.error(error));
+
+
 })
+
+
 

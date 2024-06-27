@@ -23,10 +23,10 @@ public class ScholarshipController {
     }
 
     @PostMapping("/count")
-    public int countTargetList(@RequestBody ScholarshipTargetListReqDTO dto) {
+    public Map<String, Integer> countTargetList(@RequestBody ScholarshipTargetListReqDTO dto) {
         dto.setAcademyLocation("가산");
-        
-        return scholarshipService.getCountTargetList(dto);
+
+        return Map.of("result", scholarshipService.getCountTargetList(dto));
     }
 
     @PostMapping("/settlement/{studentCourseSeq}")
