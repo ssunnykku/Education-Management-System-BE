@@ -22,7 +22,7 @@
           AND s.student_id != ''
           AND c.is_active = 'T'
           AND s.is_active = 'T'
-          AND c.course_number = #{courseNumber}
+          AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
         ORDER BY name desc
         limit #{limit} offset #{offset};
         ]]>
@@ -70,5 +70,21 @@
           AND s.is_active = 'T'
         ORDER BY s.name desc
         limit #{limit} offset #{offset}
+    </select>
+
+    <select id="countSettlementTarget" resultType="int">
+        <![CDATA[
+        select count(s.student_id) as countBenefitSettlement
+        from courses c
+                 LEFT JOIN students_courses sc ON c.course_seq = sc.course_seq
+                 LEFT JOIN students s ON s.student_id = sc.student_id
+        WHERE c.academy_location = #{academyLocation}
+          AND course_start_date <= #{startDate}
+          AND course_end_date >= #{endDate}
+          AND s.student_id != ''
+          AND c.is_active = 'T'
+          AND s.is_active = 'T'
+          AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
+        ]]>
     </select>
 </mapper>

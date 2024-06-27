@@ -114,5 +114,13 @@ public class BenefitServiceImpl implements BenefitService {
         return countAttendance - countLeave;
     }
 
+    @Override
+    public int countBenefitSettlement(BenefitTargetInfoDTO dto) {
 
+        return benefitMapper.countSettlementTarget(
+                dto.getAcademyLocation(),
+                dto.getStartDate(),
+                dto.getEndDate(),
+                dto.getCourseNumber());
+    }
 }

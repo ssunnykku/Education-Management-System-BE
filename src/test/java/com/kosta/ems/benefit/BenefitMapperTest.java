@@ -65,4 +65,9 @@ class BenefitMapperTest {
         }
     }
 
+    //@Test
+    void countSettlementTargetTest() {
+        assertThat(benefitMapper.countSettlementTarget("가산", LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-04"), 277)).isEqualTo(19);
+    }
+
 }

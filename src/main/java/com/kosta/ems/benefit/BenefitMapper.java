@@ -15,4 +15,5 @@ public interface BenefitMapper {
 
     Collection<BenefitSettlementResultDTO> selectBenefitSettlementResult(String name, String courseNumber, LocalDate benefitSettlementDate, int limit, int offset);
 
+    int countSettlementTarget(String academyLocation, LocalDate startDate, LocalDate endDate, int courseNumber);
 }

@@ -13,4 +13,5 @@ public interface BenefitService {
 
     Collection<BenefitSettlementResultDTO> getBenefitSettlementResult(BenefitSettlementReqDTO benefitSettlementReqDTO, int page, int size);
 
+    int countBenefitSettlement(BenefitTargetInfoDTO dto);
 }

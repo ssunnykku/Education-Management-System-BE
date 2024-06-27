@@ -122,5 +122,9 @@ class BenefitServiceImplTest {
         double data = benefitServiceImpl.attendanceDays(LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-04"), "efa146c5-2fa7-11ef-b0b2-0206f94be675") / (double) 20;
     }
 
+    //@Test
+    void countBenefitSettlementTest() {
+        assertThat(benefitService.countBenefitSettlement(BenefitTargetInfoDTO.builder().academyLocation("가산").startDate(LocalDate.parse("2024-03-03")).endDate(LocalDate.parse("2024-04-04")).courseNumber(277).build())).isEqualTo(19);
+    }
 }
 
