@@ -79,6 +79,10 @@ public class EmpController {
     public String notificationWrite() {
     	return "notifications/addNotification";
     }
+    @GetMapping("/notifications/update")
+    public String notificationSet() {
+    	return "notifications/setNotification";
+    }
 
     @GetMapping("/scholarships")
     public String scholarshipBoard() {
