@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kosta.ems.student.StudentService;
 import com.kosta.ems.studentPoint.dto.PointCategoryDTO;
+import com.kosta.ems.studentPoint.dto.PointHistoryDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,13 +28,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class StudentPointController {
 	private final StudentPointService service;
-	private final StudentService studnetService;
 	
 	@GetMapping("/category-list")
 	public Map<String, List<PointCategoryDTO>> pointCategoryList(){
 		return Map.of("data", service.getPointCategoryList());
 	}
 	
+	@GetMapping("/student")
+	public Map<String, List<PointHistoryDTO>> getPointHistoryByStudent(int studentCourseSeq, HttpServletRequest request){
+		List<PointHistoryDTO> histories = service.getPointHistory(studentCourseSeq, getAcademyOfLoginUser(request));
+		return Map.of("data", histories);
+	}
 	//일단 포인트를 하나씩 등록하도록 하고 차후 등록할 포인트들을 한번에 받기로 바꾸자.
 	@PostMapping("/student")
 	public Map<String, Boolean> addPointToStudent(@RequestBody Map<String, Integer> dto, HttpServletRequest request){
