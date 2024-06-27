@@ -87,7 +87,7 @@ JOIN students s ON sc.student_id = s.student_id
 JOIN courses c ON sc.course_seq = c.course_seq
 LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
 WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocation}
-        AND (s.name LIKE CONCAT('%', '#{name}', '%') AND c.course_number=#{courseNumber})
+        AND (s.name LIKE CONCAT('%', #{name}, '%') AND c.course_number=#{courseNumber})
 LIMIT #{page}, #{size};
     </select>
     <!--출결조건 검색 (기수 또는 이름 입력)-->
@@ -99,7 +99,7 @@ JOIN students s ON sc.student_id = s.student_id
 JOIN courses c ON sc.course_seq = c.course_seq
 LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
 WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocation}
-  AND (s.name LIKE CONCAT('%', '#{name}', '%') OR c.course_number=#{courseNumber});
+  AND (s.name LIKE CONCAT('%', #{name}, '%') OR c.course_number=#{courseNumber});
     </select>
     <!--검색 결과 데이터 목록 가져오기-->
     <select id="selectCourseNumberOrStudentNameList" resultType="com.kosta.ems.attendance.AttendanceListBySearchFilterDTO">
@@ -109,7 +109,7 @@ JOIN students s ON sc.student_id = s.student_id
 JOIN courses c ON sc.course_seq = c.course_seq
 LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
 WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocation}
-  AND (s.name LIKE CONCAT('%', '#{name}', '%') OR c.course_number=#{courseNumber})
+  AND (s.name LIKE CONCAT('%', #{name}, '%') OR c.course_number=#{courseNumber})
 LIMIT #{page}, #{size};
     </select>
     <!--출결조건 검색 (기수, 이름 미입력)-->
@@ -121,7 +121,7 @@ JOIN students s ON sc.student_id = s.student_id
 JOIN courses c ON sc.course_seq = c.course_seq
 LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
 WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocation}
-        OR (s.name LIKE CONCAT('%', '#{name}', '%') OR c.course_number=#{courseNumber});
+        OR (s.name LIKE CONCAT('%', #{name}, '%') OR c.course_number=#{courseNumber});
     </select>
     <!--검색 결과 데이터 목록 가져오기-->
     <select id="selectDateAndLocationList" resultType="com.kosta.ems.attendance.AttendanceListBySearchFilterDTO">
@@ -131,7 +131,7 @@ JOIN students s ON sc.student_id = s.student_id
 JOIN courses c ON sc.course_seq = c.course_seq
 LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
 WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocation}
-	OR (s.name LIKE CONCAT('%', '#{name}', '%') OR c.course_number=#{courseNumber})
+	OR (s.name LIKE CONCAT('%', #{name}, '%') OR c.course_number=#{courseNumber})
 LIMIT #{page}, #{size}
     </select>
     <!--수강생 출결 상태 수정-->

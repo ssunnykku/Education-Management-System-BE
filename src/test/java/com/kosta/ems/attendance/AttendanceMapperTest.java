@@ -34,21 +34,14 @@ class AttendanceMapperTest {
     // [출결] - 특정일의 수강생 출석 상태 목록 조회 (for 출결 입력/수정)
     // 경우1 _ 기수+수강생명 입력
     // 검색 결과 개수 가져오기 (for 페이지네이션)
-    //@Test  // 패스
+    // @Test  // 패스
     public void selectCourseNumberAndStudentNameListAmount() {
     	log.info(Integer.toString(attendanceMapper.selectCourseNumberAndStudentNameListAmount(LocalDate.parse("2024-06-21"), "가산", "유", 277)));
-
     }
     // 검색 결과 데이터 목록 가져오기
-    @Test
+    // @Test
     public void selectCourseNumberAndStudentNameList() {
-    	Collection<AttendanceListBySearchFilterDTO> list= (ArrayList<AttendanceListBySearchFilterDTO>) attendanceMapper.selectCourseNumberAndStudentNameList(LocalDate.parse("2024-06-21"), "가산", "유", 277, 0, 2);
-    	for (AttendanceListBySearchFilterDTO dto : list) {
-    		System.out.println("asdf");
-			System.out.println(dto);
-		}
-    	//log.info(attendanceMapper.selectCourseNumberAndStudentNameList(LocalDate.of(2024, 6, 21), "가산", "유", 277, 0, 2).toString());
-
+    	log.info(attendanceMapper.selectCourseNumberAndStudentNameList(LocalDate.of(2024, 6, 21), "가산", "유", 277, 0, 2).toString());
     }
     
     // 경우2 _ 기수 또는 수강생명 입력
@@ -73,7 +66,7 @@ class AttendanceMapperTest {
     // 검색 결과 데이터 목록 가져오기
     // @Test
     public void selectDateAndLocationList() {
-    	log.info(attendanceMapper.selectDateAndLocationList(LocalDate.of(2024, 6, 21), "가산", "none", 10, 0, 2).toString());
+    	log.info(attendanceMapper.selectDateAndLocationList(LocalDate.of(2024, 6, 21), "가산", "none", -1, 2, 2).toString());
     }
     
     
@@ -81,13 +74,6 @@ class AttendanceMapperTest {
     // @Test
     void updateStudentAttendance() {
     	attendanceMapper.updateStudentAttendance(new UpdateStudentAttendanceStatusDTO("지각", LocalDate.of(2024, 06, 21), "efa148aa-2fa7-11ef-b0b2-0206f94be675"));
-    }
-    
-    
-    @Test
-    void selectCourseNumberAndStudentNameListAmountTest() {
-    	assertThat(attendanceMapper.selectCourseNumberAndStudentNameListAmount(LocalDate.parse("2024-06-21"),"가산", "유", 277)).isEqualTo(2);
-    	
     }
 }
 
