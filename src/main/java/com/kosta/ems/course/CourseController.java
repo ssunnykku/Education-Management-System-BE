@@ -1,6 +1,5 @@
 package com.kosta.ems.course;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,11 +27,11 @@ public class CourseController {
 		return Map.of("result", service.getCourse(courseSeq, getAcademyOfLoginUser(request)));
 	}
 	
-	@GetMapping("/courseNumberList")
+	@GetMapping("/course-number-list")
 	public Map getCourseNumberList(@RequestParam(value="excludeExpired", defaultValue = "true") boolean excludeExpired, HttpServletRequest request) {
 		return Map.of("result", service.getCourseNumberList(getAcademyOfLoginUser(request), excludeExpired));
 	}
-	@GetMapping("/courseTypeList")
+	@GetMapping("/course-type-list")
 	public Map getCourseTypeList() {
 		return Map.of("result", service.getCourseTypeList());
 	}

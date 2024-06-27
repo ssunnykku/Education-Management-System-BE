@@ -86,4 +86,11 @@ class StudentMapperTest {
         studentMapper.deleteSelectedStudent("8b48e083-2fa8-11ef-b0b2-0206f94be675");
     }
     
+
+    // 유철님 요청:: scq로 수강생 기본 정보 가져오기
+    // @Test
+    void selectStudentInfoByScq() {
+    	log.info(studentMapper.selectStudentInfoByScq(66).toString());
+    }
+
 }

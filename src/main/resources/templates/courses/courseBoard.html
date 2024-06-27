@@ -549,7 +549,7 @@
     }
 
     async function getCourseNumberList(excludeExpired){
-      const res = await fetch("/courses/courseNumberList?excludeExpired=" + excludeExpired);
+      const res = await fetch("/courses/course-number-list?excludeExpired=" + excludeExpired);
       const data = await res.json();
       return data.result;
     }

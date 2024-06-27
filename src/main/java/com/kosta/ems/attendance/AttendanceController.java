@@ -1,5 +1,6 @@
 package com.kosta.ems.attendance;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,11 +8,15 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kosta.ems.student.NoSuchDataException;
 import com.kosta.ems.student.PageRequestDTO;
 import com.kosta.ems.student.PageResponseDTO;
+import com.kosta.ems.student.ResCode;
+import com.kosta.ems.student.UpdateDeleteResultDTO;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -54,5 +59,25 @@ public class AttendanceController {
 		
 		return result;
 	}
+	
 	// [출결] - 선택한 수강생의 출석 상태 수정
+	@PutMapping("attendances/student-status")
+	public UpdateDeleteResultDTO updateStudentAttendance(@RequestBody RequestStudentAttendanceDTO request) {
+		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
+		try {
+			int year = Integer.parseInt(request.getAttendanceDate().split(".")[0]);
+			int month = Integer.parseInt(request.getAttendanceDate().split(".")[1]);
+			int day = Integer.parseInt(request.getAttendanceDate().split(".")[2]);
+			
+			attendanceServiceImpl.updateStudentAttendance(request.getAttendanceStatus(), LocalDate.of(year, month, month), request.getStudentId());
+		} catch (NoSuchDataException e) {
+			dto.setCode(ResCode.FAIL.value());
+			dto.setMessage("Fail: updateStudentAttendance");
+		} catch (Exception e) {
+			log.error("[StudentController updateStudentAttendance]", e);
+			dto.setCode(ResCode.FAIL.value());
+			dto.setMessage("Fail: updateSelectedStudentInfo");
+		}
+		return dto;
+	}
 }

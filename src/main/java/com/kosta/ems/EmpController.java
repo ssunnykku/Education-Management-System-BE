@@ -23,7 +23,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/ui")
+@RequestMapping("/ems")
 @RequiredArgsConstructor
 public class EmpController {
 	private final CourseService courseService;
@@ -95,6 +95,10 @@ public class EmpController {
     @GetMapping("/notifications/write")
     public String notificationWrite() {
     	return "notifications/addNotification";
+    }
+    @GetMapping("/notifications/update")
+    public String notificationSet() {
+    	return "notifications/setNotification";
     }
 
     @GetMapping("/scholarships")

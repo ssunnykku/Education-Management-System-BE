@@ -112,9 +112,15 @@
         WHERE student_id = #{studentId};
     </update>
     
+
     <select id="selectAddressByStudentId">
         select address
         from students
         where student_id = #{studentId};
+
+    <select id="selectStudentInfoByScq" resultType="com.kosta.ems.student.GetStudentInfoByScqDTO">
+    	SELECT s.student_id AS studentId, hrd_net_id AS hrdNetId, NAME, birth, address, bank, ACCOUNT, phone_number AS phoneNumber, email, gender, manager_id AS managerId, is_active AS isActive
+FROM students s, students_courses sc
+WHERE sc.student_course_seq=#{scq} AND sc.student_id=s.student_id;
     </select>
 </mapper>

@@ -25,18 +25,18 @@ public class ManagerController {
 	
 	//Controller처럼 작동함
 	@PostMapping("/login")
-	public void login(@RequestBody Map<String, String> loginRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public Map login(@RequestBody Map<String, String> loginRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Map<String, String> map = service.login(loginRequest.get("employeeNumber"), loginRequest.get("password"));
 		if(Objects.isNull(map)) {
-			response.sendRedirect("/ui/login");
-			return;
+			return Map.of("result", false);
 		}
 		HttpSession session = request.getSession();
 		session.setAttribute("managerId", map.get("managerId"));
 		session.setAttribute("academyLocation", map.get("academyLocation"));
 		log.info("managerId: " + map.get("managerId").toString());
 		log.info("managerId: " + map.get("academyLocation").toString());
-		response.sendRedirect("/ui/notifications");
+//		response.sendRedirect("/ui/notifications");
+		return Map.of("result", true);
 	}
 	
 	@PostMapping("/logout")

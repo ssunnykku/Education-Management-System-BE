@@ -41,11 +41,14 @@ public class AttendanceServiceImpl implements AttendanceService {
     
     // [출결] - 선택한 수강생의 출석 상태 수정
     @Override
-    public void updateStudentAttendance(String attendanceStatus, String attendanceDate, String studentId) {
+    public void updateStudentAttendance(String attendanceStatus, LocalDate attendanceDate, String studentId) {
+    	/*
     	int year = Integer.parseInt(attendanceDate.split("-")[0]);
         int month = Integer.parseInt(attendanceDate.split("-")[1]);
         int day = Integer.parseInt(attendanceDate.split("-")[2]);
-    	UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus(attendanceStatus).attendanceDate(LocalDate.of(year, month, day)).studentId(studentId).build();
+        */
+    	// UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus(attendanceStatus).attendanceDate(LocalDate.of(year, month, day)).studentId(studentId).build();
+    	UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus(attendanceStatus).attendanceDate(attendanceDate).studentId(studentId).build();
     	attendanceMapper.updateStudentAttendance(dto);
     }
 }
