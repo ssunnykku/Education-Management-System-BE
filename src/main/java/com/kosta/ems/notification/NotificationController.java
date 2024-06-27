@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,8 +38,8 @@ public class NotificationController {
 		return Map.of("result",result);
 	}
 	//검색하기(O)
-	@GetMapping("/list/{keyword}")
-	public Map<String, Collection> searchByKeyword(@PathVariable("keyword") String keyword, HttpServletRequest request) throws NoResultsFoundException{
+	@GetMapping("/list")
+	public Map<String, Collection> searchByKeyword(@RequestParam String keyword, HttpServletRequest request) throws NoResultsFoundException{
 		String managerId= "d893bf71-2f8f-11ef-b0b2-0206f94be675";//session 메모리
 		return Map.of("result",notification.searchByKeyword(keyword, managerId));
 	}
@@ -47,12 +48,13 @@ public class NotificationController {
 	public NotificationDTO getDescription(@PathVariable("notificationSeq") int notificationSeq) {
 		return notification.getDescription(notificationSeq);
 	}
-	//공지 업데이트
+	//공지 업데이트(O)
 	@PutMapping("/post/{notificationSeq}")
-	public Map<String, String> editNotification(@RequestBody NotificationDTO dto,@PathVariable("notificationSeq") int notificationSeq){
-		notification.updateNotification(dto);
+	public Map<String, Boolean> editNotification(@RequestBody NotificationDTO dto,@PathVariable("notificationSeq") int notificationSeq,HttpServletRequest request){
+		dto.setManagerId(getManagerIdOfLoginUser(request));
+		boolean result= notification.updateNotification(dto);
 		//String managerId= "d893bf71-2f8f-11ef-b0b2-0206f94be675";
-		return Map.of("result",dto.getTitle()+"가 수정되었습니다.");
+		return Map.of("result",result);
 	}
 	
 	//SessionID를 받아서 ManagerID 컨트롤하기.

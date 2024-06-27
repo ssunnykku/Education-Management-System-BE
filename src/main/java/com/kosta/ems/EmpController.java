@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/ui")
+@RequestMapping("/ems")
 @RequiredArgsConstructor
 public class EmpController {
 	private final CourseService courseService;
