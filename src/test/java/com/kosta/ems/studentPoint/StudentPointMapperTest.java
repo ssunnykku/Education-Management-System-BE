@@ -27,6 +27,11 @@ public class StudentPointMapperTest {
 		assertThat(history.size()).isEqualTo(34);
 	}
 	
+	@Test
+	public void getPointCategoryList() {
+		List<PointCategoryDTO> category = mapper.getPointCategoryList();
+		assertThat(category.size()).isEqualTo(10);
+	}
 	
 
 }
