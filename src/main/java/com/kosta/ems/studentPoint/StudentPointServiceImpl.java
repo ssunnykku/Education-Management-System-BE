@@ -47,7 +47,12 @@ public class StudentPointServiceImpl implements StudentPointService {
 	@Override
 	public boolean insertStudentPoint(int pointSeq, String managerId, int studentCourseSeq, String academyLocationOfManager) {
 		//학생정보 보안검사 해야함..
-		return mapper.insertStudentPoint(pointSeq, managerId, studentCourseSeq) == 1;
+		boolean result = false;
+		try {
+			result = mapper.insertStudentPoint(pointSeq, managerId, studentCourseSeq) == 1;
+		} catch (Exception e) {
+		}
+		return result;
 	}
 
 

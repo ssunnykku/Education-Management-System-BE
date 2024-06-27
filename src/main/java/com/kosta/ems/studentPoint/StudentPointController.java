@@ -34,4 +34,22 @@ public class StudentPointController {
 		return Map.of("data", service.getPointCategoryList());
 	}
 	
+	//일단 포인트를 하나씩 등록하도록 하고 차후 등록할 포인트들을 한번에 받기로 바꾸자.
+	@PostMapping("/student")
+	public Map<String, Boolean> addPointToStudent(@RequestBody Map<String, Integer> dto, HttpServletRequest request){
+		boolean result = service.insertStudentPoint(dto.get("pointSeq"), getManagerIdOfLoginUser(request), dto.get("studentCourseSeq"), getAcademyOfLoginUser(request));
+		return Map.of("data", result);
+	}
+	
+	private String getAcademyOfLoginUser(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		return "가산";
+//		return (String) session.getAttribute("academyLocation");
+	}
+	
+	private String getManagerIdOfLoginUser(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		return "d893bf71-2f8f-11ef-b0b2-0206f94be675";
+//		return (String) session.getAttribute("managerId");
+	}
 }
