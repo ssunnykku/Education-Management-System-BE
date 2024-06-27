@@ -51,7 +51,7 @@ class AttendanceMapperTest {
     	log.info(Integer.toString(attendanceMapper.selectCourseNumberOrStudentNameListAmount(LocalDate.parse("2024-06-21"), "가산", "철", -1)));
     }
     // 검색 결과 데이터 목록 가져오기
-    // @Test
+    @Test
     public void selectCourseNumberOrStudentNameList() {
     	log.info(attendanceMapper.selectCourseNumberOrStudentNameList(LocalDate.of(2024, 6, 21), "가산", "철", 10, 0, 2).toString());
     	// log.info(attendanceMapper.selectCourseNumberOrStudentNameList(LocalDate.of(2024, 6, 21), "가산", "철", -1, 0, 2).toString());
@@ -59,7 +59,7 @@ class AttendanceMapperTest {
     
     // 경우3 _ 기수+수강생명 미입력
     // 검색 결과 개수 가져오기 (for 페이지네이션)
-    // @Test  // 패스
+    // @Test
     public void selectDateAndLocationListAmount() {
     	log.info(Integer.toString(attendanceMapper.selectDateAndLocationListAmount(LocalDate.of(2024, 6, 21), "가산", "none", -1)));
     }

@@ -103,7 +103,7 @@ WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocati
     </select>
     <!--검색 결과 데이터 목록 가져오기-->
     <select id="selectCourseNumberOrStudentNameList" resultType="com.kosta.ems.attendance.AttendanceListBySearchFilterDTO">
-    	SELECT c.course_number AS courseNumber, s.hrd_net_id AS hrdNetId, s.name, c.academy_location AS academyLocation, a.attendance_status AS attendanceStatus, a.attendance_date AS attendanceDate
+    	SELECT c.course_number AS courseNumber, s.hrd_net_id AS hrdNetId, s.name, c.academy_location AS academyLocation, a.attendance_status AS attendanceStatus, a.attendance_date AS attendanceDate, sc.student_course_seq AS studentCourseSeq
 FROM students_courses sc
 JOIN students s ON sc.student_id = s.student_id
 JOIN courses c ON sc.course_seq = c.course_seq
@@ -125,7 +125,7 @@ WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocati
     </select>
     <!--검색 결과 데이터 목록 가져오기-->
     <select id="selectDateAndLocationList" resultType="com.kosta.ems.attendance.AttendanceListBySearchFilterDTO">
-    	SELECT c.course_number, s.hrd_net_id, s.name, c.academy_location, a.attendance_status, a.attendance_date
+    	SELECT c.course_number AS courseNumber, s.hrd_net_id AS hrdNetId, s.name, c.academy_location AS academyLocation, a.attendance_status AS attendanceStatus, a.attendance_date AS attendanceDate, sc.student_course_seq AS studentCourseSeq
 FROM students_courses sc
 JOIN students s ON sc.student_id = s.student_id
 JOIN courses c ON sc.course_seq = c.course_seq
