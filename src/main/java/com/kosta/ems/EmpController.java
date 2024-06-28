@@ -21,10 +21,12 @@ import com.kosta.ems.notification.NotificationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/ems")
 @RequiredArgsConstructor
+@Slf4j
 public class EmpController {
 	private final CourseService courseService;
 	@Autowired
@@ -80,13 +82,16 @@ public class EmpController {
     }
 
     @GetMapping("/notifications") //@AuthenticationPrincipal 사용할수있음.
-    public String notificationBoard(Model model, HttpSession session) {
-    	String managerId="d893bf71-2f8f-11ef-b0b2-0206f94be675";
-    	//String managerId = (String) session.getAttribute("managerId");
-    	model.addAttribute("notification",notification.searchAll(managerId));
-    	System.out.println(model.addAttribute("notification",notification.searchAll(managerId)));
+    public String notificationBoard(Model model, HttpSession session, @RequestParam int page) {
+    	log.info((String) session.getAttribute("managerId").toString());
+    	//String managerId="d893bf71-2f8f-11ef-b0b2-0206f94be675";
+
+    	String managerId = (String) session.getAttribute("managerId");
+    	model.addAttribute("notification",notification.searchAll(managerId,page, 10));
+    	log.info(model.addAttribute("notification",notification.searchAll(managerId, page, 10)).toString());
         return "notifications/notificationBoard";
     }
+
 
     @GetMapping("/notifications/post")
     public String notificationPost() {
@@ -95,7 +100,7 @@ public class EmpController {
     
     @GetMapping("/notifications/write")
     public String notificationWrite() {
-    	return "notifications/addNotification";
+    	return "notifications/setNotification";
     }
     @GetMapping("/notifications/update")
     public String notificationSet() {

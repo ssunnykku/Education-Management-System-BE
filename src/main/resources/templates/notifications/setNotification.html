@@ -18,14 +18,21 @@
     <article class="setNotification-contents">
         <div class="setNotification-set-wrapper">
             <div class="setNotification-title-wrapper">
+            <div id="title-item">
                 <h3>제목</h3>
+                </div>
                 <div class="setNotification-title-input-wrapper">
-                    <input/>
+                    <input name="title" id="title-input"/>
                 </div>
             </div>
         </div>
         <div class="setNotification-input-wrapper">
-            <input/>
+        <div id="content-item">
+        	<h3>내용</h3>
+        </div>
+        <div id="content-textarea-wrapper">
+           <textarea name="content" id="content-input"></textarea>
+        </div>
         </div>
         <div id="setNotification-btn-wrapper">
             <button id="enroll-btn" class="setNotification-btn-setting">
@@ -38,5 +45,22 @@
     </article>
 </section>
 <footer></footer>
+<script>
+	document.querySelector("#enroll-btn").onclick = function(){
+	console.log("시작");
+		fetch("/notifications/write",{
+			method: "post",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				title: document.getElementById("title-input").value,
+				content: document.getElementById("content-input").value
+			})
+		})
+		.then(location.href = "/ems/notifications")
+		
+	}
+	</script>
 </body>
 </html>

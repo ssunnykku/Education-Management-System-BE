@@ -56,7 +56,7 @@
 
             fetch("/managers/login", requestOptions)
                 .then((response) => response.json())
-                .then((result) => {if(result.result){location.href="/ui/notifications"} else{location.reload()}});
+                .then((result) => {if(result.result){location.href="/ems/notifications"} else{location.reload()}});
 
             
         }

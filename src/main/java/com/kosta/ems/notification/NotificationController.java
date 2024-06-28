@@ -27,7 +27,9 @@ public class NotificationController {
 	//공지사항 글 추가(O)
 	@PostMapping("/write")
 	public Map<String, Boolean> addPost(@RequestBody NotificationDTO dto, HttpServletRequest request) {
+		//String managerId = (String) session.getAttribute("managerId");
 		dto.setManagerId(getManagerIdOfLoginUser(request));
+		System.out.println(dto.getManagerId());
 		boolean result= notification.addNotification(dto);
 		return Map.of("result",result);
 	}
@@ -60,8 +62,7 @@ public class NotificationController {
 	//SessionID를 받아서 ManagerID 컨트롤하기.
 	private String getManagerIdOfLoginUser(HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		return "d893bf71-2f8f-11ef-b0b2-0206f94be675";
-		//		return (String) session.getAttribute("managerId");
+		return (String) session.getAttribute("managerId");
 	}
 
 }
