@@ -44,7 +44,7 @@ public class BenefitServiceImpl implements BenefitService {
         int limit = size;
         int offset = size * (page - 1);
 
-        List<BenefitSettlementResultDTO> result = (ArrayList<BenefitSettlementResultDTO>) benefitMapper.selectBenefitSettlementResult(dto.getName(), dto.getCourseNumber(), dto.getBenefitSettlementDate(), limit, offset);
+        List<BenefitSettlementResultDTO> result = (ArrayList<BenefitSettlementResultDTO>) benefitMapper.selectBenefitSettlementResult(dto.getAcademyLocation(), dto.getName(), dto.getCourseNumber(), dto.getBenefitSettlementDate(), limit, offset);
         return result;
     }
 
@@ -122,5 +122,10 @@ public class BenefitServiceImpl implements BenefitService {
                 dto.getStartDate(),
                 dto.getEndDate(),
                 dto.getCourseNumber());
+    }
+
+    @Override
+    public int countBenefitResult(BenefitSettlementReqDTO dto) {
+        return benefitMapper.countSettlementResult(dto.getAcademyLocation(), dto.getName(), dto.getCourseNumber(), dto.getBenefitSettlementDate());
     }
 }

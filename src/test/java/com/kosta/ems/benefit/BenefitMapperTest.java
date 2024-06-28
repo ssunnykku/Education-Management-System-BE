@@ -41,7 +41,7 @@ class BenefitMapperTest {
 
     @Test
     void selectBenefitSettlementResultPageTest() {
-        List<BenefitSettlementResultDTO> dto = (ArrayList<BenefitSettlementResultDTO>) benefitMapper.selectBenefitSettlementResult("", "", null, 5, 0);
+        List<BenefitSettlementResultDTO> dto = (ArrayList<BenefitSettlementResultDTO>) benefitMapper.selectBenefitSettlementResult("가산", "", "", null, 5, 0);
         for (BenefitSettlementResultDTO d : dto) {
             log.info(d.getBenefitSettlementDate().toString());
         }
@@ -51,7 +51,7 @@ class BenefitMapperTest {
 
     @Test
     void selectBenefitSettlementResultTest() {
-        List<BenefitSettlementResultDTO> dto = (ArrayList<BenefitSettlementResultDTO>) benefitMapper.selectBenefitSettlementResult("", "227", LocalDate.parse("2024-03-21"), 5, 0);
+        List<BenefitSettlementResultDTO> dto = (ArrayList<BenefitSettlementResultDTO>) benefitMapper.selectBenefitSettlementResult("가산", "", "227", LocalDate.parse("2024-03-21"), 5, 0);
         for (BenefitSettlementResultDTO d : dto) {
             assertThat(d.getBenefitSettlementDate()).isEqualTo(LocalDate.parse("2024-03-21"));
         }
@@ -59,7 +59,7 @@ class BenefitMapperTest {
 
     @Test
     void selectBenefitSettlementResultTest2() {
-        List<BenefitSettlementResultDTO> dto = (ArrayList<BenefitSettlementResultDTO>) benefitMapper.selectBenefitSettlementResult("", "227", LocalDate.parse("2024-03-21"), 5, 0);
+        List<BenefitSettlementResultDTO> dto = (ArrayList<BenefitSettlementResultDTO>) benefitMapper.selectBenefitSettlementResult("가산", "", "227", LocalDate.parse("2024-03-21"), 5, 0);
         for (BenefitSettlementResultDTO d : dto) {
             assertThat(d.getCourseNumber()).isEqualTo(277);
         }
@@ -68,6 +68,11 @@ class BenefitMapperTest {
     //@Test
     void countSettlementTargetTest() {
         assertThat(benefitMapper.countSettlementTarget("가산", LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-04"), 277)).isEqualTo(19);
+    }
+
+    @Test
+    void countSettlementResultTest() {
+        log.info(String.valueOf(benefitMapper.countSettlementResult("가산", "", "", LocalDate.parse("2024-05-21"))));
     }
 
 }

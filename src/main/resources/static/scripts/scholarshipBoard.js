@@ -1,12 +1,16 @@
-let urlParams = new URL(location.href).searchParams;
+const params = new URL(location.href).search.split("=")[1];
 
+let currentPage = 1;
+let currentBlock = 1;
+const pageSize = 10; // 한 블록 당 페이지 수
+let totalPages = 0;
 
 async function getSettlementList(data) {
     let result = '';
     for (let i = 0; i < data.length; i++) {
         result += `<div class="scholarshipBoard-row">
                         <div class="scholarshipBoard-checkbox">
-                            <input type="checkbox" name="" id="checkbox"/>
+                            <input type="checkbox" name=${data[i].courseNumber} class="checkbox" value=${data[i].studentCourseSeq}>
                         </div>
                         <div class="scholarshipBoard-courseId">
                             <span id="courseNumber">${data[i].courseNumber}</span>
@@ -32,7 +36,7 @@ async function getSettlementList(data) {
                         <div class="scholarshipBoard-total-amount">
                             <span id="totalAmount">${data[i].scholarshipAmount}</span>
                         </div>
-                    </div>`
+                    </div>`;
     }
 
     $("#scholarship-table-contents").html("");
@@ -51,7 +55,6 @@ $(".board-filter-search-btn").click(async function () {
     $("#page_number").html("");
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-// myHeaders.append("Cookie", "JSESSIONID=4CD420A430A1D6B50F9D8EA6691F2420");
 
     const raw = JSON.stringify({
         "name": searchInput(),
@@ -65,9 +68,6 @@ $(".board-filter-search-btn").click(async function () {
         redirect: "follow"
     };
 
-
-    let page = urlParams.get('page');
-
     await fetchScholarshipBoard(1);
 
     fetch("/scholarships/count", {
@@ -76,52 +76,54 @@ $(".board-filter-search-btn").click(async function () {
         body: raw,
     })
         .then((res) => res.json())
-        .then((data) => {
-            $(".scholarship-cnt-pages").html(`<span>총 ${data.result}</span>건`)
+        .then(async (data) => {
+            $(".scholarship-cnt-pages").html(`<span>총 ${data.result}</span>건`);
 
-            const countPage = Math.ceil(data.result / 10);
-            // const countPage = 12;
+            // const countPage = Math.ceil(data.result / 10);
+
+            const countPage = 12;
+
             if (countPage > 10) {
                 for (let i = 1; i < 11; i++) {
                     let num = i;
-                    $("#page_number").append(`<a class="page-link" onclick={fetchScholarshipBoard(num)} >${num}</a>`)
-
+                    $("#page_number").append(`<a class="page-link" onclick="fetchScholarshipBoard(${num})">${num}</a>`);
                 }
-
             } else {
                 for (let i = 1; i < countPage + 1; i++) {
                     let num = i;
-
-                    $("#page_number").append(`<a class="page-link" onclick={fetchScholarshipBoard(num)} >num</a>`)
-
+                    $("#page_number").append(`<a class="page-link" onclick="fetchScholarshipBoard(${num})">${num}</a>`);
                 }
             }
 
+            $("#next").click(() => {
+
+                if (countPage > 10) {
+                    $("#page_number").html("");
+                    for (let i = 11; i < countPage + 1; i++) {
+                        let num = i;
+                        console.log(num);
+                        $("#page_number").append(`<a class="page-link" onclick={fetchScholarshipBoard(${num})} >${num}</a>`)
+                    }
+                }
+
+                $("#before").click(() => {
+                    if (params > 10) {
+                        $("#page_number").html("");
+                        for (let i = 1; i < 11; i++) {
+                            let num = i;
+                            $("#page_number").append(`<a class="page-link" onclick={fetchScholarshipBoard(${num})} >${num}</a>`)
+                        }
+                    }
+                })
+
+            })
         })
         .catch((error) => console.error(error));
-
-})
-
-
-// $("#next").click(() => {
-//     const countPage = 12;
-//
-//     if (countPage > 10) {
-//         $("#page_number").html("");
-//         for (let i = 11; i < countPage + 1; i++) {
-//             let num = i;
-//             console.log(num);
-//             $("#page_number").append(`<a class="page-link" onclick={fetchScholarshipBoard(num)} >num</a>`)
-//         }
-//     }
-//
-// })
-
+});
 
 async function fetchScholarshipBoard(param) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-// myHeaders.append("Cookie", "JSESSIONID=4CD420A430A1D6B50F9D8EA6691F2420");
 
     const raw = JSON.stringify({
         "name": searchInput(),
@@ -138,11 +140,29 @@ async function fetchScholarshipBoard(param) {
     await fetch("/scholarships?page=" + param, requestOptions)
         .then((res) => res.json())
         .then(async (data) => {
-
             const dataList = data.result;
             const settlementHtml = await getSettlementList(dataList);
-
-
-        }).catch((error) => console.error(error));
+        })
+        .catch((error) => console.error(error));
 }
 
+/*** 체크박스 상단 전체 선택 ***/
+$('#title-checkbox').change(() => {
+    if ($('#title-checkbox').is(':checked')) {
+        $(".checkbox").prop("checked", true);
+        return;
+    } else {
+        $(".checkbox").prop("checked", false);
+    }
+
+})
+
+let selected = [];
+$("#settlement-btn").click(function () {
+    $(".checkbox").each(function () {
+        if ($(this).prop("checked", true)) {
+            selected.push(this.value);
+            console.log(this.value);
+        }
+    });
+});

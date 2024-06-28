@@ -25,6 +25,7 @@ public class BenefitSettlementReqDTO {
     private String studentId;
     private String name;
     private String courseNumber;
+    private String academyLocation;
 
 
 }
