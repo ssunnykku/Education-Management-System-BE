@@ -32,8 +32,6 @@ public class NotificationDTO {
 	private int viewCount;
 	private String name;
 	private String formattedNotificationDate;
-	private int limit;
-    private int offset;
 
 		
 	}

@@ -247,7 +247,6 @@
 .selected-page {
     color: #2d62ea;
     font-weight: 800;
-'
 }
 
 /**********footer***************/
@@ -406,12 +405,22 @@ footer {
     width: 10%;
     text-align: center;
     transform: translateY(30%);
+    font-size: 16px;
+    font-weight:500;
+    margin-right: 0px;
 }
 
 .setNotification-title-input-wrapper {
     width: 90%;
 }
-
+.setNotification-title-input-wrapper >h3{
+	  width: 10%;
+    text-align: center;
+    transform: translateY(70%);
+    font-size: 16px;
+    font-weight:500;
+    margin-right: 0px;
+}
 .setNotification-title-input-wrapper > input {
     width: 100%;
     height: 100%;
@@ -424,10 +433,39 @@ footer {
 
 .setNotification-input-wrapper {
     height: 600px;
+  /*   padding: 0 45px; */
+  	display: flex;
+  	flex-direction: row;
+    justify-content: center;
+    gap: 14px;
+   
+    width: 100%;
+  	
+}
+#title-item{
+	width: 50px;
+	text-align: center;
+}
+#content-item {
+	width: 50px;
+	text-align: center;
 }
 
-.setNotification-input-wrapper > textarea {
-    padding: 20px;
+#content-textarea-wrapper{
+	width: 810px;
+}
+#title-input{
+	 font-size: 15px;
+    border: none;
+    outline: none;
+    resize: none;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    border: 1px solid #cfcfcf;
+    border-radius: 10px;
+}
+#content-input {
     font-size: 15px;
     border: none;
     outline: none;
@@ -503,24 +541,24 @@ footer {
     border-radius: 8px;
 }
 
-ul#pagination {
-    display: inline-flex;
-    justify-content: center;
-    width: 100%;
-    font-size: 1.3rem;
+ul#pagination{
+  display: inline-flex;
+  justify-content: center;
+  width: 100%;
+  font-size: 1.3rem;
 
-    li {
-        display: inline;
-        margin-left: 0.5rem;
-        margin-right: 0.5rem;
-    }
+  li{
+    display: inline;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
 
-    .activePage {
-        text-decoration: underline;
-        font-weight: bold;
-    }
+  .activePage{
+    text-decoration: underline;
+    font-weight: bold;
+  }
 
-    .inactivePage a {
-        cursor: default;
-    }
+  .inactivePage a{
+    cursor:default;
+  }
 }

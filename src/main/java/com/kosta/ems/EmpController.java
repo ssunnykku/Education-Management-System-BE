@@ -21,10 +21,12 @@ import com.kosta.ems.studentPoint.dto.StudentCourseWithPointDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/ems")
 @RequiredArgsConstructor
+@Slf4j
 public class EmpController {
 	private final CourseService courseService;
 	private final StudentPointService pointService;
@@ -82,18 +84,22 @@ public class EmpController {
 		return "가산";
 	}
 
+
 	@GetMapping("/login")
 	public String login() {
 		return "login/login";
 	}
 
-	@GetMapping("/notifications") // @AuthenticationPrincipal 사용할수있음.
-	public String notificationBoard(Model model, HttpSession session) {
-		String managerId = "d893bf71-2f8f-11ef-b0b2-0206f94be675";
-		// String managerId = (String) session.getAttribute("managerId");
-		model.addAttribute("notification", notification.searchAll(managerId));
-		return "notifications/notificationBoard";
-	}
+	 @GetMapping("/notifications") //@AuthenticationPrincipal 사용할수있음.
+    public String notificationBoard(Model model, HttpSession session, @RequestParam int page) {
+    	log.info((String) session.getAttribute("managerId").toString());
+    	//String managerId="d893bf71-2f8f-11ef-b0b2-0206f94be675";
+
+    	String managerId = (String) session.getAttribute("managerId");
+    	model.addAttribute("notification",notification.searchAll(managerId,page, 10));
+    	log.info(model.addAttribute("notification",notification.searchAll(managerId, page, 10)).toString());
+        return "notifications/notificationBoard";
+    }
 
 	@GetMapping("/notifications/post")
 	public String notificationPost() {
