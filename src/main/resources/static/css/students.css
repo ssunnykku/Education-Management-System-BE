@@ -385,18 +385,22 @@ body {
   font-size: 14px;
   line-height: 144%;
 
-  width: 30px;
+  width: 100px;
   height: 40px;
+  padding: 10px 16px;
+  gap: 10px;
 
+  line-height: 1.5em;
+  border-radius: 8px;
+
+  /*
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   padding: 10px 16px;
   gap: 10px;
-
-  line-height: 1.5em;
-  border-radius: 8px;
+  */
 
   /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15); */
 
@@ -406,9 +410,11 @@ body {
   background: rgba(244, 244, 244, 1);
   color: #000000;
 
+  /*
   flex: none;
   order: 0;
   flex-grow: 1;
+   */
 }
 
 .student-btn-wrapper {
@@ -568,6 +574,7 @@ body {
   padding-top: 12px;
   margin-left: 35%;
   display: flex;
+  align-items: center;
   width: 600px;
   gap: 8px;
 }
@@ -588,6 +595,15 @@ body {
 #attendance-edit-btn {
   background-color: rgba(201, 211, 219, 1);
 }
+
+#attendance-content-article {
+  margin-left: -40px;
+}
+
+.filter-search-btn {
+  height: 39px;
+}
+
 /* table */
 #attendance-contents {
   width: 100%;
@@ -656,3 +672,5 @@ body {
 .attendance-total {
   width: 8%;
 }
+
+/* attendance-content-count */

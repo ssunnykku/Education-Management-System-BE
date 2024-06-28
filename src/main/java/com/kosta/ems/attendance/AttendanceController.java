@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,18 +23,35 @@ public class AttendanceController {
 	@Autowired
 	private AttendanceServiceImpl attendanceServiceImpl;
 	
-	// [출결] - 수강생 출석 조회 목록 조회 __예외 처리 고려 필요!
-	@GetMapping("attendances/student-list/{name}/{courseNumber}")
-	public Map<String, Object> getStudentAttendanceList(@PathVariable("name") String name, @PathVariable("courseNumber") int courseNumber, @RequestBody PageRequestDTO pageRequest) {
+	// [출결] - 수강생 출석 조회 목록 조회 __POSTMAN 테스트 완료 __예외 처리 고려 필요!
+	@GetMapping("attendances/student-list")
+	public Map<String, Object> getStudentAttendanceList(@RequestParam(name="name", required=false) String name, @RequestParam(name="courseNumber", required = false) int courseNumber, @RequestBody PageRequestDTO pageRequest) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		int page = pageRequest.getPage()-1;  // page는 실제로 0부터 시작하기 때문
 		int size = pageRequest.getSize();
+		int totalCount = 0;
+
+		if(name == "") {
+			name = "none";
+		}
+
+		if(name != "none" && courseNumber != -1) {
+			// 기수, 수강생명 모두 입력해 검색
+			totalCount = attendanceServiceImpl.getAttendanceIntegratedListFilterAllAmount(name, courseNumber);
+			// 수강생 출결 목록 데이터
+			result.put("data", attendanceServiceImpl.getAttendanceIntegratedListFilterAll(name, courseNumber, page, size));
+		} else {
+			// 기수 또는 수강생명 입력하여 검색
+			totalCount = attendanceServiceImpl.getAttendanceIntegratedListFilterAmount(name, courseNumber);
+			// 수강생 출결 목록 데이터
+			result.put("data", attendanceServiceImpl.getAttendanceIntegratedListFilter(name, courseNumber, page, size));
+		}
 
 		// 페이징 response
-		int totalCount = attendanceServiceImpl.getStudentAttendanceListAmount(name, courseNumber);
+		// int totalCount = attendanceServiceImpl.getStudentAttendanceListAmount(name, courseNumber);
 		int totalPage = (totalCount/size) + 1;
-		// int currentPage = pageRequest.getCurrentPage();
-		int currentPage = 2;  // 브라우저에서 받아올 값인데 아직 연결안해서 controller 테스트를 위해 작성했던 코드.
+		int currentPage = pageRequest.getCurrentPage();
+		// int currentPage = 2;  // 브라우저에서 받아올 값인데 아직 연결안해서 controller 테스트를 위해 작성했던 코드.
 		int prevPage = 0;
 		int nextPage = 0;
 		if(currentPage > 1 && currentPage < totalPage) {
@@ -47,9 +65,6 @@ public class AttendanceController {
 		
 		PageResponseDTO pageInfo = PageResponseDTO.builder().totalCount(totalCount).totalPage(totalPage).currentPage(currentPage).prevPage(prevPage).nextPage(nextPage).build();
 		result.put("pageInfo", pageInfo);
-		
-		// 수강생 출결 목록 데이터
-		result.put("data", attendanceServiceImpl.getStudentAttendanceList(name, courseNumber, page, size));
 		
 		return result;
 	}
