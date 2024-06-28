@@ -33,8 +33,8 @@
             </div>
         </form>
         <div id="button-wrapper">
-            <button id="point-search-btn" class="btn-setting">조회</button>
-            <button id="enroll-btn" class="btn-setting">포인트 등록</button>
+            <button id="point-search-btn" class="btn-setting" onclick="initShowPointModal()">조회</button>
+            <button id="enroll-btn" class="btn-setting" onclick="initAddPointModal()">포인트 등록</button>
         </div>
     </article>
     <article id="point-table-wrapper">
@@ -62,7 +62,7 @@
                 </div>
             </form>
             <form>
-                <div class="point-table-row" th:each="student : ${studentList}">
+                <div class="point-table-row" th:each="student : ${studentList}" th:attr="data-student-course-seq=${student.studentCourseSeq},data-start-date=${student.courseStartDate},data-end-date=${student.courseEndDate}">
                     <div id="point-radio-btn">
                         <input name="point-radio-btn" type="radio" value="hrdNetId"/>
                     </div>
@@ -70,7 +70,7 @@
                         <span th:text="${student.courseNumber}">기수 alt</span>
                     </div>
                     <div id="point-table-courseName">
-                        <span th:text="${student.courseName}">과정</span>
+                        <span th:text="${student.courseName}" >과정</span>
                     </div>
                     <div id="point-table-birth">
                         <span th:text="${student.hrdNetId}">hrdnetid alt</span>
@@ -115,5 +115,194 @@
       </article>
 </section>
 <footer></footer>
+
+
+
+<!-- 포인트 조회 모달 -->
+<div id="showPointModal" class="course-modal" popover>
+    <div id="point-wrapper">
+        <div id="main-wrapper">
+          <div class="student-info">
+            <h1 class="info-title underline">수강생 정보</h1>
+            <div class="student-info-detail">
+                <div>
+                  <h4>과정명</h4>
+                  <h4 id="courseName">과정명 alt</h4>
+                </div>
+                <div>
+                  <h4>기수</h4>
+                  <h4 id="courseNumber">기수 alt</h4>
+                </div>
+                <div>
+                  <h4>기간</h4>
+                  <h4 id="courseDate">date ~ date alt</h4>
+                </div>
+                <div>
+                  <h4>이름</h4>
+                  <h4 id="studentName">studentName alt</h4>
+                </div>
+              </div>
+          </div>
+          <div class="total-point-info">
+            <h1 class="info-title underline">포인트 적립 내역</h1>
+            <div class="total-point-info-detail">
+              <div class="underline">
+                <h4>적립일</h4>
+                <h4>항목</h4>
+                <h4>포인트(점)</h4>
+              </div>
+              <div>
+                <h5>24.02.10</h5>
+                <h5>시험치기 응시</h5>
+                <h5>10</h5>
+              </div>
+              <div>
+                <h5>24.04.01</h5>
+                <h5>국가 자격증 취득</h5>
+                <h5>10</h5>
+              </div>
+            </div>
+            <div class="total-point line">
+              <h3>총 적립 포인트</h3>
+              <h3 id="totalPoint">20</h3>
+            </div>
+          </div>
+        </div>
+        <button id="point-enroll-btn" class="point-btn-setting" popovertargetaction="hide">확인</button>
+      </div>
+</div>
+
+<!-- 포인트 추가 모달 -->
+    <!-- <div id="addPointModal" class="course-modal" popover th:insert="~{students/addPointModal :: addPointModal}"></div> -->
+<div id="addPointModal" class="course-modal" popover>
+    <div id="main-wrapper">
+        <div id="addpoint-wrapper1">
+          <div class="student-info">
+            <h1 class="info-title underline">수강생 정보</h1>
+            <div class="student-info-detail">
+                <div>
+                  <h4>과정명</h4>
+                  <h4 id="courseName">과정명 alt</h4>
+                </div>
+                <div>
+                  <h4>기수</h4>
+                  <h4 id="courseNumber">기수 alt</h4>
+                </div>
+                <div>
+                  <h4>기간</h4>
+                  <h4 id="courseDate">date ~ date alt</h4>
+                </div>
+                <div>
+                  <h4>이름</h4>
+                  <h4 id="studentName">studentName alt</h4>
+                </div>
+              </div>
+          </div>
+    
+          <div class="choose-point-info">
+            <h1 class="info-title">선택한 항목</h1>
+            <div class="choose-point-info-detail">
+              <div class="underline">
+                <h4>항목</h4>
+                <h4>포인트(점)</h4>
+              </div>
+              <div>
+                <h4>국가 자격증 획득</h4>
+                <h4>10</h4>
+              </div>
+              <div class="line">
+                <h3>적립 포인트</h3>
+                <h3>10</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <div id="addpoint-wrapper2">
+          <div class="point-info">
+            <div class="info-title underline" id="point-info-name">
+              <h1>항목</h1>
+              <h1>포인트(점)</h1>
+            </div>
+            <div id="pointCategoryList" class="point-info-detail">
+              <div th:each="pointCategory : ${pointCategoryList}" class="pointCategoryInfo">
+                <input type="checkbox" id="pointSeq" name="point" th:value="${pointCategory.pointSeq}" />
+                <h4 th:text="${pointCategory.category}" id="pointName">카테고리명 alit</h4>
+                <h4 th:text="${pointCategory.point}" id="point">포인트 alt</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="point-btn-wrapper">
+        <button id="point-enroll-btn" class="point-btn-setting">등록</button>
+        <button id="edit-btn" class="point-btn-setting" popovertargetaction="hide">취소</button>
+      </div>
+</div>
+<script>
+    function initAddPointModal(){
+        const selectedStudentDiv = getSelectedStudent();
+        const modal = getThisModal();
+        if(!selectedStudentDiv){
+            return;
+        }
+        modal.showPopover();
+        setStudentData();
+
+        function setStudentData(){
+            // console.log(studentDiv);
+            const courseNumber = $(selectedStudentDiv).find("#point-table-courseId span").text();
+            const courseName = $(selectedStudentDiv).find("#point-table-courseName span").text();
+            const startDate = $(selectedStudentDiv).data("startDate");
+            const endDate = $(selectedStudentDiv).data("endDate");
+            const studentName = $(selectedStudentDiv).find("#point-table-name span").text();
+            const totalPoint = $(selectedStudentDiv).find("#point-table-total-point span").text();
+
+            $(modal).find("#courseName").text(courseName);
+            $(modal).find("#courseNumber").text(courseNumber + "기");
+            $(modal).find("#courseNumber").data("courseNumber", courseNumber);
+            $(modal).find("#courseDate").text(startDate + " ~ " + endDate);
+            $(modal).find("#studentName").text(studentName);
+            $(modal).find("#totalPoint").text(totalPoint);
+
+        }
+        function getThisModal(){
+            return $("#addPointModal")[0];
+        }
+    }
+    function initShowPointModal(){
+        const selectedStudentDiv = getSelectedStudent();
+        const modal = getThisModal();
+        if(!selectedStudentDiv){
+            return;
+        }
+        setStudentData();
+        modal.showPopover();
+
+        function setStudentData(){
+            // console.log(studentDiv);
+            const courseNumber = $(selectedStudentDiv).find("#point-table-courseId span").text();
+            const courseName = $(selectedStudentDiv).find("#point-table-courseName span").text();
+            const startDate = $(selectedStudentDiv).data("startDate");
+            const endDate = $(selectedStudentDiv).data("endDate");
+            const studentName = $(selectedStudentDiv).find("#point-table-name span").text();
+            const totalPoint = $(selectedStudentDiv).find("#point-table-total-point span").text();
+
+            $(modal).find("#courseName").text(courseName);
+            $(modal).find("#courseNumber").text(courseNumber + "기");
+            $(modal).find("#courseNumber").data("courseNumber", courseNumber);
+            $(modal).find("#courseDate").text(startDate + " ~ " + endDate);
+            $(modal).find("#studentName").text(studentName);
+            $(modal).find("#totalPoint").text(totalPoint);
+
+        }
+        function getThisModal(){
+            return $("#showPointModal")[0];
+        }
+    }
+    function getSelectedStudent(){
+        return $("input[name='point-radio-btn']:checked").closest(".point-table-row")[0];
+    }
+</script>
 </body>
 </html>

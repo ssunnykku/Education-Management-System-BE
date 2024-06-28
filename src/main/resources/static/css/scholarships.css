@@ -841,3 +841,11 @@ ul#pagination {
         cursor: default;
     }
 }
+.course-modal{
+    margin:auto;
+    border:solid;
+  }
+
+#addPointModal{
+    padding: 100px;
+}
