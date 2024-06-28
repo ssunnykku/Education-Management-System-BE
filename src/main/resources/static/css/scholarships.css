@@ -16,6 +16,9 @@
 
 }
 
+.seacrch-form{
+    margin-left: 30%;
+}
 .search-form-wrapper {
     display: flex;
     width: 450px;
@@ -977,3 +980,13 @@ ul#pagination {
     line-height: 1.5em;
   }
   
+.point-search{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#button-wrapper{
+    margin-right: 5%;
+}

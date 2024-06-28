@@ -15,20 +15,22 @@
   <div th:insert="~{common/header :: header}"></div>
   <div th:insert="~{common/title :: title ('포인트 관리')}"></div>
   <section id="point-section">
-    <article class="search-form-wrapper">
+    <article class="search-form-wrapper point-search">
       <form action="#" class="seacrch-form">
         <div id="filter-button-wrapper">
-          <select id="courseNumberSelect" name="courseId-filter" class="courseId-filter">
-            <option value="none">기수</option>
-            <option th:each="courseNumber: ${courseNumberList}" th:text="${courseNumber}"
-              th:attr="value=${courseNumber}" th:selected="${selectedCourseNumber} == ${courseNumber}">기수 alt</option>
-          </select>
-          <select name="excludeExpired" class="courseId-filter" onChange="updateCourseNumber(event)">
-            <option value="true" th:selected="${paging.excludeExpired} == 1">진행중</option>
-            <option value="false" th:selected="${paging.excludeExpired} == 0">전체</option>
-          </select>
-          <input id="studentNameInput" placeholder="수강생 이름을 입력하세요" class="search-input" />
-          <button type="button" class="filter-search-btn">검색</button>
+          <form action="/ems/points">
+            <select id="courseNumberSelect" name="courseNumber" class="courseId-filter">
+              <option value="0">기수</option>
+              <option th:each="courseNumber: ${courseNumberList}" th:text="${courseNumber}"
+                th:attr="value=${courseNumber}" th:selected="${selectedCourseNumber} == ${courseNumber}">기수 alt</option>
+            </select>
+            <select name="excludeExpired" class="courseId-filter" onChange="updateCourseNumber(event)">
+              <option value="true" th:selected="${paging.excludeExpired} == 1">진행중</option>
+              <option value="false" th:selected="${paging.excludeExpired} == 0">전체</option>
+            </select>
+            <input id="studentNameInput" name="studentName" placeholder="수강생 이름을 입력하세요" class="search-input"  value=""/>
+            <button type="submit" class="filter-search-btn">검색</button>
+          </form>
         </div>
       </form>
       <div id="button-wrapper">
@@ -92,7 +94,7 @@
       <ul id="pagination">
         <li th:classappend="${paging.pageOffset == 1} ? 'inactivePage'">
           <a class="page-link"
-            th:href="@{|?page=${paging.pageOffset-1}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}">
+            th:href="@{|?page=${paging.pageOffset-1}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}&courseNumber=${selectedCourseNumber}&studentName=${searchedStudentName != null ? searchedStudentName : ''}|}">
             <span>이전</span>
           </a>
         </li>
@@ -100,12 +102,12 @@
           th:if="${(paging.pageOffset + page) <= ((paging.totalStudentCount/paging.pageSize) + 1)}"
           th:classappend="${(paging.pageOffset + page) == paging.page} ? 'activePage'" class="page-item">
           <a th:text="${paging.pageOffset + page}" class="page-link"
-            th:href="@{|?page=${paging.pageOffset + page}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}"></a>
+            th:href="@{|?page=${paging.pageOffset + page}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}&courseNumber=${selectedCourseNumber}&studentName=${searchedStudentName != null ? searchedStudentName : ''}|}"></a>
         </li>
         <li class="page-item"
           th:classappend="${(paging.pageOffset + 10) > (paging.totalStudentCount/paging.pageSize)} ? 'inactivePage'">
           <a class="page-link"
-            th:href="@{|?page=${paging.pageOffset + 10}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}">
+            th:href="@{|?page=${paging.pageOffset + 10}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}&courseNumber=${selectedCourseNumber}&studentName=${searchedStudentName != null ? searchedStudentName : ''}|}">
             <span>다음</span>
           </a>
         </li>
@@ -402,7 +404,22 @@
         showMessage("일부 포인트 등록에 실패하였습니다.");
       }); 
     }
+    async function updateCourseNumber(e){
+      const courseNumberList = await getCourseNumberList(e.target.value);
+      const courseNumberSelect = $("#courseNumberSelect");
+      courseNumberSelect.html("");
+      let element = `<option value="` + 0 +`">` + "기수" + `</option>`;
+      courseNumberList.forEach(courseNumber => {
+        element += `<option value="` + courseNumber +`">` + courseNumber + `</option>`;
+      });
+      courseNumberSelect.get()[0].innerHTML = element;
+    }
 
+    async function getCourseNumberList(excludeExpired){
+      const res = await fetch("/courses/course-number-list?excludeExpired=" + excludeExpired);
+      const data = await res.json();
+      return data.result;
+    }
     function getCheckedPoint() {
       return $("#pointCategoryList input[type='checkbox']:checked").map((i, item) => $(item).closest("div")[0]);
     }

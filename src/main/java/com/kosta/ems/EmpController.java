@@ -133,11 +133,12 @@ public class EmpController {
 
 	@GetMapping("/points")
 	public String pointBoard(@RequestParam(value = "page", defaultValue = "1") int page,
-			@RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-			@RequestParam(value = "courseNumber", defaultValue = "0") int courseNumber,
-			String studentName,
-			@RequestParam(value = "excludeExpired", defaultValue = "true") boolean excludeExpired,
+			@RequestParam(value = "pageSize", defaultValue = "10")             int pageSize,
+			@RequestParam(value = "courseNumber", defaultValue = "0")          int courseNumber,
+																			   String studentName,
+			@RequestParam(value = "excludeExpired", defaultValue = "true") 	   boolean excludeExpired,
 			HttpServletRequest request, Model model) {
+		System.out.println(studentName + "입니다");
 		List<StudentCourseWithPointDTO> studentList = pointService.getStudentListWithPoint(courseNumber, studentName, page, pageSize, getAcademyOfLoginUser(request));
 		Integer totalStudentCount = pointService.getCountOfStudentWithPoint(courseNumber, studentName, getAcademyOfLoginUser(request));
 		List<Integer> courseNumberList = courseService.getCourseNumberList(getAcademyOfLoginUser(request),
@@ -150,6 +151,7 @@ public class EmpController {
 		paging.put("pageOffset", (((page - 1) / pageSize) * pageSize) + 1);// 현재 페이지가 27이라면 offset은 21을 가리킨다.
 		paging.put("excludeExpired", excludeExpired ? 1 : 0);
 
+		model.addAttribute("searchedStudentName", studentName);
 		model.addAttribute("selectedCourseNumber", courseNumber);
 		model.addAttribute("courseNumberList", courseNumberList);
 		model.addAttribute("paging", paging);
