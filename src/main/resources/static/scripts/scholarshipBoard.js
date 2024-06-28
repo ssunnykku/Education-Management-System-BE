@@ -1,8 +1,9 @@
 const params = new URL(location.href).search.split("=")[1];
 
 let currentPage = 1;
-let currentBlock = 1;
 const pageSize = 10; // 한 블록 당 페이지 수
+let currentBlock = 1;
+
 let totalPages = 0;
 
 async function getSettlementList(data) {
@@ -80,46 +81,42 @@ $(".board-filter-search-btn").click(async function () {
             $(".scholarship-cnt-pages").html(`<span>총 ${data.result}</span>건`);
 
             // const countPage = Math.ceil(data.result / 10);
+            // const countPage = 12;  // Example total pages
+            totalPages = Math.ceil(data.result / 10);
 
-            const countPage = 12;
-
-            if (countPage > 10) {
-                for (let i = 1; i < 11; i++) {
-                    let num = i;
-                    $("#page_number").append(`<a class="page-link" onclick="fetchScholarshipBoard(${num})">${num}</a>`);
-                }
-            } else {
-                for (let i = 1; i < countPage + 1; i++) {
-                    let num = i;
-                    $("#page_number").append(`<a class="page-link" onclick="fetchScholarshipBoard(${num})">${num}</a>`);
-                }
-            }
-
-            $("#next").click(() => {
-
-                if (countPage > 10) {
-                    $("#page_number").html("");
-                    for (let i = 11; i < countPage + 1; i++) {
-                        let num = i;
-                        console.log(num);
-                        $("#page_number").append(`<a class="page-link" onclick={fetchScholarshipBoard(${num})} >${num}</a>`)
-                    }
-                }
-
-                $("#before").click(() => {
-                    if (params > 10) {
-                        $("#page_number").html("");
-                        for (let i = 1; i < 11; i++) {
-                            let num = i;
-                            $("#page_number").append(`<a class="page-link" onclick={fetchScholarshipBoard(${num})} >${num}</a>`)
-                        }
-                    }
-                })
-
-            })
+            updatePagination();
         })
         .catch((error) => console.error(error));
 });
+
+function updatePagination() {
+    $("#page_number").html("");
+
+    let firstPage = (currentBlock * pageSize) - pageSize + 1;
+    let lastPage = totalPages <= currentBlock * pageSize ? totalPages : currentBlock * pageSize;
+
+    for (let i = firstPage; i <= lastPage; i++) {
+        let num = i;
+        $("#page_number").append(`<a class="page-link" onclick="fetchScholarshipBoard(${num})">${num}</a>`);
+    }
+}
+
+$("#next").click(() => {
+    if (currentBlock * pageSize < totalPages) {
+        currentBlock += 1;
+        currentPage = (currentBlock * pageSize) - pageSize + 1;
+        updatePagination();
+    }
+});
+
+$("#before").click(() => {
+    if (currentBlock > 1) {
+        currentBlock -= 1;
+        currentPage = (currentBlock * pageSize) - pageSize + 1;
+        updatePagination();
+    }
+});
+
 
 async function fetchScholarshipBoard(param) {
     const myHeaders = new Headers();
@@ -141,28 +138,56 @@ async function fetchScholarshipBoard(param) {
         .then((res) => res.json())
         .then(async (data) => {
             const dataList = data.result;
-            const settlementHtml = await getSettlementList(dataList);
+            await getSettlementList(dataList);
         })
         .catch((error) => console.error(error));
 }
 
 /*** 체크박스 상단 전체 선택 ***/
-$('#title-checkbox').change(() => {
-    if ($('#title-checkbox').is(':checked')) {
-        $(".checkbox").prop("checked", true);
-        return;
-    } else {
-        $(".checkbox").prop("checked", false);
-    }
+// $('#title-checkbox').change(() => {
+//     if ($('#title-checkbox').is(':checked')) {
+//         $(".checkbox").prop("checked", true);
+//         return;
+//     } else {
+//         $(".checkbox").prop("checked", false);
+//     }
+// })
+//
+// let selected = [];
+// $("#settlement-btn").click(function () {
+//     $(".checkbox").each(function () {
+//         if ($(this).prop("checked")) {
+//             selected.push(this.value);
+//             console.log(this.value);
+//         }
+//     });
+// });
 
-})
+$("#title-checkbox").click(toggleAll())
 
-let selected = [];
-$("#settlement-btn").click(function () {
-    $(".checkbox").each(function () {
-        if ($(this).prop("checked", true)) {
-            selected.push(this.value);
-            console.log(this.value);
+
+async function removeCourse() {
+    let selectedCourseSeqList = [];
+    $("div.courseBoard-row").not("#courseBoard-title-row").each((index, item) => {
+        if ($(item).find("input[type=checkbox]").prop("checked")) {
+            const courseSeq = $(item).data("courseSeq");
+            selectedCourseSeqList.push(courseSeq);
         }
     });
-});
+    if (!selectedCourseSeqList.length) {
+        showMessage("삭제할 과정을 선택해주십시오.");
+        return;
+    }
+}
+
+
+function toggleAll() {
+    const isChecked = $("#title-checkbox").prop('checked');
+    $(".checkbox input[type=checkbox]").prop('checked', isChecked);
+}
+
+function showMessage(msg) {
+    const messageModal = $("#removeCourseCompleteModal").get()[0];
+    messageModal.querySelector("#message").innerText = msg;
+    messageModal.showPopover();
+}
