@@ -6,7 +6,7 @@
 
 #scholarship-search-btn-wrapper {
     display: flex;
-    flex-display: row;
+    flex-direction: row;
     justify-content: space-between;
     width: 100%;
     padding-left: 30%;
@@ -16,6 +16,9 @@
 
 }
 
+.seacrch-form{
+    margin-left: 30%;
+}
 .search-form-wrapper {
     display: flex;
     width: 450px;
@@ -269,6 +272,11 @@
 #point-table-birth {
     width: 25%;
 }
+
+#point-table-courseName {
+    width: 25%;
+}
+
 
 #point-table-name {
     width: 25%;
@@ -693,11 +701,17 @@ body {
     gap: 30px;
 }
 
+.choose-point-info-detail{
+    height: 250px;
+    overflow-y: auto;
+}
+
 .choose-point-info-detail,
 .point-info-detail {
     display: flex;
     flex-direction: column;
     width: 350px;
+    
     gap: 30px;
 }
 
@@ -768,7 +782,7 @@ body {
     align-items: center;
     gap: 50px;
     width: 1000px;
-    height: 400px;
+    height: 700px;
 }
 
 .total-point-info {
@@ -789,7 +803,7 @@ body {
 .total-point-info-detail > div {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .total-point {
@@ -835,4 +849,144 @@ ul#pagination {
     .inactivePage a {
         cursor: default;
     }
+}
+.course-modal{
+    margin:auto;
+    border:solid;
+  }
+
+#addPointModal{
+    padding: 100px;
+}
+
+#pointBody{
+    height: 400px;
+    overflow-y: auto;
+    width: 400px;
+}
+
+
+.removecourse-wrapper {
+    width: 340px;
+    height: 200px;
+    background: #ffffff;
+    border-radius: 10px;
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 16px;
+    gap: 10px;
+  }
+  
+  .removecourse-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    column-gap: 30px;
+  }
+  
+  .removecourse-info > h1 {
+    font-size: 18px;
+  }
+  
+  .title {
+    font-weight: bold;
+    color: rgba(45, 98, 234, 1);
+  }
+  
+  .upperline {
+    background: #ffffff;
+    border-top: 1px solid #f3f5f9;
+    border-radius: 10px 10px 0px 0px;
+    padding: 20px 0;
+  }
+  
+#btn-wrapper {
+    height: 55px;
+    padding: 0;
+  
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .btn-setting {
+    font-style: normal;
+  
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 144%;
+  
+    width: 57px;
+    height: 32px;
+  
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  
+    background: #eee;
+    padding: 5px;
+    box-shadow: 0px 0px 3px #888;
+    line-height: 1.5em;
+  }
+  
+  #enroll-btn {
+    color: #ffffff;
+    background-color: rgb(64, 64, 64);
+    border-radius: 8px;
+  }
+  
+  #edit-btn,
+  #delete-btn {
+    font-weight: 600;
+    color: rgb(64, 64, 64);
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+  }
+  
+  #enroll-btn-format {
+    font-weight: 600;
+    color: rgba(45, 98, 234, 1);
+    border-radius: 8px;
+  }
+  
+  .btn-setting-format {
+    font-style: normal;
+  
+    /* font-weight: 600; */
+    font-size: 14px;
+    line-height: 144%;
+  
+    width: 57px;
+    height: 32px;
+  
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  
+    padding: 5px;
+    box-shadow: 0px 0px 3px rgba(45, 98, 234, 1);
+    line-height: 1.5em;
+  }
+  
+.point-search{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#button-wrapper{
+    margin-right: 5%;
 }

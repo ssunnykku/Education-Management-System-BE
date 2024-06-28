@@ -15,22 +15,21 @@
 		FROM courses c, students s, students_points sp, point_categories pc, students_courses sc
 		WHERE
 		(sc.student_id=s.student_id AND sc.course_seq=c.course_seq AND sc.student_course_seq=sp.student_course_seq AND sp.point_seq=pc.point_seq)
-		AND (s.is_active = 'T' AND #{name} IS NULL OR #{name} = '' OR s.name LIKE CONCAT('%', #{name}, '%'))
-		AND (c.is_active = 'T' AND IF(#{courseNumber}, 0,'전체') = '전체' or c.course_number = #{courseNumber})
+		AND s.is_active = 'T' AND (#{name} IS NULL OR #{name} = '' OR s.name LIKE CONCAT('%', #{name}, '%'))
+		AND c.is_active = 'T' AND (IF(#{courseNumber}, 0,'전체') = '전체' or c.course_number = #{courseNumber})
 		GROUP BY sc.student_course_seq
+		ORDER BY c.course_number, sc.student_course_seq
 		LIMIT #{offset}, #{pageSize}
 	</select>
 	<select id="getCountOfStudentWithPoint"
 		resultType="int">
-		SELECT 
-			count(s.students_course_seq)
-		FROM courses c, students s, students_points sp, point_categories pc, students_courses sc
+SELECT 
+			count(distinct sp.student_course_seq) AS total
+		FROM courses c, students s, students_points sp, students_courses sc
 		WHERE
-		(sc.student_id=s.student_id AND sc.course_seq=c.course_seq AND sc.student_course_seq=sp.student_course_seq AND sp.point_seq=pc.point_seq)
-		AND (s.is_active = 'T' AND #{name} IS NULL OR #{name} = '' OR s.name LIKE CONCAT('%', #{name}, '%'))
-		AND (c.is_active = 'T' AND IF(#{courseNumber}, 0,'전체') = '전체' or c.course_number = #{courseNumber})
-		GROUP BY sc.student_course_seq
-		LIMIT #{offset}, #{pageSize}
+		(sc.student_id=s.student_id AND sc.course_seq=c.course_seq AND sc.student_course_seq=sp.student_course_seq)
+		AND s.is_active = 'T' AND (#{name} IS NULL OR #{name} = '' OR s.name LIKE CONCAT('%', #{name}, '%'))
+		AND c.is_active = 'T' AND (IF(#{courseNumber}, 0,'전체') = '전체' or c.course_number = #{courseNumber})
 	</select>
 	<select id="getPointHistory"
 		resultType="com.kosta.ems.studentPoint.dto.PointHistoryDTO">
@@ -38,11 +37,11 @@
 		FROM students_points sp, point_categories pc
 		WHERE pc.point_seq=sp.point_seq
 		AND sp.student_course_seq= #{studentCourseSeq}
-		ORDER BY sp.save_point_date;
+		ORDER BY sp.save_point_date DESC;
 	</select>
 		<select id="getPointCategoryList"
 		resultType="com.kosta.ems.studentPoint.dto.PointCategoryDTO">
-SELECT point_seq, category, POINT
+SELECT point_seq pointSeq, category, point
 FROM point_categories
 WHERE is_active = 'T'
 ORDER BY point_seq;
