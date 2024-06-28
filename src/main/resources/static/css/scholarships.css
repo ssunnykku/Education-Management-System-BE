@@ -6,7 +6,7 @@
 
 #scholarship-search-btn-wrapper {
     display: flex;
-    flex-display: row;
+    flex-direction: row;
     justify-content: space-between;
     width: 100%;
     padding-left: 30%;
@@ -269,6 +269,11 @@
 #point-table-birth {
     width: 25%;
 }
+
+#point-table-courseName {
+    width: 25%;
+}
+
 
 #point-table-name {
     width: 25%;
