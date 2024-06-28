@@ -47,8 +47,7 @@
         limit #{limit} offset #{offset}
     </select>
 
-
-    <select id="countScholarshipTargetList">
+    <select id="countScholarshipTarget">
         SELECT count(distinct s.student_id) as countBenefitTarget
         FROM students s
                  LEFT JOIN students_courses sc ON s.student_id = sc.student_id
@@ -72,13 +71,12 @@
         ORDER BY name desc;
     </select>
 
-
     <insert id="insertScholarshipSettlementDate" parameterType="int">
         insert into scholarship_settlement_date (student_course_seq)
         values (#{studentCourseSeq})
     </insert>
 
-    <select id="selectScholarshipSettlementResultList"
+    <select id="selectScholarshipResultList"
             resultType="com.kosta.ems.scholarship.ScholarshipSettlementResultDTO">
         SELECT s.student_id          AS studentId,
                s.hrd_net_id          AS hrdNetId,
@@ -97,9 +95,9 @@
                  LEFT JOIN students_courses sc ON s.student_id = sc.student_id
                  LEFT JOIN courses c ON c.course_seq = sc.course_seq
                  LEFT JOIN scholarship_settlement_date ssd ON ssd.student_course_seq = sc.student_course_seq
-        WHERE (#{courseNumber} IS NULL OR #{courseNumber} = '' OR c.course_number = #{courseNumber})
-          and s.is_active = 'T'
-          and c.academy_location = #{academyLocation}
+        WHERE (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
+          AND s.is_active = 'T'
+          AND c.academy_location = #{academyLocation}
           AND s.name like CONCAT('%', #{name}, '%')
           AND s.is_active = 'T'
           AND c.is_active = 'T'
@@ -108,6 +106,23 @@
           AND scholarship_date != ''
         ORDER BY s.name desc
         limit #{limit} offset #{offset};
+    </select>
+
+    <select id="countScholarshipResult" resultType="int">
+        SELECT count(s.student_id) as countResult
+        FROM students s
+                 LEFT JOIN students_courses sc ON s.student_id = sc.student_id
+                 LEFT JOIN courses c ON c.course_seq = sc.course_seq
+                 LEFT JOIN scholarship_settlement_date ssd ON ssd.student_course_seq = sc.student_course_seq
+        WHERE (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
+          AND s.is_active = 'T'
+          AND c.academy_location = #{academyLocation}
+          AND s.name like CONCAT('%', #{name}, '%')
+          AND s.is_active = 'T'
+          AND c.is_active = 'T'
+          AND (#{scholarshipDate} IS NULL OR #{scholarshipDate} = '' OR
+               scholarship_date = #{scholarshipDate})
+          AND scholarship_date != ''
     </select>
 
 </mapper>

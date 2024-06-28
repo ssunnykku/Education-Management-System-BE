@@ -34,7 +34,7 @@ class ScholarshipServiceImplTest {
     void getScholarshipSettlementResultListTest() {
 
         ArrayList<ScholarshipSettlementResultDTO> list =
-                (ArrayList<ScholarshipSettlementResultDTO>) scholarshipService.getScholarshipSettlementResultList(ScholarshipTargetListReqDTO.builder()
+                (ArrayList<ScholarshipSettlementResultDTO>) scholarshipService.getScholarshipResultList(ScholarshipTargetListReqDTO.builder()
                         .courseNumber(277).name("손").scholarshipDate(LocalDate.parse("2024-06-21")).build(), 1, 10);
 
         for (ScholarshipSettlementResultDTO dto : list) {
@@ -59,7 +59,7 @@ class ScholarshipServiceImplTest {
         scholarshipService.setScholarshipSettlementDate(20);
         scholarshipService.setScholarshipSettlementDate(21);
 
-        ArrayList<ScholarshipSettlementResultDTO> list = (ArrayList<ScholarshipSettlementResultDTO>) scholarshipService.getScholarshipSettlementResultList(ScholarshipTargetListReqDTO.builder().courseNumber(277).name("").scholarshipDate(null).build(), 2, 10);
+        ArrayList<ScholarshipSettlementResultDTO> list = (ArrayList<ScholarshipSettlementResultDTO>) scholarshipService.getScholarshipResultList(ScholarshipTargetListReqDTO.builder().courseNumber(277).name("").scholarshipDate(null).build(), 2, 10);
         log.info(list.toString());
         log.info(String.valueOf(list.size()));
 
@@ -68,6 +68,6 @@ class ScholarshipServiceImplTest {
     //@Test
     void getCountTargetListTest() {
         ScholarshipTargetListReqDTO dto = ScholarshipTargetListReqDTO.builder().name("").courseNumber(277).academyLocation("가산").build();
-        assertThat(scholarshipService.getCountTargetList(dto)).isEqualTo(11);
+        assertThat(scholarshipService.getCountTarget(dto)).isEqualTo(11);
     }
 }

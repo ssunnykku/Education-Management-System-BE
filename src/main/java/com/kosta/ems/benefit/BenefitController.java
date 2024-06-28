@@ -27,6 +27,22 @@ public class BenefitController {
 
     @PostMapping("/result")
     public Map<String, ArrayList<BenefitSettlementResultDTO>> getBenefitSettlementResult(@RequestBody BenefitSettlementReqDTO dto, @RequestParam int page) {
+        dto.setAcademyLocation("가산");
+
         return Map.of("result", (ArrayList<BenefitSettlementResultDTO>) benefitService.getBenefitSettlementResult(dto, page, 10));
+    }
+
+    @PostMapping("/count")
+    public Map<String, Integer> countSettlementTarget(@RequestBody BenefitTargetInfoDTO dto) {
+        dto.setAcademyLocation("가산");
+        return Map.of("result", benefitService.countBenefitSettlement(dto));
+    }
+
+    @PostMapping("/result/count")
+    public Map<String, Integer> countBenefitResult(@RequestBody BenefitSettlementReqDTO dto) {
+        dto.setAcademyLocation("가산");
+
+        return Map.of("result", benefitService.countBenefitResult(dto));
+
     }
 }

@@ -27,8 +27,8 @@ public class ScholarshipServiceImpl implements ScholarshipService {
     }
 
     @Override
-    public int getCountTargetList(ScholarshipTargetListReqDTO dto) {
-        return scholarshipMapper.countScholarshipTargetList(dto.getAcademyLocation(), dto.getName(), String.valueOf(dto.getCourseNumber()));
+    public int getCountTarget(ScholarshipTargetListReqDTO dto) {
+        return scholarshipMapper.countScholarshipTarget(dto.getAcademyLocation(), dto.getName(), String.valueOf(dto.getCourseNumber()));
     }
 
     @Override
@@ -37,15 +37,18 @@ public class ScholarshipServiceImpl implements ScholarshipService {
     }
 
     @Override
-    public List<ScholarshipSettlementResultDTO> getScholarshipSettlementResultList(ScholarshipTargetListReqDTO dto, int page, int size) {
+    public List<ScholarshipSettlementResultDTO> getScholarshipResultList(ScholarshipTargetListReqDTO dto, int page, int size) {
         int limit = size;
         int offset = size * (page - 1);
 
         dto.setLimit(limit);
         dto.setOffset(offset);
 
-        return (ArrayList<ScholarshipSettlementResultDTO>) scholarshipMapper.selectScholarshipSettlementResultList(String.valueOf(dto.getCourseNumber()), dto.getAcademyLocation(), dto.getName(), dto.getScholarshipDate(), limit, offset);
+        return (ArrayList<ScholarshipSettlementResultDTO>) scholarshipMapper.selectScholarshipResultList(String.valueOf(dto.getCourseNumber()), dto.getAcademyLocation(), dto.getName(), dto.getScholarshipDate(), limit, offset);
     }
 
-
+    @Override
+    public int countSettlementResult(ScholarshipTargetListReqDTO dto) {
+        return scholarshipMapper.countScholarshipResult(String.valueOf(dto.getCourseNumber()), dto.getAcademyLocation(), dto.getName(), dto.getScholarshipDate());
+    }
 }

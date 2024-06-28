@@ -23,10 +23,10 @@ public class ScholarshipController {
     }
 
     @PostMapping("/count")
-    public Map<String, Integer> countTargetList(@RequestBody ScholarshipTargetListReqDTO dto) {
+    public Map<String, Integer> countSettlementTarget(@RequestBody ScholarshipTargetListReqDTO dto) {
         dto.setAcademyLocation("가산");
 
-        return Map.of("result", scholarshipService.getCountTargetList(dto));
+        return Map.of("result", scholarshipService.getCountTarget(dto));
     }
 
     @PostMapping("/settlement/{studentCourseSeq}")
@@ -35,9 +35,15 @@ public class ScholarshipController {
     }
 
     @PostMapping("/result")
-    public Map<String, ArrayList<ScholarshipSettlementResultDTO>> getScholarshipSettlementResultList(@RequestBody ScholarshipTargetListReqDTO dto, @RequestParam int page) {
+    public Map<String, ArrayList<ScholarshipSettlementResultDTO>> getScholarshipResultList(@RequestBody ScholarshipTargetListReqDTO dto, @RequestParam int page) {
         dto.setAcademyLocation("가산");
-        return Map.of("result", (ArrayList<ScholarshipSettlementResultDTO>) scholarshipService.getScholarshipSettlementResultList(dto, page, 10));
+        return Map.of("result", (ArrayList<ScholarshipSettlementResultDTO>) scholarshipService.getScholarshipResultList(dto, page, 10));
+    }
+
+    @PostMapping("/result/count")
+    public Map<String, Integer> countResult(@RequestBody ScholarshipTargetListReqDTO dto) {
+        dto.setAcademyLocation("가산");
+        return Map.of("result", scholarshipService.countSettlementResult(dto));
     }
 
 
