@@ -773,7 +773,7 @@ body {
     align-items: center;
     gap: 50px;
     width: 1000px;
-    height: 400px;
+    height: 700px;
 }
 
 .total-point-info {
@@ -794,7 +794,7 @@ body {
 .total-point-info-detail > div {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .total-point {
@@ -848,4 +848,10 @@ ul#pagination {
 
 #addPointModal{
     padding: 100px;
+}
+
+#pointBody{
+    height: 400px;
+    overflow-y: auto;
+    width: 400px;
 }

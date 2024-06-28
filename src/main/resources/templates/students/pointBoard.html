@@ -145,13 +145,16 @@
           </div>
           <div class="total-point-info">
             <h1 class="info-title underline">포인트 적립 내역</h1>
-            <div class="total-point-info-detail">
+            <div class="total-point-info-detail" id="pointBody">
               <div class="underline">
                 <h4>적립일</h4>
                 <h4>항목</h4>
                 <h4>포인트(점)</h4>
               </div>
-              <div>
+              <!-- <div id="pointBody" style="display: contents;">
+
+              </div> -->
+              <!-- <div>
                 <h5>24.02.10</h5>
                 <h5>시험치기 응시</h5>
                 <h5>10</h5>
@@ -160,7 +163,7 @@
                 <h5>24.04.01</h5>
                 <h5>국가 자격증 취득</h5>
                 <h5>10</h5>
-              </div>
+              </div> -->
             </div>
             <div class="total-point line">
               <h3>총 적립 포인트</h3>
@@ -277,8 +280,31 @@
             return;
         }
         setStudentData();
+        setPointHistory();
         modal.showPopover();
+        function setPointHistory(){
+            const sCSeq = $(selectedStudentDiv).data("studentCourseSeq");
 
+fetch("/points/student?studentCourseSeq=" + sCSeq)
+  .then((response) => response.json())
+  .then((data) => {
+    let str = `              <div class="underline">
+                <h4>적립일</h4>
+                <h4>항목</h4>
+                <h4>포인트(점)</h4>
+              </div>`;
+    data.data.forEach(category => {
+        str += `<div>
+                    <h5>${category.saveDate}</h5>
+                    <h5>${category.categoryName}</h5>
+                    <h5>${category.point}</h5>
+                  </div>`;
+        console.log(category);
+      });
+      $("#showPointModal #pointBody").html(str);
+    })
+  .catch((error) => console.error(error));
+        }
         function setStudentData(){
             // console.log(studentDiv);
             const courseNumber = $(selectedStudentDiv).find("#point-table-courseId span").text();
