@@ -22,13 +22,20 @@ class AttendanceMapperTest {
     // [출결] - 수강생 출석 조회 목록 데이터 개수 (for 페이지네이션)
     // @Test
     public void selectStudentAttendanceListAmount() {
-    	log.info(attendanceMapper.selectStudentAttendanceListAmount("유", 277).toString());
+    	log.info(attendanceMapper.selectAttendanceIntegratedListFilterAllAmount("유", 277).toString());
     }
     
     // [출결] - 수강생 출석 조회 목록 조회
+    // 경우1_ 기수+수강생명 입력
     // @Test
-    public void selectStudentAttendanceList() {
-    	log.info(attendanceMapper.selectStudentAttendanceList("유", 277, 0, 2).toString());
+    public void selectAttendanceIntegratedListFilterAll() {
+    	log.info(attendanceMapper.selectAttendanceIntegratedListFilterAll("유", 277, 0, 2).toString());
+    }
+    // 경우2_ 기수 또는 수강생명 입력
+    @Test
+    public void selectAttendanceIntegratedListFilter() {
+        log.info(Integer.toString(attendanceMapper.selectAttendanceIntegratedListFilter("유", 277, 0, 10).size()));
+        log.info(attendanceMapper.selectAttendanceIntegratedListFilter("유", 277, 0, 10).toString());
     }
     
     // [출결] - 특정일의 수강생 출석 상태 목록 조회 (for 출결 입력/수정)
