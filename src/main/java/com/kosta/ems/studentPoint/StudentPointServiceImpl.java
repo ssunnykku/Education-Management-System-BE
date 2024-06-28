@@ -55,5 +55,11 @@ public class StudentPointServiceImpl implements StudentPointService {
 		return result;
 	}
 
+	@Override
+	public int getCountOfStudentWithPoint(int courseNumber, String studentName, String academyLocationOfManager) {
+//		courseMapper.getCourse course 보안검사 해야함
+		return mapper.getCountOfStudentWithPoint(courseNumber, studentName);
+	}
+
 
 }

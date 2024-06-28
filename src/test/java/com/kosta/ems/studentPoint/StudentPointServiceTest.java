@@ -27,6 +27,12 @@ public class StudentPointServiceTest {
 	
 	@Test
 	@Transactional
+	public void getTotal() {
+		assertThat(service.getCountOfStudentWithPoint(277, null, "가산")).isEqualTo(18);
+	}
+	
+	@Test
+	@Transactional
 	public void getPointHistory() {
 		List<PointHistoryDTO> history = service.getPointHistory(1, "가산");
 		assertThat(history.size()).isEqualTo(34);
@@ -44,5 +50,6 @@ public class StudentPointServiceTest {
 		boolean result = service.insertStudentPoint(2, "d893c29b-2f8f-11ef-b0b2-0206f94be675", 1, "가산");
 		assertThat(result).isTrue();
 	}
+	
 
 }
