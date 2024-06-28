@@ -40,7 +40,7 @@ SELECT
 	</select>
 		<select id="getPointCategoryList"
 		resultType="com.kosta.ems.studentPoint.dto.PointCategoryDTO">
-SELECT point_seq, category, POINT
+SELECT point_seq pointSeq, category, point
 FROM point_categories
 WHERE is_active = 'T'
 ORDER BY point_seq;
