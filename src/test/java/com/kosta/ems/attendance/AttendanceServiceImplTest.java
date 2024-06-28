@@ -27,7 +27,7 @@ class AttendanceServiceImplTest {
 //            log.info(a.getAttendanceStatus());
 //        }
 //    }
-    
+    /*
     // [출결] - 수강생 출결 조회 목록 데이터 개수 (for 페이지네이션)
     // @Test
     void getStudentAttendanceListAmount() {
@@ -39,6 +39,7 @@ class AttendanceServiceImplTest {
     void getStudentAttendanceList() {
     	log.info(AttendanceServiceImpl.getStudentAttendanceList("유", 277, 3, 2).toString());
     }
+     */
     
     // [출결] - 특정일의 수강생 출석 상태 목록 조회 (for 출결 입력/수정)
     // 경우1 _ 기수+수강생명 입력

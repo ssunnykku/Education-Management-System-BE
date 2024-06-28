@@ -30,6 +30,7 @@ public class StudentPointServiceImpl implements StudentPointService {
 //			//throw new managerAuthorizationException();
 //		}
 		int offset = (page - 1) * pageSize;
+		
 		return mapper.getStudentListWithPoint(courseNumber, name, offset, pageSize);
 	}
 
@@ -53,6 +54,12 @@ public class StudentPointServiceImpl implements StudentPointService {
 		} catch (Exception e) {
 		}
 		return result;
+	}
+
+	@Override
+	public int getCountOfStudentWithPoint(int courseNumber, String studentName, String academyLocationOfManager) {
+//		courseMapper.getCourse course 보안검사 해야함
+		return mapper.getCountOfStudentWithPoint(courseNumber, studentName);
 	}
 
 

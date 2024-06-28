@@ -7,6 +7,7 @@ import com.kosta.ems.studentPoint.dto.PointHistoryDTO;
 import com.kosta.ems.studentPoint.dto.StudentCourseWithPointDTO;
 
 import java.util.List;
+import java.util.function.IntPredicate;
 
 @Service
 public interface StudentPointService {
@@ -17,5 +18,7 @@ public interface StudentPointService {
 	List<PointCategoryDTO> getPointCategoryList();
 
 	boolean insertStudentPoint(int pointSeq, String managerId, int studentCourseSeq, String academyLocationOfManager);
+
+	int getCountOfStudentWithPoint(int courseNumber, String studentName, String academyLocationOfManager);
 	
 }

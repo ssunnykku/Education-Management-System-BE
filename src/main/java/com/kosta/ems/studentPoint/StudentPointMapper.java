@@ -11,6 +11,7 @@ import java.util.List;
 @Mapper
 public interface StudentPointMapper {
 	List<StudentCourseWithPointDTO> getStudentListWithPoint(int courseNumber, String name, int offset, int pageSize);
+	int getCountOfStudentWithPoint(int courseNumber, String name);
 
 	List<PointHistoryDTO> getPointHistory(int studentCourseSeq);
 

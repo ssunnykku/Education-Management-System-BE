@@ -27,6 +27,12 @@ public class StudentPointMapperTest {
 	
 	@Test
 	@Transactional
+	public void getTotal() {
+		assertThat(mapper.getCountOfStudentWithPoint(277, null)).isEqualTo(18);
+	}
+	
+	@Test
+	@Transactional
 	public void getPointHistory() {
 		List<PointHistoryDTO> history = mapper.getPointHistory(1);
 		assertThat(history.size()).isEqualTo(34);
