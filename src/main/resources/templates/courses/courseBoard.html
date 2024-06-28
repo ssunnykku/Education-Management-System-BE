@@ -18,7 +18,7 @@
     <article id="courseBoard-btns-container">
       <div class="search-form-wrapper">
         <!-- form???? -->
-        <form action="/ui/courses">
+        <form action="/ems/courses">
           <select id="courseNumberSelect" name="courseNumber" class="data-filter">
             <option value="0">기수</option>
             <option th:each="courseNumber: ${courseNumberList}" th:text="${courseNumber}" th:attr="value=${courseNumber}" th:selected="${selectedCourseNumber} == ${courseNumber}">기수 alt</option>
