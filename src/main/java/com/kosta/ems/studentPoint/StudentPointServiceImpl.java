@@ -30,6 +30,7 @@ public class StudentPointServiceImpl implements StudentPointService {
 //			//throw new managerAuthorizationException();
 //		}
 		int offset = (page - 1) * pageSize;
+		
 		return mapper.getStudentListWithPoint(courseNumber, name, offset, pageSize);
 	}
 
