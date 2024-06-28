@@ -78,4 +78,5 @@ public class NotificationServiceImpl implements NotificationService{
 	public NotificationDTO getDescription(int notificationSeq) {
 		return notificationMapper.selectDescription(notificationSeq);
 	}
+
 }

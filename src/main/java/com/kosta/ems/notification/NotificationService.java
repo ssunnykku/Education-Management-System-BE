@@ -18,7 +18,7 @@ public interface NotificationService {
 	boolean deleteNotificaiotn(int notificationSeq);
 	boolean updateNotification(NotificationDTO notification);
 	NotificationDTO getDescription(int notificationSeq);
-	int getCountNotificationList(NotificationDTO notification);
+
 	
 	
 }
