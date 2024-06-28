@@ -5,6 +5,8 @@ import java.util.Collection;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
+import com.kosta.ems.scholarship.ScholarshipTargetListReqDTO;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -16,6 +18,7 @@ public interface NotificationService {
 	boolean deleteNotificaiotn(int notificationSeq);
 	boolean updateNotification(NotificationDTO notification);
 	NotificationDTO getDescription(int notificationSeq);
+	int getCountNotificationList(NotificationDTO notification);
 	
 	
 }

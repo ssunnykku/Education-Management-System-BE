@@ -1,6 +1,11 @@
 package com.kosta.ems.notification;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
+import javax.management.Notification;
 
 import org.springframework.stereotype.Service;
 
@@ -13,8 +18,33 @@ public class NotificationServiceImpl implements NotificationService{
 
 	@Override
 	public Collection<NotificationDTO> searchAll(String managerId) {
-		return notificationMapper.selectAll(managerId);
-	}
+		 Collection<NotificationDTO> notifications = notificationMapper.selectAll(managerId);
+
+		    // 새로운 NotificationDTO 객체 목록 생성
+		    List<NotificationDTO> dtos = new ArrayList<>();
+
+		    for (NotificationDTO notification : notifications) {
+		        // SimpleDateFormat 객체를 사용하여 원하는 형식 문자열 생성
+		        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH시 mm분");
+		        String formattedDate = formatter.format(notification.getNotificationDate());
+
+		        // NotificationDTO 객체 생성 및 데이터 설정
+		        NotificationDTO dto = NotificationDTO.builder()
+		                .notificationSeq(notification.getNotificationSeq())
+		                .managerId(notification.getManagerId())
+		                .title(notification.getTitle())
+		                .description(notification.getDescription())
+		                .formattedNotificationDate(formattedDate)
+		                .isActive(notification.getIsActive())
+		                .viewCount(notification.getViewCount())
+		                .name(notification.getName())
+		                .build();
+		        // NotificationDTO 목록에 추가
+		        dtos.add(dto);
+		    }
+		    return dtos;
+		}
+	        
 
 	@Override
 	public Collection<NotificationDTO> searchByKeyword(String keyword, String managerId) throws NoResultsFoundException {

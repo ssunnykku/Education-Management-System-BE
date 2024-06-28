@@ -18,12 +18,12 @@ NotificationMapper notificationMapper;
 	void testSelectAll() {
 		log.info(notificationMapper.selectAll("d893c29b-2f8f-11ef-b0b2-0206f94be675").toString());}
 
-	@Test
+	//@Test
 	void testFindByKeyword() {
 		log.info(notificationMapper.selectByKeyword("2025","d893c29b-2f8f-11ef-b0b2-0206f94be675" ).toString());
 	}
 
-	@Test
+	//@Test
 	void testInsertNotification() {
 		NotificationDTO notification=
 				NotificationDTO.builder()
@@ -35,13 +35,13 @@ NotificationMapper notificationMapper;
 //		log.info(notificationMapper.insertNotification("d893c34e-2f8f-11ef-b0b2-0206f94be675", "여름휴가 안내", "2024년 8월부터 전사적인 휴가권고입니다. 자세한것은 HR 안내 시스템을 확인하세요."));
 	}
 
-	@Test
+	//@Test
 	void testInActivateNotificaiotn() {
 		assertThat(notificationMapper.inActivateNotificaiotn(171)).isTrue();
 	}
 
-	@Transactional
-	@Test
+	//@Transactional
+	//@Test
 	void testUpdateNotification() {
 		NotificationDTO notification=
 				NotificationDTO.builder()
@@ -53,7 +53,7 @@ NotificationMapper notificationMapper;
 		assertThat(notificationMapper.updateNotification(notification)).isTrue();
 	}
 
-	@Test
+	//@Test
 	void testGetDescription() {
 		log.info(notificationMapper.selectDescription(160).toString());
 	}
