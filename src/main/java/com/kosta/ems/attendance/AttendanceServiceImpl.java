@@ -26,18 +26,38 @@ public class AttendanceServiceImpl implements AttendanceService {
     public int getNumberOfLeave(LocalDate startDate, LocalDate endDate, String studentId) {
         return attendanceMapper.selectCountLeave(startDate, endDate, studentId);
     }
-    
-    // [출결] - 수강생 출결 조회 목록 데이터 개수 (for 페이지네이션)
+
+    // [출결] - 수강생 출석 조회 목록 조회
+    // 경우1 _ 기수+수강생명 입력
+    // -- 데이터 개수 가져오기 (for 페이지네이션)
     @Override
-    public int getStudentAttendanceListAmount(String name, int courseNumber) {
-    	return attendanceMapper.selectAttendanceIntegratedListFilterAllAmount(name, courseNumber).size();
+    public int getAttendanceIntegratedListFilterAllAmount(String name, int courseNumber) {
+        return attendanceMapper.selectAttendanceIntegratedListFilterAllAmount(name, courseNumber).size();
     }
-    
+    // -- 데이터 결과 목록 가져오기
+    @Override
+    public Collection<StudentAttendanceListDTO> getAttendanceIntegratedListFilterAll(String name, int courseNumber, int page, int size) {
+        return attendanceMapper.selectAttendanceIntegratedListFilterAll(name, courseNumber, page, size);
+    }
+    // 경우2_ 기수 또는 수강생명 입력
+    // -- 데이터 개수 가져오기 (for 페이지네이션)
+    @Override
+    public int getAttendanceIntegratedListFilterAmount(String name, int courseNumber) {
+        return attendanceMapper.selectAttendanceIntegratedListFilterAmount(name, courseNumber).size();
+    }
+    // -- 데이터 결과 목록 가져오기
+    @Override
+    public Collection<StudentAttendanceListDTO> getAttendanceIntegratedListFilter(String name, int courseNumber, int page, int size) {
+        return attendanceMapper.selectAttendanceIntegratedListFilter(name, courseNumber, page, size);
+    }
+
+    /*
     // [출결] - 수강생 출석 조회 목록 조회
     @Override
     public Collection<StudentAttendanceListDTO> getStudentAttendanceList(String name, int courseNumber, int page, int size) {
     	return attendanceMapper.selectAttendanceIntegratedListFilterAll(name, courseNumber, page, size);
     }
+    */
     
     // [출결] - 특정일의 수강생 출석 상태 목록 조회 (for 출결 입력/수정)
     // 경우1 _ 기수+수강생명 입력

@@ -14,7 +14,10 @@ public interface AttendanceMapper {
     int selectCountLeave(LocalDate startDate, LocalDate endDate, String studentId);
     
     // [출결] - 수강생 출결 조회 목록 데이터 개수 (for 페이지네이션)
+    // 경우1 _ 기수+수강생명 입력
     Collection<StudentAttendanceListDTO> selectAttendanceIntegratedListFilterAllAmount(String name, int courseNumber);
+    // 경우2_ 기수 또는 수강생명 입력
+    Collection<StudentAttendanceListDTO> selectAttendanceIntegratedListFilterAmount(String name, int courseNumber);
     
     // [출결] - 수강생 출석 조회 목록 조회
     // 경우1 _ 기수+수강생명 입력
