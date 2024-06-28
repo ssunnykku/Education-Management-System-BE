@@ -89,7 +89,7 @@
         ]]>
     </select>
 
-    <select id="countSettlementResult">
+    <select id="countSettlementResult" resultType="int">
         select count(s.student_id) as countSettlementResult
         from benefits b
                  left join settlement_durations sd on b.settlement_duration_seq = sd.settlement_duration_seq

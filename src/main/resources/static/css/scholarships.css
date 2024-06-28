@@ -311,16 +311,17 @@
 
 #scholarship-contents {
     padding: 0 10% 0 10%;
-    /*   display: flex;
-       */
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+
 }
 
 /* button, search */
 
 .scholarship-search-form-wrapper {
     width: 520px;
-    margin: 20px 0 20px 0;
-    margin-left: 35%;
+    margin: 20px 0 20px 35%;
     display: flex;
     justify-content: center;
     gap: 10px;
@@ -356,6 +357,7 @@
 #scholarshipBoard-table {
     width: 100%;
     /* padding: 0 100px 0 100px; */
+    min-height: 700px;
 }
 
 .scholarshipBoard-row {
