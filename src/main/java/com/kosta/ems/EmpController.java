@@ -84,6 +84,7 @@ public class EmpController {
     	String managerId="d893bf71-2f8f-11ef-b0b2-0206f94be675";
     	//String managerId = (String) session.getAttribute("managerId");
     	model.addAttribute("notification",notification.searchAll(managerId));
+    	System.out.println(model.addAttribute("notification",notification.searchAll(managerId)));
         return "notifications/notificationBoard";
     }
 

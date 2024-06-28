@@ -2,8 +2,10 @@ package com.kosta.ems.notification;
 
 
 
-import java.sql.Date;
 
+
+
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,4 +30,12 @@ public class NotificationDTO {
 	private Date notificationDate;
 	private char isActive;
 	private int viewCount;
-}
+	private String name;
+	private String formattedNotificationDate;
+	private int limit;
+    private int offset;
+
+		
+	}
+
+
