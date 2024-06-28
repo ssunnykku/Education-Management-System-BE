@@ -156,7 +156,7 @@ public class EmpController {
 		model.addAttribute("studentList", studentList);
 		model.addAttribute("pointCategoryList", pointService.getPointCategoryList());
 
-		return "courses/courseBoard";
+		return "students/pointBoard";
 	}
 
 	@GetMapping("/students/set")

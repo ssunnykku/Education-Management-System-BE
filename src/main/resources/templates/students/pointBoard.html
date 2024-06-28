@@ -16,12 +16,16 @@
     <article class="search-form-wrapper">
         <form action="#" class="seacrch-form">
             <div id="filter-button-wrapper">
-                <select name="courseId-filter" class="courseId-filter">
+                <select id="courseNumberSelect" name="courseId-filter" class="courseId-filter">
                     <option value="none">기수</option>
-                    <option value="227">277기</option>
-                    <option value="191">191기</option>
+                    <option th:each="courseNumber: ${courseNumberList}" th:text="${courseNumber}" th:attr="value=${courseNumber}" th:selected="${selectedCourseNumber} == ${courseNumber}">기수 alt</option>
                 </select>
+                <select name="excludeExpired" class="courseId-filter" onChange="updateCourseNumber(event)">
+                    <option value="true" th:selected="${paging.excludeExpired} == 1">진행중</option>
+                    <option value="false" th:selected="${paging.excludeExpired} == 0">전체</option>
+                  </select>
                 <input
+                        id="studentNameInput"
                         placeholder="수강생 이름을 입력하세요"
                         class="search-input"
                 />
@@ -38,13 +42,16 @@
             <form>
                 <div class="point-table-row" id="point-title-row">
                     <div id="point-radio-btn">
-                        <input type="radio" value="hrdNetId"/>
+                        <input type="radio" value="hrdNetId" hidden/>
                     </div>
                     <div id="point-table-courseId">
                         <span>기수</span>
                     </div>
+                    <div id="point-table-courseName">
+                        <span>과정</span>
+                    </div>
                     <div id="point-table-birth">
-                        <span>생년월일</span>
+                        <span>HRD NET ID</span>
                     </div>
                     <div id="point-table-name">
                         <span>이름</span>
@@ -55,31 +62,57 @@
                 </div>
             </form>
             <form>
-                <div class="point-table-row">
+                <div class="point-table-row" th:each="student : ${studentList}">
                     <div id="point-radio-btn">
-                        <input type="radio" value="hrdNetId"/>
+                        <input name="point-radio-btn" type="radio" value="hrdNetId"/>
                     </div>
                     <div id="point-table-courseId">
-                        <span>277</span>
+                        <span th:text="${student.courseNumber}">기수 alt</span>
+                    </div>
+                    <div id="point-table-courseName">
+                        <span th:text="${student.courseName}">과정</span>
                     </div>
                     <div id="point-table-birth">
-                        <span>980630</span>
+                        <span th:text="${student.hrdNetId}">hrdnetid alt</span>
                     </div>
                     <div id="point-table-name">
-                        <span>차미강</span>
+                        <span th:text="${student.name}">이름 alt</span>
                     </div>
                     <div id="point-table-total-point">
-                        <span>50</span>
+                        <span th:text="${student.totalPoint}">총 포인트 alt</span>
                     </div>
                 </div>
             </form>
         </div>
     </article>
     <article class="page-information">
-        <div class="point-cnt-pages">
-            <span>총 13건</span>
+        <div class="cnt-pages">
+          <span th:text="${'총 ' + paging.totalStudentCount +'개'}">총 개수 alt</span>
         </div>
-    </article>
+        <ul id="pagination">
+          <li th:classappend="${paging.pageOffset == 1} ? 'inactivePage'">
+            <a class="page-link"
+              th:href="@{|?page=${paging.pageOffset-1}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}">
+              <span>이전</span>
+            </a>
+          </li>
+          <li th:each="page: ${#numbers.sequence(0, 9)}"
+            th:if="${(paging.pageOffset + page) <= ((paging.totalStudentCount/paging.pageSize) + 1)}"
+            th:classappend="${(paging.pageOffset + page) == paging.page} ? 'activePage'" class="page-item">
+            <a th:text="${paging.pageOffset + page}" class="page-link"
+              th:href="@{|?page=${paging.pageOffset + page}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}"></a>
+          </li>
+          <li class="page-item"
+            th:classappend="${(paging.pageOffset + 10) > (paging.totalStudentCount/paging.pageSize)} ? 'inactivePage'">
+            <a class="page-link"
+              th:href="@{|?page=${paging.pageOffset + 10}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}">
+              <span>다음</span>
+            </a>
+          </li>
+        </ul>
+        <!-- 페이징처리 끝 -->
+        </div>
+      </article>
 </section>
 <footer></footer>
 </body>
