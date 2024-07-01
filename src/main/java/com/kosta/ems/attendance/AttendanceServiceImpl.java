@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 
 
 @Log4j2
@@ -36,8 +37,8 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
     // -- 데이터 결과 목록 가져오기
     @Override
-    public Collection<StudentAttendanceListDTO> getAttendanceIntegratedListFilterAll(String name, int courseNumber, int page, int size) {
-        return attendanceMapper.selectAttendanceIntegratedListFilterAll(name, courseNumber, page, size);
+    public List<StudentAttendanceListDTO> getAttendanceIntegratedListFilterAll(String name, int courseNumber, int page, int size) {
+        return attendanceMapper.selectAttendanceIntegratedListFilterAll(name, courseNumber, (page-1), size);
     }
     // 경우2_ 기수 또는 수강생명 입력
     // -- 데이터 개수 가져오기 (for 페이지네이션)
@@ -47,8 +48,8 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
     // -- 데이터 결과 목록 가져오기
     @Override
-    public Collection<StudentAttendanceListDTO> getAttendanceIntegratedListFilter(String name, int courseNumber, int page, int size) {
-        return attendanceMapper.selectAttendanceIntegratedListFilter(name, courseNumber, page, size);
+    public List<StudentAttendanceListDTO> getAttendanceIntegratedListFilter(String name, int courseNumber, int page, int size) {
+        return attendanceMapper.selectAttendanceIntegratedListFilter(name, courseNumber, (page-1), size);
     }
     // 경우3_ 기수, 수강생명 미입력 (전체 데이터)
     // -- 데이터 개수 가져오기 (for 페이지네이션)
@@ -58,8 +59,8 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
     // -- 데이터 결과 목록 가져오기
     @Override
-    public Collection<StudentAttendanceListDTO> getAttendanceIntegratedListNoFilter(String name, int courseNumber, int page, int size) {
-        return attendanceMapper.selectAttendanceIntegratedListNoFilter(name,courseNumber,page,size);
+    public List<StudentAttendanceListDTO> getAttendanceIntegratedListNoFilter(String name, int courseNumber, int page, int size) {
+        return attendanceMapper.selectAttendanceIntegratedListNoFilter(name,courseNumber,(page-1),size);
     }
 
 
@@ -85,7 +86,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
     // 검색 결과 데이터 목록 가져오기
     @Override
-    public Collection<AttendanceListBySearchFilterDTO> selectCourseNumberAndStudentNameList(String attendanceDate, String academyLocation, String name, int courseNumber, int page, int size) {
+    public List<AttendanceListBySearchFilterDTO> selectCourseNumberAndStudentNameList(String attendanceDate, String academyLocation, String name, int courseNumber, int page, int size) {
     	int year = Integer.parseInt(attendanceDate.split("-")[0] );
     	int month = Integer.parseInt(attendanceDate.split("-")[1]);
     	int day = Integer.parseInt(attendanceDate.split("-")[2]);
@@ -105,7 +106,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
     // 검색 결과 데이터 목록 가져오기
     @Override
-    public Collection<AttendanceListBySearchFilterDTO> selectCourseNumberOrStudentNameList(String attendanceDate, String academyLocation, String name, int courseNumber, int page, int size) {
+    public List<AttendanceListBySearchFilterDTO> selectCourseNumberOrStudentNameList(String attendanceDate, String academyLocation, String name, int courseNumber, int page, int size) {
     	int year = Integer.parseInt(attendanceDate.split("-")[0] );
     	int month = Integer.parseInt(attendanceDate.split("-")[1]);
     	int day = Integer.parseInt(attendanceDate.split("-")[2]);
@@ -125,7 +126,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
     // 검색 결과 데이터 목록 가져오기
     @Override
-    public Collection<AttendanceListBySearchFilterDTO> selectDateAndLocationList(String attendanceDate, String academyLocation, String name, int courseNumber, int page, int size) {
+    public List<AttendanceListBySearchFilterDTO> selectDateAndLocationList(String attendanceDate, String academyLocation, String name, int courseNumber, int page, int size) {
     	int year = Integer.parseInt(attendanceDate.split("-")[0] );
     	int month = Integer.parseInt(attendanceDate.split("-")[1]);
     	int day = Integer.parseInt(attendanceDate.split("-")[2]);
