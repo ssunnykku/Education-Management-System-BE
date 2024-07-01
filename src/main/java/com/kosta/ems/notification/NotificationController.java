@@ -3,6 +3,7 @@ package com.kosta.ems.notification;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class NotificationController {
+
+    @Qualifier("notificationService")
 	private final NotificationService notification;
 	//공지사항 글 추가(O)
 	@PostMapping("/write")
