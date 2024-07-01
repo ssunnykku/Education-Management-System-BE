@@ -20,11 +20,11 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/courses")
 @RequiredArgsConstructor
 public class CourseController {
-	private final CourseService service;
+	private final CourseService courseService;
 	
 	@GetMapping("/course")
 	public Map<String, CourseDTO> getCourse(@RequestParam int courseSeq, HttpServletRequest request) {
-		return Map.of("result", service.getCourse(courseSeq, getAcademyOfLoginUser(request)));
+		return Map.of("result", courseService.getCourse(courseSeq, getAcademyOfLoginUser(request)));
 	}
 	
 	@GetMapping("/course-list")
@@ -36,16 +36,16 @@ public class CourseController {
 			HttpServletRequest request) 
 	{
 		String academyLocation = getAcademyOfLoginUser(request);
-		return Map.of("result", service.searchCourseList(courseNumber, academyLocation, page, pageSize, excludeExpired));
+		return Map.of("result", courseService.searchCourseList(courseNumber, academyLocation, page, pageSize, excludeExpired));
 	}
 	
 	@GetMapping("/course-number-list")
 	public Map getCourseNumberList(@RequestParam(value="excludeExpired", defaultValue = "true") boolean excludeExpired, HttpServletRequest request) {
-		return Map.of("result", service.getCourseNumberList(getAcademyOfLoginUser(request), excludeExpired));
+		return Map.of("result", courseService.getCourseNumberList(getAcademyOfLoginUser(request), excludeExpired));
 	}
 	@GetMapping("/course-type-list")
 	public Map getCourseTypeList() {
-		return Map.of("result", service.getCourseTypeList());
+		return Map.of("result", courseService.getCourseTypeList());
 	}
 	
 	
@@ -53,7 +53,7 @@ public class CourseController {
 	public Map<String, Boolean> addCourse(@RequestBody CourseDTO course, HttpServletRequest request){
 		course.setManagerId(getManagerIdOfLoginUser(request));
 		course.setAcademyLocation(getAcademyOfLoginUser(request));
-		boolean result = service.addCourse(course);
+		boolean result = courseService.addCourse(course);
 		return Map.of("result", result);
 	}
 	
@@ -61,13 +61,13 @@ public class CourseController {
 	public Map<String, Boolean> editCourse(@RequestBody CourseDTO course, HttpServletRequest request){
 		course.setManagerId(getManagerIdOfLoginUser(request));
 		course.setAcademyLocation(getAcademyOfLoginUser(request));
-		boolean result = service.editCourse(course);
+		boolean result = courseService.editCourse(course);
 		return Map.of("result", result);
 	}
 	
 	@PatchMapping("/course/{courseSeq}")
 	public Map<String, Boolean> deleteCourse(@PathVariable("courseSeq") int courseSeq, HttpServletRequest request){
-		boolean result = service.deleteCourse(courseSeq, getAcademyOfLoginUser(request));
+		boolean result = courseService.deleteCourse(courseSeq, getAcademyOfLoginUser(request));
 		return Map.of("result", result);
 	}
 
