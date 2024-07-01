@@ -40,6 +40,7 @@ public class AttendanceController {
 		Map<String, Object> result = new HashMap<String, Object>();
 		// int page = pageRequest.getPage();
 		// int size = pageRequest.getSize();
+		// 커밋용 주석
 		int size=2;
 		int totalCount = 0;
 		log.info(">> getStudentAttendanceList");
