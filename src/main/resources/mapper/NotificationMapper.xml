@@ -30,7 +30,10 @@ VALUES (#{managerId}, #{title}, #{description})
 	UPDATE notifications set description=#{description} WHERE notification_seq=#{notificationSeq}
 	</update>
 	<select id="selectDescription" resultType="com.kosta.ems.notification.NotificationDTO">
-SELECT DESCRIPTION FROM notifications WHERE notification_seq=#{notificationSeq}
+	SELECT n.notification_seq As notificationSeq,m.manager_id As mangerId, n.title,n.description,n.notification_date AS notificationDate,m.NAME AS name,n.view_count AS viewCount 
+ 	FROM notifications n 
+ 	LEFT JOIN managers m ON n.manager_id = m.manager_id 
+ 	WHERE n.notification_seq=#{notificationSeq}
 	</select>
 	<select id="getTotalCount" resultType="Integer">
 		SELECT COUNT(notification_seq) 

@@ -29,7 +29,6 @@ public class NotificationController {
 	public Map<String, Boolean> addPost(@RequestBody NotificationDTO dto, HttpServletRequest request) {
 		//String managerId = (String) session.getAttribute("managerId");
 		dto.setManagerId(getManagerIdOfLoginUser(request));
-		System.out.println(dto.getManagerId());
 		boolean result= notification.addNotification(dto);
 		return Map.of("result",result);
 	}
@@ -41,8 +40,8 @@ public class NotificationController {
 	}
 	//검색하기(O)
 	@GetMapping("/list")
-	public Map<String, Collection> searchByKeyword(@RequestParam String keyword, HttpServletRequest request) throws NoResultsFoundException{
-		String managerId= "d893bf71-2f8f-11ef-b0b2-0206f94be675";//session 메모리
+	public Map<String, Collection> searchByKeyword(@RequestParam String keyword, HttpSession session) throws NoResultsFoundException{
+		String managerId = (String) session.getAttribute("managerId");
 		return Map.of("result",notification.searchByKeyword(keyword, managerId));
 	}
 	//글 content 확인(O) 

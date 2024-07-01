@@ -11,5 +11,7 @@ $(document).ready(() => {
 
 
 
+
+
 //let urlParams = new URL(location.href).searchParams;
 //let cmd = urlParams.get('cmd');

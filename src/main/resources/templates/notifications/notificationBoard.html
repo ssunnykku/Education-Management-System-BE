@@ -19,7 +19,7 @@
     <article class="notification-contents">
         <div id="notification-btn-wrapper">
           <div class="search-form-wrapper">
-          <input placeholder="검색어를 입력하세요" class="search-input"/>
+          <input placeholder="검색어를 입력하세요" id="search-input" class="search-input"/>
             <button type="button" class="board-filter-search-btn">검색</button> 
           </div>
             <button id="notification-enroll-btn" class="btn-setting">글 등록</button>
@@ -46,11 +46,12 @@
             </div>
            <div th:each="notification : ${notification}" >
     <div class="notification-row">
-      <div class="notificationBoard-no">
+      <div class="notificationBoard-no" id="notificationBoard-no">
         <span th:text="${notification.notificationSeq}"></span>
       </div>
-      <div class="notificationBoard-title">
-        <span th:text="${notification.title}"></span>
+      <div class="notificationBoard-title" id="notificationBoard-title">
+    <a th:href="@{/ems/notification(notificationSeq=${notification.notificationSeq})}" 
+     th:text="${notification.title}"></a>
       </div>
       <div class="notificationBoard-enroll-date">
         <span th:text="${notification.formattedNotificationDate}"></span>
@@ -88,6 +89,22 @@
 	$("#notification-enroll-btn").on("click", function(){
 		location.href = "/ems/notifications/write";
 	})
+	
+	document.querySelector(".board-filter-search-btn").onclick = function(){
+		fetch("/notifications/list",{
+			method: "get",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				keyword: document.getElementById("search-input").value
+			})
+		})
+		.then(location.href = "/ems/notifications")
+		
+	}
+
+	
 	
 
 </script>
