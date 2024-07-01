@@ -47,7 +47,6 @@
 <footer></footer>
 <script>
 	document.querySelector("#enroll-btn").onclick = function(){
-	console.log("시작");
 		fetch("/notifications/write",{
 			method: "post",
 			headers: {
@@ -55,7 +54,7 @@
 			},
 			body: JSON.stringify({
 				title: document.getElementById("title-input").value,
-				content: document.getElementById("content-input").value
+				description: document.getElementById("content-input").value
 			})
 		})
 		.then(location.href = "/ems/notifications")

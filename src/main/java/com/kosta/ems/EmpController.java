@@ -1,6 +1,7 @@
 package com.kosta.ems;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -91,7 +92,7 @@ public class EmpController {
 	}
 
 	 @GetMapping("/notifications") //@AuthenticationPrincipal 사용할수있음.
-    public String notificationBoard(Model model, HttpSession session, @RequestParam int page) {
+    public String notificationBoard(Model model, HttpSession session, @RequestParam(defaultValue = "1") int page) {
     	log.info((String) session.getAttribute("managerId").toString());
     	//String managerId="d893bf71-2f8f-11ef-b0b2-0206f94be675";
 
@@ -101,14 +102,15 @@ public class EmpController {
         return "notifications/notificationBoard";
     }
 
-	@GetMapping("/notifications/post")
-	public String notificationPost() {
-		return "notifications/notificationPost";
+	 
+	@GetMapping("/notification")
+	public String notificationPost(@RequestParam("notificationSeq") int notificationSeq) {
+		return "notifications/notification";
 	}
 
 	@GetMapping("/notifications/write")
 	public String notificationWrite() {
-		return "notifications/addNotification";
+		return "notifications/setNotification";
 	}
 
 	@GetMapping("/notifications/update")
