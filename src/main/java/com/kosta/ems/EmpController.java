@@ -1,5 +1,6 @@
 package com.kosta.ems;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.kosta.ems.attendance.AttendanceService;
@@ -31,172 +32,172 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class EmpController {
-	private final CourseService courseService;
-	private final StudentPointService pointService;
-	@Autowired
-	private NotificationService notification;
-	private final AttendanceService attendanceService;
+    private final CourseService courseService;
+    private final StudentPointService pointService;
+    @Qualifier("notificationService")
+    private final NotificationService notification;
+    private final AttendanceService attendanceService;
 
-	@GetMapping("/benefits")
-	public String benefitBoard() {
-		return "benefits/benefitBoard";
-	}
+    @GetMapping("/benefits")
+    public String benefitBoard() {
+        return "benefits/benefitBoard";
+    }
 
-	@GetMapping("/benefits/result")
-	public String benefitResultBoard() {
-		return "benefits/benefitResultBoard";
-	}
+    @GetMapping("/benefits/result")
+    public String benefitResultBoard() {
+        return "benefits/benefitResultBoard";
+    }
 
-	@GetMapping("/certifications")
-	public String certificationBoard() {
-		return "certifications/certificationBoard";
-	}
+    @GetMapping("/certifications")
+    public String certificationBoard() {
+        return "certifications/certificationBoard";
+    }
 
-	@GetMapping("/courses")
-	public String addCourseModal(@RequestParam(value = "page", defaultValue = "1") int page,
-			@RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-			@RequestParam(value = "courseNumber", defaultValue = "0") int courseNumber,
-			@RequestParam(value = "excludeExpired", defaultValue = "true") boolean excludeExpired,
-			HttpServletRequest request, Model model) {
-		// ( 277, "가산", 1, 10, true);
-		List<CourseDTO> courseList = courseService.searchCourseList(courseNumber, getAcademyOfLoginUser(request), page,
-				pageSize, excludeExpired);
-		Integer totalCourseCount = courseService.getSearchCourseListSize(courseNumber, getAcademyOfLoginUser(request),
-				page, pageSize, excludeExpired);
-		List<Integer> courseNumberList = courseService.getCourseNumberList(getAcademyOfLoginUser(request),
-				excludeExpired);
+    @GetMapping("/courses")
+    public String addCourseModal(@RequestParam(value = "page", defaultValue = "1") int page,
+                                 @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                 @RequestParam(value = "courseNumber", defaultValue = "0") int courseNumber,
+                                 @RequestParam(value = "excludeExpired", defaultValue = "true") boolean excludeExpired,
+                                 HttpServletRequest request, Model model) {
+        // ( 277, "가산", 1, 10, true);
+        List<CourseDTO> courseList = courseService.searchCourseList(courseNumber, getAcademyOfLoginUser(request), page,
+                pageSize, excludeExpired);
+        Integer totalCourseCount = courseService.getSearchCourseListSize(courseNumber, getAcademyOfLoginUser(request),
+                page, pageSize, excludeExpired);
+        List<Integer> courseNumberList = courseService.getCourseNumberList(getAcademyOfLoginUser(request),
+                excludeExpired);
 
-		Map<String, Integer> paging = new HashMap<>();
-		paging.put("totalCourseCount", totalCourseCount);
-		paging.put("page", page);
-		paging.put("pageSize", pageSize);
-		paging.put("pageOffset", (((page - 1) / 10) * 10) + 1);// 현재 페이지가 27이라면 offset은 21을 가리킨다.
-		paging.put("excludeExpired", excludeExpired ? 1 : 0);
+        Map<String, Integer> paging = new HashMap<>();
+        paging.put("totalCourseCount", totalCourseCount);
+        paging.put("page", page);
+        paging.put("pageSize", pageSize);
+        paging.put("pageOffset", (((page - 1) / 10) * 10) + 1);// 현재 페이지가 27이라면 offset은 21을 가리킨다.
+        paging.put("excludeExpired", excludeExpired ? 1 : 0);
 
-		model.addAttribute("selectedCourseNumber", courseNumber);
-		model.addAttribute("courseNumberList", courseNumberList);
-		model.addAttribute("paging", paging);
-		model.addAttribute("courseList", courseList);
-		model.addAttribute("courseTypeList", courseService.getCourseTypeList());
+        model.addAttribute("selectedCourseNumber", courseNumber);
+        model.addAttribute("courseNumberList", courseNumberList);
+        model.addAttribute("paging", paging);
+        model.addAttribute("courseList", courseList);
+        model.addAttribute("courseTypeList", courseService.getCourseTypeList());
 
-		return "courses/courseBoard";
-	}
+        return "courses/courseBoard";
+    }
 
-	private String getAcademyOfLoginUser(HttpServletRequest request) {
-		HttpSession session = request.getSession();
+    private String getAcademyOfLoginUser(HttpServletRequest request) {
+        HttpSession session = request.getSession();
 //    	return (String) session.getAttribute("academyLocation");
-		return "가산";
-	}
+        return "가산";
+    }
 
 
-	@GetMapping("/login")
-	public String login() {
-		return "login/login";
-	}
+    @GetMapping("/login")
+    public String login() {
+        return "login/login";
+    }
 
-	 @GetMapping("/notifications") //@AuthenticationPrincipal 사용할수있음.
+    @GetMapping("/notifications") //@AuthenticationPrincipal 사용할수있음.
     public String notificationBoard(Model model, HttpSession session, @RequestParam(defaultValue = "1") int page) {
-    	log.info((String) session.getAttribute("managerId").toString());
-    	//String managerId="d893bf71-2f8f-11ef-b0b2-0206f94be675";
+        log.info((String) session.getAttribute("managerId").toString());
+        //String managerId="d893bf71-2f8f-11ef-b0b2-0206f94be675";
 
-    	String managerId = (String) session.getAttribute("managerId");
-    	model.addAttribute("notification",notification.searchAll(managerId,page, 10));
-    	log.info(model.addAttribute("notification",notification.searchAll(managerId, page, 10)).toString());
+        String managerId = (String) session.getAttribute("managerId");
+        model.addAttribute("notification", notification.searchAll(managerId, page, 10));
+        log.info(model.addAttribute("notification", notification.searchAll(managerId, page, 10)).toString());
         return "notifications/notificationBoard";
     }
 
-	 
-	@GetMapping("/notification")
-	public String notificationPost(@RequestParam("notificationSeq") int notificationSeq) {
-		return "notifications/notification";
-	}
 
-	@GetMapping("/notifications/write")
-	public String notificationWrite() {
-		return "notifications/setNotification";
-	}
+    @GetMapping("/notification")
+    public String notificationPost(@RequestParam("notificationSeq") int notificationSeq) {
+        return "notifications/notification";
+    }
 
-	@GetMapping("/notifications/update")
-	public String notificationSet() {
-		return "notifications/setNotification";
-	}
+    @GetMapping("/notifications/write")
+    public String notificationWrite() {
+        return "notifications/setNotification";
+    }
 
-	@GetMapping("/scholarships")
-	public String scholarshipBoard() {
-		return "scholarships/scholarshipBoard";
-	}
+    @GetMapping("/notifications/update")
+    public String notificationSet() {
+        return "notifications/setNotification";
+    }
 
-	@GetMapping("/scholarships/results")
-	public String scholarshipResultBoard() {
-		return "scholarships/scholarshipResultBoard";
-	}
+    @GetMapping("/scholarships")
+    public String scholarshipBoard() {
+        return "scholarships/scholarshipBoard";
+    }
 
-	// 여기부터
-	@GetMapping("/attendances/add")
-	public String addAttendance() {
-		return "students/addAttendance";
-	}
+    @GetMapping("/scholarships/results")
+    public String scholarshipResultBoard() {
+        return "scholarships/scholarshipResultBoard";
+    }
 
-	/*
-	@GetMapping("/attendances")
-	public String attendanceBoard() {
-		return "attendances/attendanceBoard";
-		// return "students/attendanceBoard";
-	}
-	*/
-	@GetMapping("/attendances")
-	public String attendanceBoard() {
-		return "students/attendanceBoard";
-	}
+    // 여기부터
+    @GetMapping("/attendances/add")
+    public String addAttendance() {
+        return "students/addAttendance";
+    }
 
-	@GetMapping("/points")
-	public String pointBoard(@RequestParam(value = "page", defaultValue = "1") int page,
-			@RequestParam(value = "pageSize", defaultValue = "10")             int pageSize,
-			@RequestParam(value = "courseNumber", defaultValue = "0")          int courseNumber,
-																			   String studentName,
-			@RequestParam(value = "excludeExpired", defaultValue = "true") 	   boolean excludeExpired,
-			HttpServletRequest request, Model model) {
-		List<StudentCourseWithPointDTO> studentList = pointService.getStudentListWithPoint(courseNumber, studentName, page, pageSize, getAcademyOfLoginUser(request));
-		Integer totalStudentCount = pointService.getCountOfStudentWithPoint(courseNumber, studentName, getAcademyOfLoginUser(request));
-		List<Integer> courseNumberList = courseService.getCourseNumberList(getAcademyOfLoginUser(request),
-				excludeExpired);
+    /*
+    @GetMapping("/attendances")
+    public String attendanceBoard() {
+        return "attendances/attendanceBoard";
+        // return "students/attendanceBoard";
+    }
+    */
+    @GetMapping("/attendances")
+    public String attendanceBoard() {
+        return "students/attendanceBoard";
+    }
 
-		Map<String, Integer> paging = new HashMap<>();
-		paging.put("totalStudentCount", totalStudentCount);
-		paging.put("page", page);
-		paging.put("pageSize", pageSize);
-		paging.put("pageOffset", (((page - 1) / pageSize) * pageSize) + 1);// 현재 페이지가 27이라면 offset은 21을 가리킨다.
-		paging.put("excludeExpired", excludeExpired ? 1 : 0);
+    @GetMapping("/points")
+    public String pointBoard(@RequestParam(value = "page", defaultValue = "1") int page,
+                             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                             @RequestParam(value = "courseNumber", defaultValue = "0") int courseNumber,
+                             String studentName,
+                             @RequestParam(value = "excludeExpired", defaultValue = "true") boolean excludeExpired,
+                             HttpServletRequest request, Model model) {
+        List<StudentCourseWithPointDTO> studentList = pointService.getStudentListWithPoint(courseNumber, studentName, page, pageSize, getAcademyOfLoginUser(request));
+        Integer totalStudentCount = pointService.getCountOfStudentWithPoint(courseNumber, studentName, getAcademyOfLoginUser(request));
+        List<Integer> courseNumberList = courseService.getCourseNumberList(getAcademyOfLoginUser(request),
+                excludeExpired);
 
-		model.addAttribute("searchedStudentName", studentName);
-		model.addAttribute("selectedCourseNumber", courseNumber);
-		model.addAttribute("courseNumberList", courseNumberList);
-		model.addAttribute("paging", paging);
-		model.addAttribute("studentList", studentList);
-		model.addAttribute("pointCategoryList", pointService.getPointCategoryList());
+        Map<String, Integer> paging = new HashMap<>();
+        paging.put("totalStudentCount", totalStudentCount);
+        paging.put("page", page);
+        paging.put("pageSize", pageSize);
+        paging.put("pageOffset", (((page - 1) / pageSize) * pageSize) + 1);// 현재 페이지가 27이라면 offset은 21을 가리킨다.
+        paging.put("excludeExpired", excludeExpired ? 1 : 0);
 
-		return "students/pointBoard";
-	}
+        model.addAttribute("searchedStudentName", studentName);
+        model.addAttribute("selectedCourseNumber", courseNumber);
+        model.addAttribute("courseNumberList", courseNumberList);
+        model.addAttribute("paging", paging);
+        model.addAttribute("studentList", studentList);
+        model.addAttribute("pointCategoryList", pointService.getPointCategoryList());
 
-	@GetMapping("/students/set")
-	public String setStudent() {
-		return "students/setStudent";
-	}
+        return "students/pointBoard";
+    }
 
-	@GetMapping("/students")
-	public String studentBoard() {
-		return "students/studentBoard";
-	}
+    @GetMapping("/students/set")
+    public String setStudent() {
+        return "students/setStudent";
+    }
 
-	/* templete */
-	@GetMapping("header")
-	public String header() {
-		return "common/header";
-	}
+    @GetMapping("/students")
+    public String studentBoard() {
+        return "students/studentBoard";
+    }
 
-	/**/
-	@GetMapping("/data/add")
-	public String data2() {
-		return "courses/addCourseModal";
-	}
+    /* templete */
+    @GetMapping("header")
+    public String header() {
+        return "common/header";
+    }
+
+    /**/
+    @GetMapping("/data/add")
+    public String data2() {
+        return "courses/addCourseModal";
+    }
 }
