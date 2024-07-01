@@ -8,145 +8,209 @@
     <title>Document</title>
     <link rel="stylesheet" href="../../css/format.css"/>
     <link rel="stylesheet" href="../../css/students.css"/>
+    <link rel="stylesheet" href="../../css/scholarships.css" />
 </head>
 <body id="content-wrapper">
 <div th:insert="~{common/header :: header}"></div>
-<div th:insert="~{common/title :: title ('출결 관리')}"></div>
+<div th:insert="~{common/title :: title ('출결 조회')}"></div>
 <section id="attendance-contents">
     <article class="attendance-search-btn-wrapper">
         <div class="attendance-search-form-wrapper">
             <!-- form???? -->
-            <input type="date" id="search-date-input"/>
-            <select name="courseId-filter" class="courseId-filter">
+            <!--<form id="search-form">-->
+            <!--<select name="courseNumber" class="courseId-filter">
                 <option value="-1">기수</option>
-                <option value="227">227</option>
+                <option value="277">277</option>
                 <option value="191">191</option>
-            </select>
-            <input placeholder="수강생을 입력하세요" class="search-input"/>
+            </select>-->
+                <input placeholder="기수" id="input-course-number" class="courseId-filter" name="courseNumber"/>
+            <input placeholder="수강생을 입력하세요" id="input-name" class="search-input" name="name"/>
             <button type="button" class="filter-search-btn">검색</button>
-        </div>
-        <div class="attendance-btn-wrapper">
-            <button type="button" id="enroll-btn" class="attendance-btn-setting">
-                입력
-            </button>
-            <button
-                    type="button"
-                    id="long-enroll-btn"
-                    class="attendance-btn-setting"
-            >
-                일괄등록
-            </button>
-            <button type="button" id="edit-btn" class="attendance-btn-setting">
-                수정
-            </button>
+                <!--<button type="submit" class="filter-search-btn">검색</button>-->
+            <!--</form>-->
         </div>
     </article>
-    <article>
-        <div class="board-table">
-            <div class="board-row" id="board-title-row">
-                <div class="attendance-checkbox">
-                    <input type="checkbox" name=""/>
+    <section id="content-section">
+        <article id="attendance-content-article">
+            <div class="student-cnt-pages">
+                <span th:text="${'총 ' + pageInfo.getTotalCount + '건'}">총 개수</span>
+            </div>
+        </article>
+        <article>
+            <div class="board-table">
+                <div class="board-row" id="board-title-row">
+                    <div class="attendance-courseId">
+                        <span>기수</span>
+                    </div>
+                    <div class="attendance-name">
+                        <span>이름</span>
+                    </div>
+                    <div class="attendance-birth">
+                        <span>생년월일</span>
+                    </div>
+                    <div class="attendance-duration">
+                        <span>과정 기간(일)</span>
+                    </div>
+                    <div class="attendance-cnt">
+                        <span>출석(일)</span>
+                    </div>
+                    <div class="attendance-cnt-late">
+                        <span>지각</span>
+                    </div>
+                    <div class="attendance-cnt-early-leave">
+                        <span>조퇴</span>
+                    </div>
+                    <div class="attendance-cnt-go-out">
+                        <span>외출</span>
+                    </div>
+                    <div class="attendance-cnt-absence">
+                        <span>결석(일)</span>
+                    </div>
+                    <div class="attendance-total">
+                        <span>출석 인정일</span>
+                    </div>
                 </div>
-                <div class="attendance-courseId">
-                    <span>기수</span>
-                </div>
-                <div class="attendance-name">
-                    <span>이름</span>
-                </div>
-                <div class="attendance-birth">
-                    <span>생년월일</span>
-                </div>
-                <div class="attendance-duration">
-                    <span>과정 기간(일)</span>
-                </div>
-                <div class="attendance-cnt">
-                    <span>출석(일)</span>
-                </div>
-                <div class="attendance-cnt-late">
-                    <span>지각</span>
-                </div>
-                <div class="attendance-cnt-early-leave">
-                    <span>조퇴</span>
-                </div>
-                <div class="attendance-cnt-go-out">
-                    <span>외출</span>
-                </div>
-                <div class="attendance-cnt-absence">
-                    <span>결석(일)</span>
-                </div>
-                <div class="attendance-total">
-                    <span>출석 인정일</span>
+                <div id="attendance-row-wrapper">
+                    <div class="board-row" th:each="data : ${attendanceList}">
+                        <div class="attendance-courseId">
+                            <span th:text="${data.getCourseNumber()}">기수</span>
+                        </div>
+                        <div class="attendance-name">
+                            <span th:text="${data.getName()}">이름</span>
+                        </div>
+                        <div class="attendance-hrdNetId">
+                            <span th:text="${data.getHrdNetId()}">Hrd-net ID</span>
+                        </div>
+                        <div class="attendance-duration">
+                            <span th:text="${data.getTotalTrainingDays()}">과정 기간(일)</span>
+                        </div>
+                        <div class="attendance-cnt">
+                            <span th:text="${data.getSumAttendance()}">출석 횟수</span>
+                        </div>
+                        <div class="attendance-cnt-late">
+                            <span th:text="${data.getSumLateness()}">지각 횟수</span>
+                        </div>
+                        <div class="attendance-cnt-early-leave">
+                            <span th:text="${data.getSumEarlyLeave()}">조퇴 횟수</span>
+                        </div>
+                        <div class="attendance-cnt-go-out">
+                            <span th:text="${data.getSumGoOut()}">외출 횟수</span>
+                        </div>
+                        <div class="attendance-cnt-absence">
+                            <span th:text="${data.getSumAbsence()}">결석 횟수</span>
+                        </div>
+                        <div class="attendance-cnt-acknowledge">
+                            <span>0</span>
+                        </div>
+                        <!--<div class="attendance-cnt-acknowledge">
+                            <span th:text="${data.get}">출석 인정 횟수</span>
+                        </div>-->
+                    </div>
                 </div>
             </div>
-            <div class="board-row">
-                <div class="attendance-checkbox">
-                    <input type="checkbox" name=""/>
-                </div>
-                <div class="attendance-courseId">
-                    <span>227</span>
-                </div>
-                <div class="attendance-name">
-                    <span>김선희</span>
-                </div>
-                <div class="attendance-birth">
-                    <span>930628</span>
-                </div>
-                <div class="attendance-duration">
-                    <span>100</span>
-                </div>
-                <div class="attendance-cnt">
-                    <span>55</span>
-                </div>
-                <div class="attendance-cnt-late">
-                    <span>5</span>
-                </div>
-                <div class="attendance-cnt-early-leave">
-                    <span>3</span>
-                </div>
-                <div class="attendance-cnt-go-out">
-                    <span>1</span>
-                </div>
-                <div class="attendance-cnt-absence">
-                    <span>0</span>
-                </div>
-                <div class="attendance-total-absence">
-                    <span>53</span>
-                </div>
-            </div>
-        </div>
+        </article>
+    </section>
+    <article class="page-information">
+        <!--<ul id="pagination">
+            <li th:classappend="${pageInfo.getTotalPage() == 1} ? 'inactivePage'">
+                <a class="page-link" th:href="@{|?courseNumber=${searchCourseNumber}&name=${searchStudentName}&page=${pageInfo.getCurrentPage()-1}|}">
+                    <span>이전</span>
+                </a>
+            </li>
+            <li th:each="page: ${#numbers.sequence(1, 10)}" class="page-item">
+                <a th:text="${pageInfo.getCurrentPage() + page}" class="page-link"
+                   th:href="@{|?courseNumber=${searchCourseNumber}&name=${searchStudentName}&page=${pageInfo.getNextPage()}|}">
+                </a>
+            </li>
+            <li class="page-item"
+                th:classappend="${(pageInfo.getNextPage()) > (pageInfo.getTotalPage())} ? 'inactivePage' || ${pageInfo.getTotalPage() == 1} ? 'inactivePage'">
+                <a class="page-link"
+                   th:href="@{|?courseNumber=${searchCourseNumber}&name=${searchStudentName}&page=${pageInfo.getNextPage()}|}">
+                    <span>다음</span>
+                </a>
+            </li>
+        </ul>-->
     </article>
 </section>
-<section id="content-section">
-    <article>
-        <div class="student-cnt-pages">
-            <span>총 13건</span>
-        </div>
-    </article>
-</section>
+
 <footer></footer>
 <script>
     // 페이징 처리를 위한 pageRequest JSON
     const pageRequest = JSON.stringify({
-        "page": 2,
+        "page": 1,
         "size": 10,
         "currentPage": 1
     });
 
-    // 특정일 기수(수강생명) 검색으로 출결상태 조회
+    // 기수(수강생명) 검색으로 출결상태 조회
+    /*
+    // 출결 입력(수정) 에서 필요한 메서드
     function getAttendanceDate() {
         return document.querySelector("#search-date-input").value;
     }
+    */
     function getCourseNumber() {
+        // if(document.querySelector(".courseId-filter").value == "") {
+        if(document.querySelector("#input-course-number").value == "") {
+            return -1;
+        }
         return parseInt(document.querySelector(".courseId-filter").value);
     }
     function getStudentName() {
         return document.querySelector(".search-input").value;
     }
-    const attendanceRequest = JSON.stringify({
+
+    /*
+    // 출결 조회 의 attendanceRequest용으로 작성
+    const attendanceRequest2 = JSON.stringify({
         "attendanceDate": getAttendanceDate(),
         "courseNumber": getCourseNumber(),
         "name": getStudentName()
     });
+    */
+
+    async function getStudentAttendanceList2() {
+        try {
+            /*
+            const studentName = encodeURI(getStudentName(), "UTF-8");
+            console.log(getStudentName());
+            console.log(getCourseNumber());
+            console.log(studentName);
+            */
+
+            const combinedRequest = JSON.stringify({
+                "pageRequest": pageRequest,
+                "attendanceRequest": attendanceRequest
+            });
+
+            /*
+            const response = await fetch("/attendances/student-list?courseNumber="+getCourseNumber()+"&name="+getStudentName(), {
+                method:"POST",
+                headers: {
+                    "Content-Type":"application/json"
+                },
+                body: pageRequest
+            });
+            */
+
+
+            const response = await fetch("/attendances/student-list?courseNumber="+getCourseNumber()+"&name="+getStudentName()+"&page=1");
+            const data = await response.json();
+            return data.attendanceRequest;
+
+            if(response) {
+                const responseJSON = await response.json();
+                console.log(responseJSON);
+            } else {
+                console.error("검색 실패: ", response.status);
+            }
+        } catch(error) {
+            console.error("검색 오류: ", error);
+        }
+    }
+
+    /*
+    // 출결 조회 에 대한 메서드
     async function searchAttendanceByFilter() {
         try {
             const combinedRequest = JSON.stringify({
@@ -171,8 +235,49 @@
             console.error("검색 오류: ", error);
         }
     }
+    */
 
-    document.querySelector(".filter-search-btn").addEventListener("click", searchAttendanceByFilter);
+    // document.querySelector(".filter-search-btn").addEventListener("click", getStudentAttendanceList);
+    /*
+    function handleSearch(event) {
+        event.preventDefault();
+
+        const courseNumberInput = document.getElementById("input-course-number");
+        const nameInput = document.getElementById("input-name");
+        courseNumberInput.value = courseNumberInput.value;
+        nameInput.value = nameInput.value;
+    }
+    */
+
+    /*
+    async function getStudentAttendanceList() {
+        try {
+            const combinedRequest = JSON.stringify({
+                "pageRequest": pageRequest,
+                "attendanceRequest": attendanceRequest
+            });
+
+            const response = await fetch("/attendances/student-list?courseNumber="+getCourseNumber()+"&name="+getStudentName()+"&page=1", {
+                method: "GET"
+            });
+            const data = await response.json();
+            return data.attendanceRequest;
+
+            if(response) {
+                const responseJSON = await response.json();
+                console.log(responseJSON);
+            } else {
+                console.error("검색 실패: ", response.status);
+            }
+        } catch(error) {
+            console.error("검색 오류: ", error);
+        }
+    }
+    document.querySelector(".filter-search-btn").addEventListener("click", function(e) {
+        e.preventDefault();
+        getStudentAttendanceList();
+    })
+    */
 </script>
 </body>
 </html>

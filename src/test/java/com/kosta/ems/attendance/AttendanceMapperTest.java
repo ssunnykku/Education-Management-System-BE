@@ -34,8 +34,8 @@ class AttendanceMapperTest {
     // 경우2_ 기수 또는 수강생명 입력
     @Test
     public void selectAttendanceIntegratedListFilter() {
-        log.info(Integer.toString(attendanceMapper.selectAttendanceIntegratedListFilter("유", 277, 0, 10).size()));
-        log.info(attendanceMapper.selectAttendanceIntegratedListFilter("유", 277, 0, 10).toString());
+        log.info(Integer.toString(attendanceMapper.selectAttendanceIntegratedListFilter("none", 277, 0, 10).size()));
+        log.info(attendanceMapper.selectAttendanceIntegratedListFilter("none", 277, 0, 10).toString());
     }
     
     // [출결] - 특정일의 수강생 출석 상태 목록 조회 (for 출결 입력/수정)
