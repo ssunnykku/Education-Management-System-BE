@@ -1,4 +1,4 @@
-const param = new URL(location.href).search.split("=")[1];
+let param = new URL(location.href).search.split("=")[1];
 
 const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
@@ -58,6 +58,9 @@ function settlementDate() {
 }
 
 async function fetchScholarshipResultBoard(param) {
+
+    let urlParam = param == undefined ? 1 : param;
+
     $("#scholarship-result-table-contents").html("");
     const raw = JSON.stringify({
         "courseNumber": courseNumber() == "기수" ? "" : courseNumber(),
@@ -72,7 +75,7 @@ async function fetchScholarshipResultBoard(param) {
     };
 
     $("#scholarship-result-table-contents").html("");
-    await fetch("/scholarships/result?page=" + param, requestOptions)
+    await fetch("/scholarships/result?page=" + urlParam, requestOptions)
         .then((res) => res.json())
         .then((data) => {
             getScholarshipResultData(data);
@@ -85,8 +88,6 @@ async function fetchScholarshipResultBoard(param) {
         .then(async (data) => {
             $(".scholarship-cnt-pages").html(`<span>총 ${data.result}</span>건`);
 
-            // const countPage = Math.ceil(data.result / 10);
-            // const countPage = 12;  // Example total pages
             totalPages = Math.ceil(data.result / 10);
 
             updatePagination();
@@ -99,53 +100,18 @@ function updatePagination() {
 
     let firstPage = (currentBlock * pageSize) - pageSize + 1;
     let lastPage = totalPages <= currentBlock * pageSize ? totalPages : currentBlock * pageSize;
-
+    let result = "";
     for (let i = firstPage; i <= lastPage; i++) {
         let num = i;
-        $("#page_number").append(`<a class=" v" onclick="fetchScholarshipResultBoard(${num})">${num}</a>`);
+
+        result += `<a class=" v" onclick="fetchScholarshipResultBoard(${num})">${num}</a>`;
     }
+    $("#page_number").append(result);
 }
 
 
-// fetch("/scholarships/result", {
-//     method: "POST",
-//     headers: myHeaders,
-//     body: JSON.stringify({
-//         "courseNumber": "",
-//         "name": "",
-//         "scholarshipDate": ""
-//     }),
-// })
-//     .then((res) => res.json())
-//     .then((data) => {
-//         getScholarshipResultData(data);
-//
-//     })
-//     .catch((error) => console.error(error));
-//
-// fetch("/scholarships/result/count", {
-//     method: "POST",
-//     headers: myHeaders,
-//     body: JSON.stringify({
-//         "courseNumber": "",
-//         "name": "",
-//         "scholarshipDate": ""
-//     }),
-//
-// })
-//     .then((res) => res.json())
-//     .then(async (data) => {
-//         $(".scholarship-cnt-pages").html(`<span>총 ${data.result}</span>건`);
-//
-//         // const countPage = Math.ceil(data.result / 10);
-//         // const countPage = 12;  // Example total pages
-//         totalPages = Math.ceil(data.result / 10);
-//
-//         updatePagination();
-//     })
-//     .catch((error) => console.error(error));
-
 $(".filter-search-btn").click(async () => {
+
         await fetchScholarshipResultBoard(param)
     }
 );
