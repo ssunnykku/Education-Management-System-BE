@@ -24,19 +24,30 @@ class AttendanceMapperTest {
     public void selectStudentAttendanceListAmount() {
     	log.info(attendanceMapper.selectAttendanceIntegratedListFilterAllAmount("유", 277).toString());
     }
+    // 경우3_ 기수, 수강생명 미입력 (전체 데이터)
+    // @Test
+    public void selectAttendanceIntegratedListNoFilterAmount() {
+        log.info(Integer.toString(attendanceMapper.selectAttendanceIntegratedListNoFilterAmount("none", -1).size()));
+    }
     
     // [출결] - 수강생 출석 조회 목록 조회
     // 경우1_ 기수+수강생명 입력
     // @Test
     public void selectAttendanceIntegratedListFilterAll() {
-    	log.info(attendanceMapper.selectAttendanceIntegratedListFilterAll("유", 277, 0, 2).toString());
+    	log.info(attendanceMapper.selectAttendanceIntegratedListFilterAll("유", 277, 0, 10).toString());
     }
     // 경우2_ 기수 또는 수강생명 입력
-    @Test
+    // @Test
     public void selectAttendanceIntegratedListFilter() {
         log.info(Integer.toString(attendanceMapper.selectAttendanceIntegratedListFilter("none", 277, 0, 10).size()));
         log.info(attendanceMapper.selectAttendanceIntegratedListFilter("none", 277, 0, 10).toString());
     }
+    // 경우3_ 기수, 수강생명 미입력 (전체 데이터)
+    // @Test
+    public void selectAttendanceIntegratedListNoFilter() {
+        log.info(attendanceMapper.selectAttendanceIntegratedListNoFilter("none", -1, 0, 10).toString());
+    }
+
     
     // [출결] - 특정일의 수강생 출석 상태 목록 조회 (for 출결 입력/수정)
     // 경우1 _ 기수+수강생명 입력
