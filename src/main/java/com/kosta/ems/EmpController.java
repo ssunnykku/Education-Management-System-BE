@@ -218,7 +218,6 @@ public class EmpController {
 																			   String studentName,
 			@RequestParam(value = "excludeExpired", defaultValue = "true") 	   boolean excludeExpired,
 			HttpServletRequest request, Model model) {
-		System.out.println(studentName + "입니다");
 		List<StudentCourseWithPointDTO> studentList = pointService.getStudentListWithPoint(courseNumber, studentName, page, pageSize, getAcademyOfLoginUser(request));
 		Integer totalStudentCount = pointService.getCountOfStudentWithPoint(courseNumber, studentName, getAcademyOfLoginUser(request));
 		List<Integer> courseNumberList = courseService.getCourseNumberList(getAcademyOfLoginUser(request),

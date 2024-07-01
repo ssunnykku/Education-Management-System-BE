@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface CourseService {
 	List<Integer> getCourseNumberList(String academyLocation, boolean excludeExpired);
 	CourseDTO getCourse(int courseSeq, String academyLocation);
