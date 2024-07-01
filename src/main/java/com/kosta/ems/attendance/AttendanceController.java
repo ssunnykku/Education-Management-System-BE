@@ -34,37 +34,29 @@ public class AttendanceController {
 	// [출결] - 수강생 출석 조회 목록 조회 __POSTMAN 테스트 완료 __예외 처리 고려 필요!
 	@PostMapping("/student-list")
 	@ResponseBody
-	// public Map<String, Object> getStudentAttendanceList(@RequestParam(name="courseNumber", required = false, defaultValue="") String inputCourseNumber, @RequestParam(name="name", required = false, defaultValue = "") String name, @RequestParam(name="page", defaultValue = "1") int page, Model model) {
-	// public Map<String, Object> getStudentAttendanceList(@RequestParam(name="courseNumber", required = false, defaultValue="-1") int courseNumber, @RequestParam(name="name", required=false, defaultValue = "none") String name, @RequestParam(name="page", defaultValue="1") int page, HttpServletRequest request, @RequestBody PageRequestDTO pageRequest) {
 	public Map<String, Object> getStudentAttendanceList(@RequestParam(name="page", required=false, defaultValue="1") int page, @RequestBody RequestStudentAttendanceDTO dto) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		// int page = pageRequest.getPage();
-		// int size = pageRequest.getSize();
-		// 커밋용 주석
-		int size=2;
+		int size=10;
 		int totalCount = 0;
 		log.info(">> getStudentAttendanceList");
-		// log.info(">> -- courseNumber: " + courseNumber);
-		// log.info(">> -- name: " + name);
+		log.info(">> -- courseNumber: " + dto.getCourseNumber());
+		log.info(">> -- name: " + dto.getName());
 		log.info(">> -- page: " + page);
 		// log.info(">> -- pageInfo: " + pageRequest.toString());
 
-		// if(!name.equals("none") && courseNumber != -1) {
 		if(!dto.getName().equals("none") && dto.getCourseNumber() != -1) {
 			// 기수, 수강생명 모두 입력해 검색
-			// totalCount = attendanceService.getAttendanceIntegratedListFilterAllAmount(name, courseNumber);
+			log.info(">> if");
 			totalCount = attendanceService.getAttendanceIntegratedListFilterAllAmount(dto.getName(), dto.getCourseNumber());
 
 			// 수강생 출결 목록 데이터
-			// result.put("attendanceList", attendanceService.getAttendanceIntegratedListFilterAll(name, courseNumber, page, size));
 			result.put("attendanceList", attendanceService.getAttendanceIntegratedListFilterAll(dto.getName(), dto.getCourseNumber(), page, size));
 			result.put("amount", totalCount);
-			// result.put("searchCourseNumber", courseNumber);
-			// result.put("searchStudentName", name);
 			result.put("searchCourseNumber", dto.getCourseNumber());
 			result.put("searchStudentName", dto.getName());
 		// } else if(name.equals("none") && courseNumber == -1) {
-		} else if(!dto.getName().equals("none") && dto.getCourseNumber() == -1) {
+		} else if(dto.getName().equals("none") && dto.getCourseNumber() == -1) {
+			log.info(">> else if 미입력");
 			// 기수, 수강생명 미입력 검색 (전체 데이터)
 			totalCount = attendanceService.getAttendanceIntegratedListNoFilterAmount(dto.getName(), dto.getCourseNumber());
 			result.put("attendanceList", attendanceService.getAttendanceIntegratedListNoFilter(dto.getName(), dto.getCourseNumber(), page, size));
@@ -72,6 +64,7 @@ public class AttendanceController {
 			result.put("searchCourseNumber", dto.getCourseNumber());
 			result.put("searchStudentName", dto.getName());
 		} else if((!dto.getName().equals("none") && dto.getCourseNumber() == -1) || (dto.getName().equals("none") && dto.getCourseNumber() != -1)) {
+			log.info(">> else if 또는");
 			// 기수 또는 수강생명 입력하여 검색
 			totalCount = attendanceService.getAttendanceIntegratedListFilterAmount(dto.getName(), dto.getCourseNumber());
 			// 수강생 출결 목록 데이터
