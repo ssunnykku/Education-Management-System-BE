@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,6 +33,18 @@ public class StudentPointController {
 	@GetMapping("/category-list")
 	public Map<String, List<PointCategoryDTO>> pointCategoryList(){
 		return Map.of("data", service.getPointCategoryList());
+	}
+	
+	@GetMapping("student-list")
+	public Map studentListWithPoints(
+	        @RequestParam(value = "page",           defaultValue = "1")    int     page,
+            @RequestParam(value = "pageSize",       defaultValue = "10")   int     pageSize,
+            @RequestParam(value = "courseNumber",   defaultValue = "0")    int     courseNumber,
+                                                                           String  studentName,
+            @RequestParam(value = "excludeExpired", defaultValue = "true") boolean excludeExpired,
+            HttpServletRequest request) 
+	{
+	    return Map.of("result", service.getStudentListWithPoint(courseNumber, studentName, page, pageSize, studentName));
 	}
 	
 	@GetMapping("/student")
