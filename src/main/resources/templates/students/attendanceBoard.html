@@ -24,8 +24,8 @@
         </div>
     </article>
     <section id="content-section">
-        <article id="attendance-content-article">
-            <div class="student-cnt-pages"></div>
+        <article id="attendance-content-article" style="padding-left: 70px; margin-left: 0;">
+            <div class="student-cnt-pages" style="margin-left: 0"></div>
         </article>
         <article>
             <div class="board-table">
@@ -66,11 +66,11 @@
         </article>
     </section>
     <article class="page-information">
-        <ul id="pagination">
+        <ul id="pagination" style="margin-top: 35px;">
             <li>
                 <a class="page-link" id="prev">이전</a>
             </li>
-            <li id="page-number" class="page-item"></li>
+            <li id="page-number" class="page-item" style="display: flex; gap: 20px"></li>
             <li class="page-item">
                 <a id="next" class="page-link">다음</a>
             </li>
@@ -133,7 +133,7 @@
                             <span class="span-attendance-cnt-absence">${data[i].sumAbsence}</span>
                         </div>
                         <div class="attendance-cnt-acknowledge">
-                            <span class="span-attendance-cnt-acknowledge">0</span>
+                            <span class="span-attendance-cnt-acknowledge">${data[i].sumAcknowledge}</span>
                         </div>
                     </div>`;
         }
@@ -156,14 +156,6 @@
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
-        /*
-        // 페이징 처리를 위한 pageRequest JSON
-        const pageRequest = JSON.stringify({
-            "page": clickPage,
-            "size": 10,
-            "currentPage": currentPage
-        });
-         */
         const raw = JSON.stringify({
             "name": getStudentName(),
             "courseNumber": getCourseNumber()
@@ -193,14 +185,6 @@
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
-        /*
-        // 페이징 처리를 위한 pageRequest JSON
-        const pageRequest = JSON.stringify({
-            "page": page,
-            "size": pageSize,
-            "currentPage": currentPage
-        });
-         */
         const raw = JSON.stringify({
             "name": getStudentName(),
             "courseNumber": getCourseNumber()

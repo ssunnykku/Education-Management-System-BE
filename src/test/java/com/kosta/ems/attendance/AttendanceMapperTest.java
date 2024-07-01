@@ -32,7 +32,7 @@ class AttendanceMapperTest {
     
     // [출결] - 수강생 출석 조회 목록 조회
     // 경우1_ 기수+수강생명 입력
-    // @Test
+    @Test
     public void selectAttendanceIntegratedListFilterAll() {
     	log.info(attendanceMapper.selectAttendanceIntegratedListFilterAll("유", 277, 0, 10).toString());
     }

@@ -54,6 +54,7 @@ HAVING SUM(CASE WHEN a.attendance_status = '출석' THEN 1 ELSE 0 END) > 0;
     SUM(CASE WHEN a.attendance_status = '조퇴' THEN 1 ELSE 0 END) AS 'sumGoOut',
     SUM(CASE WHEN a.attendance_status = '외출' THEN 1 ELSE 0 END) AS 'sumEarlyLeave',
     SUM(CASE WHEN a.attendance_status = '결석' THEN 1 ELSE 0 END) AS 'sumAbsence',
+                SUM(CASE WHEN a.attendance_status = '출석 인정' THEN 1 ELSE 0 END) AS 'sumAcknowledge',
     	sc.student_course_seq AS studentCourseSeq
 FROM students_courses sc
 JOIN students s ON s.student_id = sc.student_id
@@ -85,6 +86,7 @@ LIMIT #{page}, #{size};
                 SUM(CASE WHEN a.attendance_status = '조퇴' THEN 1 ELSE 0 END) AS 'sumGoOut',
                 SUM(CASE WHEN a.attendance_status = '외출' THEN 1 ELSE 0 END) AS 'sumEarlyLeave',
                 SUM(CASE WHEN a.attendance_status = '결석' THEN 1 ELSE 0 END) AS 'sumAbsence',
+                SUM(CASE WHEN a.attendance_status = '출석 인정' THEN 1 ELSE 0 END) AS 'sumAcknowledge',
                 sc.student_course_seq AS studentCourseSeq
         FROM students_courses sc
                  JOIN students s ON s.student_id = sc.student_id
@@ -115,6 +117,7 @@ LIMIT #{page}, #{size};
                 SUM(CASE WHEN a.attendance_status = '조퇴' THEN 1 ELSE 0 END) AS 'sumGoOut',
                 SUM(CASE WHEN a.attendance_status = '외출' THEN 1 ELSE 0 END) AS 'sumEarlyLeave',
                 SUM(CASE WHEN a.attendance_status = '결석' THEN 1 ELSE 0 END) AS 'sumAbsence',
+                SUM(CASE WHEN a.attendance_status = '출석 인정' THEN 1 ELSE 0 END) AS 'sumAcknowledge',
                 sc.student_course_seq AS studentCourseSeq
         FROM students_courses sc
                  JOIN students s ON s.student_id = sc.student_id

@@ -38,7 +38,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     // -- 데이터 결과 목록 가져오기
     @Override
     public List<StudentAttendanceListDTO> getAttendanceIntegratedListFilterAll(String name, int courseNumber, int page, int size) {
-        return attendanceMapper.selectAttendanceIntegratedListFilterAll(name, courseNumber, (page-1), size);
+        return attendanceMapper.selectAttendanceIntegratedListFilterAll(name, courseNumber, ((page*size)-size), size);
     }
     // 경우2_ 기수 또는 수강생명 입력
     // -- 데이터 개수 가져오기 (for 페이지네이션)
@@ -49,7 +49,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     // -- 데이터 결과 목록 가져오기
     @Override
     public List<StudentAttendanceListDTO> getAttendanceIntegratedListFilter(String name, int courseNumber, int page, int size) {
-        return attendanceMapper.selectAttendanceIntegratedListFilter(name, courseNumber, (page-1), size);
+        return attendanceMapper.selectAttendanceIntegratedListFilter(name, courseNumber, ((page*size)-size), size);
     }
     // 경우3_ 기수, 수강생명 미입력 (전체 데이터)
     // -- 데이터 개수 가져오기 (for 페이지네이션)
@@ -60,7 +60,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     // -- 데이터 결과 목록 가져오기
     @Override
     public List<StudentAttendanceListDTO> getAttendanceIntegratedListNoFilter(String name, int courseNumber, int page, int size) {
-        return attendanceMapper.selectAttendanceIntegratedListNoFilter(name,courseNumber,(page-1),size);
+        return attendanceMapper.selectAttendanceIntegratedListNoFilter(name,courseNumber,((page*size)-size),size);
     }
 
 
@@ -91,7 +91,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     	int month = Integer.parseInt(attendanceDate.split("-")[1]);
     	int day = Integer.parseInt(attendanceDate.split("-")[2]);
     	
-    	return attendanceMapper.selectCourseNumberAndStudentNameList(LocalDate.of(year, month, day), academyLocation, name, courseNumber, page, size);
+    	return attendanceMapper.selectCourseNumberAndStudentNameList(LocalDate.of(year, month, day), academyLocation, name, courseNumber, ((page*size)-size), size);
     }
     
     // 경우2 _ 기수 또는 수강생명 입력
@@ -111,7 +111,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     	int month = Integer.parseInt(attendanceDate.split("-")[1]);
     	int day = Integer.parseInt(attendanceDate.split("-")[2]);
     	
-    	return attendanceMapper.selectCourseNumberOrStudentNameList(LocalDate.of(year, month, day), academyLocation, name, courseNumber, page, size);
+    	return attendanceMapper.selectCourseNumberOrStudentNameList(LocalDate.of(year, month, day), academyLocation, name, courseNumber, ((page*size)-size), size);
     }
     
     // 경우3 _ 기수+수강생명 미입력
@@ -131,7 +131,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     	int month = Integer.parseInt(attendanceDate.split("-")[1]);
     	int day = Integer.parseInt(attendanceDate.split("-")[2]);
     	
-    	return attendanceMapper.selectDateAndLocationList(LocalDate.of(year, month, day), academyLocation, name, courseNumber, page, size);
+    	return attendanceMapper.selectDateAndLocationList(LocalDate.of(year, month, day), academyLocation, name, courseNumber, ((page*size)-size), size);
     }
     
     
