@@ -27,6 +27,18 @@ public class CourseController {
 		return Map.of("result", service.getCourse(courseSeq, getAcademyOfLoginUser(request)));
 	}
 	
+	@GetMapping("/course-list")
+	public Map CourseList(
+			@RequestParam(value = "page",           defaultValue = "1"   ) int page,
+			@RequestParam(value = "pageSize",       defaultValue = "10"  ) int pageSize,
+			@RequestParam(value = "courseNumber",   defaultValue = "0"   ) int courseNumber,
+			@RequestParam(value = "excludeExpired", defaultValue = "true") boolean excludeExpired, 
+			HttpServletRequest request) 
+	{
+		String academyLocation = getAcademyOfLoginUser(request);
+		return Map.of("result", service.searchCourseList(courseNumber, academyLocation, page, pageSize, excludeExpired));
+	}
+	
 	@GetMapping("/course-number-list")
 	public Map getCourseNumberList(@RequestParam(value="excludeExpired", defaultValue = "true") boolean excludeExpired, HttpServletRequest request) {
 		return Map.of("result", service.getCourseNumberList(getAcademyOfLoginUser(request), excludeExpired));
