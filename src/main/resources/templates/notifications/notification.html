@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
+            integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/format.css"/>
+    <link rel="stylesheet" href="../../css/notifications.css"/>
+</head>
+<body id="content-wrapper">
+<div th:insert="~{common/header :: header}"></div>
+<section id="title-wrapper">
+    <h2 id="title">공지사항</h2>
+</section>
+<section id="notificationPost-section">
+    <article class="notificationPost-contents">
+        <div id="notification-row" class="underline">
+            <div class="notificationPost-no">
+             <!--  <span th:text="${notification.notificationSeq}"></span>-->
+            </div>
+            <div class="notificationPost-title">
+            <!--    <span th:text="${notification.title}"></span>-->
+            </div>
+            <div class="notificationPost-enroll-date">
+            <!--    <span th:text="${notification.formattedNotificationDate}"></span>-->
+            </div>
+        </div>
+        <div id="notification-contents">
+            <div class="writer">
+                <span>작성자 :</span>
+                <span class="notification-writer">
+        <!--        <span th:text="${notification.name}"></span>-->
+            </div>
+            <div class="notificationPost-content">
+                <p>
+           <!--        <span th:text="${notification.description}">-->
+                </p>
+            </div>
+        </div>
+        <div id="notificationPost-btn-wrapper">
+            <button id="enroll-btn" class="btn-setting">등록</button>
+            <button id="edit-btn" class="btn-setting">취소</button>
+        </div>
+    </article>
+</section>
+<footer></footer>
+<script>
+	$(document).ready(function() {
+  let urlParams = new URLSearchParams(window.location.search);
+  let notificationSeq = urlParams.get('notificationSeq');
+
+  fetch("/notifications/post/" + notificationSeq, {
+    method: "get",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Process and populate the HTML template
+    let notificationSeq=data.notificationSeq;
+    let notificationTitle = data.title;
+    let notificationContent = data.description;
+    let notificationDate = data.notificationDate;
+    let name=data.name;
+
+    // Update HTML elements using selectors
+    document.querySelector('.notificationPost-no').textContent = notificationSeq;
+    document.querySelector('.notificationPost-title').textContent = notificationTitle;
+    document.querySelector('.notificationPost-content').textContent = notificationContent;
+    // Update the date element if needed (assuming 'notificationPost-enroll-date' is for the date)
+    document.querySelector('.notificationPost-enroll-date').textContent = notificationDate;
+    document.querySelector('.notification-writer').textContent=name;
+  })
+  .catch(error => {
+    console.error("Error fetching data:", error);
+  });
+});
+	</script>
+</body>
+</html>

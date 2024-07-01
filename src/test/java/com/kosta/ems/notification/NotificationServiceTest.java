@@ -17,7 +17,7 @@ class NotificationServiceTest {
 
 	//@Test
 	void testSearchAll() {
-		log.info(notificationService.searchAll("d893c29b-2f8f-11ef-b0b2-0206f94be675").toString());
+		log.info(notificationService.searchAll("d893c29b-2f8f-11ef-b0b2-0206f94be675", 10, 10).toString());
 	}
 
 	//@Test

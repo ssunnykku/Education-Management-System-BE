@@ -9,7 +9,6 @@ import com.kosta.ems.studentPoint.dto.StudentCourseWithPointDTO;
 import java.util.List;
 import java.util.function.IntPredicate;
 
-@Service
 public interface StudentPointService {
 	List<StudentCourseWithPointDTO> getStudentListWithPoint(int courseNumber, String name, int page, int pageSize, String academyLocationOfManager);
 

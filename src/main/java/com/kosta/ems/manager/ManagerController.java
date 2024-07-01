@@ -21,12 +21,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class ManagerController {
-	private final ManagerService service;
+	private final ManagerService managerService;
 	
 	//Controller처럼 작동함
 	@PostMapping("/login")
 	public Map login(@RequestBody Map<String, String> loginRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		Map<String, String> map = service.login(loginRequest.get("employeeNumber"), loginRequest.get("password"));
+		Map<String, String> map = managerService.login(loginRequest.get("employeeNumber"), loginRequest.get("password"));
 		if(Objects.isNull(map)) {
 			return Map.of("result", false);
 		}
@@ -45,6 +45,6 @@ public class ManagerController {
 		if(session != null) {
 			session.invalidate();
 		}
-		response.sendRedirect("/ui/login");
+		response.sendRedirect("/ems/login");
 	}
 }

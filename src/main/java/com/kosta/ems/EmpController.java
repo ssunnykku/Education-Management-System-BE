@@ -1,8 +1,11 @@
 package com.kosta.ems;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import com.kosta.ems.attendance.AttendanceService;
 import com.kosta.ems.student.PageResponseDTO;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -92,7 +95,7 @@ public class EmpController {
 	}
 
 	 @GetMapping("/notifications") //@AuthenticationPrincipal 사용할수있음.
-    public String notificationBoard(Model model, HttpSession session, @RequestParam int page) {
+    public String notificationBoard(Model model, HttpSession session, @RequestParam(defaultValue = "1") int page) {
     	log.info((String) session.getAttribute("managerId").toString());
     	//String managerId="d893bf71-2f8f-11ef-b0b2-0206f94be675";
 
@@ -102,14 +105,15 @@ public class EmpController {
         return "notifications/notificationBoard";
     }
 
-	@GetMapping("/notifications/post")
-	public String notificationPost() {
-		return "notifications/notificationPost";
+	 
+	@GetMapping("/notification")
+	public String notificationPost(@RequestParam("notificationSeq") int notificationSeq) {
+		return "notifications/notification";
 	}
 
 	@GetMapping("/notifications/write")
 	public String notificationWrite() {
-		return "notifications/addNotification";
+		return "notifications/setNotification";
 	}
 
 	@GetMapping("/notifications/update")
@@ -141,73 +145,7 @@ public class EmpController {
 	}
 	*/
 	@GetMapping("/attendances")
-	public String attendanceBoard(@RequestParam(value="courseNumber", defaultValue = "-1", required = false) int courseNumber, String name, @RequestParam(value="page", defaultValue = "1") int page, Model model) {
-		// int page = 0;
-		int size = 10;
-		int totalCount = 0;
-
-		if(name == null) {
-			name = "none";
-		}
-
-		if(name != "none" && courseNumber != -1) {
-			// 기수, 수강생명 모두 입력해 검색
-			// totalCount = attendanceServiceImpl.getAttendanceIntegratedListFilterAllAmount(name, courseNumber);
-			System.out.println(">> if");
-			System.out.println(">> name: " + name);
-			System.out.println(">> courseNumber: " + courseNumber);
-			totalCount = attendanceService.getAttendanceIntegratedListFilterAllAmount(name, courseNumber);
-			// 수강생 출결 목록 데이터
-			// result.put("data", attendanceServiceImpl.getAttendanceIntegratedListFilterAll(name, courseNumber, page, size));
-			model.addAttribute("amount", totalCount);
-			model.addAttribute("attendanceList", attendanceService.getAttendanceIntegratedListFilterAll(name, courseNumber, page, size));
-			model.addAttribute("searchCourseNumber", courseNumber);
-			model.addAttribute("searchStudentName", name);
-		} else if(name == "none" && courseNumber == -1) {
-			// 기수, 수강생명 모두 미입력 검색 (전체 데이터 + 페이지네이션)
-			System.out.println(">> else if");
-			System.out.println(">> name: " + name);
-			System.out.println(">> courseNumber: " + courseNumber);
-			totalCount = attendanceService.getAttendanceIntegratedListNoFilterAmount(name, courseNumber);
-			model.addAttribute("amount", totalCount);
-			model.addAttribute("attendanceList", attendanceService.getAttendanceIntegratedListNoFilter(name, courseNumber, page, size));
-			model.addAttribute("searchCourseNumber", courseNumber);
-			model.addAttribute("searchStudentName", name);
-		} else {
-			// 기수 또는 수강생명 입력하여 검색
-			// totalCount = attendanceServiceImpl.getAttendanceIntegratedListFilterAmount(name, courseNumber);
-			System.out.println(">> else");
-			System.out.println(">> name: " + name);
-			System.out.println(">> courseNumber: " + courseNumber);
-			totalCount = attendanceService.getAttendanceIntegratedListFilterAmount(name, courseNumber);
-			// 수강생 출결 목록 데이터
-			// result.put("data", attendanceServiceImpl.getAttendanceIntegratedListFilter(name, courseNumber, page, size));
-			model.addAttribute("amount", totalCount);
-			model.addAttribute("attendanceList", attendanceService.getAttendanceIntegratedListFilter(name, courseNumber, page, size));
-			model.addAttribute("searchCourseNumber", courseNumber);
-			model.addAttribute("searchStudentName", name);
-		}
-
-		// 페이징 response
-		// int totalCount = attendanceServiceImpl.getStudentAttendanceListAmount(name, courseNumber);
-		int totalPage = (totalCount/size) + 1;
-		// int currentPage = pageRequest.getCurrentPage();
-		int currentPage = 1;  // 브라우저에서 받아올 값인데 아직 연결안해서 controller 테스트를 위해 작성했던 코드.
-		int prevPage = 0;
-		int nextPage = 0;
-		if(currentPage > 1 && currentPage < totalPage) {
-			prevPage = currentPage - 1;
-			nextPage = currentPage + 1;
-		} else if(currentPage == totalPage) {
-			prevPage = currentPage - 1;
-		} else if(currentPage == 1) {
-			nextPage = currentPage + 1;
-		}
-
-		PageResponseDTO pageInfo = PageResponseDTO.builder().totalCount(totalCount).totalPage(totalPage).currentPage(currentPage).prevPage(prevPage).nextPage(nextPage).build();
-		// result.put("pageInfo", pageInfo);
-		model.addAttribute("pageInfo", pageInfo);
-
+	public String attendanceBoard() {
 		return "students/attendanceBoard";
 	}
 
@@ -218,7 +156,6 @@ public class EmpController {
 																			   String studentName,
 			@RequestParam(value = "excludeExpired", defaultValue = "true") 	   boolean excludeExpired,
 			HttpServletRequest request, Model model) {
-		System.out.println(studentName + "입니다");
 		List<StudentCourseWithPointDTO> studentList = pointService.getStudentListWithPoint(courseNumber, studentName, page, pageSize, getAcademyOfLoginUser(request));
 		Integer totalStudentCount = pointService.getCountOfStudentWithPoint(courseNumber, studentName, getAcademyOfLoginUser(request));
 		List<Integer> courseNumberList = courseService.getCourseNumberList(getAcademyOfLoginUser(request),
