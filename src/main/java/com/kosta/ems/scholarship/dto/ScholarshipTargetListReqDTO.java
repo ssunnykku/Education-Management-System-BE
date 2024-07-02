@@ -1,4 +1,4 @@
-package com.kosta.ems.scholarship;
+package com.kosta.ems.scholarship.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,11 +1,12 @@
 package com.kosta.ems.scholarship;
 
+import com.kosta.ems.scholarship.dto.ScholarshipSettlementResultDTO;
+import com.kosta.ems.scholarship.dto.ScholarshipTargetDTO;
+import com.kosta.ems.scholarship.dto.ScholarshipTargetListReqDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 @RestController

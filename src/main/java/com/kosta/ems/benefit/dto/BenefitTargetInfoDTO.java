@@ -1,4 +1,4 @@
-package com.kosta.ems.benefit;
+package com.kosta.ems.benefit.dto;
 
 import lombok.*;
 import org.springframework.stereotype.Service;
