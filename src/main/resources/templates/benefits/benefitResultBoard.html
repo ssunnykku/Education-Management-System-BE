@@ -16,13 +16,18 @@
     <article class="benefitResult-search-btn-wrapper">
         <div class="benefitResult-search-form-wrapper">
             <!-- form???? -->
-            <select name="courseId-filter" class="courseId-filter">
-                <option value="none">기수</option>
-                <option value="227">227</option>
-                <option value="191">191</option>
-            </select>
-            <input type="date" class="settlement-date-input"/>
-            <input placeholder="수강생을 입력하세요" class="search-input"/>
+            <div id="benefit-result-settlement-filter-wrapper">
+                <select name="courseId-filter" class="courseId-filter">
+                    <option value="none">기수</option>
+                    <option value="227">227</option>
+                    <option value="191">191</option>
+                </select>
+                <div id="benefit-result-settlement-date">
+                    <label for="benefit-settlement-date" id="benefit-settlement-date-label">정산일</label>
+                    <input type="date" id="benefit-settlement-date">
+                </div>
+            </div>
+            <input placeholder="수강생을 입력하세요" class="benefit-result-search-input"/>
             <button type="button" class="filter-search-btn">검색</button>
         </div>
     </article>
@@ -115,5 +120,6 @@
     </article>
 </section>
 <footer></footer>
+<script type="text/javascript" th:src="@{/scripts/benefitResultBoard.js}"></script>
 </body>
 </html>

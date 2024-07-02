@@ -814,7 +814,7 @@ body {
 }
 
 .total-point > h1 {
-    font-size: 17;
+    font-size: 17px;
 }
 
 /*  studentBoard page */
@@ -852,17 +852,16 @@ ul#pagination {
     }
 }
 
-.page_number {
-    min-width: 250px;
+#page_number {
+    min-width: 30px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
 }
 
 .page-link {
-    width: 50px;
+    width: 10px;
 }
 
 .check-settlement-modal {
