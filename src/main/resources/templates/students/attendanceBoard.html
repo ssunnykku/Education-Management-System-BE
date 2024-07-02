@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="../../css/format.css"/>
     <link rel="stylesheet" href="../../css/students.css"/>
     <link rel="stylesheet" href="../../css/scholarships.css" />
+    <style>
+        .page-link {
+            width: 10px;
+        }
+    </style>
 </head>
 <body id="content-wrapper">
 <div th:insert="~{common/header :: header}"></div>
@@ -85,9 +90,6 @@
     let currentBlock = 1;
     const pageSize = 10;
     const page = new URL(location.href).search.split("=")[0];
-    // let page = 1;
-    console.log("!! page");
-    console.log(page);
 
     function getCourseNumber() {
         if($("#input-course-number").val() == "") {
@@ -142,7 +144,7 @@
     };
     // 검색한 출결 데이터 목록 개수 가져오기
     async function getAmountAttendanceList(data) {
-        totalPage = Math.ceil(data/2);
+        totalPage = Math.ceil(data/2); // 페이징 확인을 위해 '2'로 해둔 것. 10으로 바꿔야함.
 
         let result = '';
         result += `<span class="span-attendance-list-amount">총 ${data}건</span>`;

@@ -50,8 +50,13 @@ public interface AttendanceMapper {
     int selectDateAndLocationListAmount(LocalDate attendanceDate, String academyLocation, String name, int courseNumber);
     // 검색 결과 데이터 목록 가져오기
     List<AttendanceListBySearchFilterDTO> selectDateAndLocationList(LocalDate attendanceDate, String academyLocation, String name, int courseNumber, int page, int size);
-    
-    // [출결] - 선택한 수강생 출석 상태 수정
+
+    // 테스트_sql if문
+    // 검색 결과 데이터 목록 가져오기  __ "전체 데이터 목록"은 못 가져오는 것 같다?
+    List<AttendanceListBySearchFilterDTO> selectAttendanceStatusList(LocalDate attendanceDate, String academyLocation, String name, int courseNumber, int page, int size);
+
+
+    // [출결 수정] - 선택한 수강생 출석 상태 수정
     // void updateStudentAttendance(UpdateStudentAttendanceStatusDTO dto);
     int updateStudentAttendance(UpdateStudentAttendanceStatusDTO dto);
 }

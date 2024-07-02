@@ -77,7 +77,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     // 경우1 _ 기수+수강생명 입력
     // 검색 결과 개수 가져오기 (for 페이지네이션)
     @Override
-    public int selectCourseNumberAndStudentNameListAmount(String attendanceDate, String academyLocation, String name, int courseNumber) {
+    public int getCourseNumberAndStudentNameListAmount(String attendanceDate, String academyLocation, String name, int courseNumber) {
     	int year = Integer.parseInt(attendanceDate.split("-")[0] );
     	int month = Integer.parseInt(attendanceDate.split("-")[1]);
     	int day = Integer.parseInt(attendanceDate.split("-")[2]);
@@ -86,7 +86,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
     // 검색 결과 데이터 목록 가져오기
     @Override
-    public List<AttendanceListBySearchFilterDTO> selectCourseNumberAndStudentNameList(String attendanceDate, String academyLocation, String name, int courseNumber, int page, int size) {
+    public List<AttendanceListBySearchFilterDTO> getCourseNumberAndStudentNameList(String attendanceDate, String academyLocation, String name, int courseNumber, int page, int size) {
     	int year = Integer.parseInt(attendanceDate.split("-")[0] );
     	int month = Integer.parseInt(attendanceDate.split("-")[1]);
     	int day = Integer.parseInt(attendanceDate.split("-")[2]);
@@ -97,7 +97,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     // 경우2 _ 기수 또는 수강생명 입력
     // 검색 결과 개수 가져오기 (for 페이지네이션)
     @Override
-    public int selectCourseNumberOrStudentNameListAmount(String attendanceDate, String academyLocation, String name, int courseNumber) {
+    public int getCourseNumberOrStudentNameListAmount(String attendanceDate, String academyLocation, String name, int courseNumber) {
     	int year = Integer.parseInt(attendanceDate.split("-")[0] );
     	int month = Integer.parseInt(attendanceDate.split("-")[1]);
     	int day = Integer.parseInt(attendanceDate.split("-")[2]);
@@ -106,7 +106,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
     // 검색 결과 데이터 목록 가져오기
     @Override
-    public List<AttendanceListBySearchFilterDTO> selectCourseNumberOrStudentNameList(String attendanceDate, String academyLocation, String name, int courseNumber, int page, int size) {
+    public List<AttendanceListBySearchFilterDTO> getCourseNumberOrStudentNameList(String attendanceDate, String academyLocation, String name, int courseNumber, int page, int size) {
     	int year = Integer.parseInt(attendanceDate.split("-")[0] );
     	int month = Integer.parseInt(attendanceDate.split("-")[1]);
     	int day = Integer.parseInt(attendanceDate.split("-")[2]);
@@ -117,7 +117,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     // 경우3 _ 기수+수강생명 미입력
     // 검색 결과 개수 가져오기 (for 페이지네이션)
     @Override 
-    public int selectDateAndLocationListAmount(String attendanceDate, String academyLocation, String name, int courseNumber) {
+    public int getDateAndLocationListAmount(String attendanceDate, String academyLocation, String name, int courseNumber) {
     	int year = Integer.parseInt(attendanceDate.split("-")[0] );
     	int month = Integer.parseInt(attendanceDate.split("-")[1]);
     	int day = Integer.parseInt(attendanceDate.split("-")[2]);
@@ -126,7 +126,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
     // 검색 결과 데이터 목록 가져오기
     @Override
-    public List<AttendanceListBySearchFilterDTO> selectDateAndLocationList(String attendanceDate, String academyLocation, String name, int courseNumber, int page, int size) {
+    public List<AttendanceListBySearchFilterDTO> getDateAndLocationList(String attendanceDate, String academyLocation, String name, int courseNumber, int page, int size) {
     	int year = Integer.parseInt(attendanceDate.split("-")[0] );
     	int month = Integer.parseInt(attendanceDate.split("-")[1]);
     	int day = Integer.parseInt(attendanceDate.split("-")[2]);
