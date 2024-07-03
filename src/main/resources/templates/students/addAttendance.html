@@ -44,7 +44,8 @@
             <table class="board-table"></table>
         </article>
         <div class="update-btn-div">
-            <button id="update-btn">저장</button>
+            <button id="update-btn">수정</button>
+            <button id="set-btn" popovertarget="add-attendance-modal">입력</button>
         </div>
     </section>
     <article class="page-information">
@@ -60,6 +61,54 @@
     </article>
 </section>
 <footer></footer>
+
+<div id="add-attendance-modal" class="addAttendanceModal" popover>
+    <div class="modal-container">
+        <div class="add-attendance-wrapper">
+            <div class="modal-section">
+                <p>* 입력할 출결 날짜</p>
+                <hr/>
+                <input type="date" required class="input-date modal" name="attendanceDate" style="width: 130px; height: 41px; border: none; border: 1px solid #d3d3d3; border-radius: 10px; padding: 0 10px;"/>
+            </div>
+            <div class="modal-section">
+                <p>* 입력할 출결 상태</p>
+                <hr/>
+                <div class="attendance-status-wrapper">
+                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="출석">출석</label>
+                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="결석">결석</label>
+                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="지각">지각</label>
+                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="외출">외출</label>
+                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="조퇴">조퇴</label>
+                    <!--<label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="출석 인정">출석 인정</label>-->
+                </div>
+            </div>
+        </div>
+        <div class="add-attendance-wrapper">
+            <p>* 출결 입력할 수강생 정보</p>
+            <hr/>
+            <div class="list-wrapper">
+                <div class="list-header">
+                    <input type="checkbox" id="modal-check-all"/>
+                    <p>기수</p>
+                    <p>HRD-Net ID</p>
+                    <p>이름</p>
+                </div>
+                <div class="list-contents">
+                    <!--<div class="list-content">
+                        <input type="checkbox" name="checkbox"/>
+                        <p class="course-number"></p>
+                        <p class="hrd-net-id"></p>
+                        <p class="name"></p>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+        <div class="add-attendance-wrapper">
+            <button id="set-attendance-btn">입력</button>
+            <button id="cancel-btn">취소</button>
+        </div>
+    </div>
+</div>
 
 <script>
     let totalPage = 0;
@@ -355,6 +404,36 @@
             updatePagination();
         }
     });
+
+    // 수강생 출결 입력(등록) 모달
+    // '입력' 버튼 클릭하면 수강생 출결 입력(등록) 모달 열림 + 출결 입력 대상 수강생 목록 불러와서 모달에 전달
+    /*$("#set-btn").click(function() {
+        $("#add-attendance-modal").css("display", "flex");
+    });*/
+
+    // 모달의 '입력' 버튼 클릭하면 모달 내에서 작업한 내용으로 출결상태 입력(등록)하는 함수__ 작성 중
+    function addAttendance() {
+        let result = "";
+        result += `<div class="list-content">
+                        <input type="checkbox" name="checkbox"/>
+                        <p class="course-number"></p>
+                        <p class="hrd-net-id"></p>
+                        <p class="name"></p>
+                    </div>`;
+        const addAttendanceModal = $("#add-attendance-modal");
+
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const requestOptions = {
+            method: "PUT",
+            headers: myHeaders,
+            body: JSON.stringify(objList),
+            redirect: "follow"
+        };
+    }
+
+
 </script>
 </body>
 </html>

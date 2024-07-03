@@ -222,15 +222,34 @@ LIMIT #{page}, #{size}
     </select>
 
     <!--수강생 출결 상태 수정-->
-    <!--<update id="updateStudentAttendance" parameterType="com.kosta.ems.attendance.UpdateStudentAttendanceStatusDTO">
-    	UPDATE attendances
-SET attendance_status=#{attendanceStatus}
-WHERE attendance_date=#{attendanceDate} AND student_course_seq=(
-        SELECT student_course_seq FROM students_courses WHERE student_id=#{studentId});
-    </update>-->
     <update id="updateStudentAttendance" parameterType="com.kosta.ems.attendance.UpdateStudentAttendanceStatusDTO">
         UPDATE attendances
         SET attendance_status=#{attendanceStatus}
         WHERE attendance_date=#{attendanceDate} AND student_course_seq=#{studentCourseSeq};
     </update>
+    <!--수강생 출결 상태 등록-->
+    <!--1. 특정일의 출결 상태가 등록되지 않은 수강생 목록 가져오기-->
+    <select id="selectNoAttendanceStatusStudentList" resultType="com.kosta.ems.attendance.AttendanceListBySearchFilterDTO">
+        <![CDATA[
+        SELECT s.hrd_net_id AS hrdNetId, s.name, c.course_number AS courseNumber, sc.student_course_seq AS studentCourseSeq
+        FROM students_courses sc
+        JOIN students s ON sc.student_id = s.student_id
+        JOIN courses c ON sc.course_seq = c.course_seq
+        LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+        WHERE sc.student_course_seq NOT IN (
+        SELECT scc.student_course_seq
+        FROM students_courses scc
+        JOIN attendances a ON scc.student_course_seq=a.student_course_seq
+        WHERE a.attendance_date=#{attendanceDate})
+        AND c.academy_location=#{academyLocation}
+        AND #{attendanceDate} >= c.course_start_date
+        AND #{attendanceDate} <= c.course_end_date
+        AND s.is_active='T'
+                ]]>
+    </select>
+    <!--2. 목록의 학생 중 선택한 학생의 출결 상태 등록하기-->
+    <insert id="insertAttendanceStatus" parameterType="com.kosta.ems.attendance.UpdateStudentAttendanceStatusDTO">
+        INSERT INTO attendances (attendance_date, student_course_seq, attendance_status)
+        VALUES(#{attendanceDate}, #{studentCourseSeq}, #{attendanceStatus})
+    </insert>
 </mapper>

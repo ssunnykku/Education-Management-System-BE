@@ -95,10 +95,6 @@ public class AttendanceController {
 		return result;
 	}
 
-
-
-
-
 	// [출결] - 출결 검색(조건: 날짜, 기수, 수강생명) 데이터 목록 가져오기 -- POSTMAN 테스트 완료
 	@PostMapping("/search-list")
 	public Map<String, Object> getFilteredAttendanceList(@RequestParam(name="page", required = false, defaultValue = "1") int page, @RequestBody RequestStudentAttendanceDTO dto) {
@@ -164,7 +160,7 @@ public class AttendanceController {
 		return result;
 	}
 
-	// [출결] - 선택한 수강생의 출석 상태 수정
+	// [출결] - 선택한 수강생의 출석 상태 수정, 입력
 	@PutMapping("/student-status")
 	public UpdateDeleteResultDTO updateStudentAttendance(@RequestBody List<RequestStudentAttendanceDTO> request) {
 		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
@@ -185,4 +181,17 @@ public class AttendanceController {
 		}
 		return dto;
 	}
+
+	// [출결 입력] - 특정일의 출결 상태가 등록되지 않은 수강생 목록 데이터 가져오기
+	// [메모] 관리자 로그인 시, 로그인한 관리자의 교육장을 조회하여 매개변수에 넣는 작업 필요할 듯.
+	@GetMapping("/no-attendance-list")
+	public Map<String, Object> getNoAttendanceStatusList(@RequestParam(name="attendanceDate") String attendanceDate) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String academyLocation = "가산";  // [메모] 관리자 로그인 시, 로그인한 관리자의 교육장을 조회하여 매개변수에 넣고, 그걸 여기에 넣어야할 것 같음.
+
+		result.put("studentList", attendanceService.getNoAttendanceStatusStudentList(attendanceDate, academyLocation));
+
+		return result;
+	}
+
 }

@@ -109,4 +109,17 @@ class AttendanceServiceImplTest {
          // attendanceService.updateStudentAttendance("출석", "2024-06-21", "efa148aa-2fa7-11ef-b0b2-0206f94be675");
          attendanceService.updateStudentAttendance("지각", "2024-06-21", 3);
      }
+
+    // [출결 입력]
+    // 1. 특정일의 출결 상태가 등록되지 않은 수강생 목록 가져오기
+    // @Test  // 확인 완료
+    void getNoAttendanceStatusStudentList() {
+        log.info(attendanceService.getNoAttendanceStatusStudentList("2024-06-21", "가산").toString());
+        log.info(Integer.toString(attendanceService.getNoAttendanceStatusStudentList("2024-06-21", "가산").size()));
+    }
+    // 2. 목록의 학생 중 선택한 학생의 출결 상태 등록하기
+    // @Test  // 확인 완료
+    void setAttendanceStatus() {
+        attendanceService.setAttendanceStatus("지각", "2024-06-21", 60);
+    }
 }

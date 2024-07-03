@@ -59,4 +59,10 @@ public interface AttendanceMapper {
     // [출결 수정] - 선택한 수강생 출석 상태 수정
     // void updateStudentAttendance(UpdateStudentAttendanceStatusDTO dto);
     int updateStudentAttendance(UpdateStudentAttendanceStatusDTO dto);
+
+    // [출결 등록]
+    // 1. 특정일의 출결 상태가 등록되지 않은 수강생 목록 가져오기
+    List<AttendanceListBySearchFilterDTO> selectNoAttendanceStatusStudentList(LocalDate attendanceDate, String academyLocation);
+    // 2. 목록의 학생 중 선택한 학생의 출결 상태 등록하기
+    int insertAttendanceStatus(UpdateStudentAttendanceStatusDTO dto);
 }

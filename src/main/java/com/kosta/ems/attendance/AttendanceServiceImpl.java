@@ -136,20 +136,8 @@ public class AttendanceServiceImpl implements AttendanceService {
     
     
     // [출결] - 선택한 수강생의 출석 상태 수정
-    /*@Override
-    public void updateStudentAttendance(String attendanceStatus, String attendanceDate, String studentId) {
-    	
-    	int year = Integer.parseInt(attendanceDate.split("-")[0]);
-        int month = Integer.parseInt(attendanceDate.split("-")[1]);
-        int day = Integer.parseInt(attendanceDate.split("-")[2]);
-        
-    	UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus(attendanceStatus).attendanceDate(LocalDate.of(year, month, day)).studentId(studentId).build();
-    	// UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus(attendanceStatus).attendanceDate(attendanceDate).studentId(studentId).build();
-    	attendanceMapper.updateStudentAttendance(dto);
-    }*/
     @Override
     public void updateStudentAttendance(String attendanceStatus, String attendanceDate, int studentCourseSeq) {
-
         int year = Integer.parseInt(attendanceDate.split("-")[0]);
         int month = Integer.parseInt(attendanceDate.split("-")[1]);
         int day = Integer.parseInt(attendanceDate.split("-")[2]);
@@ -182,5 +170,52 @@ public class AttendanceServiceImpl implements AttendanceService {
 
         UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus(status).attendanceDate(LocalDate.of(year, month, day)).studentCourseSeq(studentCourseSeq).build();
         attendanceMapper.updateStudentAttendance(dto);
+    }
+
+    // [출결 입력]
+    // 1. 특정일의 출결 상태가 등록되지 않은 수강생 목록 가져오기
+    @Override
+    public List<AttendanceListBySearchFilterDTO> getNoAttendanceStatusStudentList(String attendanceDate, String academyLocation) {
+        int year = Integer.parseInt(attendanceDate.split("-")[0] );
+        int month = Integer.parseInt(attendanceDate.split("-")[1]);
+        int day = Integer.parseInt(attendanceDate.split("-")[2]);
+
+        return attendanceMapper.selectNoAttendanceStatusStudentList(LocalDate.of(year, month, day), academyLocation);
+    }
+    // 2. 목록의 학생 중 선택한 학생의 출결 상태 등록하기
+    @Override
+    public void setAttendanceStatus(String attendanceStatus, String attendanceDate, int studentCourseSeq) {
+        int year = Integer.parseInt(attendanceDate.split("-")[0]);
+        int month = Integer.parseInt(attendanceDate.split("-")[1]);
+        int day = Integer.parseInt(attendanceDate.split("-")[2]);
+        String status = null;
+
+        switch(attendanceStatus) {
+            case "lateness":
+            case "지각":
+                status = "지각";
+                break;
+            case "goOut":
+            case "외출":
+                status = "외출";
+                break;
+            case "absence":
+            case "결석":
+                status = "결석";
+                break;
+            case "earlyLeave":
+            case "조퇴":
+                status = "조퇴";
+                break;
+            case "acknowledge": case "출석 인정":
+                status = "출석 인정";
+                break;
+            default:
+                status = "출석";
+                break;
+        }
+
+        UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus(status).attendanceDate(LocalDate.of(year, month, day)).studentCourseSeq(studentCourseSeq).build();
+        attendanceMapper.insertAttendanceStatus(dto);
     }
 }

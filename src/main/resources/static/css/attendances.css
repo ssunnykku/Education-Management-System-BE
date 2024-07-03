@@ -138,3 +138,19 @@ select {
     background-color: rgb(64, 64, 64);
     box-shadow: 0px 0px 2px #888;
 }
+
+/* 수강생 출결 입력(등록) 모달 */
+.addAttendanceModal {
+    margin: auto;
+    border: 1px solid lightgray;
+    border-radius: 8px;
+}
+.modal-container {
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    height: 700px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+}
