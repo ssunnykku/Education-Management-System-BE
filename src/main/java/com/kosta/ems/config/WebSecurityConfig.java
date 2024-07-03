@@ -13,57 +13,48 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-
 @RequiredArgsConstructor
 @Configuration
 public class WebSecurityConfig {
-	private int count;
+    private int count;
     private final UserDetailService userService;
     @Value("${security.level}")
-    private String SECURITY_LEVEL; 
-    //2. 리소스 접근 빈 설정
+    private String SECURITY_LEVEL;
+
+    // 2. 리소스 접근 빈 설정
     @Bean
     public WebSecurityCustomizer configure() {
-    	if(SECURITY_LEVEL.equals("OFF")) {
-    	    return (web) -> web.ignoring()  
-                    .requestMatchers("/**");
-    	}
-        return (web) -> web.ignoring()  
-                .requestMatchers("/css/**");
-    }
-    //3
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
-                .authorizeRequests()
-                    .requestMatchers("/ems/login").permitAll()  //로그인 없이 접근 가능 페이지
-                    .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                    .loginPage("/ems/login")
-                    .defaultSuccessUrl("/ems/courses", true)
-                    .failureUrl("ems/login")
-                    .usernameParameter("employeeNumber")
-                .and()
-                .logout()
-                    .logoutSuccessUrl("/ems/login")
-                    .invalidateHttpSession(true)
-                .and()
-                .csrf().disable()    //로컬에서 확인하기 위해 비 활성화
-                .build();
-    }
-    //4
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, PlainEncoder passwordEncoder, UserDetailService userDetailService) throws Exception {
-    	return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(userService)
-                .passwordEncoder(passwordEncoder)
-                .and()
-                .build();
+        if (SECURITY_LEVEL.equals("OFF")) {
+            return (web) -> web.ignoring().requestMatchers("/**");
+        }
+        return (web) -> web.ignoring().requestMatchers("/css/**");
     }
 
-    //1비밀번호 암호화를 위해
-    
+    // 3
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(
+                authorize -> authorize.requestMatchers("/ems/login").permitAll().anyRequest().authenticated());
+
+        http.formLogin(formLogin -> formLogin.loginPage("/ems/login").defaultSuccessUrl("/ems/courses", true)
+                .failureUrl("/ems/login").usernameParameter("employeeNumber"));
+
+        http.logout(logout -> logout.logoutSuccessUrl("/ems/login").invalidateHttpSession(true));
+
+        http.csrf(csrf -> csrf.disable());
+        return http.build();
+    }
+
+    // 4
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http, PlainEncoder passwordEncoder,
+            UserDetailService userDetailService) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class).userDetailsService(userService)
+                .passwordEncoder(passwordEncoder).and().build();
+    }
+
+    // 1비밀번호 암호화를 위해
+
     @Bean
     public PlainEncoder plainEncoder() {
         return new PlainEncoder();
