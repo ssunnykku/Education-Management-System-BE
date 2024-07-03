@@ -18,13 +18,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ManagerDTO implements UserDetails{
-    private String manager_id;
+    private String managerId;
     private String name;
     private String password;
     private String position;
     private String academyLocation;
     private String employeeNumber;
-    private char is_active;
+    private char isActive;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("user"));

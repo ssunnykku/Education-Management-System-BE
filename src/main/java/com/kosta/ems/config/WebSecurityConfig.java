@@ -1,6 +1,8 @@
 package com.kosta.ems.config;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,10 +19,17 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 	private int count;
     private final UserDetailService userService;
+    @Value("${security.level}")
+    private String SECURITY_LEVEL; 
     //2. 리소스 접근 빈 설정
     @Bean
     public WebSecurityCustomizer configure() {
     	System.out.println(++count+ " WebSecurityConfig's configure()");
+    	if(SECURITY_LEVEL.equals("OFF")) {
+    	    System.out.println("security OFF");
+    	    return (web) -> web.ignoring()  
+                    .requestMatchers("/**");
+    	}
         return (web) -> web.ignoring()  
                 .requestMatchers("/static/**");
     }
@@ -34,12 +43,12 @@ public class WebSecurityConfig {
                     .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                    .loginPage("/ems/login")            
+                    .loginPage("/ems/login")
                     .defaultSuccessUrl("/ems/courses")
                     .usernameParameter("employeeNumber")
                 .and()
                 .logout()
-                    .logoutSuccessUrl("/login")
+                    .logoutSuccessUrl("/ems/login")
                     .invalidateHttpSession(true)
                 .and()
                 .csrf().disable()    //로컬에서 확인하기 위해 비 활성화
