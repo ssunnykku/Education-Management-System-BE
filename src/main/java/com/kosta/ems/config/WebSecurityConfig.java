@@ -24,9 +24,7 @@ public class WebSecurityConfig {
     //2. 리소스 접근 빈 설정
     @Bean
     public WebSecurityCustomizer configure() {
-    	System.out.println(++count+ " WebSecurityConfig's configure()");
     	if(SECURITY_LEVEL.equals("OFF")) {
-    	    System.out.println("security OFF");
     	    return (web) -> web.ignoring()  
                     .requestMatchers("/**");
     	}
@@ -36,7 +34,6 @@ public class WebSecurityConfig {
     //3
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    	System.out.println(++count+ " WebSecurityConfig's filterChain()");
         return http
                 .authorizeRequests()
                     .requestMatchers("/ems/login").permitAll()  //로그인 없이 접근 가능 페이지
@@ -44,7 +41,8 @@ public class WebSecurityConfig {
                 .and()
                 .formLogin()
                     .loginPage("/ems/login")
-                    .defaultSuccessUrl("/ems/courses")
+                    .defaultSuccessUrl("/ems/courses", true)
+                    .failureUrl("ems/login")
                     .usernameParameter("employeeNumber")
                 .and()
                 .logout()
@@ -57,7 +55,6 @@ public class WebSecurityConfig {
     //4
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, PlainEncoder passwordEncoder, UserDetailService userDetailService) throws Exception {
-        System.out.println(++count+ " WebSecurityConfig's authenticationManager()");
     	return http.getSharedObject(AuthenticationManagerBuilder.class)
                 .userDetailsService(userService)
                 .passwordEncoder(passwordEncoder)
@@ -69,7 +66,6 @@ public class WebSecurityConfig {
     
     @Bean
     public PlainEncoder plainEncoder() {
-    	 System.out.println(++count+ " WebSecurityConfig's PlainEncoder()");
         return new PlainEncoder();
     }
 }
