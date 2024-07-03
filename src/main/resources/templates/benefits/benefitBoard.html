@@ -16,16 +16,21 @@
         <div class="benefit-settlement-filter_search_wrapper">
             <div id="benefit-settlement-input-wrapper">
                 <div class="benefit-settlement-duration" id="settlement-start-date">
-                    <label for="settlement-start-date" class="settlement-date-label">정산 시작일</label>
-                    <input type="date" class="settlement-date">
+                    <!--                    <label for="settlement-start-date" class="settlement-date-label">정산 시작일</label>-->
+                    <input type="date" class="settlement-date" id="start-date"
+                           data-placeholder="정산 종료일"
+                           required
+                           aria-required="true">
                 </div>
                 <div class="benefit-settlement-duration" id="settlement-end-date">
-                    <label for="settlement-end-date" class="settlement-date-label">정산 종료일</label>
-                    <input type="date" class="settlement-date">
+                    <input type="date" class="settlement-date" id="end-date"
+                           data-placeholder="정산 종료일"
+                           required
+                           aria-required="true">
                 </div>
-                <div class="benefit-settlement-date" id="lecture-days">
-                    <label for="lecture-days" class="settlement-date-label">강의일수</label>
-                    <input type="date" class="settlement-date">
+                <div class="benefit-settlement-date">
+                    <!--                    <label for="lecture-days" class="settlement-date-label">강의일수</label>-->
+                    <input type="text" placeholder="강의일수" id="lecture-days">
                 </div>
             </div>
             <div class="search-form-wrapper">
@@ -93,5 +98,7 @@
     </article>
 </section>
 <footer></footer>
+<script type="text/javascript" th:src="@{/scripts/benefitBoard.js}"></script>
+
 </body>
 </html>

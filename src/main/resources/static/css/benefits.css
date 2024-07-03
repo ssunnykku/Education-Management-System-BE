@@ -67,8 +67,15 @@
 
 .settlement-date {
     border: none;
-    width: 20px;
+    width: 100%;
 }
+
+#lecture-days {
+    border: none;
+    width: 100%;
+    text-align: center;
+}
+
 
 .benefit-settlement-search-btn-wrapper {
     display: flex;
