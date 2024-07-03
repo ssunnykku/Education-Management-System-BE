@@ -59,9 +59,9 @@ public class BenefitServiceImpl implements BenefitService {
                 dto.getStartDate(),
                 dto.getEndDate(),
                 dto.getCourseNumber(),
+                dto.getName(),
                 limit,
                 offset);
-
         List<BenefitTargetInfoDTO> benefitTargetList = new ArrayList<>();
 
         for (BenefitTargetDTO targetInfo : targetList) {

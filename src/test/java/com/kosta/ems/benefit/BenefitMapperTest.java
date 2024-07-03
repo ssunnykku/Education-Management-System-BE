@@ -23,7 +23,8 @@ class BenefitMapperTest {
 
     @Test
     public void selectBenefitTargetTest() {
-        log.info(benefitMapper.selectBenefitTarget("가산", LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-04"), 277, 10, 0).toString());
+        log.info(benefitMapper.selectBenefitTarget("가산", LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-04"), 277, "손", 10, 0).toString());
+        assertThat(benefitMapper.selectBenefitTarget("가산", LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-04"), 277, "손", 10, 0).size()).isEqualTo(1);
     }
 
     @Test
