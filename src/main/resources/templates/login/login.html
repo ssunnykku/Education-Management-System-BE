@@ -6,23 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
         integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../../css/login.css" />
+    <link rel="stylesheet" href="/css/login.css" />
     <title>login</title>
 </head>
 
 <body>
-    <script type="text/javascript">
-        function check() {
-            let id = document.querySelector("#manager_id").value;
-            if (id === null) {
-                alert("아이디를 입력하세요.");
-            }
-        }
-    </script>
 
     <div class="login-wrapper">
         <h2>관리자 로그인</h2>
-        <form action="" method="POST" id="login-form" onsubmit="login(event)">
+        <form action="/ems/login" method="POST" id="login-form">
             <div>
                 <h4>Manager ID</h4>
                 <input type="text" id="manager_id" name="employeeNumber" />
@@ -36,30 +28,6 @@
     </div>
 
     <script type="text/javascript">
-        document.querySelector("#loginBtn").addEventListener("click", login);
-
-        async function login(e) {
-            e.preventDefault();
-            const myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-
-            const raw = JSON.stringify({
-                "employeeNumber": getEmployeeNumber(),
-                "password": getPassword()
-            });
-
-            const requestOptions = {
-                method: "POST",
-                body: raw,
-                headers: myHeaders
-            };
-
-            fetch("/managers/login", requestOptions)
-                .then((response) => response.json())
-                .then((result) => {if(result.result){location.href="/ems/notifications"} else{location.reload()}});
-
-            
-        }
         function getEmployeeNumber(){
             return $("#manager_id").val();
         }

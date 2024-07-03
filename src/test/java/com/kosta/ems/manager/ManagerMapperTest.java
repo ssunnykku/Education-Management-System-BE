@@ -32,5 +32,10 @@ public class ManagerMapperTest {
 		}
 	}
 	
+	@Test
+	public void userDetails() {
+	    System.out.println(mapper.findByEmployeeNumber("TEST0001"));
+	}
+	
 
 }
