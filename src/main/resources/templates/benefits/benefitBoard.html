@@ -12,14 +12,30 @@
 <div th:insert="~{common/header :: header}"></div>
 <div th:insert="~{common/title :: title ('지원금 정산')}"></div>
 <section>
-    <article class="search-btn-wrapper">
-        <div class="search-form-wrapper">
-            <select name="" class="courseId-filter">
-                <option value="none">기수</option>
+    <article class="benefit-settlement-search-btn-wrapper">
+        <div class="benefit-settlement-filter_search_wrapper">
+            <div id="benefit-settlement-input-wrapper">
+                <div class="benefit-settlement-duration" id="settlement-start-date">
+                    <label for="settlement-start-date" class="settlement-date-label">정산 시작일</label>
+                    <input type="date" class="settlement-date">
+                </div>
+                <div class="benefit-settlement-duration" id="settlement-end-date">
+                    <label for="settlement-end-date" class="settlement-date-label">정산 종료일</label>
+                    <input type="date" class="settlement-date">
+                </div>
+                <div class="benefit-settlement-date" id="lecture-days">
+                    <label for="lecture-days" class="settlement-date-label">강의일수</label>
+                    <input type="date" class="settlement-date">
+                </div>
+            </div>
+            <div class="search-form-wrapper">
+                <select name="" class="courseId-filter">
+                    <option value="none">기수</option>
 
-            </select>
-            <input placeholder="수강생을 입력하세요" class="search-input"/>
-            <button type="button" class="filter-search-btn">검색</button>
+                </select>
+                <input placeholder="수강생을 입력하세요" class="search-input"/>
+                <button type="button" class="filter-search-btn">검색</button>
+            </div>
         </div>
         <div class="btn-wrapper">
             <button type="button" id="settlement-btn" class="btn-setting">
