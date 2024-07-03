@@ -5,6 +5,7 @@ import java.net.URLDecoder;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -62,6 +63,7 @@ public class AttendanceController {
 			result.put("searchStudentName", dto.getName());
 		} else if((!dto.getName().equals("none") && dto.getCourseNumber() == -1) || (dto.getName().equals("none") && dto.getCourseNumber() != -1)) {
 			// 기수 또는 수강생명 입력하여 검색
+			log.info("else if 또는");
 			totalCount = attendanceService.getAttendanceIntegratedListFilterAmount(dto.getName(), dto.getCourseNumber());
 			// 수강생 출결 목록 데이터
 			result.put("attendanceList", attendanceService.getAttendanceIntegratedListFilter(dto.getName(), dto.getCourseNumber(), page, size));
@@ -93,53 +95,54 @@ public class AttendanceController {
 		return result;
 	}
 
-
-
-
-
 	// [출결] - 출결 검색(조건: 날짜, 기수, 수강생명) 데이터 목록 가져오기 -- POSTMAN 테스트 완료
 	@PostMapping("/search-list")
-	public Map<String, Object> getFilteredAttendanceList(@RequestBody Map<String, Object> request) {
+	public Map<String, Object> getFilteredAttendanceList(@RequestParam(name="page", required = false, defaultValue = "1") int page, @RequestBody RequestStudentAttendanceDTO dto) {
+	// public Map<String, Object> getFilteredAttendanceList(@RequestBody Map<String, Object> request) {
 		Map<String, Object> result = new HashMap<String, Object>();
 
 		// request JSON 분리 (pageRequest, attendanceRequest)
-		Map<String, Object> pageRequest = (Map<String, Object>) request.get("pageRequest");
-		Map<String, Object> attendanceRequest = (Map<String, Object>) request.get("attendanceRequest");
+		// Map<String, Object> pageRequest = (Map<String, Object>) request.get("pageRequest");
+		// Map<String, Object> attendanceRequest = (Map<String, Object>) request.get("attendanceRequest");
 
-		int page = ((int) pageRequest.get("page"))-1;  // page는 실제로 0부터 시작하기 때문
-		int size = (int) pageRequest.get("size");
+		int size = 10;
 
 		// 검색 경우(1~3) 파악
-		int courseNumber = (int) attendanceRequest.get("courseNumber");
-		String name = (String) attendanceRequest.get("name") == "" ? "none" : (String) attendanceRequest.get("name");
+		// int courseNumber = (int) attendanceRequest.get("courseNumber");
+		// String name = (String) attendanceRequest.get("name") == "" ? "none" : (String) attendanceRequest.get("name");
+		int courseNumber = dto.getCourseNumber();
+		String name = dto.getName().equals("") ? "none" : dto.getName();
 		int totalCount = 0;
+		// String academyLocation = dto.getAcademyLocation();
+		String academyLocation = "가산";
 
-		if(courseNumber != -1 && name == "none") {
+		if(courseNumber != -1 && !name.equals("none")) {
 			// 경우1: 기수, 수강생명 모두 입력한 검색
-			System.out.println(">> 경우1");
-			totalCount = attendanceService.selectCourseNumberAndStudentNameListAmount((String) attendanceRequest.get("attendanceDate"), (String) attendanceRequest.get("academyLocation"), (String) attendanceRequest.get("name"), (int)attendanceRequest.get("courseNumber"));
+			totalCount = attendanceService.getCourseNumberAndStudentNameListAmount(dto.getAttendanceDate(), academyLocation, dto.getName(), dto.getCourseNumber());
 
 			// 수강생 출결 목록 데이터
-			result.put("data", attendanceService.selectCourseNumberAndStudentNameList((String) attendanceRequest.get("attendanceDate"), (String) attendanceRequest.get("academyLocation"), (String) attendanceRequest.get("name"), (int) attendanceRequest.get("courseNumber"), page, size));
-		} else if(courseNumber == -1 && name == "none") {
+			result.put("attendanceList", attendanceService.getCourseNumberAndStudentNameList(dto.getAttendanceDate(), academyLocation, dto.getName(), dto.getCourseNumber(), page, size));
+			result.put("amount", totalCount);
+		} else if(courseNumber == -1 && name.equals("none")) {
 			// 경우3: 기수, 수강생명 모두 미입력 (날짜만) 검색
-			System.out.println(">> 경우3");
-			totalCount = attendanceService.selectDateAndLocationListAmount((String) attendanceRequest.get("attendanceDate"), (String) attendanceRequest.get("academyLocation"), (String) attendanceRequest.get("name"), (int)attendanceRequest.get("courseNumber"));
+			totalCount = attendanceService.getDateAndLocationListAmount(dto.getAttendanceDate(), academyLocation, dto.getName(), dto.getCourseNumber());
 
 			// 수강생 출결 목록 데이터
-			result.put("data", attendanceService.selectDateAndLocationList((String) attendanceRequest.get("attendanceDate"), (String) attendanceRequest.get("academyLocation"), (String) attendanceRequest.get("name"), (int) attendanceRequest.get("courseNumber"), page, size));
+			result.put("attendanceList", attendanceService.getDateAndLocationList(dto.getAttendanceDate(), academyLocation, dto.getName(), dto.getCourseNumber(), page, size));
+			result.put("amount", totalCount);
 		} else {
 			// 경우2: 기수 또는 수강생명 입력한 검색
-			System.out.println(">> 경우2");
-			totalCount = attendanceService.selectCourseNumberOrStudentNameListAmount((String) attendanceRequest.get("attendanceDate"), (String) attendanceRequest.get("academyLocation"), (String) attendanceRequest.get("name"), (int)attendanceRequest.get("courseNumber"));
+			totalCount = attendanceService.getCourseNumberOrStudentNameListAmount(dto.getAttendanceDate(), academyLocation, dto.getName(), dto.getCourseNumber());
 
 			// 수강생 출결 목록 데이터
-			result.put("data", attendanceService.selectCourseNumberOrStudentNameList((String) attendanceRequest.get("attendanceDate"), (String) attendanceRequest.get("academyLocation"), (String) attendanceRequest.get("name"), (int) attendanceRequest.get("courseNumber"), page, size));
+			result.put("attendanceList", attendanceService.getCourseNumberOrStudentNameList(dto.getAttendanceDate(), academyLocation, dto.getName(), dto.getCourseNumber(), page, size));
+			result.put("amount", totalCount);
 		}
 
 		// 페이징 response
 		int totalPage = (totalCount/size) + 1;
-		int currentPage = (int)pageRequest.get("currentPage");
+		// int currentPage = (int)pageRequest.get("currentPage");
+		int currentPage = 1;
 		int prevPage = 0;
 		int nextPage = 0;
 		if(currentPage > 1 && currentPage < totalPage) {
@@ -157,17 +160,17 @@ public class AttendanceController {
 		return result;
 	}
 
-	// [출결] - 선택한 수강생의 출석 상태 수정
+	// [출결] - 선택한 수강생의 출석 상태 수정, 입력
 	@PutMapping("/student-status")
-	public UpdateDeleteResultDTO updateStudentAttendance(@RequestBody RequestStudentAttendanceDTO request) {
+	public UpdateDeleteResultDTO updateStudentAttendance(@RequestBody List<RequestStudentAttendanceDTO> request) {
 		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
 		try {
-			int year = Integer.parseInt(request.getAttendanceDate().split(".")[0]);
-			int month = Integer.parseInt(request.getAttendanceDate().split(".")[1]);
-			int day = Integer.parseInt(request.getAttendanceDate().split(".")[2]);
-			
-			// attendanceServiceImpl.updateStudentAttendance(request.getAttendanceStatus(), LocalDate.of(year, month, month), request.getStudentId());
-			attendanceService.updateStudentAttendance(request.getAttendanceStatus(), request.getAttendanceDate(), request.getStudentId());
+			log.info("🚀 request 확인");
+			log.info(">> request.length: " + request.size());
+			log.info(">> request: " + request.toString());
+			for(int i=0; i<request.size(); i++) {
+				attendanceService.updateStudentAttendance(request.get(i).getAttendanceStatus(), request.get(i).getAttendanceDate(), request.get(i).getStudentCourseSeq());
+			}
 		} catch (NoSuchDataException e) {
 			dto.setCode(ResCode.FAIL.value());
 			dto.setMessage("Fail: updateStudentAttendance");
@@ -178,4 +181,17 @@ public class AttendanceController {
 		}
 		return dto;
 	}
+
+	// [출결 입력] - 특정일의 출결 상태가 등록되지 않은 수강생 목록 데이터 가져오기
+	// [메모] 관리자 로그인 시, 로그인한 관리자의 교육장을 조회하여 매개변수에 넣는 작업 필요할 듯.
+	@GetMapping("/no-attendance-list")
+	public Map<String, Object> getNoAttendanceStatusList(@RequestParam(name="attendanceDate") String attendanceDate) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String academyLocation = "가산";  // [메모] 관리자 로그인 시, 로그인한 관리자의 교육장을 조회하여 매개변수에 넣고, 그걸 여기에 넣어야할 것 같음.
+
+		result.put("studentList", attendanceService.getNoAttendanceStatusStudentList(attendanceDate, academyLocation));
+
+		return result;
+	}
+
 }
