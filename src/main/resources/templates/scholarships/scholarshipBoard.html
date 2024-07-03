@@ -35,7 +35,7 @@
     <article>
         <div id="scholarshipBoard-table">
             <div class="scholarshipBoard-row" id="scholarshipBoard-title-row">
-                <div class="scholarshipBoard-checkbox"  >
+                <div class="scholarshipBoard-checkbox">
                     <input type="checkbox" name="" id="title-checkbox"/>
                 </div>
                 <div class="scholarshipBoard-courseId">
@@ -67,25 +67,24 @@
             </div>
         </div>
     </article>
-
-    <article class="scholarship-page-information">
-        <ul id="pagination">
-            <li>
-                <a class="page-link" id="before">
-                    이전
-                </a>
-            </li>
-            <!--// 이게 페이지 번호-->
-            <li class="page-item" id="page_number">
-            </li>
-            <li class="page-item">
-                <a class="page-link" id="next">
-                    다음
-                </a>
-            </li>
-        </ul>
-        </div>
-    </article>
+        <article class="scholarship-page-information">
+            <ul id="pagination">
+                <li>
+                    <a class="page-link" id="before">
+                        이전
+                    </a>
+                </li>
+                <!--// 이게 페이지 번호-->
+                <ul class="page-item" id="page_number">
+                </ul>
+                <li class="page-item">
+                    <a class="page-link" id="next">
+                        다음
+                    </a>
+                </li>
+            </ul>
+            </div>
+        </article>
 </section>
 <footer></footer>
 </body>
@@ -99,7 +98,9 @@
         </div>
         <div id="btn-wrapper">
             <button class="btn-setting-format enroll-btn-format" onclick="removeCourse()" popovertarget="">정산</button>
-            <button id="edit-btn" class="btn-setting" popovertarget="settlementListModal" popovertargetaction="hide">취소</button>
+            <button id="edit-btn" class="btn-setting" popovertarget="settlementListModal" popovertargetaction="hide">
+                취소
+            </button>
         </div>
     </div>
 </div>

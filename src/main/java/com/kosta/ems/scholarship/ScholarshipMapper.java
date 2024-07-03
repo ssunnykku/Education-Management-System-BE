@@ -1,7 +1,8 @@
 package com.kosta.ems.scholarship;
 
+import com.kosta.ems.scholarship.dto.ScholarshipSettlementResultDTO;
+import com.kosta.ems.scholarship.dto.ScholarshipTargetDTO;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDate;
 import java.util.Collection;

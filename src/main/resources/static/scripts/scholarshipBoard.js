@@ -99,7 +99,9 @@ function updatePagination() {
     let result = "";
     for (let i = firstPage; i <= lastPage; i++) {
         let num = i;
-        result += `<a class=" v" onclick="fetchScholarshipBoard(${num})">${num}</a>`;
+        result += `<li>
+                    <a class="page-link" onclick="fetchScholarshipBoard(${num})">${num}</a>
+                    </li>`;
     }
     $("#page_number").append(result);
 }

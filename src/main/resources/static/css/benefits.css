@@ -1,193 +1,105 @@
 @import "reset.css";
 
-/*
-!*********** header *****************!
-
-#nav-title-wrapper {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: row;
-}
-
-#header {
-  height: 94px;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 100;
-}
-
-#nav-wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-}
-
-#top-logo {
-  width: 20%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  padding-left: 20px;
-  font-style: normal;
-  font-weight: 900;
-  font-size: 18px;
-  line-height: 144%;
-
-  color: #2d62ea;
-}
-
-!* 수강생 관리 시스템 *!
-#top-logo > h2 {
-  text-align: center;
-  height: 100%;
-}
-
-!** menu*!
-
-!* 수강생 관리 *!
-
-#nav-ul {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 60%;
-  align-items: center;
-  padding-right: 85px;
-}
-
-.nav-li {
-  height: 30px;
-  width: 125px;
-
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 144%;
-  text-align: center;
-
-  color: #1d1d1d;
-}
-
-!** 로그아웃, 설정 버튼*!
-
-!* 로그아웃 *!
-
-!* identical to box height, or 22px *!
-
-#header-btns {
-  width: 9%;
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  padding-right: 10px;
-}
-
-#logout-btn {
-  width: 65px;
-
-  font-family: "Pretendard";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 144%;
-  text-decoration-line: underline;
-
-  color: rgba(0, 0, 0, 0.72);
-  cursor: pointer;
-
-  padding-bottom: 8px;
-}
-
-#setting-btn {
-  background-image: url(../assets/Setting.svg);
-  background-repeat: no-repeat;
-  height: 23px;
-
-  border: 1px solid #ebebeb;
-  border: 1px solid var(--color_border_in_divider);
-  background-color: #fff;
-  background-color: var(--color_button1_bg);
-  color: #606060;
-
-  width: 98px;
-  border-radius: 19px;
-  font-size: 1.3rem;
-  line-height: 36px;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-#header {
-  height: 94px;
-
-  background: #ffffff;
-  border-bottom: 1px solid #f3f5f9;
-}
-!** nav*!
-#nav-wrapper {
-  height: 94px;
-}
-
-#top-logo {
-  height: 94px;
-  width: 15%;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-}
-
-!* 메뉴(제목) *!
-#title-wrapper {
-  height: 180px;
-  width: 100%;
-  background-color: rgba(244, 244, 244, 1);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
-#title {
-  !* 공지사항 *!
-  height: 35px;
-
-  font-style: normal;
-  font-weight: 700;
-  font-size: 22px;
-  line-height: 144%;
-  !* identical to box height, or 35px *!
-  text-align: center;
-
-  color: #000000;
-}
-
-#menu {
-  font-style: normal;
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 144%;
-  text-align: center;
-
-  color: #000000;
-}
-*/
-
 /************** benefitSettlement**************/
 
 /***** button/ search *******/
+
+#benefit-settlement-input-wrapper {
+    width: 350px;
+    height: 45px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.benefit-settlement-duration {
+    width: 120px;
+    height: 41px;
+
+    background: #ffffff;
+
+    border: 1px solid #cfcfcf;
+    border-radius: 5px;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 144%;
+
+    color: #000000;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.benefit-settlement-date {
+    width: 100px;
+    height: 41px;
+
+    background: #ffffff;
+
+    border: 1px solid #cfcfcf;
+    border-radius: 5px;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 144%;
+
+    color: #000000;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#settlement-date-label {
+    width: auto;
+    height: 20px;
+    text-align: center;
+}
+
+.settlement-date {
+    border: none;
+    width: 100%;
+}
+
+#lecture-days {
+    border: none;
+    width: 100%;
+    text-align: center;
+}
+
+
+.benefit-settlement-search-btn-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 30%;
+    padding-right: 5%;
+    height: 80px;
+    align-items: center;
+}
+
+.benefit-settlement-filter_search_wrapper {
+    width: 800px;
+    display: flex;
+    flex-direction: row;
+}
 
 .search-btn-wrapper {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    padding-left: 33%;
+    padding-left: 37%;
     padding-right: 5%;
     height: 80px;
     align-items: center;
@@ -244,6 +156,29 @@
 
     padding-left: 15px;
     margin-right: 5px;
+
+    color: #000000;
+    text-align: center;
+}
+
+.benefit-result-search-input {
+    width: 300px;
+    height: 41px;
+
+    background: #ffffff;
+
+    border: 1px solid #cfcfcf;
+    border-radius: 10px;
+
+    z-index: 1;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 144%;
+
+    padding-left: 15px;
+    /*margin-right: 5px;*/
 
     color: #000000;
     text-align: center;
@@ -467,6 +402,52 @@
 
 /****************** benefitResultBoard **************/
 
+/*
+filter and search
+*/
+
+#benefit-result-settlement-filter-wrapper {
+    width: 190px;
+    display: flex;
+    flex-display: row;
+    justify-content: space-between;
+}
+
+#benefit-result-settlement-date {
+    width: 90px;
+    height: 41px;
+
+    background: #ffffff;
+
+    border: 1px solid #cfcfcf;
+    border-radius: 5px;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 144%;
+
+    color: #000000;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#benefit-settlement-date-label {
+    width: auto;
+    height: 20px;
+    text-align: center;
+}
+
+#benefit-settlement-date {
+    border: none;
+    width: 20px;
+}
+
+
 .benefitSettlement-checkbox {
     width: 1%;
 }
@@ -564,17 +545,17 @@
 .benefitResult-search-btn-wrapper {
     width: 100%;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     padding-left: 35%;
-    margin: 5px 0 5px 0;
+    height: 80px;
+
 }
 
 .benefitResult-search-form-wrapper {
-    padding-top: 12px;
     display: flex;
-    width: 600px;
-    gap: 8px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px;
 }
 
 .settlement-date-input {

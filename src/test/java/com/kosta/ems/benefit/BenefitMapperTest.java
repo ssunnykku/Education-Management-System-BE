@@ -1,5 +1,8 @@
 package com.kosta.ems.benefit;
 
+import com.kosta.ems.benefit.dto.BenefitDTO;
+import com.kosta.ems.benefit.dto.BenefitSettlementReqDTO;
+import com.kosta.ems.benefit.dto.BenefitSettlementResultDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +23,8 @@ class BenefitMapperTest {
 
     @Test
     public void selectBenefitTargetTest() {
-        log.info(benefitMapper.selectBenefitTarget("가산", LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-04"), 277, 10, 0).toString());
+        log.info(benefitMapper.selectBenefitTarget("가산", LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-04"), 277, "손", 10, 0).toString());
+        assertThat(benefitMapper.selectBenefitTarget("가산", LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-04"), 277, "손", 10, 0).size()).isEqualTo(1);
     }
 
     @Test
@@ -67,7 +71,7 @@ class BenefitMapperTest {
 
     //@Test
     void countSettlementTargetTest() {
-        assertThat(benefitMapper.countSettlementTarget("가산", LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-04"), 277)).isEqualTo(19);
+        assertThat(benefitMapper.countSettlementTarget("가산", LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-04"), 277, "")).isEqualTo(19);
     }
 
     @Test
