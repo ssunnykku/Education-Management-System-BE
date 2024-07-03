@@ -80,6 +80,7 @@
                  LEFT JOIN students_courses sc ON c.course_seq = sc.course_seq
                  LEFT JOIN students s ON s.student_id = sc.student_id
         WHERE c.academy_location = #{academyLocation}
+          AND s.name LIKE CONCAT('%', #{name}, '%')
           AND course_start_date <= #{startDate}
           AND course_end_date >= #{endDate}
           AND s.student_id != ''

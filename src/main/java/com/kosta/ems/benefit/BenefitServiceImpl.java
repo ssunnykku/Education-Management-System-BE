@@ -122,7 +122,8 @@ public class BenefitServiceImpl implements BenefitService {
                 dto.getAcademyLocation(),
                 dto.getStartDate(),
                 dto.getEndDate(),
-                dto.getCourseNumber());
+                dto.getCourseNumber(),
+                dto.getName());
     }
 
     @Override

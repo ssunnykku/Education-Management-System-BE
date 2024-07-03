@@ -19,7 +19,7 @@ public interface BenefitMapper {
 
     Collection<BenefitSettlementResultDTO> selectBenefitSettlementResult(String academyLocation, String name, String courseNumber, LocalDate benefitSettlementDate, int limit, int offset);
 
-    int countSettlementTarget(String academyLocation, LocalDate startDate, LocalDate endDate, int courseNumber);
+    int countSettlementTarget(String academyLocation, LocalDate startDate, LocalDate endDate, int courseNumber, String name);
 
     int countSettlementResult(String academyLocation, String name, String courseNumber, LocalDate benefitSettlementDate);
 }
