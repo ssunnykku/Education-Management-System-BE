@@ -31,7 +31,7 @@ public class WebSecurityConfig {
                     .requestMatchers("/**");
     	}
         return (web) -> web.ignoring()  
-                .requestMatchers("/static/**");
+                .requestMatchers("/css/**");
     }
     //3
     @Bean
