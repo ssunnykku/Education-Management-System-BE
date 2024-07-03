@@ -1,19 +1,38 @@
-function fetchSettlementTarget() {
-    function getLectureDays() {
-        return $("#lecture-days").val();
-    }
+let currentPage = 1;
+const pageSize = 10; // 한 블록 당 페이지 수
+let currentBlock = 1;
 
-    function getStartDate() {
-        return $("#start-date").val();
-    }
+let totalPages = 0;
 
-    function getEndDate() {
-        return $("#end-date").val();
-    }
+function getLectureDays() {
+    return $("#lecture-days").val();
+}
 
-    function getCourseNumber() {
-        return $(".courseId-filter option:selected").text();
-    }
+function getStartDate() {
+    return $("#start-date").val();
+}
+
+function getEndDate() {
+    return $("#end-date").val();
+}
+
+$("#start-date").change(() => {
+    // 종료일 자동 입력되게 만들기
+    console.log($("#start-date").val().split('-'));
+})
+
+
+function getCourseNumber() {
+    return $(".courseId-filter option:selected").text();
+}
+
+function getName() {
+    return $(".search-input").val();
+}
+
+fetchSettlementTarget();
+
+async function fetchSettlementTarget() {
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -22,7 +41,8 @@ function fetchSettlementTarget() {
         "startDate": getStartDate(),
         "endDate": getEndDate(),
         "courseNumber": 277,
-        "lectureDays": getLectureDays()
+        "lectureDays": getLectureDays(),
+        "name": getName()
     });
 
     const requestOptions = {
@@ -30,51 +50,60 @@ function fetchSettlementTarget() {
         headers: myHeaders,
         body: raw,
     };
-    let result = "";
+
     fetch("/benefits?page=1", requestOptions)
         .then((res) => res.json())
         .then((data) => {
             const dataList = data.result;
+            let result = '';
             for (let i = 0; i < dataList.length; i++) {
                 result += `<div class="board-row">
                 <div class="benefitSettlement-checkbox">
                     <input type="checkbox" name=""/>
                 </div>
                 <div class="benefitSettlement-courseId">
-                    <span>기수</span>
+                    <span>${dataList[i].courseNumber}</span>
                 </div>
                 <div class="benefitSettlement-hrd-net-id">
-                    <span>hrd-net-id</span>
+                    <span>${dataList[i].hrdNetId}</span>
                 </div>
                 <div class="benefitSettlement-name">
-                    <span>이름</span>
+                    <span>${dataList[i].name}</span>
                 </div>
                 <div class="benefitSettlement-bank">
-                    <span>은행</span>
+                    <span>${dataList[i].bank}</span>
                 </div>
                 <div class="benefitSettlement-account">
-                    <span>계좌번호</span>
+                    <span>${dataList[i].account}</span>
                 </div>
                 <div class="benefitSettlement-training-aid">
-                    <span>훈련수당(원)</span>
+                    <span>${dataList[i].trainingAidAmount}</span>
                 </div>
                 <div class="benefitSettlement-meal-aid-amount">
-                    <span>식비(원)</span>
+                    <span>${dataList[i].mealAidAmount}</span>
                 </div>
                 <div class="benefitSettlement-settlement_aid_amount">
-                    <span>정착지원금(원)</span>
+                    <span>${dataList[i].settlementAidAmount}</span>
                 </div>
                 <div class="benefitSettlement-total-amount">
-                    <span>합계(원)</span>
+                    <span>${dataList[i].settlementAidAmount + dataList[i].mealAidAmount + dataList[i].trainingAidAmount}</span>
                 </div>
-            </div>`
+            </div>`;
             }
+            $("#benefit-table-contents").html("");
+            $("#benefit-table-contents").append(result);
         })
         .catch((error) => console.error(error));
 
-    $("#benefit-table-contents").html("");
-    $("#benefit-table-contents").append(result);
+    fetch("/benefits/count", requestOptions)
+        .then((res) => res.json())
+        .then((data) => {
+            $(".benefit-cnt-pages").html(`<span>총 ${data.result}</span>건`);
 
+            totalPages = Math.ceil(data.result / 10);
+
+        })
+        .catch((error) => console.error(error));
 }
 
 

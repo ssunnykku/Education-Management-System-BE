@@ -18,7 +18,7 @@
                 <div class="benefit-settlement-duration" id="settlement-start-date">
                     <!--                    <label for="settlement-start-date" class="settlement-date-label">정산 시작일</label>-->
                     <input type="date" class="settlement-date" id="start-date"
-                           data-placeholder="정산 종료일"
+                           data-placeholder="정산 시작일"
                            required
                            aria-required="true">
                 </div>
@@ -48,6 +48,11 @@
             </button>
         </div>
     </article>
+    <section>
+        <article class="page-information">
+            <div class="benefit-cnt-pages">
+            </div>
+        </article>
     <article>
         <div class="board-table">
             <div class="board-row" id="board-title-row">
@@ -89,14 +94,6 @@
             </div>
         </div>
     </article>
-</section>
-<section>
-    <article class="page-information">
-        <div class="benefit-cnt-pages">
-            <span>총 2건</span>
-        </div>
-    </article>
-</section>
 <footer></footer>
 <script type="text/javascript" th:src="@{/scripts/benefitBoard.js}"></script>
 
