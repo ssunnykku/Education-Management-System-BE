@@ -222,10 +222,15 @@ LIMIT #{page}, #{size}
     </select>
 
     <!--수강생 출결 상태 수정-->
-    <update id="updateStudentAttendance" parameterType="com.kosta.ems.attendance.UpdateStudentAttendanceStatusDTO">
+    <!--<update id="updateStudentAttendance" parameterType="com.kosta.ems.attendance.UpdateStudentAttendanceStatusDTO">
     	UPDATE attendances
 SET attendance_status=#{attendanceStatus}
 WHERE attendance_date=#{attendanceDate} AND student_course_seq=(
         SELECT student_course_seq FROM students_courses WHERE student_id=#{studentId});
+    </update>-->
+    <update id="updateStudentAttendance" parameterType="com.kosta.ems.attendance.UpdateStudentAttendanceStatusDTO">
+        UPDATE attendances
+        SET attendance_status=#{attendanceStatus}
+        WHERE attendance_date=#{attendanceDate} AND student_course_seq=#{studentCourseSeq};
     </update>
 </mapper>

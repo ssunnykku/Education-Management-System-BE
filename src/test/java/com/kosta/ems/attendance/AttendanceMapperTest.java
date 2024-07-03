@@ -89,9 +89,10 @@ class AttendanceMapperTest {
     
     
     // [출결] - 선택한 수강생의 출석 상태 수정
-    // @Test
+    @Test
     void updateStudentAttendance() {
-    	attendanceMapper.updateStudentAttendance(new UpdateStudentAttendanceStatusDTO("지각", LocalDate.of(2024, 06, 21), "efa148aa-2fa7-11ef-b0b2-0206f94be675"));
+    	// attendanceMapper.updateStudentAttendance(new UpdateStudentAttendanceStatusDTO("지각", LocalDate.of(2024, 06, 21), "efa148aa-2fa7-11ef-b0b2-0206f94be675"));
+        attendanceMapper.updateStudentAttendance(new UpdateStudentAttendanceStatusDTO("외출", LocalDate.of(2024, 6, 24), 3));
     }
 }
 

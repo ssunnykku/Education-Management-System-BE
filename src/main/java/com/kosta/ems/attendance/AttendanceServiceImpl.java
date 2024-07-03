@@ -136,7 +136,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     
     
     // [출결] - 선택한 수강생의 출석 상태 수정
-    @Override
+    /*@Override
     public void updateStudentAttendance(String attendanceStatus, String attendanceDate, String studentId) {
     	
     	int year = Integer.parseInt(attendanceDate.split("-")[0]);
@@ -146,5 +146,37 @@ public class AttendanceServiceImpl implements AttendanceService {
     	UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus(attendanceStatus).attendanceDate(LocalDate.of(year, month, day)).studentId(studentId).build();
     	// UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus(attendanceStatus).attendanceDate(attendanceDate).studentId(studentId).build();
     	attendanceMapper.updateStudentAttendance(dto);
+    }*/
+    @Override
+    public void updateStudentAttendance(String attendanceStatus, String attendanceDate, int studentCourseSeq) {
+
+        int year = Integer.parseInt(attendanceDate.split("-")[0]);
+        int month = Integer.parseInt(attendanceDate.split("-")[1]);
+        int day = Integer.parseInt(attendanceDate.split("-")[2]);
+        String status = null;
+
+        switch(attendanceStatus) {
+            case "lateness":
+                status = "지각";
+                break;
+            case "goOut":
+                status = "외출";
+                break;
+            case "absence":
+                status = "결석";
+                break;
+            case "earlyLeave":
+                status = "조퇴";
+                break;
+            case "acknowledge":
+                status = "출석 인정";
+                break;
+            default:
+                status = "출석";
+                break;
+        }
+
+        UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus(status).attendanceDate(LocalDate.of(year, month, day)).studentCourseSeq(studentCourseSeq).build();
+        attendanceMapper.updateStudentAttendance(dto);
     }
 }

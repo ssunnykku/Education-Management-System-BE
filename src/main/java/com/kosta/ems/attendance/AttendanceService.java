@@ -60,5 +60,6 @@ public interface AttendanceService {
     List<AttendanceListBySearchFilterDTO> getDateAndLocationList(String attendanceDate, String academyLocation, String name, int courseNumber, int page, int size);
     
     // [출결] - 선택한 수강생의 출석 상태 수정
-    void updateStudentAttendance(String attendanceStatus, String attendanceDate, String studentId);
+    // void updateStudentAttendance(String attendanceStatus, String attendanceDate, String studentId);
+    void updateStudentAttendance(String attendanceStatus, String attendanceDate, int studentCourseSeq);
 }

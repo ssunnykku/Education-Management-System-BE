@@ -106,6 +106,7 @@ class AttendanceServiceImplTest {
     // [출결] - 선택한 수강생의 출석 상태 수정
  	// @Test
      void updateStudentAttendance() {
-         attendanceService.updateStudentAttendance("출석", "2024-06-21", "efa148aa-2fa7-11ef-b0b2-0206f94be675");
+         // attendanceService.updateStudentAttendance("출석", "2024-06-21", "efa148aa-2fa7-11ef-b0b2-0206f94be675");
+         attendanceService.updateStudentAttendance("지각", "2024-06-21", 3);
      }
 }

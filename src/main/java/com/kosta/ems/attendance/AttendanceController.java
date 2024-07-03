@@ -108,7 +108,6 @@ public class AttendanceController {
 		// Map<String, Object> pageRequest = (Map<String, Object>) request.get("pageRequest");
 		// Map<String, Object> attendanceRequest = (Map<String, Object>) request.get("attendanceRequest");
 
-		// int page = ((int) pageRequest.get("page"))-1;  // page는 실제로 0부터 시작하기 때문
 		int size = 10;
 
 		// 검색 경우(1~3) 파악
@@ -122,42 +121,25 @@ public class AttendanceController {
 
 		if(courseNumber != -1 && !name.equals("none")) {
 			// 경우1: 기수, 수강생명 모두 입력한 검색
-			log.info(">> 경우1");
-			// totalCount = attendanceService.selectCourseNumberAndStudentNameListAmount((String) attendanceRequest.get("attendanceDate"), (String) attendanceRequest.get("academyLocation"), (String) attendanceRequest.get("name"), (int)attendanceRequest.get("courseNumber"));
 			totalCount = attendanceService.getCourseNumberAndStudentNameListAmount(dto.getAttendanceDate(), academyLocation, dto.getName(), dto.getCourseNumber());
 
 			// 수강생 출결 목록 데이터
-			// result.put("data", attendanceService.selectCourseNumberAndStudentNameList((String) attendanceRequest.get("attendanceDate"), (String) attendanceRequest.get("academyLocation"), (String) attendanceRequest.get("name"), (int) attendanceRequest.get("courseNumber"), page, size));
 			result.put("attendanceList", attendanceService.getCourseNumberAndStudentNameList(dto.getAttendanceDate(), academyLocation, dto.getName(), dto.getCourseNumber(), page, size));
 			result.put("amount", totalCount);
 		} else if(courseNumber == -1 && name.equals("none")) {
 			// 경우3: 기수, 수강생명 모두 미입력 (날짜만) 검색
-			log.info(">> 경우3");
-			// totalCount = attendanceService.selectDateAndLocationListAmount((String) attendanceRequest.get("attendanceDate"), (String) attendanceRequest.get("academyLocation"), (String) attendanceRequest.get("name"), (int)attendanceRequest.get("courseNumber"));
 			totalCount = attendanceService.getDateAndLocationListAmount(dto.getAttendanceDate(), academyLocation, dto.getName(), dto.getCourseNumber());
 
 			// 수강생 출결 목록 데이터
-			// result.put("data", attendanceService.selectDateAndLocationList((String) attendanceRequest.get("attendanceDate"), (String) attendanceRequest.get("academyLocation"), (String) attendanceRequest.get("name"), (int) attendanceRequest.get("courseNumber"), page, size));
 			result.put("attendanceList", attendanceService.getDateAndLocationList(dto.getAttendanceDate(), academyLocation, dto.getName(), dto.getCourseNumber(), page, size));
 			result.put("amount", totalCount);
 		} else {
 			// 경우2: 기수 또는 수강생명 입력한 검색
-			log.info(">> 경우2");
-			// totalCount = attendanceService.selectCourseNumberOrStudentNameListAmount((String) attendanceRequest.get("attendanceDate"), (String) attendanceRequest.get("academyLocation"), (String) attendanceRequest.get("name"), (int)attendanceRequest.get("courseNumber"));
 			totalCount = attendanceService.getCourseNumberOrStudentNameListAmount(dto.getAttendanceDate(), academyLocation, dto.getName(), dto.getCourseNumber());
 
 			// 수강생 출결 목록 데이터
-			// result.put("data", attendanceService.selectCourseNumberOrStudentNameList((String) attendanceRequest.get("attendanceDate"), (String) attendanceRequest.get("academyLocation"), (String) attendanceRequest.get("name"), (int) attendanceRequest.get("courseNumber"), page, size));
-			log.info(">> 매개변수");
-			log.info(">> dto.getAttendanceDate(): " + dto.getAttendanceDate());
-			log.info(">> academyLocation: " + academyLocation);
-			log.info(">> name: " + dto.getName());
-			log.info(">> courseNumber: " + dto.getCourseNumber());
-			log.info(">> page: " + page + "\n>> size: " + size);
 			result.put("attendanceList", attendanceService.getCourseNumberOrStudentNameList(dto.getAttendanceDate(), academyLocation, dto.getName(), dto.getCourseNumber(), page, size));
 			result.put("amount", totalCount);
-			log.info(">> attendanceList: " + attendanceService.getCourseNumberOrStudentNameList(dto.getAttendanceDate(), academyLocation, dto.getName(), dto.getCourseNumber(), page, size).toString());
-			log.info(">> amount: " + totalCount);
 		}
 
 		// 페이징 response
@@ -186,12 +168,7 @@ public class AttendanceController {
 	public UpdateDeleteResultDTO updateStudentAttendance(@RequestBody RequestStudentAttendanceDTO request) {
 		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
 		try {
-			int year = Integer.parseInt(request.getAttendanceDate().split(".")[0]);
-			int month = Integer.parseInt(request.getAttendanceDate().split(".")[1]);
-			int day = Integer.parseInt(request.getAttendanceDate().split(".")[2]);
-			
-			// attendanceServiceImpl.updateStudentAttendance(request.getAttendanceStatus(), LocalDate.of(year, month, month), request.getStudentId());
-			attendanceService.updateStudentAttendance(request.getAttendanceStatus(), request.getAttendanceDate(), request.getStudentId());
+			attendanceService.updateStudentAttendance(request.getAttendanceStatus(), request.getAttendanceDate(), request.getStudentCourseSeq());
 		} catch (NoSuchDataException e) {
 			dto.setCode(ResCode.FAIL.value());
 			dto.setMessage("Fail: updateStudentAttendance");

@@ -41,62 +41,7 @@
             </div>
         </article>
         <article>
-            <table class="board-table">
-                <!--
-                <tr>
-                    <th><input type="checkbox" /></th>
-                    <th>기수</th>
-                    <th>HRD-Net ID</th>
-                    <th>이름</th>
-                    <th>강의장</th>
-                    <th>출결 상태</th>
-                    <th>증빙 서류</th>
-                </tr>
-                <div id="table-row-wrapper">
-                    <tr class="board-table-row">
-                        <td class="board-checkbox"><input type="checkbox"/></td>
-                        <td class="course-number">1</td>
-                        <td class="hrd-net-id">2</td>
-                        <td class="student-name">3</td>
-                        <td class="academy-location">4</td>
-                        <td class="attendance-status">
-                            <select name="attendance-status-select" id="attendance-status-select">
-                                <option value="">&#45;&#45;&#45;&#45;&#45;&#45;</option>
-                                <option value="attendance">출석</option>
-                                <option value="lateness">지각</option>
-                                <option value="absence">결석</option>
-                                <option value="earlyLeave">조퇴</option>
-                                <option value="goOut">외출</option>
-                                <option value="acknowledge">출석 인정</option>
-                            </select>
-                        </td>
-                        <td class="evidentiary-documents">
-                            <input type="file" class="file-upload-btn"/>
-                        </td>
-                    </tr>
-                    <tr class="board-table-row">
-                        <td class="board-checkbox"><input type="checkbox"/></td>
-                        <td class="course-number">1</td>
-                        <td class="hrd-net-id">2</td>
-                        <td class="student-name">3</td>
-                        <td class="academy-location">4</td>
-                        <td class="attendance-status">
-                            <select name="attendance-status-select" id="attendance-status-select">
-                                <option value="">&#45;&#45;&#45;&#45;&#45;&#45;</option>
-                                <option value="attendance">출석</option>
-                                <option value="lateness">지각</option>
-                                <option value="absence">결석</option>
-                                <option value="earlyLeave">조퇴</option>
-                                <option value="goOut">외출</option>
-                                <option value="acknowledge">출석 인정</option>
-                            </select>
-                        </td>
-                        <td class="evidentiary-documents">
-                            <input type="file" class="file-upload-btn"/>
-                        </td>
-                    </tr>
-                </div>-->
-            </table>
+            <table class="board-table"></table>
         </article>
         <div class="update-btn-div">
             <button id="update-btn">저장</button>
@@ -143,11 +88,32 @@
         return $(".input-date").val();
     }
 
+    // <th>의 체크박스 클릭 -> 모든 <tr>의 체크박스 선택 처리
+    function checkAll() {
+        $("#check-all").click(function() {
+            if($("#check-all").is(":checked")) {
+                $("input[name=checkbox]").prop("checked", true);
+            } else {
+                $("input[name=checkbox]").prop("checked", false);
+            }
+        });
+
+        $("input[name=checkbox]").click(function() {
+            let total = $("input[name=checkbox]").length;
+            let checked = $("input[name=checkbox]:checked").length;
+
+            if(total != checked) {
+                $("#check-all").prop("checked", false);
+            } else {
+                $("#check-all").prop("checked", true);
+            }
+        });
+    };
+
     // 검색한 출결 상태 목록 데이터 화면에 보여주기
     async function getAttendanceList(data) {
-        // let result = '';
         let result = `<tr>
-                    <th><input type="checkbox" /></th>
+                    <th><input type="checkbox" id="check-all"/></th>
                     <th>기수</th>
                     <th>HRD-Net ID</th>
                     <th>이름</th>
@@ -183,19 +149,16 @@
                 case "출석 인정":
                     acknowledgeCheck = "selected";
                     break;
-                default:
-                    defaultCheck = "selected";
             }
 
             result += `<tr class="board-table-row">
-                    <td class="board-checkbox"><input type="checkbox"/></td>
+                    <td class="board-checkbox"><input type="checkbox" name="checkbox"/><span class="student-course-seq" style="display:none;">${data[i].studentCourseSeq}</span></td>
                     <td class="course-number">${data[i].courseNumber}</td>
                     <td class="hrd-net-id">${data[i].hrdNetId}</td>
                     <td class="student-name">${data[i].name}</td>
                     <td class="academy-location">${data[i].academyLocation}</td>
                     <td class="attendance-status">
                         <select name="attendance-status-select" id="attendance-status-select">
-                            <option value="" ${defaultCheck}>------</option>
                             <option value="attendance" ${attendanceCheck}>출석</option>
                             <option value="lateness" ${latenessCheck}>지각</option>
                             <option value="absence" ${absenceCheck}>결석</option>
@@ -205,15 +168,15 @@
                         </select>
                     </td>
                     <td class="evidentiary-documents">
-                        <input type="file" class="file-upload-btn"/>
+                        <div class="file-input-wrapper">
+                            <label class="input-file-label" for="file-upload-btn">파일 첨부</label>
+                            <input type="file" id="file-upload-btn"/>
+                        </div>
                     </td>
                 </tr>`;
         }
         $(".board-table").html("");
         $(".board-table").append(result);
-        // $("#table-row-wrapper").html("");
-        // $("#table-row-wrapper").append(result);
-        // $(".board-table").append(result);
     };
 
     // 검색한 출결 상태 목록 데이터 전체 개수 가져오기
@@ -269,6 +232,8 @@
             "attendanceDate": getAttendanceDate()
         });
 
+        const updateDTO = null;
+
         const requestOptions = {
             method: "POST",
             headers: myHeaders,
@@ -276,8 +241,93 @@
             redirect: "follow"
         };
 
-        await fetchAttendanceList(page);
+        if(getAttendanceDate() == "") {
+            alert("날짜는 필수 검색 조건입니다!");
+        } else {
+            await fetchAttendanceList(page);
+            checkAll(); // <th>의 체크박스 클릭 -> 모든 <tr>의 체크박스 선택 처리
+            // 선택 내용 일괄 출결 처리
+            $("#combine-update-btn").click(function() {
+                const selectedRadio = $("input[name=attendanceStatus]:checked");
+                const checkBoxes = $("input[name=checkbox]:checked");
+
+                if(!selectedRadio.length && !checkBoxes.length) {
+                    alert("처리할 출결 상태를 체크해주세요!");
+                    return;
+                }
+                console.log('Selected attendance status:', selectedRadio.val());
+            });
+            // 선택한 학생의 출결 처리
+            $('.board-checkbox input[type="checkbox"]').on('change', function() {
+                if (this.checked) {
+                    const row = $(this).closest('tr');
+                    const studentCourseSeq = row.find('.student-course-seq').text();
+                    const courseNumber = row.find('.course-number').text();
+                    const hrdNetId = row.find('.hrd-net-id').text();
+                    const studentName = row.find('.student-name').text();
+                    const academyLocation = row.find('.academy-location').text();
+                    const selectedAttendanceStatus = row.find('.attendance-status select').val();
+
+                    console.log('Student course sequence:', studentCourseSeq);
+                    console.log('Course number:', courseNumber);
+                    console.log('HRD Net ID:', hrdNetId);
+                    console.log('Student name:', studentName);
+                    console.log('Academy location:', academyLocation);
+                    console.log('Selected attendance:', selectedAttendanceStatus);
+
+                    const updateDTO = JSON.stringify({
+                        "attendanceStatus": selectedAttendanceStatus,
+                        "attendanceDate": getAttendanceDate(),
+                        "studentCourseSeq": parseInt(studentCourseSeq, 10)
+                    });
+
+                    $("#update-btn").click(async function() {
+                        console.log(">> updateDTO");
+                        console.log(updateDTO);
+
+                        await fetchUpdateAttendance(updateDTO);
+                    });
+                }
+            });
+        }
     });
+
+    // 선택한 학생의 출결 상태 저장(not 일괄 처리)
+    async function fetchUpdateAttendance(requestDTO) {
+        console.log(">> fetchUpdateAttendance")
+        console.log(requestDTO);
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const requestOptions = {
+            method: "PUT",
+            headers: myHeaders,
+            body: requestDTO,
+            redirect: "follow"
+        };
+
+        await fetch("/attendances/student-status", requestOptions)
+            .then((res) => res.json())
+            .then(async(data) => {
+                console.log(data.code);
+                console.log(data.message);
+            })
+            .catch((error) => console.error(error));
+    };
+
+
+    // 선택 내용 출결 처리
+    $("#combine-update-btn").click(function() {
+        const selectedRadio = $("input[name=attendanceStatus]:checked");
+
+        if(!selectedRadio.length) {
+            alert("처리할 출결 상태를 체크해주세요!");
+            return;
+        }
+        console.log('Selected attendance status:', selectedRadio.val());
+    });
+
+
 
     // 페이지네이션
     function updatePagination() {
