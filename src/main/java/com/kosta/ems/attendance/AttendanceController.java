@@ -5,6 +5,7 @@ import java.net.URLDecoder;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -165,10 +166,15 @@ public class AttendanceController {
 
 	// [출결] - 선택한 수강생의 출석 상태 수정
 	@PutMapping("/student-status")
-	public UpdateDeleteResultDTO updateStudentAttendance(@RequestBody RequestStudentAttendanceDTO request) {
+	public UpdateDeleteResultDTO updateStudentAttendance(@RequestBody List<RequestStudentAttendanceDTO> request) {
 		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
 		try {
-			attendanceService.updateStudentAttendance(request.getAttendanceStatus(), request.getAttendanceDate(), request.getStudentCourseSeq());
+			log.info("🚀 request 확인");
+			log.info(">> request.length: " + request.size());
+			log.info(">> request: " + request.toString());
+			for(int i=0; i<request.size(); i++) {
+				attendanceService.updateStudentAttendance(request.get(i).getAttendanceStatus(), request.get(i).getAttendanceDate(), request.get(i).getStudentCourseSeq());
+			}
 		} catch (NoSuchDataException e) {
 			dto.setCode(ResCode.FAIL.value());
 			dto.setMessage("Fail: updateStudentAttendance");

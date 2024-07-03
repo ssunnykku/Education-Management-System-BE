@@ -157,18 +157,22 @@ public class AttendanceServiceImpl implements AttendanceService {
 
         switch(attendanceStatus) {
             case "lateness":
+                case "지각":
                 status = "지각";
                 break;
             case "goOut":
+                case "외출":
                 status = "외출";
                 break;
             case "absence":
+                case "결석":
                 status = "결석";
                 break;
             case "earlyLeave":
+                case "조퇴":
                 status = "조퇴";
                 break;
-            case "acknowledge":
+            case "acknowledge": case "출석 인정":
                 status = "출석 인정";
                 break;
             default:

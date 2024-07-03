@@ -68,6 +68,8 @@
     const pageSize = 10;
     // const page = new URL(location.href).search.split("=")[0];
     const page = 1;
+    const objList = [];
+    let selectedValue = null;
 
     function getCourseNumber() {
         if($("#input-course-number").val() == "") {
@@ -246,17 +248,28 @@
         } else {
             await fetchAttendanceList(page);
             checkAll(); // <th>의 체크박스 클릭 -> 모든 <tr>의 체크박스 선택 처리
-            // 선택 내용 일괄 출결 처리
-            $("#combine-update-btn").click(function() {
-                const selectedRadio = $("input[name=attendanceStatus]:checked");
-                const checkBoxes = $("input[name=checkbox]:checked");
 
-                if(!selectedRadio.length && !checkBoxes.length) {
+            // 선택 내용 일괄 출결 처리
+            $("#combine-update-btn").click(async function() {
+                const checkedStudentData = [];
+                const selectedRadio = $("input[name=attendanceStatus]:checked");
+                if(!selectedRadio.length) {
                     alert("처리할 출결 상태를 체크해주세요!");
                     return;
                 }
-                console.log('Selected attendance status:', selectedRadio.val());
+                const combineAttendanceStatus = selectedRadio.val();
+                $('input[type="checkbox"][name="checkbox"]:checked:not(#check-all)').each(function(index, checkboxElement) {
+                    const studentCourseSeq = $(this).closest('tr').find('.student-course-seq').text();
+                    const studentRow = $(this).closest('tr');
+                    checkedStudentData.push({
+                        "studentCourseSeq": studentCourseSeq,
+                        "attendanceDate": getAttendanceDate(),
+                        "attendanceStatus": combineAttendanceStatus
+                    });
+                });
+                await fetchUpdateAttendance(checkedStudentData);
             });
+
             // 선택한 학생의 출결 처리
             $('.board-checkbox input[type="checkbox"]').on('change', function() {
                 if (this.checked) {
@@ -268,41 +281,33 @@
                     const academyLocation = row.find('.academy-location').text();
                     const selectedAttendanceStatus = row.find('.attendance-status select').val();
 
-                    console.log('Student course sequence:', studentCourseSeq);
-                    console.log('Course number:', courseNumber);
-                    console.log('HRD Net ID:', hrdNetId);
-                    console.log('Student name:', studentName);
-                    console.log('Academy location:', academyLocation);
-                    console.log('Selected attendance:', selectedAttendanceStatus);
-
-                    const updateDTO = JSON.stringify({
+                    const obj = {
                         "attendanceStatus": selectedAttendanceStatus,
                         "attendanceDate": getAttendanceDate(),
                         "studentCourseSeq": parseInt(studentCourseSeq, 10)
-                    });
+                    };
+
+                    objList.push(obj);
 
                     $("#update-btn").click(async function() {
-                        console.log(">> updateDTO");
-                        console.log(updateDTO);
-
-                        await fetchUpdateAttendance(updateDTO);
+                        await fetchUpdateAttendance(objList);
                     });
                 }
             });
         }
     });
 
-    // 선택한 학생의 출결 상태 저장(not 일괄 처리)
-    async function fetchUpdateAttendance(requestDTO) {
+    // 선택한 학생의 출결 상태 저장(수정)
+    async function fetchUpdateAttendance(objList) {
         console.log(">> fetchUpdateAttendance")
-        console.log(requestDTO);
+        console.log(objList);
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
         const requestOptions = {
             method: "PUT",
             headers: myHeaders,
-            body: requestDTO,
+            body: JSON.stringify(objList),
             redirect: "follow"
         };
 
@@ -310,22 +315,15 @@
             .then((res) => res.json())
             .then(async(data) => {
                 console.log(data.code);
+                if(data.code === 0) {
+                    alert("출결 상태가 수정되었습니다.");
+                } else {
+                    alert("출결 상태 수정 실패");
+                }
                 console.log(data.message);
             })
             .catch((error) => console.error(error));
     };
-
-
-    // 선택 내용 출결 처리
-    $("#combine-update-btn").click(function() {
-        const selectedRadio = $("input[name=attendanceStatus]:checked");
-
-        if(!selectedRadio.length) {
-            alert("처리할 출결 상태를 체크해주세요!");
-            return;
-        }
-        console.log('Selected attendance status:', selectedRadio.val());
-    });
 
 
 
