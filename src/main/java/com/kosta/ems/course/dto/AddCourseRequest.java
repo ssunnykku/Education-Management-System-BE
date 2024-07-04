@@ -53,17 +53,19 @@ public class AddCourseRequest {
     private int maxStudents;
     
     
-    public CourseDTO toCourseDTO(String academyLocation) {
+    public CourseDTO toCourseDTO() {
         CourseDTO dto;
-        dto = CourseDTO.builder().academyLocation(academyLocation)
-                .courseNumber(getCourseNumber())
-                .courseName(getCourseName())
-                .subject(getSubject())
-                .courseStartDate(getCourseStartDate())
-                .courseEndDate(getCourseEndDate())
-                .professorName(getProfessorName())
-                .totalTrainingDays(getTotalTrainingDays())
-                .trainingHoursOfDate(getTrainingHoursOfDate())
+        dto = CourseDTO.builder()
+                .courseNumber(courseNumber)
+                .courseName(courseName)
+                .subject(subject)
+                .courseType(courseType)
+                .courseStartDate(courseStartDate)
+                .courseEndDate(courseEndDate)
+                .professorName(professorName)
+                .totalTrainingDays(totalTrainingDays)
+                .trainingHoursOfDate(trainingHoursOfDate)
+                .maxStudents(maxStudents)
                 .build();
         return dto;
     }
