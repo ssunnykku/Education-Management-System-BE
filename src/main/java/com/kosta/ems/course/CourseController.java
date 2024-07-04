@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,9 +60,9 @@ public class CourseController {
 	
 	
 	@PostMapping("/course")
-	public Map<String, Boolean> addCourse(@Valid AddCourseRequest cRequest, BindingResult bindingResult){
+	public Map<String, Boolean> addCourse(@RequestBody @Valid AddCourseRequest cRequest, BindingResult bindingResult){
 	    if(bindingResult.hasErrors()) {
-	        System.out.println(bindingResult.getAllErrors());
+	        return Map.of("result",false);
 	    }
 		ManagerDTO loginUser = getLoginUser();
 		CourseDTO course = cRequest.toCourseDTO(loginUser.getAcademyLocation());
