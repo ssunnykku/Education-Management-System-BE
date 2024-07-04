@@ -60,7 +60,7 @@ public class EmpController {
                                  @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                  @RequestParam(value = "courseNumber", defaultValue = "0") int courseNumber,
                                  @RequestParam(value = "excludeExpired", defaultValue = "true") boolean excludeExpired,
-                                 HttpServletRequest request, Model model
+                                 Model model
                                  , Principal principal) {
         ManagerDTO loginUser = getLoginUser();
         // ( 277, "가산", 1, 10, true);
@@ -158,7 +158,7 @@ public class EmpController {
                              @RequestParam(value = "courseNumber", defaultValue = "0") int courseNumber,
                              String studentName,
                              @RequestParam(value = "excludeExpired", defaultValue = "true") boolean excludeExpired,
-                             HttpServletRequest request, Model model) {
+                             Model model) {
         ManagerDTO loginUser = getLoginUser();
         List<StudentCourseWithPointDTO> studentList = pointService.getStudentListWithPoint(courseNumber, studentName, page, pageSize, loginUser.getAcademyLocation());
         Integer totalStudentCount = pointService.getCountOfStudentWithPoint(courseNumber, studentName, loginUser.getAcademyLocation());
