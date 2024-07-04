@@ -39,9 +39,7 @@ public class CourseServiceImpl implements CourseService {
 	public boolean addCourse(CourseDTO course) {
 		boolean result = false;
 		try {
-			if(courseMapper.insertCourse(course) == true) {
-				result = true;
-			}
+			result = courseMapper.insertCourse(course);
 		}catch (Exception e) {
 		}
 		return result;

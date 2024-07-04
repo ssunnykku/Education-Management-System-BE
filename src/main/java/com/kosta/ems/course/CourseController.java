@@ -65,7 +65,9 @@ public class CourseController {
 	        return Map.of("result",false);
 	    }
 		ManagerDTO loginUser = getLoginUser();
-		CourseDTO course = cRequest.toCourseDTO(loginUser.getAcademyLocation());
+		CourseDTO course = cRequest.toCourseDTO();
+		course.setManagerId(loginUser.getManagerId());
+		course.setAcademyLocation(loginUser.getAcademyLocation());
 		boolean result = courseService.addCourse(course);
 		return Map.of("result", result);
 	}
