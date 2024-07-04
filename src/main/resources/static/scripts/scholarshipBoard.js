@@ -49,6 +49,7 @@ function searchInput() {
 }
 
 function courseNumber() {
+    // console.log($(".scholarship-courseId-filter option:selected").text());
     return $(".scholarship-courseId-filter option:selected").text();
 }
 
@@ -95,27 +96,15 @@ function updatePagination() {
     let firstPage = (currentBlock * pageSize) - pageSize + 1;
     let lastPage = totalPages <= currentBlock * pageSize ? totalPages : currentBlock * pageSize;
 
+    let result = "";
     for (let i = firstPage; i <= lastPage; i++) {
         let num = i;
-        $("#page_number").append(`<a class="page-link" onclick="fetchScholarshipBoard(${num})">${num}</a>`);
+        result += `<li>
+                    <a class="page-link" onclick="fetchScholarshipBoard(${num})">${num}</a>
+                    </li>`;
     }
+    $("#page_number").append(result);
 }
-
-$("#next").click(() => {
-    if (currentBlock * pageSize < totalPages) {
-        currentBlock += 1;
-        currentPage = (currentBlock * pageSize) - pageSize + 1;
-        updatePagination();
-    }
-});
-
-$("#before").click(() => {
-    if (currentBlock > 1) {
-        currentBlock -= 1;
-        currentPage = (currentBlock * pageSize) - pageSize + 1;
-        updatePagination();
-    }
-});
 
 
 async function fetchScholarshipBoard(param) {
@@ -143,51 +132,66 @@ async function fetchScholarshipBoard(param) {
         .catch((error) => console.error(error));
 }
 
-/*** 체크박스 상단 전체 선택 ***/
-// $('#title-checkbox').change(() => {
-//     if ($('#title-checkbox').is(':checked')) {
-//         $(".checkbox").prop("checked", true);
-//         return;
-//     } else {
-//         $(".checkbox").prop("checked", false);
-//     }
-// })
-//
-// let selected = [];
-// $("#settlement-btn").click(function () {
-//     $(".checkbox").each(function () {
-//         if ($(this).prop("checked")) {
-//             selected.push(this.value);
-//             console.log(this.value);
-//         }
-//     });
-// });
 
-$("#title-checkbox").click(toggleAll())
+let selected = [];
+$("#settlement-btn").click(function () {
+
+    // $("#settlementListModal").removeClass('check-settlement-modal');
+
+    // $(".checkbox").each(function () {
+    //     if ($(this).prop("checked")) {
+    //         fetch("http://localhost:8080/scholarships/settlement/" + this.value, {
+    //             method: "POST",
+    //         })
+    //             .then((res) => res.json())
+    //             .catch((error) => console.error(error));
+    //     }
+    // 모달창
+    // 진행하시겠습니까? + 세부 내역 보여주기
+    // 정산이 완료되었습니다.
+    // });
+});
 
 
-async function removeCourse() {
-    let selectedCourseSeqList = [];
-    $("div.courseBoard-row").not("#courseBoard-title-row").each((index, item) => {
-        if ($(item).find("input[type=checkbox]").prop("checked")) {
-            const courseSeq = $(item).data("courseSeq");
-            selectedCourseSeqList.push(courseSeq);
-        }
-    });
-    if (!selectedCourseSeqList.length) {
-        showMessage("삭제할 과정을 선택해주십시오.");
-        return;
-    }
-}
-
+$("#title-checkbox").on("change", toggleAll);
 
 function toggleAll() {
     const isChecked = $("#title-checkbox").prop('checked');
-    $(".checkbox input[type=checkbox]").prop('checked', isChecked);
+    $("#scholarshipBoard-table input[type=checkbox]").prop('checked', isChecked);
 }
 
-function showMessage(msg) {
-    const messageModal = $("#removeCourseCompleteModal").get()[0];
-    messageModal.querySelector("#message").innerText = msg;
-    messageModal.showPopover();
-}
+
+/*course 목록*/
+
+fetch("/courses/course-number-list?excludeExpired=false", {
+    method: "GET",
+})
+    .then((res) => res.json())
+    .then((data) => {
+        const courseList = data.result;
+        let result = '';
+        for (const resultElement of courseList) {
+            result += `<option value=${resultElement}>${resultElement}</option>`;
+        }
+        $(".scholarship-courseId-filter").append(result);
+
+    })
+    .catch((error) => console.error(error));
+
+/*pagenation*/
+
+$("#next").click(() => {
+    if (currentBlock * pageSize < totalPages) {
+        currentBlock += 1;
+        currentPage = (currentBlock * pageSize) - pageSize + 1;
+        updatePagination();
+    }
+});
+
+$("#before").click(() => {
+    if (currentBlock > 1) {
+        currentBlock -= 1;
+        currentPage = (currentBlock * pageSize) - pageSize + 1;
+        updatePagination();
+    }
+});

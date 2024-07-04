@@ -23,4 +23,5 @@ public class StudentAttendanceListDTO {
 	private int sumGoOut;  // '조퇴' 합계
 	private int sumEarlyLeave;  // '외출' 합계
 	private int sumAbsence;  // '결석' 합계
+	private int sumAcknowledge;  // '출석 인정' 합계
 }

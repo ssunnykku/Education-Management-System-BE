@@ -16,5 +16,5 @@ import lombok.ToString;
 public class UpdateStudentAttendanceStatusDTO {
 	private String attendanceStatus;
 	private LocalDate attendanceDate;
-	private String studentId;
+	private int studentCourseSeq;
 }

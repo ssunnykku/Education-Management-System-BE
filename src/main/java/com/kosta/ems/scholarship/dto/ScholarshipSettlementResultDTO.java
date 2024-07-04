@@ -1,17 +1,19 @@
-package com.kosta.ems.scholarship;
+package com.kosta.ems.scholarship.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 
-@Builder
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScholarshipTargetDTO {
+public class ScholarshipSettlementResultDTO {
+
     private String studentId;
     private String hrdNetId;
     private String name;
@@ -19,12 +21,10 @@ public class ScholarshipTargetDTO {
     private String account;
     private String managerId;
     private char isActive;
-    private int studentCourseSeq;
-    private int courseSeq;
+    private Long studentCourseSeq;
+    private Long courseSeq;
     private int courseNumber;
-    private String academyLocation;
     private String courseName;
-    private LocalDate ScholarshipDate;
-    private int totalPoint;
+    private LocalDate scholarshipDate;
     private int scholarshipAmount;
 }

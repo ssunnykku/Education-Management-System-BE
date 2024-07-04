@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.ui.Model;
+
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class NotificationController {
+
+    @Qualifier("notificationService")
 	private final NotificationService notification;
 	//공지사항 전체 글 search
 //	@GetMapping //@AuthenticationPrincipal 사용할수있음.

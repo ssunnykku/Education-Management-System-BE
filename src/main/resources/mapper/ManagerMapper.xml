@@ -5,4 +5,8 @@
 	SELECT manager_id managerId, academy_location academyLocation FROM managers
 	WHERE employee_number = #{employeeNumber} and password = #{password}
 </select>
+<select id="findByEmployeeNumber" resultType="com.kosta.ems.manager.ManagerDTO">
+    SELECT manager_id managerId, name, position, is_active isActive, password, employee_number employeeNumber, academy_location academyLocation FROM managers
+    WHERE employee_number = #{employeeNumber}
+</select>
 </mapper>

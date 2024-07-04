@@ -1,5 +1,8 @@
 package com.kosta.ems.benefit;
 
+import com.kosta.ems.benefit.dto.BenefitSettlementReqDTO;
+import com.kosta.ems.benefit.dto.BenefitSettlementResultDTO;
+import com.kosta.ems.benefit.dto.BenefitTargetInfoDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;

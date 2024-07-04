@@ -2,6 +2,7 @@ package com.kosta.ems.benefit;
 
 
 import com.kosta.ems.attendance.AttendanceMapper;
+import com.kosta.ems.benefit.dto.*;
 import com.kosta.ems.student.StudentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,9 +59,9 @@ public class BenefitServiceImpl implements BenefitService {
                 dto.getStartDate(),
                 dto.getEndDate(),
                 dto.getCourseNumber(),
+                dto.getName(),
                 limit,
                 offset);
-
         List<BenefitTargetInfoDTO> benefitTargetList = new ArrayList<>();
 
         for (BenefitTargetDTO targetInfo : targetList) {
@@ -121,7 +122,8 @@ public class BenefitServiceImpl implements BenefitService {
                 dto.getAcademyLocation(),
                 dto.getStartDate(),
                 dto.getEndDate(),
-                dto.getCourseNumber());
+                dto.getCourseNumber(),
+                dto.getName());
     }
 
     @Override

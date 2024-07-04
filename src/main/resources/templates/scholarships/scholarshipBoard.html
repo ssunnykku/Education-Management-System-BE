@@ -17,15 +17,13 @@
         <div class="search-form-wrapper">
             <select name="scholarship-courseId-filter"
                     class="scholarship-courseId-filter">
-                <option value="course-number">기수</option>
-                <option value="227">227</option>
-                <option value="191">191</option>
+                <option value="course-number" id="course-number">기수</option>
             </select>
             <input placeholder="수강생을 입력하세요" class="search-input"/>
             <button type="button" class="board-filter-search-btn">검색</button>
         </div>
         <div class="scholarship-btn-wrapper">
-            <button type="button" id="settlement-btn" class="btn-setting">
+            <button type="button" id="settlement-btn" class="btn-setting" popovertarget="settlementListModal">
                 정산
             </button>
         </div>
@@ -37,7 +35,7 @@
     <article>
         <div id="scholarshipBoard-table">
             <div class="scholarshipBoard-row" id="scholarshipBoard-title-row">
-                <div class="scholarshipBoard-checkbox"  >
+                <div class="scholarshipBoard-checkbox">
                     <input type="checkbox" name="" id="title-checkbox"/>
                 </div>
                 <div class="scholarshipBoard-courseId">
@@ -69,28 +67,57 @@
             </div>
         </div>
     </article>
-
-    <article class="scholarship-page-information">
-        <ul id="pagination">
-            <li>
-                <a class="page-link" id="before">
-                    이전
-                </a>
-            </li>
-            <!--// 이게 페이지 번호-->
-            <li class="page-item" id="page_number">
-            </li>
-            <li class="page-item">
-                <a class="page-link" id="next">
-                    다음
-                </a>
-            </li>
-        </ul>
-        </div>
-    </article>
+        <article class="scholarship-page-information">
+            <ul id="pagination">
+                <li>
+                    <a class="page-link" id="before">
+                        이전
+                    </a>
+                </li>
+                <!--// 이게 페이지 번호-->
+                <ul class="page-item" id="page_number">
+                </ul>
+                <li class="page-item">
+                    <a class="page-link" id="next">
+                        다음
+                    </a>
+                </li>
+            </ul>
+            </div>
+        </article>
 </section>
 <footer></footer>
-<script type="text/javascript" th:src="@{/scripts/scholarshipBoard.js}"></script>
 </body>
 
+<!-- 정산내역 확인 모달 -->
+<div id="settlementListModal" class="check-settlement-modal" popover>
+    <div class="check-settlement-wrapper">
+        <div class="settlement-list-info">
+            <h1 class="title">정산 내역 확인</h1>
+            <h1></h1>
+        </div>
+        <div id="btn-wrapper">
+            <button class="btn-setting-format enroll-btn-format" onclick="removeCourse()" popovertarget="">정산</button>
+            <button id="edit-btn" class="btn-setting" popovertarget="settlementListModal" popovertargetaction="hide">
+                취소
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 과정삭제 완료 모달 -->
+<div id="removeCourseCompleteModal" class="course-modal" popover>
+    <div class="removecourse-wrapper">
+        <div class="removecourse-info">
+            <h1 class="upperline title">알림</h1>
+            <h1 id="message">삭제되었습니다.</h1>
+        </div>
+        <div id="btn-wrapper">
+            <button class="btn-setting-format enroll-btn-format" onclick="location.reload()">확인</button>
+        </div>
+    </div>
+</div>
+
+<!--<div class="modal-background"></div>-->
+<script type="text/javascript" th:src="@{/scripts/scholarshipBoard.js}"></script>
 </html>

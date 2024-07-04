@@ -1,5 +1,7 @@
 package com.kosta.ems.scholarship;
 
+import com.kosta.ems.scholarship.dto.ScholarshipSettlementResultDTO;
+import com.kosta.ems.scholarship.dto.ScholarshipTargetListReqDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
