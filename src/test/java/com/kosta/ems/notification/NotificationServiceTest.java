@@ -17,7 +17,7 @@ class NotificationServiceTest {
 
 	//@Test
 	void testSearchAll() {
-		log.info(notificationService.searchAll("d893c29b-2f8f-11ef-b0b2-0206f94be675", 10, 10).toString());
+		log.info(notificationService.searchAll("d893bf71-2f8f-11ef-b0b2-0206f94be675", 10, 10).toString());
 	}
 
 	//@Test
@@ -36,12 +36,12 @@ class NotificationServiceTest {
 		assertThat(notificationService.addNotification(notification)).isTrue();
 	}
 
-	//@Test
+	@Test
 	void testDeleteNotificaiotn() {
-		assertThat(notificationService.deleteNotificaiotn(110));
+		assertThat(notificationService.deleteNotificaiotn(194));
 	}
 
-	@Test
+	//@Test
 	void testUpdateNotification() {
 			NotificationDTO notification=
 					NotificationDTO.builder()
@@ -51,7 +51,7 @@ class NotificationServiceTest {
 			assertThat(notificationService.updateNotification(notification)).isTrue();
 		}
 
-	//@Test
+	@Test
 	void testGetDescription() {
 		log.info(notificationService.getDescription(171).toString());
 	}

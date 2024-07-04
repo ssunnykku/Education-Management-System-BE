@@ -361,6 +361,13 @@ footer {
     box-shadow: 0px 0px 3px #888;
     line-height: 1.5em;
 }
+.is-writer {
+  display: block; /* Initially show both buttons */
+}
+
+.is-writer:not([data-same-button="true"]) {
+  display: none; /* Hide buttons with data-show-button attribute set to false */
+}
 
 #enroll-btn {
     color: #ffffff;
@@ -429,6 +436,7 @@ footer {
     border-radius: 10px;
     font-size: 15px;
     padding-left: 20px;
+
 }
 
 .setNotification-input-wrapper {
@@ -455,7 +463,7 @@ footer {
 	width: 810px;
 }
 #title-input{
-	 font-size: 15px;
+/* 	 font-size: 15px;
     border: none;
     outline: none;
     resize: none;
@@ -463,7 +471,7 @@ footer {
     height: 100%;
     background: #ffffff;
     border: 1px solid #cfcfcf;
-    border-radius: 10px;
+    border-radius: 10px; */
 }
 #content-input {
     font-size: 15px;

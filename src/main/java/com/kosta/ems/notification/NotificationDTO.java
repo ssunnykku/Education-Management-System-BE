@@ -32,7 +32,7 @@ public class NotificationDTO {
 	private int viewCount;
 	private String name;
 	private String formattedNotificationDate;
-
+	private boolean	sameWriter;
 		
 	}
 

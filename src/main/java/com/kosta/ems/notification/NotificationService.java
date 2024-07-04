@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface NotificationService {
 
+
     Collection<NotificationDTO> searchAll(String managerId, int page, int size);
 
     Collection<NotificationDTO> searchByKeyword(String keyword, String managerId) throws NoResultsFoundException;
