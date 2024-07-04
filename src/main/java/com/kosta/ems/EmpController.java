@@ -1,13 +1,14 @@
 package com.kosta.ems;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.kosta.ems.attendance.AttendanceService;
 import com.kosta.ems.student.PageResponseDTO;
 import org.springframework.web.bind.annotation.*;
 
-
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.ui.Model;
 
 import com.kosta.ems.course.CourseDTO;
 import com.kosta.ems.course.CourseService;
+import com.kosta.ems.manager.ManagerDTO;
 import com.kosta.ems.notification.NotificationService;
 import com.kosta.ems.studentPoint.StudentPointService;
 import com.kosta.ems.studentPoint.dto.StudentCourseWithPointDTO;
@@ -58,13 +60,15 @@ public class EmpController {
                                  @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                  @RequestParam(value = "courseNumber", defaultValue = "0") int courseNumber,
                                  @RequestParam(value = "excludeExpired", defaultValue = "true") boolean excludeExpired,
-                                 HttpServletRequest request, Model model) {
+                                 HttpServletRequest request, Model model
+                                 , Principal principal) {
+        ManagerDTO loginUser = getLoginUser();
         // ( 277, "가산", 1, 10, true);
-        List<CourseDTO> courseList = courseService.searchCourseList(courseNumber, getAcademyOfLoginUser(request), page,
+        List<CourseDTO> courseList = courseService.searchCourseList(courseNumber, loginUser.getAcademyLocation(), page,
                 pageSize, excludeExpired);
-        Integer totalCourseCount = courseService.getSearchCourseListSize(courseNumber, getAcademyOfLoginUser(request),
+        Integer totalCourseCount = courseService.getSearchCourseListSize(courseNumber, loginUser.getAcademyLocation(),
                 page, pageSize, excludeExpired);
-        List<Integer> courseNumberList = courseService.getCourseNumberList(getAcademyOfLoginUser(request),
+        List<Integer> courseNumberList = courseService.getCourseNumberList(loginUser.getAcademyLocation(),
                 excludeExpired);
 
         Map<String, Integer> paging = new HashMap<>();
@@ -82,13 +86,11 @@ public class EmpController {
 
         return "courses/courseBoard";
     }
-
-    private String getAcademyOfLoginUser(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-//    	return (String) session.getAttribute("academyLocation");
-        return "가산";
+    
+    private ManagerDTO getLoginUser() {
+        ManagerDTO loginUser = (ManagerDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return loginUser;
     }
-
 
     @GetMapping("/login")
     public String login() {
@@ -157,9 +159,10 @@ public class EmpController {
                              String studentName,
                              @RequestParam(value = "excludeExpired", defaultValue = "true") boolean excludeExpired,
                              HttpServletRequest request, Model model) {
-        List<StudentCourseWithPointDTO> studentList = pointService.getStudentListWithPoint(courseNumber, studentName, page, pageSize, getAcademyOfLoginUser(request));
-        Integer totalStudentCount = pointService.getCountOfStudentWithPoint(courseNumber, studentName, getAcademyOfLoginUser(request));
-        List<Integer> courseNumberList = courseService.getCourseNumberList(getAcademyOfLoginUser(request),
+        ManagerDTO loginUser = getLoginUser();
+        List<StudentCourseWithPointDTO> studentList = pointService.getStudentListWithPoint(courseNumber, studentName, page, pageSize, loginUser.getAcademyLocation());
+        Integer totalStudentCount = pointService.getCountOfStudentWithPoint(courseNumber, studentName, loginUser.getAcademyLocation());
+        List<Integer> courseNumberList = courseService.getCourseNumberList(loginUser.getAcademyLocation(),
                 excludeExpired);
 
         Map<String, Integer> paging = new HashMap<>();

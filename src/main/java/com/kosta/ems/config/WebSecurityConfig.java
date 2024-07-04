@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @RequiredArgsConstructor
 @Configuration
@@ -39,7 +40,10 @@ public class WebSecurityConfig {
         http.formLogin(formLogin -> formLogin.loginPage("/ems/login").defaultSuccessUrl("/ems/courses", true)
                 .failureUrl("/ems/login").usernameParameter("employeeNumber"));
 
-        http.logout(logout -> logout.logoutSuccessUrl("/ems/login").invalidateHttpSession(true));
+        http.logout(logout -> logout.
+                logoutUrl("/manager/logout")
+                .logoutSuccessUrl("/ems/login").invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID"));
 
         http.csrf(csrf -> csrf.disable());
         return http.build();
