@@ -16,7 +16,6 @@ public class UserDetailService implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String employeeNumber) throws UsernameNotFoundException {
-		System.out.println("userDetailService's loadUserByUserName");
 		return managerMapper.findByEmployeeNumber(employeeNumber);
 	}
 }
