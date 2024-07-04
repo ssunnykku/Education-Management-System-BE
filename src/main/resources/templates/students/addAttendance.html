@@ -18,7 +18,7 @@
     <article class="attendance-search-btn-wrapper">
         <div class="attendance-search-form-wrapper" style="margin-left: 30%; width: auto;">
             <div id="search-form">
-                <input type="date" required class="input-date" name="attendanceDate" style="width: 130px; height: 41px; border: none; border: 1px solid #d3d3d3; border-radius: 10px; padding: 0 10px;" />
+                <input type="date" required class="input-date" name="attendanceDate" />
                 <input placeholder="기수" id="input-course-number" class="courseId-filter" name="courseNumber"/>
                 <input placeholder="수강생을 입력하세요" id="input-name" class="search-input" name="name"/>
                 <button type="button" class="filter-search-btn">검색</button>
@@ -34,7 +34,7 @@
                 <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="외출">외출</label>
                 <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="조퇴">조퇴</label>
                 <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="출석 인정">출석 인정</label>
-                <button id="combine-update-btn">선택 내용 출결 처리</button>
+                <button id="combine-update-btn" class="btn">선택 내용 출결 처리</button>
             </div>
 
             <div class="student-cnt-pages">
@@ -44,8 +44,8 @@
             <table class="board-table"></table>
         </article>
         <div class="update-btn-div">
-            <button id="update-btn">수정</button>
-            <button id="set-btn" popovertarget="add-attendance-modal">입력</button>
+            <button id="set-btn" class="btn" popovertarget="add-attendance-modal">입력</button>
+            <button id="update-btn" class="btn">수정</button>
         </div>
     </section>
     <article class="page-information">
@@ -68,17 +68,17 @@
             <div class="modal-section">
                 <p>* 입력할 출결 날짜</p>
                 <hr/>
-                <input type="date" required class="input-date modal" name="attendanceDate" style="width: 130px; height: 41px; border: none; border: 1px solid #d3d3d3; border-radius: 10px; padding: 0 10px;"/>
+                <input type="date" required class="input-date modal" name="attendanceDate"/>
             </div>
             <div class="modal-section">
                 <p>* 입력할 출결 상태</p>
                 <hr/>
                 <div class="attendance-status-wrapper">
-                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="출석">출석</label>
-                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="결석">결석</label>
-                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="지각">지각</label>
-                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="외출">외출</label>
-                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="조퇴">조퇴</label>
+                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatusModal" value="출석">출석</label>
+                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatusModal" value="결석">결석</label>
+                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatusModal" value="지각">지각</label>
+                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatusModal" value="외출">외출</label>
+                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatusModal" value="조퇴">조퇴</label>
                     <!--<label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="출석 인정">출석 인정</label>-->
                 </div>
             </div>
@@ -88,10 +88,10 @@
             <hr/>
             <div class="list-wrapper">
                 <div class="list-header">
-                    <input type="checkbox" id="modal-check-all"/>
-                    <p>기수</p>
-                    <p>HRD-Net ID</p>
-                    <p>이름</p>
+                    <input type="checkbox" id="modal-check-all" class="modal-checkbox"/>
+                    <p class="course-number">기수</p>
+                    <p class="hrd-net-id">HRD-Net ID</p>
+                    <p class="name">이름</p>
                 </div>
                 <div class="list-contents">
                     <!--<div class="list-content">
@@ -104,8 +104,8 @@
             </div>
         </div>
         <div class="add-attendance-wrapper">
-            <button id="set-attendance-btn">입력</button>
-            <button id="cancel-btn">취소</button>
+            <button id="set-attendance-btn" class="btn">입력</button>
+            <button id="cancel-btn" class="btn" popovertarget="add-attendance-modal" popovertargetaction="hide">취소</button>
         </div>
     </div>
 </div>
@@ -143,15 +143,16 @@
     function checkAll() {
         $("#check-all").click(function() {
             if($("#check-all").is(":checked")) {
-                $("input[name=checkbox]").prop("checked", true);
+                // $("input[name=checkbox]").prop("checked", true);
+                $("input[class='check-box']").prop("checked", true);
             } else {
-                $("input[name=checkbox]").prop("checked", false);
+                $("input[class='check-box']").prop("checked", false);
             }
         });
 
-        $("input[name=checkbox]").click(function() {
-            let total = $("input[name=checkbox]").length;
-            let checked = $("input[name=checkbox]:checked").length;
+        $("input[class='check-box']").click(function() {
+            let total = $("input[class='check-box']").length;
+            let checked = $("input[class='check-box']:checked").length;
 
             if(total != checked) {
                 $("#check-all").prop("checked", false);
@@ -203,7 +204,7 @@
             }
 
             result += `<tr class="board-table-row">
-                    <td class="board-checkbox"><input type="checkbox" name="checkbox"/><span class="student-course-seq" style="display:none;">${data[i].studentCourseSeq}</span></td>
+                    <td class="board-checkbox"><input type="checkbox" name="checkbox" class="check-box"/><span class="student-course-seq" style="display:none;">${data[i].studentCourseSeq}</span></td>
                     <td class="course-number">${data[i].courseNumber}</td>
                     <td class="hrd-net-id">${data[i].hrdNetId}</td>
                     <td class="student-name">${data[i].name}</td>
@@ -360,14 +361,14 @@
             redirect: "follow"
         };
 
-        await fetch("/attendances/student-status", requestOptions)
+        await fetch("/attendances/attendance-status", requestOptions)
             .then((res) => res.json())
             .then(async(data) => {
                 console.log(data.code);
                 if(data.code === 0) {
-                    alert("출결 상태가 수정되었습니다.");
+                    alert("정상적으로 출결 등록/수정되었습니다.");
                 } else {
-                    alert("출결 상태 수정 실패");
+                    alert("출결 등록/수정 실패");
                 }
                 console.log(data.message);
             })
@@ -411,28 +412,127 @@
         $("#add-attendance-modal").css("display", "flex");
     });*/
 
-    // 모달의 '입력' 버튼 클릭하면 모달 내에서 작업한 내용으로 출결상태 입력(등록)하는 함수__ 작성 중
-    function addAttendance() {
-        let result = "";
-        result += `<div class="list-content">
-                        <input type="checkbox" name="checkbox"/>
-                        <p class="course-number"></p>
-                        <p class="hrd-net-id"></p>
-                        <p class="name"></p>
-                    </div>`;
-        const addAttendanceModal = $("#add-attendance-modal");
-
+    // 모달의 '입력' 버튼 클릭하면 모달 내에서 작업한 내용으로 출결상태 입력(등록)하는 메서드
+    async function fetchAddAttendance(objList) {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
         const requestOptions = {
-            method: "PUT",
+            method: "POST",
             headers: myHeaders,
             body: JSON.stringify(objList),
             redirect: "follow"
         };
+
+        await fetch("/attendances/attendance-status", requestOptions)
+            .then((res) => res.json())
+            .then(async(data) => {
+                console.log(data);
+                if(data.code === 0) {
+                    alert("정상적으로 출결 등록/수정되었습니다.");
+                } else {
+                    alert("출결 등록/수정 실패");
+                }
+                console.log(data.message);
+            })
+            .catch((error) => console.error(error));
     }
 
+    // 수강생 출결 입력(등록) 모달
+    // -- 출결 입력(등록)할 날짜 가져오기
+    function getAttendanceDateOnModal() {
+        return $(".input-date.modal").val();
+    }
+
+    // -- 출결 일괄 입력(등록)할 출결 상태 가져오기
+    function getAttendanceStatusOnModal() {
+        return $("input[name=attendanceStatusModal]").val()
+    }
+
+    // -- 입력할 날짜에 따라 출결 미입력 상태인 수강생 데이터 모달에 띄우기
+    async function getNoAttendanceStudentList(data) {
+        let result = '';
+        for(let i=0; i<data.length; i++) {
+            result += `<div class="list-content">
+                            <input type="checkbox" class="modal-student-checkbox" name="checkbox" value=${data[i].studentCourseSeq}/>
+                            <p class="course-number">${data[i].courseNumber}</p>
+                            <p class="hrd-net-id">${data[i].hrdNetId}</p>
+                            <p class="name">${data[i].name}</p>
+                        </div>`;
+        }
+        $(".list-contents").html("");
+        $(".list-contents").append(result);
+    }
+
+    // -- 입력할 날짜에 따라 출결 미입력 상태인 수강생 데이터 가져오기
+    async function fetchNoAttendanceStudentList(param) {
+        // 매개변수 param은 검색할 attendanceDate
+        const myHeaders = new Headers();
+
+        const requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+
+        await fetch("/attendances/no-attendance-list?attendanceDate="+getAttendanceDateOnModal(), requestOptions)
+            .then((res) => res.json())
+            .then(async(data) => {
+                let noAttendanceList = data.studentList;
+                await getNoAttendanceStudentList(noAttendanceList);
+            })
+            .catch((error) => console.error(error));
+
+    }
+
+    // -- 출결 미입력 상태 수강생 목록 전체 체크
+    function checkAllOnModal() {
+        $("#modal-check-all").click(function() {
+            if($("#modal-check-all").is(":checked")) {
+                $("input[class='modal-student-checkbox']").prop("checked", true);
+            } else {
+                $("input[class='modal-student-checkbox']").prop("checked", false);
+            }
+        });
+
+        $("input[class='modal-student-checkbox']").click(function() {
+            let total = $("input[class='modal-student-checkbox']").length;
+            let checked = $("input[class='modal-student-checkbox']:checked").length;
+
+            if(total != checked) {
+                $("#modal-check-all").prop("checked", false);
+            } else {
+                $("#modal-check-all").prop("checked", true);
+            }
+        });
+    };
+
+    $(".input-date.modal").on("change", async function() {
+        await fetchNoAttendanceStudentList(getAttendanceDateOnModal());
+        checkAllOnModal();
+    });
+
+    // -- 선택한 출결 상태로 수강생 출결 일괄 입력(등록)
+    $("#set-attendance-btn").click(async function() {
+       const checkedStudentData = [];
+        const selectedRadio = $("input[name=attendanceStatusModal]:checked");
+        if(!selectedRadio.length) {
+            alert("등록할 수강생 출결 상태를 체크해주세요!");
+            return;
+        }
+        const combineAttendanceStatus = selectedRadio.val();
+        $('input[type="checkbox"][class="modal-student-checkbox"]:checked:not(#modal-check-all)').each(function(index, checkboxElement) {
+            const studentCourseSeq = parseInt($(this).val());
+
+            const studentRow = $(this).closest('div');
+            checkedStudentData.push({
+                "studentCourseSeq": studentCourseSeq,
+                "attendanceDate": getAttendanceDateOnModal(),
+                "attendanceStatus": combineAttendanceStatus
+            });
+        });
+        await fetchAddAttendance(checkedStudentData);
+    });
 
 </script>
 </body>
