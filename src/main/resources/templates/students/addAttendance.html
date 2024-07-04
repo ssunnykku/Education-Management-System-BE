@@ -378,16 +378,17 @@
 
 
     // 페이지네이션
-    function updatePagination() {
+    function updatePagination(param) {
         $("#page-number").html("");
         let firstPage = (currentBlock * pageSize) - pageSize + 1;
         let lastPage = totalPage <= currentBlock * pageSize ? totalPage : currentBlock * pageSize;
 
-        for(let i = firstPage; i<= lastPage; i++) {
+        for (let i = firstPage; i <= lastPage; i++) {
             let num = i;
             /* <a>태그를 <li>태그로 감싸주는 걸로 맞추기 - ~코드 일관성 */
-            $("#page-number").append(`<a class="page-link" onclick="fetchStudentAttendanceList(${num})">${num}</a>`);
+            $("#page-number").append(`<li><a class="page-link" onclick="fetchAttendanceList(${num})">${num}</a></li>`);
         }
+
     }
 
     $("#next").click(() => {
@@ -407,11 +408,6 @@
     });
 
     // 수강생 출결 입력(등록) 모달
-    // '입력' 버튼 클릭하면 수강생 출결 입력(등록) 모달 열림 + 출결 입력 대상 수강생 목록 불러와서 모달에 전달
-    /*$("#set-btn").click(function() {
-        $("#add-attendance-modal").css("display", "flex");
-    });*/
-
     // 모달의 '입력' 버튼 클릭하면 모달 내에서 작업한 내용으로 출결상태 입력(등록)하는 메서드
     async function fetchAddAttendance(objList) {
         const myHeaders = new Headers();
@@ -438,7 +434,6 @@
             .catch((error) => console.error(error));
     }
 
-    // 수강생 출결 입력(등록) 모달
     // -- 출결 입력(등록)할 날짜 가져오기
     function getAttendanceDateOnModal() {
         return $(".input-date.modal").val();
