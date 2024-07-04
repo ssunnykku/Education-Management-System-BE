@@ -38,13 +38,5 @@ public class ManagerController {
 //		response.sendRedirect("/ui/notifications");
 		return Map.of("result", true);
 	}
-	
-	@PostMapping("/logout")
-	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		HttpSession session = request.getSession();
-		if(session != null) {
-			session.invalidate();
-		}
-		response.sendRedirect("/ems/login");
-	}
 }
+
