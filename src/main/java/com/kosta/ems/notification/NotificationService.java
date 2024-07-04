@@ -19,6 +19,7 @@ public interface NotificationService {
 	boolean updateNotification(NotificationDTO notification);
 	NotificationDTO getDescription(int notificationSeq);
 	Integer getTotalCount(String managerId);
+
 	
 	
 }

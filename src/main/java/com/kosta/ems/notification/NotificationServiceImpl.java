@@ -60,8 +60,28 @@ public class NotificationServiceImpl implements NotificationService{
 		if (notification.isEmpty()) {
 			throw new NoResultsFoundException("검색 결과가 없습니다. : " + keyword);
 		}
-		return notification;
+		List<NotificationDTO> dtos = new ArrayList<>();
 
+		for (NotificationDTO notification1 : notification) {
+			// SimpleDateFormat 객체를 사용하여 원하는 형식 문자열 생성
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH시 mm분");
+			String formattedDate = formatter.format(notification1.getNotificationDate());
+
+			// NotificationDTO 객체 생성 및 데이터 설정
+			NotificationDTO dto = NotificationDTO.builder()
+					.notificationSeq(notification1.getNotificationSeq())
+					.managerId(notification1.getManagerId())
+					.title(notification1.getTitle())
+					.description(notification1.getDescription())
+					.formattedNotificationDate(formattedDate)
+					.isActive(notification1.getIsActive())
+					.viewCount(notification1.getViewCount())
+					.name(notification1.getName())
+					.build();
+			// NotificationDTO 목록에 추가
+			dtos.add(dto);
+		}
+		return dtos;
 	}
 
 	@Override
@@ -81,7 +101,11 @@ public class NotificationServiceImpl implements NotificationService{
 
 	@Override
 	public NotificationDTO getDescription(int notificationSeq) {
-		return notificationMapper.selectDescription(notificationSeq);
+		int viewCount=0;
+		NotificationDTO dto= notificationMapper.selectDescription(notificationSeq);
+		viewCount=notificationMapper.updateViewCount(notificationSeq);
+		dto.setViewCount(viewCount);
+		return dto;
 	}
 
 

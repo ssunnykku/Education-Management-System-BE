@@ -44,26 +44,10 @@
                 <span>조회수</span>
             </div>
             </div>
-           <div th:each="notification : ${notification}" >
-    <div class="notification-row">
-      <div class="notificationBoard-no" id="notificationBoard-no">
-        <span th:text="${notification.notificationSeq}"></span>
-      </div>
-      <div class="notificationBoard-title" id="notificationBoard-title">
-    <a th:href="@{/ems/notification(notificationSeq=${notification.notificationSeq})}" 
-     th:text="${notification.title}"></a>
-      </div>
-      <div class="notificationBoard-enroll-date">
-        <span th:text="${notification.formattedNotificationDate}"></span>
-      </div>
-      <div class="notificationBoard-writer">
-        <span th:text="${notification.name}"></span>
-      </div>
-      <div class="notification-view-count">
-      <span th:text="${notification.viewCount}"></span>
-    </div>
+    <div style="display: contents" id="notification-table-contents">
     </div>
   </div> 
+  </article>
    <article class="scholarship-page-information">
         <ul id="pagination">
             <li>
@@ -86,26 +70,71 @@
 
 <footer></footer>
 <script>
+
+
+const params = new URL(location.href).search.split("=");
+console.log(params);
+let currentPage = 1;
+const pageSize = 10; // 한 블록 당 페이지 수
+let currentBlock = 1;
+
+let totalPages = 0;
+
 	$("#notification-enroll-btn").on("click", function(){
 		location.href = "/ems/notifications/write";
 	})
 	
 	document.querySelector(".board-filter-search-btn").onclick = function(){
-		fetch("/notifications/list",{
+	let keyword=document.querySelector('#search-input').value;
+console.log(keyword);
+		fetch("/notifications/list/"+keyword,{
 			method: "get",
 			headers: {
 				"Content-Type": "application/json"
-			},
-			body: JSON.stringify({
-				keyword: document.getElementById("search-input").value
-			})
+			}			
 		})
-		.then(location.href = "/ems/notifications")
-		
-	}
+		 .then(async (res) => {
+      const response = await res.json();
+      const notificationList = response.result;
+      await getSettlementList(notificationList);   
+    })
+  }
+	
+async function getSettlementList(data) {
+let result = '';
+    for (let i = 0; i < data.length; i++) {
+        result += `<div class="notification-row">
+      <div class="notificationBoard-no" id="notificationBoard-no">
+        <span>${data[i].notificationSeq}</span>
+      </div>
+      <div class="notificationBoard-title" id="notificationBoard-title">
+    <a href="/ems/notification?notificationSeq=${data[i].notificationSeq}">${data[i].title}</a> 
+      </div>
+      <div class="notificationBoard-enroll-date">
+        <span>${data[i].formattedNotificationDate}</span>
+      </div>
+      <div class="notificationBoard-writer">
+        <span>${data[i].name}</span>
+      </div>
+      <div class="notification-view-count">
+      <span>${data[i].viewCount}</span>
+    </div>
+    </div>`;
+    }
 
-	
-	
+ 
+     $("#notification-table-contents").html("");
+    $("#notification-table-contents").append(result);
+	}
+$(document).ready(function() {
+  fetch("/notifications")
+    .then(async (res) => {
+      const response = await res.json();
+      const notificationList = response.result;
+      await getSettlementList(notificationList);
+    })
+    .catch((error) => console.error(error));
+});
 
 </script>
 </body>

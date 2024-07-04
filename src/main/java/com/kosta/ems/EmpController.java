@@ -95,13 +95,7 @@ public class EmpController {
 	}
 
 	 @GetMapping("/notifications") //@AuthenticationPrincipal 사용할수있음.
-    public String notificationBoard(Model model, HttpSession session, @RequestParam(defaultValue = "1") int page) {
-    	log.info((String) session.getAttribute("managerId").toString());
-    	//String managerId="d893bf71-2f8f-11ef-b0b2-0206f94be675";
-
-    	String managerId = (String) session.getAttribute("managerId");
-    	model.addAttribute("notification",notification.searchAll(managerId,page, 10));
-    	log.info(model.addAttribute("notification",notification.searchAll(managerId, page, 10)).toString());
+    public String notificationBoard(@RequestParam(defaultValue = "1") int page) {
         return "notifications/notificationBoard";
     }
 
@@ -116,9 +110,9 @@ public class EmpController {
 		return "notifications/setNotification";
 	}
 
-	@GetMapping("/notifications/update")
-	public String notificationSet() {
-		return "notifications/setNotification";
+	@GetMapping("/notification/update")
+	public String notificationSet(@RequestParam("notificationSeq") int notificationSeq) {
+		return "notifications/editNotification";
 	}
 
 	@GetMapping("/scholarships")

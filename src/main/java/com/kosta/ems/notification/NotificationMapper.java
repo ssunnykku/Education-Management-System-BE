@@ -14,4 +14,5 @@ public interface NotificationMapper {
 	boolean updateNotification(NotificationDTO notification);
 	NotificationDTO selectDescription(int notificationSeq);  
 	Integer getTotalCount(String managerId);
+	Integer updateViewCount(int notificationSeq);
 }
