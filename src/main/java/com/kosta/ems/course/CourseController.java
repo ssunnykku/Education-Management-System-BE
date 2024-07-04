@@ -61,7 +61,6 @@ public class CourseController {
 	
 	@PostMapping("/course")
 	public Map<String, Boolean> addCourse(@RequestBody @Valid AddCourseRequest cRequest, BindingResult bindingResult){
-	    System.out.println(cRequest);
 	    if(bindingResult.hasErrors()) {
 	        return Map.of("result",false);
 	    }
@@ -69,7 +68,6 @@ public class CourseController {
 		CourseDTO course = cRequest.toCourseDTO();
 		course.setManagerId(loginUser.getManagerId());
 		course.setAcademyLocation(loginUser.getAcademyLocation());
-		System.out.println(course);
 		boolean result = courseService.addCourse(course);
 		return Map.of("result", result);
 	}
