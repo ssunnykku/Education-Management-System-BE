@@ -28,8 +28,6 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/attendances")
 @RequiredArgsConstructor
 public class AttendanceController {
-	// @Autowired
-	// private AttendanceServiceImpl attendanceServiceImpl;
 	private final AttendanceService attendanceService;
 
 	// [출결] - 수강생 출석 조회 목록 조회 __POSTMAN 테스트 완료 __예외 처리 고려 필요!

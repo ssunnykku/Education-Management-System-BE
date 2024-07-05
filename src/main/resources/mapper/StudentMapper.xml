@@ -36,28 +36,18 @@
         WHERE course_number = #{courseNumber}));
     </select>
     <select id="findByStudentNameOrCourseNumberList" resultType="com.kosta.ems.student.StudentBasicInfoDTO">
-        SELECT s.student_id    AS studentId,
-               s.hrd_net_id    AS hrdNetId,
+        SELECT sc.student_course_seq AS studentCourseSeq,
                c.course_number AS courseNumber,
-               s.name,
-               s.birth,
-               s.address,
-               s.bank,
-               s.account,
-               s.phone_number  AS phoneNumber,
-               s.email
-        FROM students s,
-             courses c,
-             students_courses sc
-        WHERE s.student_id = sc.student_id
-          AND c.course_seq = sc.course_seq
-          AND (s.student_id IN (SELECT student_id
-        FROM students
-        WHERE name LIKE CONCAT('%', #{name}, '%'))
-            OR c.course_seq = (SELECT course_seq
-            FROM courses
-            WHERE course_number = #{courseNumber}))
-        LIMIT #{page}, #{size}
+               s.hrd_net_id AS hrdNetId,
+               s.name, s.address, s.bank, s.account, s.email,
+               s.phone_number AS phoneNumber
+        FROM students_courses sc
+                 JOIN courses c ON sc.course_seq=c.course_seq
+                 LEFT JOIN students s ON sc.student_id=s.student_id
+        WHERE s.is_active='T'
+          AND (IF(#{courseNumber}, 0, '전체')='전체' OR c.course_number=#{courseNumber})
+          AND s.name LIKE CONCAT('%', #{name},'%')
+            LIMIT #{page}, #{size}
     </select>
     <!--입력 hrdNetId인지 확인-->
     <select id="findByHrdNetId" parameterType="string" resultType="int">
@@ -74,9 +64,25 @@
                bank,
                account,
                phone_number AS phoneNumber,
-               email
+               email,
+               gender
         FROM students
         WHERE hrd_net_id = #{hrdNetId};
+    </select>
+    <!--오늘 날짜 기준 진행 중인 교육과정 목록 가져오기-->
+    <select id="selectOnGoingCourseList" resultType="com.kosta.ems.student.CourseInfoDTO">
+        <![CDATA[
+        SELECT c.course_seq AS courseSeq, c.course_number AS courseNumber, c.course_name AS courseName, c.course_start_date AS courseStartDate, c.course_end_date AS courseEndDate, c.course_type AS courseType
+        FROM courses c
+                 LEFT JOIN students_courses sc ON c.course_seq = sc.course_seq
+                 LEFT JOIN students s ON sc.student_id = s.student_id
+        WHERE c.is_active = 'T'
+          AND (CURDATE() >= c.course_start_date AND CURDATE() < c.course_end_date)
+          AND (c.max_students > (SELECT COUNT(*) FROM students_courses sc2 WHERE sc2.course_seq = c.course_seq)
+            OR c.max_students IS NULL)
+          AND (c.academy_location=#{academyLocation})
+        GROUP BY c.course_number, c.course_name
+        ]]>
     </select>
     <!--수강생 등록(students 테이블)-->
     <insert id="addStudentBasicInfo" parameterType="com.kosta.ems.student.AddStudentBasicInfoDTO">

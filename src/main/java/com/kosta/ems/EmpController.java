@@ -179,10 +179,13 @@ public class EmpController {
         return "students/pointBoard";
     }
 
-    @GetMapping("/students/set")
-    public String setStudent() {
+    @GetMapping("/students/update")
+    public String updateStudent() {
         return "students/setStudent";
     }
+
+    @GetMapping("/students/set")
+    public String addStudent() { return "students/addStudent"; }
 
     @GetMapping("/students")
     public String studentBoard() {

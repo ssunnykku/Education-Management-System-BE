@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.kosta.ems.attendance.StudentAttendanceListDTO;
 import com.kosta.ems.attendance.UpdateStudentAttendanceStatusDTO;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -25,6 +26,9 @@ public interface StudentMapper {
     int findByHrdNetId(String hrdNetId);
 
     RegisteredStudentInfoDTO selectRegisteredStudentBasicInfo(String hrdNetId);
+
+    // 현재 진행 중+등록 가능한 교육과정 목록
+    List<CourseInfoDTO> selectOnGoingCourseList(String academyLocation);
 
     // void addStudentBasicInfo(AddStudentBasicInfoDTO dto);
     int addStudentBasicInfo(AddStudentBasicInfoDTO dto);

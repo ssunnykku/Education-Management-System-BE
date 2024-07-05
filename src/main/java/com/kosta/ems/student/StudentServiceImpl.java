@@ -46,7 +46,7 @@ public class StudentServiceImpl implements StudentService {
 		 * courseNumber)); return result;
 		 */
     	// return studentMapper.findByStudentNameOrCourseNumber(name, courseNumber);
-    	return studentMapper.findByStudentNameOrCourseNumberList(name, courseNumber, page-1, size);
+    	return studentMapper.findByStudentNameOrCourseNumberList(name, courseNumber, ((page*size)-size), size);
     }
 
     // * 수강생 등록
@@ -54,7 +54,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public boolean findByHrdNetId(String hrdNetId) {
         int count = studentMapper.findByHrdNetId(hrdNetId);
-        if(count != 0) {
+        if(count == 0) {
             // 수강생 신규 등록 진행
             return false;
         } else {
@@ -68,6 +68,13 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public RegisteredStudentInfoDTO getRegisteredStudentBasicInfo(String hrdNetId) {
     	return studentMapper.selectRegisteredStudentBasicInfo(hrdNetId);
+    }
+
+    // * 수강생 등록
+    // * 현재 진행 중 + 최대 정원까지 수강생 등록 안 되어 있는 교육과정 목록 불러오기
+    @Override
+    public List<CourseInfoDTO> getOnGoingCourseList(String academyLocation) {
+        return studentMapper.selectOnGoingCourseList(academyLocation);
     }
     
     // * 수강생 등록
