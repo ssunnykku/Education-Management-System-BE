@@ -23,7 +23,91 @@
           <input placeholder="검색어를 입력하세요" id="search-input" class="search-input" />
           <button type="button" class="board-filter-search-btn">검색</button>
         </div>
+<<<<<<< HEAD
         <button id="notification-enroll-btn" class="btn-setting">글 등록</button>
+=======
+        </article>
+        <article>
+        <div id="notification-table">
+            <div class="notification-row" id="notification-title-row">
+                <div class="notificationBoard-no">
+                    <span>NO</span>
+                </div>
+                <div class="notificationBoard-title">
+                    <span>제목</span>
+                </div>
+                <div class="notificationBoard-enroll-date">
+                    <span>등록일</span>
+                </div>
+                <div class="notificationBoard-writer">
+                    <span>작성자</span>
+                </div>
+                <div class="notification-view-count">
+                <span>조회수</span>
+            </div>
+            </div>
+    <div style="display: contents" id="notification-table-contents">
+    </div>
+  </div> 
+  </article>
+   <article class="notification-page-information">
+        <ul id="pagination">
+            <li>
+                <a class="page-link" id="before">
+                    이전
+                </a>
+            </li>
+            <!--// 이게 페이지 번호-->
+            <li class="page-item" id="page_number">
+            </li>
+            <li class="page-item">
+                <a class="page-link" id="next">
+                    다음
+                </a>
+        </ul>
+        </div>
+    </article>
+</section>
+
+<footer></footer>
+<script>
+
+
+const params = new URL(location.href).search.split("=");
+console.log(params);
+let currentPage = 1;
+const pageSize = 10; // 한 블록 당 페이지 수
+let currentBlock = 1;
+
+let totalPages = 0;
+
+	$("#notification-enroll-btn").on("click", function(){
+		location.href = "/ems/notifications/write";
+	})
+	
+	document.querySelector(".board-filter-search-btn").onclick = function(){
+	let keyword=document.querySelector('#search-input').value;
+console.log(keyword);
+		fetch("/notifications/list?keyword="+keyword,{
+			method: "get",
+			headers: {
+				"Content-Type": "application/json"
+			}			
+		})
+		 .then(async (res) => {
+      const response = await res.json();
+      const notificationList = response.result;
+      await getSettlementList(notificationList);   
+    })
+  }
+	
+async function getSettlementList(data) {
+let result = '';
+    for (let i = 0; i < data.length; i++) {
+        result += `<div class="notification-row">
+      <div class="notificationBoard-no" id="notificationBoard-no">
+        <span>${data[i].notificationSeq}</span>
+>>>>>>> da043a0 (feat: 페이지네이션)
       </div>
     </article>
     <article >
@@ -125,6 +209,7 @@
       $("#notification-table-contents").html("");
       $("#notification-table-contents").append(result);
     }
+<<<<<<< HEAD
 
     function fetchTotalCount(keyword = "") {
       fetch("/notifications/count?keyword=" + keyword, {
@@ -223,4 +308,93 @@
       await getSettlementList(notificationList); // 공지 사항 목록으로 페이지 콘텐츠 업데이트
     }
   </script>
+=======
+let keyword=document.querySelector('#search-input').value;
+     $("#notification-table-contents").html("");
+    $("#notification-table-contents").append(result);
+	}
+	
+let keyword=document.querySelector('#search-input').value;
+$(document).ready(function() {
+	    fetch("/notifications/count?keyword="+keyword, {
+        method: "GET",    
+    })
+        .then((res) => res.json())
+        .then(async (data) => {
+           // $(".scholarship-cnt-pages").html(`<span>총 ${data.result}</span>건`);
+            // const countPage = Math.ceil(data.result / 10);
+            // const countPage = 12;  // Example total pages
+            totalPages = Math.ceil(data.result / 10);
+            updatePagination();
+            console.log(totalPages);
+        })
+        .catch((error) => console.error(error));
+});
+	
+	
+$(document).ready(function() {
+  fetch("/notifications?page=" +param)
+    .then(async (res) => {
+      const response = await res.json();
+      const notificationList = response.result;
+      await getSettlementList(notificationList);
+    })
+    .catch((error) => console.error(error));
+});
+
+$(document).ready(function() {
+  // 초기 페이지 데이터 가져오기
+  fetchNotificationBoard(1); // 초기 페이지가 1이라고 가정
+
+  // 페이지 클릭 이벤트 처리
+  $("#page_number").on("click", ".page-link", function() {
+    const pageNumber = parseInt($(this).text());
+    fetchNotificationBoard(pageNumber);
+  });
+});
+//pagenation
+
+ // next 및 before 버튼에 이벤트 리스너 추가
+  $("#next").click(() => {
+
+    if (currentBlock * pageSize < totalPages) {
+      currentBlock += 1;
+      currentPage = (currentBlock * pageSize) - pageSize + 1;
+      updatePagination();
+    }
+  });
+
+  $("#before").click(() => {
+    if (currentBlock > 1) {
+      currentBlock -= 1;
+      currentPage = (currentBlock * pageSize) - pageSize + 1;
+      updatePagination();
+      
+    }
+  });
+
+
+function updatePagination() {
+    $("#page_number").html("");
+
+    let firstPage = (currentBlock * pageSize) - pageSize + 1;
+    let lastPage = totalPages <= currentBlock * pageSize ? totalPages : currentBlock * pageSize;
+    let result = "";
+    for (let i = firstPage; i <= lastPage; i++) {
+        let num = i;
+        result += `<li>
+                    <a class="page-link" onclick="fetchNotificationBoard(${num})">${num}</a>
+                    </li>`;
+    }
+    $("#page_number").append(result);
+}
+async function fetchNotificationBoard(pageNumber) {
+  const response = await fetch(`/notifications?page=${pageNumber}`);
+  const data = await response.json();
+  const notificationList = data.result;
+
+  await getSettlementList(notificationList); // 공지 사항 목록으로 페이지 콘텐츠 업데이트
+}
+</script>
+>>>>>>> da043a0 (feat: 페이지네이션)
 </body>
