@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.ui.Model;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kosta.ems.manager.ManagerDTO;
+import com.kosta.ems.manager.ManagerService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -32,10 +34,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class NotificationController {
-    @Value("${security.level}")
+	@Value("${security.level}")
     private String SECURITY_LEVEL;
-    private final ManagerService managerService;
-
+	private final ManagerService managerService;
+	
     @Qualifier("notificationService")
 	private final NotificationService notification;
 	//공지사항 전체 글 search
@@ -115,14 +117,18 @@ public class NotificationController {
 	@GetMapping("/count")
 	public Map<String,Integer> countNotification(@RequestParam("keyword") String keyword){
 		ManagerDTO loginUser = getLoginUser();
-		System.out.println("시작");
-		//String managerId=loginUser.getManagerId();
-		String managerId= "d893bf71-2f8f-11ef-b0b2-0206f94be675";
+		String managerId=loginUser.getManagerId();
+		//String managerId= "d893bf71-2f8f-11ef-b0b2-0206f94be675";
 		return Map.of("result",notification.getTotalCount(managerId, keyword));
 	}
 
 	 private ManagerDTO getLoginUser() {
-	        ManagerDTO loginUser = (ManagerDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	        ManagerDTO loginUser;
+	        if(SECURITY_LEVEL.equals("OFF")) {
+	            loginUser = managerService.findByEmployeeNumber("EMP0001");
+	        }else {
+	            loginUser = (ManagerDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	        }
 	        return loginUser;
 	    }
 

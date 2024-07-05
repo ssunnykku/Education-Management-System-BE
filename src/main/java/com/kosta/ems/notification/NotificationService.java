@@ -10,7 +10,7 @@ public interface NotificationService {
 
     Collection<NotificationDTO> searchAll(String managerId, int page, int size);
 
-    Collection<NotificationDTO> searchByKeyword(String keyword, String managerId,int page,int size) throws NoResultsFoundException;
+    Collection<NotificationDTO> searchByKeyword(String keyword, String managerId,int page,int size);
 
     boolean addNotification(NotificationDTO notification);
 
