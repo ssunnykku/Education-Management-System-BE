@@ -18,7 +18,7 @@
             <li id="nav-student" class="nav-li">수강생 관리</li>
         </ul>
         <div id="header-btns">
-            <span th:object="${#authentication.principal}" th:text="*{name} + '(' + *{academyLocation} + '점)'"></span>
+            <!-- <span th:object="${#authentication.principal}" th:text="*{name} + '(' + *{academyLocation} + '점)'"></span> -->
             <form action="/manager/logout" method="post"><button id="logout-btn" type="submit">로그아웃</button></form>
         </div>
     </div>
