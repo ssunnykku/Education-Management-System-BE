@@ -43,7 +43,6 @@ public class NotificationController {
     //공지사항 전체 글 search
 
     @GetMapping
-    //@AuthenticationPrincipal 사용할수있음.
     public Map<String, Object> notificationBoard(HttpSession session, @RequestParam(defaultValue = "1") int page) {
         ManagerDTO loginUser = getLoginUser();
         String managerId = loginUser.getManagerId();
@@ -57,7 +56,6 @@ public class NotificationController {
     //공지사항 글 추가(O)
     @PostMapping("/write")
     public Map<String, Boolean> addPost(@RequestBody NotificationDTO dto, HttpServletRequest request) {
-        //String managerId = (String) session.getAttribute("managerId");
         ManagerDTO loginUser = getLoginUser();
         String managerId = loginUser.getManagerId();
         dto.setManagerId(managerId);
@@ -122,5 +120,10 @@ public class NotificationController {
         }
         return loginUser;
     }
+
+	 private ManagerDTO getLoginUser() {
+	        ManagerDTO loginUser = (ManagerDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	        return loginUser;
+	    }
 
 }

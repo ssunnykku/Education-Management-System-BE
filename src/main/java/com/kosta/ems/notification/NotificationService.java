@@ -10,7 +10,11 @@ public interface NotificationService {
 
     Collection<NotificationDTO> searchAll(String managerId, int page, int size);
 
+<<<<<<< HEAD
     Collection<NotificationDTO> searchByKeyword(String keyword, String managerId,int page,int size);
+=======
+    Collection<NotificationDTO> searchByKeyword(String keyword, String managerId,int page,int size) throws NoResultsFoundException;
+>>>>>>> da043a0 (feat: 페이지네이션)
 
     boolean addNotification(NotificationDTO notification);
 
