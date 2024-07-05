@@ -52,11 +52,13 @@ public class NotificationServiceImpl implements NotificationService{
 
 
 	@Override
-	public Collection<NotificationDTO> searchByKeyword(String keyword, String managerId) throws NoResultsFoundException {
+	public Collection<NotificationDTO> searchByKeyword(String keyword, String managerId,int page,int size) throws NoResultsFoundException {
+		int limit = size;
+        int offset = size * (page - 1);
 		if (keyword == null || keyword.isEmpty()) {
 			throw new IllegalArgumentException("검색어를 입력해주세요.");
 		}
-		Collection<NotificationDTO> notification = notificationMapper.selectByKeyword(keyword, managerId);
+		Collection<NotificationDTO> notification = notificationMapper.selectByKeyword(keyword, managerId, limit,offset);
 		if (notification.isEmpty()) {
 			throw new NoResultsFoundException("검색 결과가 없습니다. : " + keyword);
 		}
@@ -110,8 +112,8 @@ public class NotificationServiceImpl implements NotificationService{
 
 
 	@Override
-	public Integer getTotalCount(String managerId) {
-		Integer result=notificationMapper.getTotalCount(managerId);
+	public Integer getTotalCount(String managerId,String keyword) {
+		Integer result=notificationMapper.getTotalCount(managerId, keyword);
 				if(result==null) {
 					result=0;
 				}

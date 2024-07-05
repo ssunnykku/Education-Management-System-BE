@@ -8,7 +8,7 @@ import java.util.Map;
 import org.springframework.ui.Model;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.kosta.ems.manager.ManagerDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -47,10 +49,12 @@ public class NotificationController {
 	@GetMapping
 	//@AuthenticationPrincipal 사용할수있음.
 	public Map<String, Object> notificationBoard(HttpSession session, @RequestParam(defaultValue = "1") int page) {
-	    String managerId = (String) session.getAttribute("managerId");
+		 ManagerDTO loginUser = getLoginUser();
+		String managerId=loginUser.getManagerId();
+	//	String managerId = (String) session.getAttribute("managerId");
 	    Collection<NotificationDTO> notifications = notification.searchAll(managerId, page, 10);
-	    log.info(notification.searchAll(managerId, page, 10).toString());
-    	log.info(String.valueOf(page));
+//	    log.info(notification.searchAll(managerId, page, 10).toString());
+//    	log.info(String.valueOf(page));
 	    Map<String, Object> response = new HashMap<>();
 	    response.put("sessionId", managerId); // 세션 ID 추가
 	    response.put("result", notifications); // 알림 목록 추가
@@ -61,7 +65,9 @@ public class NotificationController {
 	@PostMapping("/write")
 	public Map<String, Boolean> addPost(@RequestBody NotificationDTO dto, HttpServletRequest request) {
 		//String managerId = (String) session.getAttribute("managerId");
-		dto.setManagerId(getManagerIdOfLoginUser(request));
+		ManagerDTO loginUser = getLoginUser();
+		String managerId=loginUser.getManagerId();
+		dto.setManagerId(managerId);
 		boolean result= notification.addNotification(dto);
 		return Map.of("result",result);
 	}
@@ -69,19 +75,20 @@ public class NotificationController {
 	@PatchMapping("/post/{notificationSeq}")
 	public Map<String, Boolean> deletePost(@PathVariable("notificationSeq") int notificationSeq){
 		boolean result=notification.deleteNotificaiotn(notificationSeq);
-		System.out.println("시작");
 		return Map.of("result",result);
 	}
 	//검색하기(O)
-	@GetMapping("/list/{keyword}")
-	public Map<String, Collection> searchByKeyword(@PathVariable("keyword") String keyword, HttpSession session) throws NoResultsFoundException{
-		String managerId = (String) session.getAttribute("managerId");
-		return Map.of("result",notification.searchByKeyword(keyword, managerId));
+	@GetMapping("/list")
+	public Map<String, Collection> searchByKeyword(@RequestParam("keyword") String keyword, HttpSession session, @RequestParam(defaultValue = "1") int page) throws NoResultsFoundException{
+		 ManagerDTO loginUser = getLoginUser();
+			String managerId=loginUser.getManagerId();
+		return Map.of("result",notification.searchByKeyword(keyword, managerId, page, 10));
 	}
 	//글 content 확인(O) 
 	@GetMapping("/post/{notificationSeq}")
 	public NotificationDTO getDescription(@PathVariable("notificationSeq") int notificationSeq,HttpSession session) {
-		String managerId = (String) session.getAttribute("managerId");
+		 ManagerDTO loginUser = getLoginUser();
+		String managerId=loginUser.getManagerId();
 		NotificationDTO notificationDTO = notification.getDescription(notificationSeq);
 	    if (managerId.equals(notificationDTO.getManagerId())) {
 	        // showButton 속성을 true로 설정합니다.
@@ -95,17 +102,25 @@ public class NotificationController {
 	//공지 업데이트(O)
 	@PutMapping("/post/{notificationSeq}")
 	public Map<String, Boolean> editNotification(@RequestBody NotificationDTO dto,@PathVariable("notificationSeq") int notificationSeq,HttpServletRequest request){
-		dto.setManagerId(getManagerIdOfLoginUser(request));
-		System.out.println("시작");
+		ManagerDTO loginUser = getLoginUser();
+		String managerId=loginUser.getManagerId();
+		dto.setManagerId(managerId);
 		boolean result= notification.updateNotification(dto);
 		//String managerId= "d893bf71-2f8f-11ef-b0b2-0206f94be675";
 		return Map.of("result",result);
 	}
-	
-	//SessionID를 받아서 ManagerID 컨트롤하기.
-	private String getManagerIdOfLoginUser(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		return (String) session.getAttribute("managerId");
+	@GetMapping("/count")
+	public Map<String,Integer> countNotification(@RequestParam("keyword") String keyword){
+		ManagerDTO loginUser = getLoginUser();
+		System.out.println("시작");
+		//String managerId=loginUser.getManagerId();
+		String managerId= "d893bf71-2f8f-11ef-b0b2-0206f94be675";
+		return Map.of("result",notification.getTotalCount(managerId, keyword));
 	}
+
+	 private ManagerDTO getLoginUser() {
+	        ManagerDTO loginUser = (ManagerDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	        return loginUser;
+	    }
 
 }

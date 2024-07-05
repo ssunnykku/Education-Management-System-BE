@@ -48,7 +48,7 @@
     </div>
   </div> 
   </article>
-   <article class="scholarship-page-information">
+   <article class="notification-page-information">
         <ul id="pagination">
             <li>
                 <a class="page-link" id="before">
@@ -62,7 +62,6 @@
                 <a class="page-link" id="next">
                     다음
                 </a>
-            </li>
         </ul>
         </div>
     </article>
@@ -87,7 +86,7 @@ let totalPages = 0;
 	document.querySelector(".board-filter-search-btn").onclick = function(){
 	let keyword=document.querySelector('#search-input').value;
 console.log(keyword);
-		fetch("/notifications/list/"+keyword,{
+		fetch("/notifications/list?keyword="+keyword,{
 			method: "get",
 			headers: {
 				"Content-Type": "application/json"
@@ -121,13 +120,31 @@ let result = '';
     </div>
     </div>`;
     }
-
- 
+let keyword=document.querySelector('#search-input').value;
      $("#notification-table-contents").html("");
     $("#notification-table-contents").append(result);
 	}
+	
+let keyword=document.querySelector('#search-input').value;
 $(document).ready(function() {
-  fetch("/notifications")
+	    fetch("/notifications/count?keyword="+keyword, {
+        method: "GET",    
+    })
+        .then((res) => res.json())
+        .then(async (data) => {
+           // $(".scholarship-cnt-pages").html(`<span>총 ${data.result}</span>건`);
+            // const countPage = Math.ceil(data.result / 10);
+            // const countPage = 12;  // Example total pages
+            totalPages = Math.ceil(data.result / 10);
+            updatePagination();
+            console.log(totalPages);
+        })
+        .catch((error) => console.error(error));
+});
+	
+	
+$(document).ready(function() {
+  fetch("/notifications?page=" +param)
     .then(async (res) => {
       const response = await res.json();
       const notificationList = response.result;
@@ -136,5 +153,58 @@ $(document).ready(function() {
     .catch((error) => console.error(error));
 });
 
+$(document).ready(function() {
+  // 초기 페이지 데이터 가져오기
+  fetchNotificationBoard(1); // 초기 페이지가 1이라고 가정
+
+  // 페이지 클릭 이벤트 처리
+  $("#page_number").on("click", ".page-link", function() {
+    const pageNumber = parseInt($(this).text());
+    fetchNotificationBoard(pageNumber);
+  });
+});
+//pagenation
+
+ // next 및 before 버튼에 이벤트 리스너 추가
+  $("#next").click(() => {
+
+    if (currentBlock * pageSize < totalPages) {
+      currentBlock += 1;
+      currentPage = (currentBlock * pageSize) - pageSize + 1;
+      updatePagination();
+    }
+  });
+
+  $("#before").click(() => {
+    if (currentBlock > 1) {
+      currentBlock -= 1;
+      currentPage = (currentBlock * pageSize) - pageSize + 1;
+      updatePagination();
+      
+    }
+  });
+
+
+function updatePagination() {
+    $("#page_number").html("");
+
+    let firstPage = (currentBlock * pageSize) - pageSize + 1;
+    let lastPage = totalPages <= currentBlock * pageSize ? totalPages : currentBlock * pageSize;
+    let result = "";
+    for (let i = firstPage; i <= lastPage; i++) {
+        let num = i;
+        result += `<li>
+                    <a class="page-link" onclick="fetchNotificationBoard(${num})">${num}</a>
+                    </li>`;
+    }
+    $("#page_number").append(result);
+}
+async function fetchNotificationBoard(pageNumber) {
+  const response = await fetch(`/notifications?page=${pageNumber}`);
+  const data = await response.json();
+  const notificationList = data.result;
+
+  await getSettlementList(notificationList); // 공지 사항 목록으로 페이지 콘텐츠 업데이트
+}
 </script>
 </body>

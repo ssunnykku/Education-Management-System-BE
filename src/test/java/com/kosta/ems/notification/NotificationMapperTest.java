@@ -12,16 +12,16 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @Slf4j
 class NotificationMapperTest {
-@Autowired
-NotificationMapper notificationMapper;
+	@Autowired
+	NotificationMapper notificationMapper;
 	//@Test
 	void testSelectAll() {
 		log.info(notificationMapper.selectAll("d893c29b-2f8f-11ef-b0b2-0206f94be675",10,0).toString());
 		assertThat(notificationMapper.selectAll("d893c29b-2f8f-11ef-b0b2-0206f94be675",10,0).size()).isEqualTo(10);
 	}
-		//@Test
+	//@Test
 	void testFindByKeyword() {
-		log.info(notificationMapper.selectByKeyword("2025","d893c29b-2f8f-11ef-b0b2-0206f94be675" ).toString());
+		log.info(notificationMapper.selectByKeyword("2025","d893c29b-2f8f-11ef-b0b2-0206f94be675", 10, 0 ).toString());
 	}
 
 	//@Test
@@ -33,7 +33,7 @@ NotificationMapper notificationMapper;
 				.description("무더위로 인해 8월말까지 7부 반바지까지 허용합니다.")
 				.build();
 		assertThat(notificationMapper.insertNotification(notification)).isTrue();
-//		log.info(notificationMapper.insertNotification("d893c34e-2f8f-11ef-b0b2-0206f94be675", "여름휴가 안내", "2024년 8월부터 전사적인 휴가권고입니다. 자세한것은 HR 안내 시스템을 확인하세요."));
+		//		log.info(notificationMapper.insertNotification("d893c34e-2f8f-11ef-b0b2-0206f94be675", "여름휴가 안내", "2024년 8월부터 전사적인 휴가권고입니다. 자세한것은 HR 안내 시스템을 확인하세요."));
 	}
 
 	//@Test
@@ -54,9 +54,12 @@ NotificationMapper notificationMapper;
 		assertThat(notificationMapper.updateNotification(notification)).isTrue();
 	}
 
-	@Test
+	//@Test
 	void testGetDescription() {
 		log.info(notificationMapper.selectDescription(160).toString());
 	}
-
+	@Test
+	void testGetTotalCount() {
+		 log.info(String.valueOf(notificationMapper.getTotalCount("d893c34e-2f8f-11ef-b0b2-0206f94be675", null)));
+	}
 }
