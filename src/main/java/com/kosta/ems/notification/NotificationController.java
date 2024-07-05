@@ -122,7 +122,12 @@ public class NotificationController {
     }
 
 	 private ManagerDTO getLoginUser() {
-	        ManagerDTO loginUser = (ManagerDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	        ManagerDTO loginUser;
+	        if(SECURITY_LEVEL.equals("OFF")) {
+	            loginUser = managerService.findByEmployeeNumber("EMP0001");
+	        }else {
+	            loginUser = (ManagerDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	        }
 	        return loginUser;
 	    }
 

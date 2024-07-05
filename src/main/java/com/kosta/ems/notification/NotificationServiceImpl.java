@@ -55,6 +55,7 @@ public class NotificationServiceImpl implements NotificationService{
 
 	@Override
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public Collection<NotificationDTO> searchByKeyword(String keyword, String managerId,int page,int size) {
 		int limit = size;
 		int offset = size * (page - 1);
@@ -75,11 +76,25 @@ public class NotificationServiceImpl implements NotificationService{
 			throw new NoResultsFoundException("검색 결과가 없습니다. : " + keyword);
 		}
 >>>>>>> da043a0 (feat: 페이지네이션)
+=======
+	public Collection<NotificationDTO> searchByKeyword(String keyword, String managerId,int page,int size) {
+		int limit = size;
+        int offset = size * (page - 1);
+
+
+		Collection<NotificationDTO> notifications = notificationMapper.selectByKeyword(keyword, managerId, limit, offset);
+
+		// 새로운 NotificationDTO 객체 목록 생성
+>>>>>>> 5b96194 (feat: 임시 branch commit)
 		List<NotificationDTO> dtos = new ArrayList<>();
 
 		for (NotificationDTO notification : notifications) {
 			// SimpleDateFormat 객체를 사용하여 원하는 형식 문자열 생성
+<<<<<<< HEAD
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+=======
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH시 mm분");
+>>>>>>> 5b96194 (feat: 임시 branch commit)
 			String formattedDate = formatter.format(notification.getNotificationDate());
 
 			// NotificationDTO 객체 생성 및 데이터 설정
