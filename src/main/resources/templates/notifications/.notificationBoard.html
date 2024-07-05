@@ -71,39 +71,38 @@
 <script>
 
 
+const params = new URL(location.href).search.split("=");
+console.log(params);
 let currentPage = 1;
 const pageSize = 10; // 한 블록 당 페이지 수
 let currentBlock = 1;
 
 let totalPages = 0;
 
-$("#notification-enroll-btn").on("click", function(){
+	$("#notification-enroll-btn").on("click", function(){
 		location.href = "/ems/notifications/write";
 	})
 	
-$(".board-filter-search-btn").on("click", async function() {
-	console.log("버튼 누름")
+	document.querySelector(".board-filter-search-btn").onclick = async function() {
+  console.log("dklgjalkjglag");
   let keyword = document.querySelector('#search-input').value;
-  
+
   try {
-    const response = await fetch("/notifications/list?keyword=" + keyword + "&page=" + pageNumber, {
+    const response = await fetch("/notifications/list?keyword=" + keyword, {
       method: "GET" // 불필요한 Content-Type 헤더 제거
     });
+
     if (!response.ok) {
       throw new Error(`HTTP 오류! 상태: ${response.status}`);
     }
-    const data = await response.json();
+
+    const notificationList = await response.json();
     console.log(notificationList);
-    const notificationList = data.result;
     await getSettlementList(notificationList);
   } catch (error) {
     console.error("공지 사항 페치 오류:", error);
   }
-
-});
-
-
-
+};
 	
 async function getSettlementList(data) {
 let result = '';
@@ -149,7 +148,6 @@ function fetchTotalCount(keyword = "") {
 }
 
 $(document).ready(function() {
-
   fetchTotalCount(); // 초기 로드를 위한 총 페이지 수 가져오기
 });
 
@@ -161,8 +159,7 @@ document.querySelector(".board-filter-search-btn").onclick = function() {
 	
 	
 $(document).ready(function() {
-
-  fetch("/notifications?page=" +pageNumber)
+  fetch("/notifications?page=" +param)
     .then(async (res) => {
       const response = await res.json();
       const notificationList = response.result;
@@ -172,13 +169,13 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-
   // 초기 페이지 데이터 가져오기
   fetchNotificationBoard(1); // 초기 페이지가 1이라고 가정
 
   // 페이지 클릭 이벤트 처리
   $("#page_number").on("click", ".page-link", function() {
-    fetchNotificationBoard();
+    const pageNumber = parseInt($(this).text());
+    fetchNotificationBoard(pageNumber);
   });
 });
 //pagenation
@@ -217,8 +214,7 @@ function updatePagination() {
     }
     $("#page_number").append(result);
 }
-async function fetchNotificationBoard() {
-
+async function fetchNotificationBoard(pageNumber) {
   const response = await fetch(`/notifications?page=${pageNumber}`);
   const data = await response.json();
   const notificationList = data.result;
