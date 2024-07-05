@@ -76,13 +76,12 @@
     text-align: center;
 }
 
-
 .benefit-settlement-search-btn-wrapper {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    padding-left: 30%;
+    padding-left: 350px;
     padding-right: 5%;
     height: 80px;
     align-items: center;
