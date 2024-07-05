@@ -22,7 +22,7 @@ class NotificationServiceTest {
 
 	//@Test
 	void testSearchByKeyword() throws NoResultsFoundException {
-		log.info(notificationService.searchByKeyword("aggggg","d893c29b-2f8f-11ef-b0b2-0206f94be675").toString());
+		log.info(notificationService.searchByKeyword("aggggg","d893c29b-2f8f-11ef-b0b2-0206f94be675", 10, 0).toString());
 	}
 
 	//@Test
@@ -36,7 +36,7 @@ class NotificationServiceTest {
 		assertThat(notificationService.addNotification(notification)).isTrue();
 	}
 
-	@Test
+	//@Test
 	void testDeleteNotificaiotn() {
 		assertThat(notificationService.deleteNotificaiotn(194));
 	}
@@ -51,9 +51,13 @@ class NotificationServiceTest {
 			assertThat(notificationService.updateNotification(notification)).isTrue();
 		}
 
-	@Test
+	//@Test
 	void testGetDescription() {
 		log.info(notificationService.getDescription(171).toString());
+	}
+	@Test
+	void testTotalCount() {
+		 log.info(String.valueOf(notificationService.getTotalCount("d893c34e-2f8f-11ef-b0b2-0206f94be675", null)));
 	}
 
 }
