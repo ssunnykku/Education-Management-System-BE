@@ -7,4 +7,6 @@ import java.util.Map;
 
 public interface ManagerService {
 	Map<String, String> login(String employeeNumber, String password);
+	
+	ManagerDTO findByEmployeeNumber(String employeeNumber);
 }

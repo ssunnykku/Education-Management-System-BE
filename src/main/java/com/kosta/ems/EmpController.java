@@ -1,6 +1,7 @@
 package com.kosta.ems;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import org.springframework.ui.Model;
 import com.kosta.ems.course.CourseDTO;
 import com.kosta.ems.course.CourseService;
 import com.kosta.ems.manager.ManagerDTO;
+import com.kosta.ems.manager.ManagerService;
 import com.kosta.ems.notification.NotificationService;
 import com.kosta.ems.studentPoint.StudentPointService;
 import com.kosta.ems.studentPoint.dto.StudentCourseWithPointDTO;
@@ -34,12 +36,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class EmpController {
+    @Value("${security.level}")
+    private String SECURITY_LEVEL;
 
     private final CourseService courseService;
     private final StudentPointService pointService;
     @Qualifier("notificationService")
     private final NotificationService notification;
     private final AttendanceService attendanceService;
+    private final ManagerService managerService;
 
     @GetMapping("/benefits")
     public String benefitBoard() {
@@ -64,7 +69,7 @@ public class EmpController {
                                  Model model
                                  , Principal principal) {
         ManagerDTO loginUser = getLoginUser();
-        // ( 277, "가산", 1, 10, true);
+        System.out.println(loginUser);
         List<CourseDTO> courseList = courseService.searchCourseList(courseNumber, loginUser.getAcademyLocation(), page,
                 pageSize, excludeExpired);
         Integer totalCourseCount = courseService.getSearchCourseListSize(courseNumber, loginUser.getAcademyLocation(),
@@ -89,7 +94,12 @@ public class EmpController {
     }
     
     private ManagerDTO getLoginUser() {
-        ManagerDTO loginUser = (ManagerDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ManagerDTO loginUser;
+        if(SECURITY_LEVEL.equals("OFF")) {
+            loginUser = managerService.findByEmployeeNumber("EMP0001");
+        }else {
+            loginUser = (ManagerDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }
         return loginUser;
     }
 

@@ -18,4 +18,9 @@ public class ManagerServiceImpl implements ManagerService {
 		return managerMapper.login(employeeNumber, password);
 	}
 
+    @Override
+    public ManagerDTO findByEmployeeNumber(String employeeNumber) {
+        return managerMapper.findByEmployeeNumber(employeeNumber);
+    }
+
 }
