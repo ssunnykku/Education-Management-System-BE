@@ -6,17 +6,17 @@
 	</select>
 <select id="getCourseNumberList" resultType="int">
 	SELECT course_number courseNumber FROM courses
-	WHERE is_active = 'T' and academy_location =#{academyLocation}
+	WHERE is_active = true and academy_location =#{academyLocation}
 	and (false = #{excludeExpired} OR course_end_date &gt; CURDATE())
 	</select>
 <select id="getCourse" resultType="com.kosta.ems.course.CourseDTO">
 	SELECT course_seq courseSeq, manager_id managerId, course_number courseNumber, academy_location academyLocation, course_name courseName, course_start_date courseStartDate, course_end_date courseEndDate, subject, course_type courseType, total_training_days totalTrainingDays, training_hours_of_date trainingHoursOfDate, professor_name professorName, max_students maxStudents, is_active isActive FROM courses
-	WHERE course_seq = #{courseSeq} and is_active = 'T'
+	WHERE course_seq = #{courseSeq} and is_active = true
 	</select>
 <select id="searchCourseList" resultType="com.kosta.ems.course.CourseDTO">
 	SELECT course_seq courseSeq, manager_id managerId, course_number courseNumber, academy_location academyLocation, course_name courseName, course_start_date courseStartDate, course_end_date courseEndDate, subject, course_type courseType, total_training_days totalTrainingDays, training_hours_of_date trainingHoursOfDate, professor_name professorName, max_students maxStudents, is_active isActive 
 	FROM courses
-	WHERE is_active = 'T'
+	WHERE is_active = true
 	and (IF(#{courseNumber}, 0,'전체') = '전체' or course_number = #{courseNumber})
 	AND (#{academyLocation} IS NULL OR #{academyLocation} = '' or academy_location =#{academyLocation})
 	and (false = #{excludeExpired} OR course_end_date &gt; CURDATE())
@@ -26,7 +26,7 @@
 <select id="getSearchCourseListSize" resultType="Integer">
 	SELECT count(course_seq) 
 	FROM courses
-	WHERE is_active = 'T'
+	WHERE is_active = true
 	and (IF(#{courseNumber}, 0,'전체') = '전체' or course_number = #{courseNumber})
 	AND (#{academyLocation} IS NULL OR #{academyLocation} = '' or academy_location =#{academyLocation})
 	and (false = #{excludeExpired} OR course_end_date &gt; CURDATE())
@@ -48,10 +48,10 @@
 	, total_training_days = #{totalTrainingDays}
 	, training_hours_of_date = #{trainingHoursOfDate}
 	, professor_name = #{professorName}
-	, max_students = #{maxStudents} where course_seq = #{courseSeq} and is_active = 'T';
+	, max_students = #{maxStudents} where course_seq = #{courseSeq} and is_active = true;
 	</update>
 	<update id="inactivateCourse" parameterType="int">
 	update courses set 
-	is_active = 'F' where course_seq = #{courseSeq};
+	is_active = true where course_seq = #{courseSeq};
 	</update>
 </mapper>
