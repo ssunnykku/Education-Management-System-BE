@@ -12,15 +12,24 @@ function getStartDate() {
     return $("#start-date").val();
 }
 
+$("#start-date").change(() => {
+    const day = new Date($("#start-date").val());
+    const endDate = new Date();
+    endDate.setFullYear(day.getFullYear())
+    endDate.setMonth(day.getMonth() + 1);
+    endDate.setDate(day.getDate() - 1);
+
+    const year = endDate.getFullYear();
+    const month = (endDate.getMonth() + 1).toString().padStart(2, '0')
+    const date = endDate.getDate().toString().padStart(2, '0');
+
+    $("#end-date").val(year + '-' + month + '-' + date);
+
+})
+
 function getEndDate() {
     return $("#end-date").val();
 }
-
-$("#start-date").change(() => {
-    // 종료일 자동 입력되게 만들기
-    console.log($("#start-date").val().split('-'));
-})
-
 
 function getCourseNumber() {
     return $(".courseId-filter option:selected").text();
@@ -29,6 +38,7 @@ function getCourseNumber() {
 function getName() {
     return $(".search-input").val();
 }
+
 
 fetchSettlementTarget();
 
