@@ -72,10 +72,8 @@ public class BenefitServiceImpl implements BenefitService {
     }
 
     @Override
-    public List<BenefitTargetInfoDTO> getBenefitTargetList(BenefitTargetInfoDTO dto, int page, int size) {
+    public List<BenefitTargetInfoDTO> getBenefitTargetList(BenefitTargetInfoDTO dto) {
         try {
-            Integer limit = size;
-            Integer offset = size * (page - 1);
 
             List<BenefitTargetDTO> targetList = (ArrayList<BenefitTargetDTO>) benefitMapper.selectBenefitTarget(
                     dto.getAcademyLocation(),
@@ -83,8 +81,8 @@ public class BenefitServiceImpl implements BenefitService {
                     dto.getSettlementDurationEndDate(),
                     dto.getCourseNumber(),
                     dto.getName(),
-                    limit,
-                    offset);
+                    null,
+                    null);
 
             List<BenefitTargetInfoDTO> benefitTargetList = new ArrayList<>();
 

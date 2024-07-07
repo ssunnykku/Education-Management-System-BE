@@ -24,11 +24,11 @@ public class BenefitController {
     private final BenefitService benefitService;
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> getBenefitTargetList(@RequestBody BenefitTargetInfoDTO dto, @RequestParam int page) {
+    public ResponseEntity<Map<String, Object>> getBenefitTargetList(@RequestBody BenefitTargetInfoDTO dto) {
         try {
             log.info("{}", dto);
             dto.setAcademyLocation("가산");
-            List<BenefitTargetInfoDTO> result = (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitTargetList(dto, page, 10);
+            List<BenefitTargetInfoDTO> result = (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitTargetList(dto);
             return ResponseEntity.ok(Map.of("result", result));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", new ErrorResult("400", e.getMessage())));

@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kosta.ems.benefit.BenefitMapper">
     <select id="selectBenefitTarget" resultType="com.kosta.ems.benefit.dto.BenefitTargetDTO">
-
         select c.course_seq as courseSeq,
         c.manager_id as managerId,
         c.course_number as courseNumber,

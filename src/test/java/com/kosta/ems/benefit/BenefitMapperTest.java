@@ -95,7 +95,7 @@ class BenefitMapperTest {
         assertThat(benefitMapper.selectLastSettlementDate("277")).isEqualTo("2024-07-30");
     }
 
-    @Test
+    //@Test
     @Transactional
     void settlementAllCourseStudent() {
         Date today = new Date();

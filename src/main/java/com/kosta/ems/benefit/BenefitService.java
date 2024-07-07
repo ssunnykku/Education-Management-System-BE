@@ -11,7 +11,7 @@ import java.util.Collection;
 @Service
 public interface BenefitService {
 
-    Collection<BenefitTargetInfoDTO> getBenefitTargetList(BenefitTargetInfoDTO dto, int page, int size);
+    Collection<BenefitTargetInfoDTO> getBenefitTargetList(BenefitTargetInfoDTO dto);
 
     void setBenefitSettlement(BenefitTargetInfoDTO benefitTargetInfoDTO);
 

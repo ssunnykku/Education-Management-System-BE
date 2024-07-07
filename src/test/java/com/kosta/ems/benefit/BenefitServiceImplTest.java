@@ -30,7 +30,7 @@ class BenefitServiceImplTest {
 
     @Test
     void getBenefitTargetListTest() {
-        List<BenefitTargetInfoDTO> dto = (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitTargetList(BenefitTargetInfoDTO.builder().settlementDurationStartDate(LocalDate.parse("2024-03-03")).settlementDurationEndDate(LocalDate.parse("2024-04-02")).courseNumber("277").lectureDays(20).name("손").build(), 1, 10);
+        List<BenefitTargetInfoDTO> dto = (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitTargetList(BenefitTargetInfoDTO.builder().settlementDurationStartDate(LocalDate.parse("2024-03-03")).settlementDurationEndDate(LocalDate.parse("2024-04-02")).courseNumber("277").lectureDays(20).name("손").build());
         for (BenefitTargetInfoDTO data : dto) {
             assertThat(data.getName()).contains("손");
             log.info(data.toString());
@@ -40,7 +40,7 @@ class BenefitServiceImplTest {
     @Test
     @DisplayName("식비 계산 테스트")
     void getBenefitTargetListMealAidTest() {
-        List<BenefitTargetInfoDTO> dto = (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitTargetList(BenefitTargetInfoDTO.builder().settlementDurationStartDate(LocalDate.parse("2024-07-31")).settlementDurationEndDate(LocalDate.parse("2024-08-04")).courseNumber("277").lectureDays(20).name("박").build(), 1, 10);
+        List<BenefitTargetInfoDTO> dto = (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitTargetList(BenefitTargetInfoDTO.builder().settlementDurationStartDate(LocalDate.parse("2024-07-31")).settlementDurationEndDate(LocalDate.parse("2024-08-04")).courseNumber("277").lectureDays(20).name("박").build());
 
         for (BenefitTargetInfoDTO data : dto) {
             assertThat(data.getName()).contains("박");
@@ -51,7 +51,7 @@ class BenefitServiceImplTest {
     @Test
     @DisplayName("훈련 수당 테스트")
     void getBenefitTargetListTrainingAidTest() {
-        List<BenefitTargetInfoDTO> dto = (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitTargetList(BenefitTargetInfoDTO.builder().settlementDurationStartDate(LocalDate.parse("2024-07-31")).settlementDurationEndDate(LocalDate.parse("2024-08-04")).courseNumber("277").lectureDays(20).build(), 1, 10);
+        List<BenefitTargetInfoDTO> dto = (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitTargetList(BenefitTargetInfoDTO.builder().settlementDurationStartDate(LocalDate.parse("2024-07-31")).settlementDurationEndDate(LocalDate.parse("2024-08-04")).courseNumber("277").lectureDays(20).build());
 
         for (BenefitTargetInfoDTO data : dto) {
             assertThat(data.getTrainingAidAmount()).isEqualTo(benefitServiceImpl.trainingAid(LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-04"), data.getStudentId(), 20));
