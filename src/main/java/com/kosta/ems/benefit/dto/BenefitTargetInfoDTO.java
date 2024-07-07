@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class BenefitTargetInfoDTO {
     private int courseSeq;
     private String managerId;
-    private int courseNumber;
+    private String courseNumber;
     private String courseName;
     private char isActive;
     private String studentId;
@@ -27,7 +27,9 @@ public class BenefitTargetInfoDTO {
     private int mealAidAmount;
     /**/
     private String academyLocation;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDate settlementDurationStartDate;
+    private LocalDate settlementDurationEndDate;
+    private int settlementDurationSeq;
     private int lectureDays;
+    private LocalDate benefitSettlementDate;
 }

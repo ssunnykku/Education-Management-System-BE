@@ -118,7 +118,7 @@
         from students
         where student_id = #{studentId};
     </select>
-    
+
     <select id="selectStudentInfoByScq" resultType="com.kosta.ems.student.GetStudentInfoByScqDTO">
         SELECT s.student_id AS studentId,
                hrd_net_id   AS hrdNetId,
@@ -136,5 +136,15 @@
              students_courses sc
         WHERE sc.student_course_seq = #{scq}
           AND sc.student_id = s.student_id;
+    </select>
+
+    <select id="selectStudentListBycourseSeq" parameterType="int">
+        select s.student_id    as studentId,
+               sc.course_seq   as courseSeq,
+               c.course_number as courseNumber
+        from students s
+                 inner join students_courses sc on s.student_id = sc.student_id
+                 inner join courses c on sc.course_seq = c.course_seq
+        where c.course_seq = #{courseSeq};
     </select>
 </mapper>

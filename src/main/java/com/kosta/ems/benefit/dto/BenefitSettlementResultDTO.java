@@ -22,7 +22,7 @@ public class BenefitSettlementResultDTO {
     private int benefitSeq;
     private int trainingAidAmount;
     private int mealAidAmount;
-    private int settlement_aid_amount;
+    private int settlementAidAmount;
     private LocalDate benefitSettlementDate;
     private String settlementDurationSeq;
     private String settlementDurationStartDate;

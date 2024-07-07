@@ -6,8 +6,10 @@ import com.kosta.ems.benefit.dto.*;
 import com.kosta.ems.student.StudentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,23 +27,43 @@ public class BenefitServiceImpl implements BenefitService {
 
     @Override
     @Transactional
-    public void setBenefitSettlement(BenefitSettlementReqDTO benefitSettlementReqDTO) {
+    public void setBenefitSettlement(BenefitTargetInfoDTO dto) {
 
-        benefitMapper.insertBenefitSettlementDuration(benefitSettlementReqDTO);
-        BenefitDTO benefit = BenefitDTO.builder()
-                .trainingAidAmount(benefitSettlementReqDTO.getTrainingAidAmount())
-                .mealAidAmount(benefitSettlementReqDTO.getMealAidAmount())
-                .settlementAidAmount(benefitSettlementReqDTO.getSettlementAidAmount())
-                .studentId(benefitSettlementReqDTO.getStudentId())
-                .settlementDurationSeq(benefitSettlementReqDTO.getSettlementDurationSeq())
-                .build();
+        SettlementDurationDTO settlementDurationDTO =
+                SettlementDurationDTO.builder()
+                        .settlementDurationStartDate(dto.getSettlementDurationStartDate())
+                        .settlementDurationEndDate(dto.getSettlementDurationEndDate())
+                        .courseSeq(dto.getCourseSeq())
+                        .managerId(dto.getManagerId())
+                        .build();
+        // 정산 기간 등록
+        benefitMapper.insertBenefitSettlementDuration(settlementDurationDTO);
 
-        log.info(String.valueOf(benefitSettlementReqDTO.getSettlementDurationSeq()));
-        benefitMapper.insertBenefitSettlementAmount(benefit);
+        // 지원금 정산 대상 가져오기
+        ArrayList<BenefitTargetDTO> targetList = (ArrayList<BenefitTargetDTO>)
+                benefitMapper.selectBenefitTarget(
+                        dto.getAcademyLocation(),
+                        dto.getSettlementDurationStartDate(),
+                        dto.getSettlementDurationEndDate(),
+                        dto.getCourseNumber(),
+                        dto.getName(),
+                        null, null);
+        log.info("정산 대상 = {}", targetList);
+
+        // 정산 금액 입력
+        for (BenefitTargetDTO targetInfo : targetList) {
+            benefitMapper.insertBenefitSettlementAmount(BenefitDTO.builder()
+                    .trainingAidAmount(trainingAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
+                    .mealAidAmount(mealAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
+                    .settlementAidAmount(settlementAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
+                    .studentId(targetInfo.getStudentId())
+                    .settlementDurationSeq(settlementDurationDTO.getSettlementDurationSeq())
+                    .build());
+        }
     }
 
     @Override
-    public List<BenefitSettlementResultDTO> getBenefitSettlementResult(BenefitSettlementReqDTO dto, int page, int size) {
+    public List<BenefitSettlementResultDTO> getBenefitSettlementResult(BenefitTargetInfoDTO dto, int page, int size) {
         int limit = size;
         int offset = size * (page - 1);
 
@@ -51,43 +73,60 @@ public class BenefitServiceImpl implements BenefitService {
 
     @Override
     public List<BenefitTargetInfoDTO> getBenefitTargetList(BenefitTargetInfoDTO dto, int page, int size) {
-        int limit = size;
-        int offset = size * (page - 1);
+        try {
+            Integer limit = size;
+            Integer offset = size * (page - 1);
 
-        List<BenefitTargetDTO> targetList = (ArrayList<BenefitTargetDTO>) benefitMapper.selectBenefitTarget(
-                dto.getAcademyLocation(),
-                dto.getStartDate(),
-                dto.getEndDate(),
-                dto.getCourseNumber(),
-                dto.getName(),
-                limit,
-                offset);
-        List<BenefitTargetInfoDTO> benefitTargetList = new ArrayList<>();
+            List<BenefitTargetDTO> targetList = (ArrayList<BenefitTargetDTO>) benefitMapper.selectBenefitTarget(
+                    dto.getAcademyLocation(),
+                    dto.getSettlementDurationStartDate(),
+                    dto.getSettlementDurationEndDate(),
+                    dto.getCourseNumber(),
+                    dto.getName(),
+                    limit,
+                    offset);
 
-        for (BenefitTargetDTO targetInfo : targetList) {
-            BenefitTargetInfoDTO data = BenefitTargetInfoDTO.builder()
-                    .academyLocation(dto.getAcademyLocation())
-                    .courseSeq(targetInfo.getCourseSeq())
-                    .managerId(targetInfo.getManagerId())
-                    .courseNumber(targetInfo.getCourseNumber())
-                    .courseName(targetInfo.getCourseName())
-                    .isActive(targetInfo.getIsActive())
-                    .studentId(targetInfo.getStudentId())
-                    .name(targetInfo.getName())
-                    .hrdNetId(targetInfo.getHrdNetId())
-                    .bank(targetInfo.getBank())
-                    .account(targetInfo.getAccount())
-                    .settlementAidAmount(settlementAid(dto.getStartDate(), dto.getEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
-                    .trainingAidAmount((int) trainingAid(dto.getStartDate(), dto.getEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
-                    .mealAidAmount(mealAid(dto.getStartDate(), dto.getEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
-                    .startDate(dto.getStartDate())
-                    .endDate(dto.getEndDate())
-                    .lectureDays(dto.getLectureDays())
-                    .build();
-            benefitTargetList.add(data);
+            List<BenefitTargetInfoDTO> benefitTargetList = new ArrayList<>();
 
+            for (BenefitTargetDTO targetInfo : targetList) {
+                BenefitTargetInfoDTO data = BenefitTargetInfoDTO.builder()
+                        .academyLocation(dto.getAcademyLocation())
+                        .courseSeq(targetInfo.getCourseSeq())
+                        .managerId(targetInfo.getManagerId())
+                        .courseNumber(targetInfo.getCourseNumber())
+                        .courseName(targetInfo.getCourseName())
+                        .isActive(targetInfo.getIsActive())
+                        .studentId(targetInfo.getStudentId())
+                        .name(targetInfo.getName())
+                        .hrdNetId(targetInfo.getHrdNetId())
+                        .bank(targetInfo.getBank())
+                        .account(targetInfo.getAccount())
+                        .settlementAidAmount(settlementAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
+                        .trainingAidAmount((int) trainingAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
+                        .mealAidAmount(mealAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
+                        .settlementDurationStartDate(dto.getSettlementDurationStartDate())
+                        .settlementDurationEndDate(dto.getSettlementDurationEndDate())
+                        .lectureDays(dto.getLectureDays())
+                        .build();
+                benefitTargetList.add(data);
+
+            }
+
+            if (benefitMapper.selectLastSettlementDate(dto.getCourseNumber()) == null) {
+                return benefitTargetList;
+
+            }
+
+            if (benefitMapper.selectLastSettlementDate(dto.getCourseNumber()).isAfter(dto.getSettlementDurationStartDate()) || benefitMapper.selectLastSettlementDate(dto.getCourseNumber()).isEqual(dto.getSettlementDurationEndDate())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 기수의 정산 대상 기간이 아닙니다.");
+
+            }
+
+            return benefitTargetList;
+        } catch (ResponseStatusException e) {
+            throw new RuntimeException(e);
         }
-        return benefitTargetList;
+
     }
 
     public int mealAid(LocalDate startDate, LocalDate endDate, String studentId, int lectureDays) {
@@ -120,14 +159,15 @@ public class BenefitServiceImpl implements BenefitService {
 
         return benefitMapper.countSettlementTarget(
                 dto.getAcademyLocation(),
-                dto.getStartDate(),
-                dto.getEndDate(),
+                dto.getSettlementDurationStartDate(),
+                dto.getSettlementDurationEndDate(),
                 dto.getCourseNumber(),
                 dto.getName());
     }
 
     @Override
-    public int countBenefitResult(BenefitSettlementReqDTO dto) {
+    public int countBenefitResult(BenefitTargetInfoDTO dto) {
         return benefitMapper.countSettlementResult(dto.getAcademyLocation(), dto.getName(), dto.getCourseNumber(), dto.getBenefitSettlementDate());
     }
+
 }

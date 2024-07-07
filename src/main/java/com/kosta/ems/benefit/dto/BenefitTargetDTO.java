@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class BenefitTargetDTO {
     private int courseSeq;
     private String managerId;
-    private int courseNumber;
+    private String courseNumber;
     private String courseName;
     private char isActive;
     private String studentId;
