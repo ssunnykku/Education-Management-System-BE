@@ -1,5 +1,57 @@
 @import "reset.css";
 
+/* Basic table styles */
+#employmentBoard-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #employmentBoard-table th, #employmentBoard-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+  }
+  
+  #employmentBoard-table th {
+    background-color: #eee;
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  #employmentBoard-table tbody tr {
+    height: 1190px; /* Fixed row height */
+  }
+  
+  #employmentBoard-table th, #employmentBoard-table td {
+    vertical-align: top; /* Align content to the top of the cell */
+  }
+  
+  /* Distribute column widths proportionally */
+  #employmentBoard-table th, #employmentBoard-table td {
+    box-sizing: border-box; /* Include padding and border in width calculation */
+  }
+  
+  #employmentBoard-table {
+    table-layout: auto; /* Enable proportional column width distribution */
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    #employmentBoard-table {
+      font-size: 14px;
+    }
+  
+    #employmentBoard-table th, #employmentBoard-table td {
+      padding: 8px;
+    }
+  
+    #employmentBoard-table tbody tr {
+      min-height: 30px;
+    }
+  
+    #employmentBoard-table td {
+      min-width: 120px;
+    }
+  }
 /************pointBoard*****************/
 
 /***** button/ search *******/
