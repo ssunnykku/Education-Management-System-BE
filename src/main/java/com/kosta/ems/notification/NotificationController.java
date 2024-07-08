@@ -107,9 +107,7 @@ public class NotificationController {
 	//공지 업데이트(O)
 	@PutMapping("/post/{notificationSeq}")
 	public Map<String, Boolean> editNotification(@RequestBody NotificationDTO dto,@PathVariable("notificationSeq") int notificationSeq,HttpServletRequest request){
-		ManagerDTO loginUser = getLoginUser();
-		String managerId=loginUser.getManagerId();
-		dto.setManagerId(managerId);
+		dto.setManagerId(getManagerIdOfLoginUser(request));
 		boolean result= notification.updateNotification(dto);
 		//String managerId= "d893bf71-2f8f-11ef-b0b2-0206f94be675";
 		return Map.of("result",result);

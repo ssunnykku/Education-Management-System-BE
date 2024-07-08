@@ -7,55 +7,67 @@
             integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
     <title>Document</title>
     <link rel="stylesheet" href="../../css/format.css"/>
-    <link rel="stylesheet" href="../../css/employment.css"/> 
+    <link rel="stylesheet" href="../../css/employment.css"/>
 </head>
 <body id="content-wrapper">
 <div th:insert="~{common/header :: header}"></div>
 <div th:insert="~{common/title :: title ('수강생 취업률 관리')}"></div>
-<section id="employment-contents">
-    <article id="employment-search-btn-wrapper">
+<section id="scholarship-contents">
+    <article id="scholarship-search-btn-wrapper">
         <div class="search-form-wrapper">
-            <select name="employment-courseId-filter"
-                    class="employment-courseId-filter">
+            <select name="scholarship-courseId-filter"
+                    class="scholarship-courseId-filter">
                 <option value="course-number" id="course-number">기수</option>
             </select>
+            <input placeholder="수강생을 입력하세요" class="search-input"/>
             <button type="button" class="board-filter-search-btn">검색</button>
         </div>
-        <div class="employment-btn-wrapper">
+        <div class="scholarship-btn-wrapper">
             <button type="button" id="settlement-btn" class="btn-setting" popovertarget="settlementListModal">
-                저장
+                정산
             </button>
         </div>
     </article>
-    <article class="employment-page-information">
-        <div class="employment-cnt-pages">
+    <article class="scholarship-page-information">
+        <div class="scholarship-cnt-pages">
         </div>
     </article>
-    <section id="employment-contents">
-        <article>
-          <div id="employmentBoard-table">
-            <table class="employmentBoard-table">
-              <thead>
-                <tr>
-                  <th>
-                    <input type="checkbox" name="" id="title-checkbox" />
-                  </th>
-                  <th><span>hrd-net-id</span></th>
-                  <th><span>기수</span></th>
-                  <th><span>이름</span></th>
-                  <th><span>전화번호</span></th>
-                  <th><span>이메일</span></th>
-                  <th><span>과정종료일</span></th>
-                  <th><span>취업처</span></th>
-                  <th><span>취업 여부</span></th>
-                </tr>
-              </thead>
-              <tbody id="employment-table-contents"></tbody>
-            </table>
-          </div>
-        </article>
-      </section>
-        <article class="employment-page-information">
+    <article>
+        <div id="scholarshipBoard-table">
+            <div class="scholarshipBoard-row" id="scholarshipBoard-title-row">
+                <div class="scholarshipBoard-checkbox">
+                    <input type="checkbox" name="" id="title-checkbox"/>
+                </div>
+                <div class="scholarshipBoard-courseId">
+                    <span>기수</span>
+                </div>
+                <div class="scholarshipBoard-course-name">
+                    <span>과정명</span>
+                </div>
+                <div class="scholarshipBoard-hrd-net-id">
+                    <span>hrd-net-id</span>
+                </div>
+                <div class="scholarshipBoard-name">
+                    <span>이름</span>
+                </div>
+                <div class="scholarshipBoard-bank">
+                    <span>은행</span>
+                </div>
+                <div class="scholarshipBoard-account">
+                    <span>계좌번호</span>
+                </div>
+                <div class="scholarshipBoard-point">
+                    <span>포인트</span>
+                </div>
+                <div class="scholarshipBoard-total-amount">
+                    <span>금액(원)</span>
+                </div>
+            </div>
+            <div style="display: contents" id="scholarship-table-contents">
+            </div>
+        </div>
+    </article>
+        <article class="scholarship-page-information">
             <ul id="pagination">
                 <li>
                     <a class="page-link" id="before">
@@ -75,33 +87,37 @@
         </article>
 </section>
 <footer></footer>
-<script>
-
-
-
- $(".board-filter-search-btn").on("click", async function () {
-      let courseSeq =$(".employment-courseId-filter option:selected").text();
-      try {
-        const response = await fetch("/employments/info-list?courseSeq=" + courseSeq + "&page=" + 1, {
-          method: "GET" // 불필요한 Content-Type 헤더 제거
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP 오류! 상태: ${response.status}`);
-        }
-        const data = await response.json();
-        const notificationList = data.result;
-        console.log(notificationList);
-        await getSettlementList(notificationList);
-      } catch (error) {
-        console.error("공지 사항 페치 오류:", error);
-      }
-
-    });
-
-
-</script>
 </body>
-<script type="text/javascript" th:src="@{/scripts/employmentBoard.js}">
 
-</script>
+<!-- 정산내역 확인 모달 -->
+<div id="settlementListModal" class="check-settlement-modal" popover>
+    <div class="check-settlement-wrapper">
+        <div class="settlement-list-info">
+            <h1 class="title">정산 내역 확인</h1>
+            <h1></h1>
+        </div>
+        <div id="btn-wrapper">
+            <button class="btn-setting-format enroll-btn-format" onclick="removeCourse()" popovertarget="">정산</button>
+            <button id="edit-btn" class="btn-setting" popovertarget="settlementListModal" popovertargetaction="hide">
+                취소
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 과정삭제 완료 모달 -->
+<div id="removeCourseCompleteModal" class="course-modal" popover>
+    <div class="removecourse-wrapper">
+        <div class="removecourse-info">
+            <h1 class="upperline title">알림</h1>
+            <h1 id="message">삭제되었습니다.</h1>
+        </div>
+        <div id="btn-wrapper">
+            <button class="btn-setting-format enroll-btn-format" onclick="location.reload()">확인</button>
+        </div>
+    </div>
+</div>
+
+<!--<div class="modal-background"></div>-->
+<script type="text/javascript" th:src="@{/scripts/scholarshipBoard.js}"></script>
 </html>
