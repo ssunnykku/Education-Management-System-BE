@@ -17,17 +17,22 @@
   <section id="notificationPost-section">
     <article class="notificationPost-contents">
     <div class="notification-title">
-      <div id="notification-row" class="underline">
-        <div class="notificationPost-title">
-        </div>
-        <div class="notificationPost-enroll-date">
+        <div id="notification-row" class="underline">
+            <div class="notificationPost-title">
+            </div>
+            <div class="notificationPost-enroll-date">
             </div>
         </div>
-      </div>
-      <div id="notification-contents">
-        <div class="writer">
-          <span>작성자 :</span>
-          <span class="notification-writer">
+        </div>
+        <div id="notification-contents">
+            <div class="writer">
+                <span>작성자 :</span>
+                <span class="notification-writer">
+            </div>
+            <div class="notificationPost-content">
+                <p>
+                </p>
+            </div>
         </div>
         <pre class="notificationPost-content">
        
@@ -58,16 +63,16 @@
         .then(data => {
           // Process and populate the HTML template
     let notificationSeq=data.notificationSeq;
-          let notificationTitle = data.title;
-          let notificationContent = data.description;
+    let notificationTitle = data.title;
+    let notificationContent = data.description;
     let notificationDate = data.formattedNotificationDate;
     let name=data.name;
     let sameWriter=data.sameWriter;
 
-          document.querySelector('.notificationPost-title').textContent = notificationTitle;
-          document.querySelector('.notificationPost-content').textContent = notificationContent;
-          // Update the date element if needed (assuming 'notificationPost-enroll-date' is for the date)
-          document.querySelector('.notificationPost-enroll-date').textContent = notificationDate;
+    document.querySelector('.notificationPost-title').textContent = notificationTitle;
+    document.querySelector('.notificationPost-content').textContent = notificationContent;
+    // Update the date element if needed (assuming 'notificationPost-enroll-date' is for the date)
+    document.querySelector('.notificationPost-enroll-date').textContent = notificationDate;
     document.querySelector('.notification-writer').textContent=name;
           console.log(sameWriter);
     if(sameWriter!==true){

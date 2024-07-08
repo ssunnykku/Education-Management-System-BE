@@ -26,94 +26,6 @@
         <button id="notification-enroll-btn" class="btn-setting">글 등록</button>
       </div>
     </article>
-    <article>
-      <div id="notification-table">
-        <div class="notification-row" id="notification-title-row">
-          <div class="notificationBoard-no">
-            <span>NO</span>
-          </div>
-          <div class="notificationBoard-title">
-            <span>제목</span>
-          </div>
-          <div class="notificationBoard-enroll-date">
-            <span>등록일</span>
-          </div>
-          <div class="notificationBoard-writer">
-            <span>작성자</span>
-          </div>
-          <div class="notification-view-count">
-            <span>조회수</span>
-          </div>
-        </div>
-        <div style="display: contents" id="notification-table-contents">
-        </div>
-      </div>
-    </article>
-    <article class="notification-page-information">
-      <ul id="pagination">
-        <li>
-          <a class="page-link" id="before">
-            이전
-          </a>
-        </li>
-        <!--// 이게 페이지 번호-->
-        <li class="page-item" id="page_number">
-        </li>
-        <li class="page-item">
-          <a class="page-link" id="next">
-            다음
-          </a>
-      </ul>
-      </div>
-    </article>
-  </section>
-
-  <footer></footer>
-  <script>
-    var clickedPageNumber = 1;
-    let currentPage = 1;
-    const pageSize = 10; // 한 블록 당 페이지 수
-    let currentBlock = 1;
-
-    let totalPages = 0;
-
-    $("#notification-enroll-btn").on("click", function () {
-      location.href = "/ems/notifications/write";
-    })
-
-    $(".board-filter-search-btn").on("click", async function () {
-      console.log("버튼 누름")
-      let keyword = document.querySelector('#search-input').value;
-
-      try {
-        const response = await fetch("/notifications/list?keyword=" + keyword + "&page=" + 1, {
-          method: "GET" // 불필요한 Content-Type 헤더 제거
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP 오류! 상태: ${response.status}`);
-        }
-        const data = await response.json();
-        const notificationList = data.result;
-        console.log(notificationList);
-        await getSettlementList(notificationList);
-      } catch (error) {
-        console.error("공지 사항 페치 오류:", error);
-      }
-
-    });
-
-
-
-
-    async function getSettlementList(data) {
-      let result = '';
-      for (let i = 0; i < data.length; i++) {
-        result += `<div class="notification-row">
-      <div class="notificationBoard-no" id="notificationBoard-no">
-        <span>${data[i].notificationSeq}</span>
->>>>>>> da043a0 (feat: 페이지네이션)
-      </div>
-    </article>
     <article >
       <div id="notification-table">
         <div class="notification-row" id="notification-title-row">
@@ -167,7 +79,7 @@
     })
 
     $(".board-filter-search-btn").on("click", async function () {
-
+      console.log("버튼 누름")
       let keyword = document.querySelector('#search-input').value;
 
       try {
