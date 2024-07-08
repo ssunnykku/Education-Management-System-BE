@@ -150,8 +150,12 @@ function fetchSettlement(data) {
         .then((data) => {
             if (data.error) {
                 handleError(data.message);
+                return Promise.reject(new Error(data.message));
             }
-        })
+        }).then(() => {
+        alert("정산이 완료되었습니다.")
+        location.href = "/ems/benefits";
+    })
         .catch((error) => console.error(error));
 }
 
@@ -163,5 +167,6 @@ $(".filter-search-btn").click(async () => {
 
 $("#settlement-btn").click(async () => {
     await fetchSettlement();
+
 })
 

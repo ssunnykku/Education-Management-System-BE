@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +32,17 @@ public class BenefitController {
     }
 
     @PostMapping("/settlement")
-    public void setBenefitSettlement(@RequestBody BenefitTargetInfoDTO dto) {
-        dto.setAcademyLocation("가산");
-        dto.setManagerId("d893bf71-2f8f-11ef-b0b2-0206f94be675");
-        benefitService.setBenefitSettlement(dto);
+    public ResponseEntity<Map<String, Boolean>> setBenefitSettlement(@RequestBody BenefitTargetInfoDTO dto) {
+        try {
+            dto.setAcademyLocation("가산");
+            dto.setManagerId("d893bf71-2f8f-11ef-b0b2-0206f94be675");
+            benefitService.setBenefitSettlement(dto);
+            return ResponseEntity.ok(Map.of("result", true));
+        } catch (ResponseStatusException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.ok(Map.of("result", false));
+        }
+
     }
 
     @PostMapping("/result")
