@@ -75,9 +75,9 @@ async function fetchSettlementTarget() {
                 <div class="benefitSettlement-name">
                     <span>${dataList[i].name}</span>
                 </div>
-                <div class="benefitSettlement-bank">
-                    <span>${dataList[i].bank}</span>
-                </div>
+             <div class="benefitSettlement-bank">
+                     <span>${dataList[i].bank}</span>
+               </div>
                 <div class="benefitSettlement-account">
                     <span>${dataList[i].account}</span>
                 </div>
@@ -98,8 +98,6 @@ async function fetchSettlementTarget() {
         }
         $("#benefit-table-contents").html("");
         $("#benefit-table-contents").append(result);
-
-
     }
 
     function handleError(message) {
@@ -146,6 +144,10 @@ function fetchCountTarget() {
     fetch("/benefits/count", requestOptions)
         .then((res) => res.json())
         .then((data) => {
+            if (data.error) {
+                handleError(data.message);
+            }
+            
             $(".benefit-cnt-pages").html("");
             $(".benefit-cnt-pages").append(`<span> 총 ${data.result}건 </span>`);
         })

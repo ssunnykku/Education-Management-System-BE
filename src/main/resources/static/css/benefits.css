@@ -5,7 +5,7 @@
 /***** button/ search *******/
 
 section {
-    padding: 0 100px;
+    padding: 0 80px;
 }
 
 #settlement-filter-wrapper {
@@ -15,9 +15,7 @@ section {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-
 }
-
 
 #benefit-settlement-input-wrapper {
     width: 100%;
@@ -26,10 +24,11 @@ section {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    gap: 4px;
 }
 
 .benefit-settlement-duration {
-    width: 120px;
+    width: 100px;
     height: 41px;
 
     background: #ffffff;
@@ -85,6 +84,12 @@ section {
     width: 100%;
 }
 
+.result-settlement-date {
+    border: none;
+    width: 100%;
+
+}
+
 #lecture-days {
     border: none;
     width: 100%;
@@ -99,11 +104,13 @@ section {
 }
 
 .benefit-settlement-search-btn-wrapper {
+    padding-left: 400px;
+    padding-top: 10px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    height: 80px;
+    height: 100px;
     align-items: center;;
 }
 
@@ -117,7 +124,7 @@ section {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    /*align-items: center;*/
+    margin: 20px 0 20px 0;
 }
 
 .search-btn-wrapper {
@@ -153,15 +160,12 @@ section {
     line-height: 144%;
 
     padding-left: 18px;
-    padding-right: 37px;
-    margin-left: 4px;
 
     color: #000000;
 
     background-image: url("../assets/Polygon.svg");
     background-repeat: no-repeat;
     background-size: 12px;
-    background-position: right;
     background-position: 60px;
 }
 
@@ -182,8 +186,7 @@ section {
     line-height: 144%;
 
     padding-left: 15px;
-    margin-right: 5px;
-
+    
     color: #000000;
     text-align: center;
 }
@@ -316,7 +319,6 @@ section {
 
 .board-row {
     display: flex;
-    display: flex;
     flex-direction: row;
     height: 60px;
     width: 100%;
@@ -330,6 +332,7 @@ section {
     line-height: 144%;
 
     color: #1d1d1d;
+
 }
 
 .board-checkbox {
@@ -341,13 +344,10 @@ section {
     font-weight: 500 !important;
     font-size: 15px;
     line-height: 144% !important;
-    text-align: center;
 
     color: #1d1d1d;
 
-    box-sizing: border-box;
-
-    width: 100%;
+    width: 1300px;
     height: 60px;
 
     background: #ffffff;
@@ -369,13 +369,25 @@ section {
 }
 
 /****************** benefitResultBoard **************/
+.benefitResult-cnt-pages {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    height: 16px;
+    color: #999999;
+}
 
 /*
 filter and search
 */
 
 #benefit-result-settlement-filter-wrapper {
-    width: 800px;
+    width: 100%;
     display: flex;
     flex-display: row;
     justify-content: space-between;
@@ -404,9 +416,8 @@ filter and search
 
 }
 
-#benefit-settlement-date {
-    border: none;
-    width: 30px;
+#benefit-result-settlement-date-row {
+    width: 80px;
 }
 
 
@@ -418,20 +429,24 @@ filter and search
     width: 7%;
 }
 
+.benefitSettlement-hrd-net-id {
+    width: 7%;
+}
+
 .benefitSettlement-birth {
     width: 7%;
 }
 
 .benefitSettlement-name {
-    width: 7%;
+    width: 5%;
 }
 
 .benefitSettlement-bank {
-    width: 7%;
+    width: 5%;
 }
 
 .benefitSettlement-account {
-    width: 14%;
+    width: 12%;
 }
 
 .benefitSettlement-settlement-duration {
@@ -454,70 +469,111 @@ filter and search
     width: 10%;
 }
 
+.benefit-board-table {
+    width: 100%;
+    height: 800px;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin: 0 auto
+}
+
 /********************* benefitSettlementResult **********/
 
+/*#result-content-section {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    width: 1000px;*/
+/*    justify-content: space-between;*/
+/*}*/
+
+.result-board-row {
+    display: flex;
+    flex-direction: row;
+    height: 60px;
+    width: 1300px;
+    align-items: center;
+    text-align: center;
+    justify-content: space-between;
+
+    font-style: normal;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 144%;
+
+    color: #1d1d1d;
+
+}
+
+.benefit-result-board-table {
+    width: 1300px;
+    white-space: nowrap;
+    overflow: auto
+}
+
 .benefitSettlementResult-checkbox {
-    width: 1%;
+    /*width: 1%;*/
+    width: 50px;
 }
 
 .benefitSettlementResult-courseId {
-    width: 4%;
+    width: 30px;
 }
 
-.benefitSettlementResult-birth {
-    width: 4%;
+.benefitSettlementResult-hrd-net-id {
+    width: 80px;
 }
 
 .benefitSettlementResult-name {
-    width: 4%;
+    width: 80px;
 }
 
 .benefitSettlementResult-bank {
-    width: 3%;
+    width: 80px;
 }
 
 .benefitSettlementResult-account {
-    width: 12%;
+    width: 150px;
 }
 
 .benefitSettlementResult-settlement-duration {
-    width: 13%;
+    width: 200px;
 }
 
 .benefitSettlementResult-training-aid {
-    width: 8%;
+    width: 80px;
 }
 
 .benefitSettlementResult-meal-aid-amount {
-    width: 8%;
+    width: 80px;
 }
 
 .benefitSettlementResult-settlement_aid_amount {
-    width: 8%;
+    width: 80px;
 }
 
 .benefitSettlementResult-total-amount {
-    width: 8%;
+    width: 80px;
 }
 
-.benefit-settlementdate {
-    width: 8%;
+.benefit-settlement-date {
+    width: 80px;
 }
 
 .benefitResult-search-btn-wrapper {
     width: 100%;
     display: flex;
-    padding-left: 35%;
     height: 80px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 
 }
 
 .benefitResult-search-form-wrapper {
+    margin: 20px 0 20px 0;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 4px;
+    justify-content: center;
+    gap: 5px;
 }
 
 .settlement-date-input {
@@ -538,14 +594,46 @@ filter and search
     color: #000000;
 }
 
-.benefitResult-cnt-pages {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 100%;
+/*pagenation*/
 
-    margin-left: 5%;
-    margin-top: 5%;
+.benefit-page-information {
+    height: 30px;
+    display: flex;
+    align-items: center;
+}
 
-    color: #999999;
+
+ul#pagination {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-size: 1.3rem;
+
+    li {
+        /*display: inline;*/
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        gap: 12px;
+    }
+
+    .activePage {
+        text-decoration: underline;
+        font-weight: bold;
+    }
+
+    .inactivePage a {
+        cursor: default;
+    }
+}
+
+#page_number {
+    min-width: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-link {
+    width: 10px;
 }
