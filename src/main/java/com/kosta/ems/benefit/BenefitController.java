@@ -25,22 +25,25 @@ public class BenefitController {
 
     @PostMapping
     public ResponseEntity<Map<String, Object>> getBenefitTargetList(@RequestBody BenefitTargetInfoDTO dto) {
-        try {
-            log.info("{}", dto);
-            dto.setAcademyLocation("가산");
-            List<BenefitTargetInfoDTO> result = (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitTargetList(dto);
-            return ResponseEntity.ok(Map.of("result", result));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", new ErrorResult("400", e.getMessage())));
-        }
+        log.info("{}", dto);
+        dto.setAcademyLocation("가산");
+        List<BenefitTargetInfoDTO> result = (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitTargetList(dto);
+        return ResponseEntity.ok(Map.of("result", result));
+
     }
 
     @PostMapping("/settlement")
-    public void setBenefitSettlement(@RequestBody BenefitTargetInfoDTO dto) {
-        dto.setAcademyLocation("가산");
-        dto.setManagerId("d893bf71-2f8f-11ef-b0b2-0206f94be675");
+    public boolean setBenefitSettlement(@RequestBody BenefitTargetInfoDTO dto) {
+        try {
+            dto.setAcademyLocation("가산");
+            dto.setManagerId("d893bf71-2f8f-11ef-b0b2-0206f94be675");
 
-        benefitService.setBenefitSettlement(dto);
+            benefitService.setBenefitSettlement(dto);
+            return true;
+        } catch (RuntimeException e) {
+            return false;
+        }
+
     }
 
     @PostMapping("/result")

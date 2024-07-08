@@ -127,7 +127,6 @@ class BenefitServiceImplTest {
                 .managerId("d893bf71-2f8f-11ef-b0b2-0206f94be675")
                 .name("")
                 .lectureDays(20)
-                .courseSeq(19)
                 .build();
 
         benefitService.setBenefitSettlement(dto);

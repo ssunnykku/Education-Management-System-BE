@@ -116,4 +116,12 @@
                  inner join courses on courses.course_seq = settlement_durations.course_seq
         where course_number = #{courseNumber};
     </select>
+
+    <select id="selectDurationSeq" parameterType="int">
+        select settlement_duration_seq as settlementDurationSeq
+        from settlement_durations sd
+                 inner join courses c on sd.course_seq = c.course_seq
+        where sd.course_seq = #{courseSeq};
+    </select>
+    
 </mapper>

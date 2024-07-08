@@ -66,10 +66,10 @@ class BenefitMapperTest {
     void selectBenefitSettlementResultTest() {
         List<BenefitSettlementResultDTO> dto = (ArrayList<BenefitSettlementResultDTO>) benefitMapper.selectBenefitSettlementResult("가산", "", "227", LocalDate.parse("2024-03-21"), 5, 0);
         log.info("크기 {}", dto.size());
-//        for (BenefitSettlementResultDTO d : dto) {
-//            log.info("이거 뭔데 {} ", d);
-//            assertThat(d.getBenefitSettlementDate()).isEqualTo(LocalDate.parse("2024-03-21"));
-//        }
+        for (BenefitSettlementResultDTO d : dto) {
+            log.info("이거 뭔데 {} ", d);
+            assertThat(d.getBenefitSettlementDate()).isEqualTo(LocalDate.parse("2024-03-21"));
+        }
     }
 
     @Test
@@ -145,6 +145,12 @@ class BenefitMapperTest {
     void targetWithoutPagenation() {
         log.info("결과 {} ", benefitMapper.selectBenefitTarget("가산", LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-02"), "277", "", null, null));
         assertThat(benefitMapper.selectBenefitTarget("가산", LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-02"), "277", "", null, null).size()).isEqualTo(19);
+
+    }
+
+    @Test
+    void selectDurationSeqTest() {
+        log.info("{}", benefitMapper.selectDurationSeq(19));
 
     }
 }

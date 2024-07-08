@@ -21,4 +21,6 @@ public interface BenefitMapper {
     int countSettlementResult(String academyLocation, String name, String courseNumber, LocalDate benefitSettlementDate);
 
     LocalDate selectLastSettlementDate(String courseNumber);
+
+    int selectDurationSeq(int courseSeq);
 }

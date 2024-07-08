@@ -3,6 +3,7 @@ package com.kosta.ems.benefit;
 
 import com.kosta.ems.attendance.AttendanceMapper;
 import com.kosta.ems.benefit.dto.*;
+import com.kosta.ems.course.CourseMapper;
 import com.kosta.ems.student.StudentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,42 +25,66 @@ public class BenefitServiceImpl implements BenefitService {
     private final BenefitMapper benefitMapper;
     private final AttendanceMapper attendanceMapper;
     private final StudentMapper studentMapper;
+    private final CourseMapper courseMapper;
 
     @Override
     @Transactional
     public void setBenefitSettlement(BenefitTargetInfoDTO dto) {
+        try {
 
-        SettlementDurationDTO settlementDurationDTO =
-                SettlementDurationDTO.builder()
-                        .settlementDurationStartDate(dto.getSettlementDurationStartDate())
-                        .settlementDurationEndDate(dto.getSettlementDurationEndDate())
-                        .courseSeq(dto.getCourseSeq())
-                        .managerId(dto.getManagerId())
-                        .build();
-        // 정산 기간 등록
-        benefitMapper.insertBenefitSettlementDuration(settlementDurationDTO);
+            int courseSeq = courseMapper.getCourseSeq(Integer.parseInt(dto.getCourseNumber()));
 
-        // 지원금 정산 대상 가져오기
-        ArrayList<BenefitTargetDTO> targetList = (ArrayList<BenefitTargetDTO>)
-                benefitMapper.selectBenefitTarget(
-                        dto.getAcademyLocation(),
-                        dto.getSettlementDurationStartDate(),
-                        dto.getSettlementDurationEndDate(),
-                        dto.getCourseNumber(),
-                        dto.getName(),
-                        null, null);
-        log.info("정산 대상 = {}", targetList);
+            int settlementDurationSeq = 0;
 
-        // 정산 금액 입력
-        for (BenefitTargetDTO targetInfo : targetList) {
-            benefitMapper.insertBenefitSettlementAmount(BenefitDTO.builder()
-                    .trainingAidAmount(trainingAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
-                    .mealAidAmount(mealAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
-                    .settlementAidAmount(settlementAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
-                    .studentId(targetInfo.getStudentId())
-                    .settlementDurationSeq(settlementDurationDTO.getSettlementDurationSeq())
-                    .build());
+            SettlementDurationDTO settlementDurationDTO =
+                    SettlementDurationDTO.builder()
+                            .settlementDurationStartDate(dto.getSettlementDurationStartDate())
+                            .settlementDurationEndDate(dto.getSettlementDurationEndDate())
+                            .courseSeq(courseSeq)
+                            .managerId(dto.getManagerId())
+                            .build();
+
+
+            if (benefitMapper.selectLastSettlementDate(dto.getCourseNumber()) == null || !benefitMapper.selectLastSettlementDate(dto.getCourseNumber()).isAfter(dto.getSettlementDurationStartDate())) {
+
+                // 정산 기간 등록
+                benefitMapper.insertBenefitSettlementDuration(settlementDurationDTO);
+                settlementDurationSeq = settlementDurationDTO.getSettlementDurationSeq();
+
+                log.info(String.valueOf(settlementDurationSeq));
+
+            } else if (benefitMapper.selectLastSettlementDate(dto.getCourseNumber()).isAfter(dto.getSettlementDurationStartDate()) || benefitMapper.selectLastSettlementDate(dto.getCourseNumber()).isEqual(dto.getSettlementDurationStartDate())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 기수의 정산 대상 기간이 아닙니다.");
+
+            }
+
+            // 지원금 정산 대상 가져오기
+            ArrayList<BenefitTargetDTO> targetList = (ArrayList<BenefitTargetDTO>)
+                    benefitMapper.selectBenefitTarget(
+                            dto.getAcademyLocation(),
+                            dto.getSettlementDurationStartDate(),
+                            dto.getSettlementDurationEndDate(),
+                            dto.getCourseNumber(),
+                            dto.getName(),
+                            null, null);
+            log.info("정산 대상 = {}", targetList);
+
+            // 정산 금액 입력
+            for (BenefitTargetDTO targetInfo : targetList) {
+                benefitMapper.insertBenefitSettlementAmount(BenefitDTO.builder()
+                        .trainingAidAmount(trainingAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
+                        .mealAidAmount(mealAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
+                        .settlementAidAmount(settlementAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
+                        .studentId(targetInfo.getStudentId())
+                        .settlementDurationSeq(settlementDurationSeq)
+                        .build());
+            }
+
+        } catch (ResponseStatusException e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e);
         }
+
     }
 
     @Override
@@ -74,7 +99,6 @@ public class BenefitServiceImpl implements BenefitService {
     @Override
     public List<BenefitTargetInfoDTO> getBenefitTargetList(BenefitTargetInfoDTO dto) {
         try {
-
             List<BenefitTargetDTO> targetList = (ArrayList<BenefitTargetDTO>) benefitMapper.selectBenefitTarget(
                     dto.getAcademyLocation(),
                     dto.getSettlementDurationStartDate(),
@@ -115,13 +139,14 @@ public class BenefitServiceImpl implements BenefitService {
 
             }
 
-            if (benefitMapper.selectLastSettlementDate(dto.getCourseNumber()).isAfter(dto.getSettlementDurationStartDate()) || benefitMapper.selectLastSettlementDate(dto.getCourseNumber()).isEqual(dto.getSettlementDurationEndDate())) {
+            if (benefitMapper.selectLastSettlementDate(dto.getCourseNumber()).isAfter(dto.getSettlementDurationStartDate()) || benefitMapper.selectLastSettlementDate(dto.getCourseNumber()).isEqual(dto.getSettlementDurationStartDate())) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 기수의 정산 대상 기간이 아닙니다.");
 
             }
 
             return benefitTargetList;
         } catch (ResponseStatusException e) {
+            log.error(e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -154,13 +179,27 @@ public class BenefitServiceImpl implements BenefitService {
 
     @Override
     public int countBenefitSettlement(BenefitTargetInfoDTO dto) {
+        try {
 
-        return benefitMapper.countSettlementTarget(
-                dto.getAcademyLocation(),
-                dto.getSettlementDurationStartDate(),
-                dto.getSettlementDurationEndDate(),
-                dto.getCourseNumber(),
-                dto.getName());
+            log.info("{}", dto);
+
+            if (benefitMapper.selectLastSettlementDate(dto.getCourseNumber()) == null || !benefitMapper.selectLastSettlementDate(dto.getCourseNumber()).isAfter(dto.getSettlementDurationStartDate())) {
+                return benefitMapper.countSettlementTarget(
+                        dto.getAcademyLocation(),
+                        dto.getSettlementDurationStartDate(),
+                        dto.getSettlementDurationEndDate(),
+                        dto.getCourseNumber(),
+                        dto.getName());
+            } else if (benefitMapper.selectLastSettlementDate(dto.getCourseNumber()).isAfter(dto.getSettlementDurationStartDate()) || benefitMapper.selectLastSettlementDate(dto.getCourseNumber()).isEqual(dto.getSettlementDurationStartDate())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 기수의 정산 대상 기간이 아닙니다.");
+
+            }
+
+        } catch (ResponseStatusException e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return 0;
     }
 
     @Override
