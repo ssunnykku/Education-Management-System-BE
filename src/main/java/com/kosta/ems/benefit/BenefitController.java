@@ -1,8 +1,6 @@
 package com.kosta.ems.benefit;
 
-import com.kosta.ems.benefit.dto.BenefitSettlementResultDTO;
 import com.kosta.ems.benefit.dto.BenefitTargetInfoDTO;
-import com.kosta.ems.exception.ErrorResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +15,6 @@ import java.util.Map;
 @RequestMapping("/benefits")
 @RequiredArgsConstructor
 @Slf4j
-@RestControllerAdvice
 public class BenefitController {
 
     private final BenefitService benefitService;
@@ -46,11 +43,11 @@ public class BenefitController {
     }
 
     @PostMapping("/result")
-    public ResponseEntity<Map<String, ArrayList<BenefitSettlementResultDTO>>> getBenefitSettlementResult(@RequestBody BenefitTargetInfoDTO dto, @RequestParam int page) {
+    public ResponseEntity<Map<String, ArrayList<BenefitTargetInfoDTO>>> getBenefitSettlementResult(@RequestBody BenefitTargetInfoDTO dto, @RequestParam int page) {
         dto.setAcademyLocation("가산");
         dto.setManagerId("d893bf71-2f8f-11ef-b0b2-0206f94be675");
 
-        return ResponseEntity.ok(Map.of("result", (ArrayList<BenefitSettlementResultDTO>) benefitService.getBenefitSettlementResult(dto, page, 10)));
+        return ResponseEntity.ok(Map.of("result", (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitSettlementResult(dto, page, 10)));
     }
 
     @PostMapping("/count")

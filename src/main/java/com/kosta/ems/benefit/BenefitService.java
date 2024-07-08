@@ -1,7 +1,5 @@
 package com.kosta.ems.benefit;
 
-import com.kosta.ems.benefit.dto.BenefitSettlementReqDTO;
-import com.kosta.ems.benefit.dto.BenefitSettlementResultDTO;
 import com.kosta.ems.benefit.dto.BenefitTargetInfoDTO;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +13,7 @@ public interface BenefitService {
 
     void setBenefitSettlement(BenefitTargetInfoDTO benefitTargetInfoDTO);
 
-    Collection<BenefitSettlementResultDTO> getBenefitSettlementResult(BenefitTargetInfoDTO benefitTargetInfoDTO, int page, int size);
+    Collection<BenefitTargetInfoDTO> getBenefitSettlementResult(BenefitTargetInfoDTO benefitTargetInfoDTO, int page, int size);
 
     int countBenefitSettlement(BenefitTargetInfoDTO dto);
 

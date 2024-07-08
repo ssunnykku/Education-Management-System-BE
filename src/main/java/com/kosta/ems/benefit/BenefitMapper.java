@@ -8,13 +8,13 @@ import java.util.Collection;
 
 @Mapper
 public interface BenefitMapper {
-    Collection<BenefitTargetDTO> selectBenefitTarget(String academyLocation, LocalDate startDate, LocalDate endDate, String courseNumber, String name, Integer limit, Integer offset);
+    Collection<BenefitTargetInfoDTO> selectBenefitTarget(String academyLocation, LocalDate startDate, LocalDate endDate, String courseNumber, String name, Integer limit, Integer offset);
 
     void insertBenefitSettlementDuration(SettlementDurationDTO settlementDurationDTO);
 
     void insertBenefitSettlementAmount(BenefitDTO benefitDTO);
 
-    Collection<BenefitSettlementResultDTO> selectBenefitSettlementResult(String academyLocation, String name, String courseNumber, LocalDate benefitSettlementDate, int limit, int offset);
+    Collection<BenefitTargetInfoDTO> selectBenefitSettlementResult(String academyLocation, String name, String courseNumber, LocalDate benefitSettlementDate, int limit, int offset);
 
     int countSettlementTarget(String academyLocation, LocalDate startDate, LocalDate endDate, String courseNumber, String name);
 

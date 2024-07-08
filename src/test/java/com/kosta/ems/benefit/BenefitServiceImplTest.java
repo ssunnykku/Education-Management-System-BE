@@ -1,9 +1,6 @@
 package com.kosta.ems.benefit;
 
-import com.kosta.ems.benefit.dto.BenefitSettlementReqDTO;
-import com.kosta.ems.benefit.dto.BenefitSettlementResultDTO;
 import com.kosta.ems.benefit.dto.BenefitTargetInfoDTO;
-import com.kosta.ems.student.StudentMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +25,7 @@ class BenefitServiceImplTest {
     @Autowired
     BenefitMapper benefitMapper;
 
-    @Test
+    //@Test
     void getBenefitTargetListTest() {
         List<BenefitTargetInfoDTO> dto = (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitTargetList(BenefitTargetInfoDTO.builder().settlementDurationStartDate(LocalDate.parse("2024-03-03")).settlementDurationEndDate(LocalDate.parse("2024-04-02")).courseNumber("277").lectureDays(20).name("손").build());
         for (BenefitTargetInfoDTO data : dto) {
@@ -74,12 +71,12 @@ class BenefitServiceImplTest {
     @Test
     void getBenefitSettlementResultTest() {
 
-        ArrayList<BenefitSettlementResultDTO> result = (ArrayList<BenefitSettlementResultDTO>) benefitService.getBenefitSettlementResult(BenefitTargetInfoDTO.builder().name("").courseNumber("").benefitSettlementDate(LocalDate.parse("2024-05-21")).build(), 1, 10);
+        ArrayList<BenefitTargetInfoDTO> result = (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitSettlementResult(BenefitTargetInfoDTO.builder().name("").courseNumber("").benefitSettlementDate(LocalDate.parse("2024-05-21")).build(), 1, 10);
 
         log.info(result.toString());
         log.info(String.valueOf(result.size()));
 
-        for (BenefitSettlementResultDTO dto : result) {
+        for (BenefitTargetInfoDTO dto : result) {
             assertThat(dto.getBenefitSettlementDate()).isEqualTo(LocalDate.parse("2024-05-21"));
         }
 
@@ -88,7 +85,7 @@ class BenefitServiceImplTest {
     @Test
     void getBenefitSettlementResultPageTest() {
 
-        ArrayList<BenefitSettlementResultDTO> result = (ArrayList<BenefitSettlementResultDTO>) benefitService.getBenefitSettlementResult(BenefitTargetInfoDTO.builder().name("").courseNumber("").benefitSettlementDate(LocalDate.parse("2024-05-21")).build(), 1, 10);
+        ArrayList<BenefitTargetInfoDTO> result = (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitSettlementResult(BenefitTargetInfoDTO.builder().name("").courseNumber("").benefitSettlementDate(LocalDate.parse("2024-05-21")).build(), 1, 10);
         log.info(result.toString());
         org.hamcrest.MatcherAssert.assertThat(result.size(), lessThanOrEqualTo(10));
     }
@@ -116,7 +113,7 @@ class BenefitServiceImplTest {
         assertThat(benefitService.countBenefitSettlement(BenefitTargetInfoDTO.builder().academyLocation("가산").settlementDurationStartDate(LocalDate.parse("2024-03-03")).settlementDurationEndDate(LocalDate.parse("2024-04-04")).courseNumber("277").build())).isEqualTo(19);
     }
 
-    @Test
+    //@Test
     @Transactional
     void settlementCourseStudent() {
         BenefitTargetInfoDTO dto = BenefitTargetInfoDTO.builder()

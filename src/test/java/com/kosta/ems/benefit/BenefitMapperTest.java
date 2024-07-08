@@ -54,8 +54,8 @@ class BenefitMapperTest {
 
     //@Test
     void selectBenefitSettlementResultPageTest() {
-        List<BenefitSettlementResultDTO> dto = (ArrayList<BenefitSettlementResultDTO>) benefitMapper.selectBenefitSettlementResult("가산", "", "", null, 5, 0);
-        for (BenefitSettlementResultDTO d : dto) {
+        List<BenefitTargetInfoDTO> dto = (ArrayList<BenefitTargetInfoDTO>) benefitMapper.selectBenefitSettlementResult("가산", "", "", null, 5, 0);
+        for (BenefitTargetInfoDTO d : dto) {
             log.info(d.getBenefitSettlementDate().toString());
         }
 
@@ -64,9 +64,9 @@ class BenefitMapperTest {
 
     @Test
     void selectBenefitSettlementResultTest() {
-        List<BenefitSettlementResultDTO> dto = (ArrayList<BenefitSettlementResultDTO>) benefitMapper.selectBenefitSettlementResult("가산", "", "227", LocalDate.parse("2024-03-21"), 5, 0);
+        List<BenefitTargetInfoDTO> dto = (ArrayList<BenefitTargetInfoDTO>) benefitMapper.selectBenefitSettlementResult("가산", "", "227", LocalDate.parse("2024-03-21"), 5, 0);
         log.info("크기 {}", dto.size());
-        for (BenefitSettlementResultDTO d : dto) {
+        for (BenefitTargetInfoDTO d : dto) {
             log.info("이거 뭔데 {} ", d);
             assertThat(d.getBenefitSettlementDate()).isEqualTo(LocalDate.parse("2024-03-21"));
         }
@@ -74,8 +74,8 @@ class BenefitMapperTest {
 
     @Test
     void selectBenefitSettlementResultTest2() {
-        List<BenefitSettlementResultDTO> dto = (ArrayList<BenefitSettlementResultDTO>) benefitMapper.selectBenefitSettlementResult("가산", "", "227", LocalDate.parse("2024-03-21"), 5, 0);
-        for (BenefitSettlementResultDTO d : dto) {
+        List<BenefitTargetInfoDTO> dto = (ArrayList<BenefitTargetInfoDTO>) benefitMapper.selectBenefitSettlementResult("가산", "", "227", LocalDate.parse("2024-03-21"), 5, 0);
+        for (BenefitTargetInfoDTO d : dto) {
             assertThat(d.getCourseNumber()).isEqualTo(277);
         }
     }
@@ -116,11 +116,11 @@ class BenefitMapperTest {
         benefitMapper.insertBenefitSettlementDuration(dto);
 
         // 지원금 정산 대상 가져오기
-        List<BenefitTargetDTO> targetList = (ArrayList<BenefitTargetDTO>) benefitMapper.selectBenefitTarget("가산", LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-02"), "277", "", null, null);
+        List<BenefitTargetInfoDTO> targetList = (ArrayList<BenefitTargetInfoDTO>) benefitMapper.selectBenefitTarget("가산", LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-02"), "277", "", null, null);
 
         log.info("정산 대상  {} ", targetList.size());
 
-        for (BenefitTargetDTO targetInfo : targetList) {
+        for (BenefitTargetInfoDTO targetInfo : targetList) {
             log.info("seq {} ", dto.getSettlementDurationSeq());
             benefitMapper.insertBenefitSettlementAmount(BenefitDTO.builder()
                     .settlementAidAmount(benefitServiceImpl.settlementAid(LocalDate.parse("2024-04-03"), LocalDate.parse("2024-05-02"), targetInfo.getStudentId(), 20))
@@ -131,8 +131,8 @@ class BenefitMapperTest {
                     .build());
 
         }
-        List<BenefitSettlementResultDTO> data = (ArrayList<BenefitSettlementResultDTO>) benefitMapper.selectBenefitSettlementResult("가산", "", "277", LocalDate.parse(dateFormat.format(today)), 30, 0);
-        for (BenefitSettlementResultDTO d : data) {
+        List<BenefitTargetInfoDTO> data = (ArrayList<BenefitTargetInfoDTO>) benefitMapper.selectBenefitSettlementResult("가산", "", "277", LocalDate.parse(dateFormat.format(today)), 30, 0);
+        for (BenefitTargetInfoDTO d : data) {
             log.info("이름 출력 {} ", d);
         }
 
@@ -148,9 +148,4 @@ class BenefitMapperTest {
 
     }
 
-    @Test
-    void selectDurationSeqTest() {
-        log.info("{}", benefitMapper.selectDurationSeq(19));
-
-    }
 }

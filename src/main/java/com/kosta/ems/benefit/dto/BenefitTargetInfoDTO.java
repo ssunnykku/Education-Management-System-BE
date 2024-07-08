@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Setter
 @ToString
 public class BenefitTargetInfoDTO {
-    private int courseSeq;
+    private Integer courseSeq;
     private String managerId;
     private String courseNumber;
     private String courseName;
@@ -22,14 +22,20 @@ public class BenefitTargetInfoDTO {
     private String hrdNetId;
     private String bank;
     private String account;
-    private int settlementAidAmount;
-    private int trainingAidAmount;
-    private int mealAidAmount;
+    private Integer settlementAidAmount;
+    private Integer trainingAidAmount;
+    private Integer mealAidAmount;
     /**/
     private String academyLocation;
     private LocalDate settlementDurationStartDate;
     private LocalDate settlementDurationEndDate;
-    private int settlementDurationSeq;
-    private int lectureDays;
+    private Integer settlementDurationSeq;
+    private Integer lectureDays;
     private LocalDate benefitSettlementDate;
+
+    /**/
+    private Integer totalAmount;
+    private int benefitSeq;
+
+
 }

@@ -62,6 +62,7 @@ async function fetchSettlementTarget() {
     function getSettlementData(dataList) {
         let result = '';
         for (let i = 0; i < dataList.length; i++) {
+
             result += `<div class="board-row">
                 <div class="benefitSettlement-checkbox">
                     <span>${i + 1}</span>
@@ -91,7 +92,7 @@ async function fetchSettlementTarget() {
                     <span>${dataList[i].settlementAidAmount}</span>
                 </div>
                 <div class="benefitSettlement-total-amount">
-                    <span>${dataList[i].settlementAidAmount + dataList[i].mealAidAmount + dataList[i].trainingAidAmount}</span>
+                    <span>${dataList[i].totalAmount}</span>
                 </div>
             </div>`;
 

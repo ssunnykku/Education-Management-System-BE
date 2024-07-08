@@ -43,7 +43,7 @@
         from view_students_course_scholarship_settlement_Date
         where student_id = s.student_id
           and course_seq = sc.course_seq) is null
-        ORDER BY name
+        ORDER BY c.course_number desc, name
         limit #{limit} offset #{offset}
     </select>
 
