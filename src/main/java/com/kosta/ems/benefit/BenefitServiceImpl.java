@@ -70,13 +70,20 @@ public class BenefitServiceImpl implements BenefitService {
 
         // 정산 금액 입력
         for (BenefitTargetDTO targetInfo : targetList) {
-            benefitMapper.insertBenefitSettlementAmount(BenefitDTO.builder()
-                    .trainingAidAmount(trainingAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
-                    .mealAidAmount(mealAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
-                    .settlementAidAmount(settlementAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
-                    .studentId(targetInfo.getStudentId())
-                    .settlementDurationSeq(settlementDurationSeq)
-                    .build());
+
+            int settlementAidAmount = settlementAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays());
+            int trainingAidAmount = trainingAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays());
+            int mealAidAmount = mealAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays());
+
+            if (settlementAidAmount + trainingAidAmount + mealAidAmount > 0) {
+                benefitMapper.insertBenefitSettlementAmount(BenefitDTO.builder()
+                        .trainingAidAmount(trainingAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
+                        .mealAidAmount(mealAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
+                        .settlementAidAmount(settlementAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
+                        .studentId(targetInfo.getStudentId())
+                        .settlementDurationSeq(settlementDurationSeq)
+                        .build());
+            }
         }
 
     }
@@ -123,16 +130,15 @@ public class BenefitServiceImpl implements BenefitService {
                             .hrdNetId(targetInfo.getHrdNetId())
                             .bank(targetInfo.getBank())
                             .account(targetInfo.getAccount())
-                            .settlementAidAmount(settlementAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
-                            .trainingAidAmount(trainingAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
-                            .mealAidAmount(mealAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
+                            .settlementAidAmount(settlementAidAmount)
+                            .trainingAidAmount(trainingAidAmount)
+                            .mealAidAmount(mealAidAmount)
                             .settlementDurationStartDate(dto.getSettlementDurationStartDate())
                             .settlementDurationEndDate(dto.getSettlementDurationEndDate())
                             .lectureDays(dto.getLectureDays())
                             .build();
                     benefitTargetList.add(data);
                 }
-                int countTarget = benefitTargetList.size();
 
             }
 
