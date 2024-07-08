@@ -63,7 +63,7 @@
     border-radius: 8px;
     position: relative;
    right: 10px;
-   margin-left:380px;
+   margin-left: 240px;
   top: 40%; 
   display: flex;
   flex-direction: row;
@@ -142,7 +142,8 @@
     text-align: center;
 }
 #notification-table {
-  width: 100%;
+  width: 90%;
+  margin: 0 auto;
   padding: 0 100px 0 100px;
 }
 
@@ -161,24 +162,24 @@
     border-radius: 10px 10px 0px 0px;
 }
 
-
-.notificationBoard-no {
-    width: 5%;
+#notificationBoard-title.notificationBoard-title {
+  font-weight: 600;
 }
 
+
 .notificationBoard-title {
-    width: 10%;
+    width: 300px;
 }
 
 .notificationBoard-enroll-date {
-    width: 7%;
+    width: 100px;
 }
 
 .notificationBoard-writer {
-    width: 7%;
+    width: 100px;
 }
 .notificaitionBoard-view-count {
-	width: 7%;
+	width: 100px;
 }
 /************page*********/
 #notificationBoard-pagenation-section {
@@ -259,16 +260,22 @@ footer {
     display: flex;
     width: 100%;
     flex-direction: column;
+    line-height: 1.5;
 }
-
-.notificationPost-title > span {
-    font-size: 17px;
+.notification-title{
+	  float: left;
+}
+.notificationPost-title  {
+    font-size: 25px;
+    font-weight: 500;
+     text-align: left;
 }
 
 .notificationPost-contents {
+    width: 50%;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    align-items: center;
     padding: 30px 0 30px 0;
     gap: 30px;
 }
@@ -327,12 +334,14 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    row-gap: 100px;
+    row-gap: 40px;
+    line-height: 1.8;
 }
 
-.notificationPost-content > pre {
+.notificationPost-content {
     width: 100%;
-    font-size: 16.5px;
+    font-size: 16px;
+    font-weight: 500;
 }
 
 #notificationPost-btn-wrapper {
@@ -342,6 +351,7 @@ footer {
     gap: 10px;
     align-items: center;
     padding-top: 120px;
+    justify-content: center;
 }
 
 .btn-setting {
@@ -363,16 +373,54 @@ footer {
 }
 .is-writer {
   display: block; /* Initially show both buttons */
+  
 }
 
 .is-writer:not([data-same-button="true"]) {
   display: none; /* Hide buttons with data-show-button attribute set to false */
 }
-
+#btn-edit{
+	font-weight: 600;
+    color: rgb(64, 64, 64);
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+}
 #enroll-btn {
     color: #ffffff;
     background-color: rgb(64, 64, 64);
     border-radius: 8px;
+}
+/* 기본 버튼 스타일 */
+.button {
+  display: inline-block;
+  padding: 10px 15px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: sans-serif;
+}
+
+/* 모든 버튼에 대한 마우스 오버 효과 */
+.button:hover {
+  background-color: #eee;
+}
+
+/* 개별 버튼 스타일 */
+#notificationPost-btn-wrapper#back-btn {
+  background-color: #007bff;
+  color: #fff;
+}
+
+#notificationPost-btn-wrapper >div #btn-edit {
+  background-color: #28a745;
+  color: #fff;
+}
+
+#notificationPost-btn-wrapper >div #delete-btn {
+  background-color: #dc3545;
+  color: #fff;
 }
 
 #edit-btn, #delete-btn, #cancel-btn {
@@ -402,10 +450,14 @@ footer {
 
 .setNotification-title-wrapper {
     display: flex;
-    justify-content: space-between;
     height: 40px;
     width: 100%;
     margin-bottom: 20px;
+  /*   padding: 0 45px; */
+  	flex-direction: row;
+    justify-content: center;
+    gap: 14px;
+   
 }
 
 .setNotification-title-wrapper > h3 {
@@ -483,6 +535,7 @@ footer {
     background: #ffffff;
     border: 1px solid #cfcfcf;
     border-radius: 10px;
+     padding: 20px
 }
 
 /*  setNotification button */

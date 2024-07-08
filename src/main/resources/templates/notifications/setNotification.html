@@ -16,7 +16,6 @@
 </section>
 <section id="setNotifications-section">
     <article class="setNotification-contents">
-        <div class="setNotification-set-wrapper">
             <div class="setNotification-title-wrapper">
             <div id="title-item">
                 <h3>제목</h3>
@@ -25,7 +24,6 @@
                     <input name="title" id="title-input"/>
                 </div>
             </div>
-        </div>
         <div class="setNotification-input-wrapper">
         <div id="content-item">
         	<h3>내용</h3>
@@ -60,6 +58,12 @@
 		.then(location.href = "/ems/notifications")
 		
 	}
+	
+	
+	$("#delete-btn").on("click", function(){
+	location.href = "/ems/notifications";
+	})
+	
 	</script>
 </body>
 </html>

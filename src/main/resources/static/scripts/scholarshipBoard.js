@@ -84,6 +84,7 @@ $(".board-filter-search-btn").click(async function () {
             // const countPage = Math.ceil(data.result / 10);
             // const countPage = 12;  // Example total pages
             totalPages = Math.ceil(data.result / 10);
+            console.log(totalPages);
 
             updatePagination();
         })
