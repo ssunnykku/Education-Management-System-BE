@@ -98,6 +98,9 @@ async function fetchSettlementTarget() {
         }
         $("#benefit-table-contents").html("");
         $("#benefit-table-contents").append(result);
+
+        $(".benefit-cnt-pages").html("");
+        $(".benefit-cnt-pages").append(`<span> 총 ${dataList.length}건 </span>`);
     }
 
     function handleError(message) {
@@ -121,37 +124,6 @@ async function fetchSettlementTarget() {
         .catch((error) => console.error(error));
 
 
-}
-
-function fetchCountTarget() {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    const raw = JSON.stringify({
-        "settlementDurationStartDate": getStartDate(),
-        "settlementDurationEndDate": getEndDate(),
-        "courseNumber": courseNumber(),
-        "lectureDays": getLectureDays(),
-        "name": ""
-    });
-
-    const requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-    };
-
-    fetch("/benefits/count", requestOptions)
-        .then((res) => res.json())
-        .then((data) => {
-            if (data.error) {
-                handleError(data.message);
-            }
-            
-            $(".benefit-cnt-pages").html("");
-            $(".benefit-cnt-pages").append(`<span> 총 ${data.result}건 </span>`);
-        })
-        .catch((error) => console.error(error));
 }
 
 function fetchSettlement(data) {
@@ -186,7 +158,6 @@ function fetchSettlement(data) {
 $(".filter-search-btn").click(async () => {
     $("#error").html("");
     await fetchSettlementTarget();
-    await fetchCountTarget();
 
 })
 
