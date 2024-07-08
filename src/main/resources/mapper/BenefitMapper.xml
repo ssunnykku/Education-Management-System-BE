@@ -22,7 +22,7 @@
         AND c.is_active = 'T'
         AND s.is_active = 'T'
         AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
-        ORDER BY name desc
+        ORDER BY name
         <if test="limit != null and offset != null">
             limit #{limit} offset #{offset}
         </if>
@@ -74,7 +74,7 @@
           AND c.academy_location = #{academyLocation}
           AND c.is_active = 'T'
           AND s.is_active = 'T'
-        ORDER BY s.name desc
+        ORDER BY b.benefit_settlement_date desc, sd.settlement_duration_start_date desc, s.name
         limit #{limit} offset #{offset}
     </select>
 
@@ -123,5 +123,5 @@
                  inner join courses c on sd.course_seq = c.course_seq
         where sd.course_seq = #{courseSeq};
     </select>
-    
+
 </mapper>

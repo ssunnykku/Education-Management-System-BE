@@ -152,10 +152,13 @@ function fetchSettlement(data) {
                 handleError(data.message);
                 return Promise.reject(new Error(data.message));
             }
-        }).then(() => {
-        alert("정산이 완료되었습니다.")
-        location.href = "/ems/benefits";
-    })
+            if (data.result) {
+                alert("정산이 완료되었습니다.")
+                location.href = "/ems/benefits";
+            } else {
+                alert("정산에 실패했습니다.")
+            }
+        })
         .catch((error) => console.error(error));
 }
 

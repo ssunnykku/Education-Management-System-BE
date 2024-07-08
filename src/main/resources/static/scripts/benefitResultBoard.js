@@ -102,15 +102,16 @@ function fetchResultData(page) {
         .then((res) => res.json())
         .then(async (data) => {
             const dataList = data.result;
-            await getResultData(dataList);
+
+            await getResultData(dataList)
+
         })
         .catch((error) => console.error(error));
 }
 
 $(".filter-search-btn").click(async () => {
-    await fetchResultData(1);
     await getCountData();
-
+    await fetchResultData(1);
 })
 
 /*pagenation*/
@@ -164,11 +165,20 @@ function getCountData() {
     fetch("/benefits/result/count", requestOptions)
         .then((res) => res.json())
         .then((data) => {
-            $(".benefitResult-cnt-pages").html(`<span>총 ${data.result}건</span>`);
 
-            totalPages = Math.ceil(data.result / 10);
+            if (data.result === 0) {
+                $("#result-contents").html("");
+                $("#result-contents").append(`
+                        <div style="width: 100%; text-align: center; height: 100px; display: flex; flex-direction: column; justify-content: center">
+                        <span style="color: red; font-size: 16px">데이터를 찾을 수 없습니다.</span>
+                        </div>`);
+            } else {
+                $(".benefitResult-cnt-pages").html(`<span>총 ${data.result}건</span>`);
+                totalPages = Math.ceil(data.result / 10);
+                updatePagination();
+            }
 
-            updatePagination();
+
         })
         .catch((error) => console.error(error));
 }
