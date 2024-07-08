@@ -49,7 +49,6 @@ function searchInput() {
 }
 
 function courseNumber() {
-    // console.log($(".scholarship-courseId-filter option:selected").text());
     return $(".scholarship-courseId-filter option:selected").text();
 }
 

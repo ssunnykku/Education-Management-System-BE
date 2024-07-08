@@ -14,50 +14,51 @@
 <section>
     <article class="benefit-settlement-search-btn-wrapper">
         <div class="benefit-settlement-filter_search_wrapper">
-            <div id="benefit-settlement-input-wrapper">
-                <div class="benefit-settlement-duration" id="settlement-start-date">
-                    <!--                    <label for="settlement-start-date" class="settlement-date-label">정산 시작일</label>-->
-                    <input type="date" class="settlement-date" id="start-date"
-                           data-placeholder="정산 시작일"
-                           required
-                           aria-required="true">
+            <div id="settlement-filter-wrapper">
+                <div id="filter-and-btn-wrapper">
+                    <div id="benefit-settlement-input-wrapper">
+                        <div class="benefit-settlement-duration" id="settlement-start-date">
+                            <!--                    <label for="settlement-start-date" class="settlement-date-label">정산 시작일</label>-->
+                            <input type="date" class="settlement-date" id="start-date"
+                                   data-placeholder="정산 시작일"
+                                   required
+                                   aria-required="true">
+                        </div>
+                        <div class="benefit-settlement-duration" id="settlement-end-date">
+                            <input type="date" class="settlement-date" id="end-date"
+                                   data-placeholder="정산 종료일"
+                                   required
+                                   aria-required="true">
+                        </div>
+                        <div class="benefit-settlement-date">
+                            <input type="text" placeholder="강의일수" id="lecture-days">
+                        </div>
+                        <select name="" class="courseId-filter">
+                            <option value="none">기수</option>
+                        </select>
+                        <button type="button" class="filter-search-btn">검색</button>
+                    </div>
                 </div>
-                <div class="benefit-settlement-duration" id="settlement-end-date">
-                    <input type="date" class="settlement-date" id="end-date"
-                           data-placeholder="정산 종료일"
-                           required
-                           aria-required="true">
+                <div class="btn-wrapper">
+                    <button type="button" id="settlement-btn" class="btn-setting">
+                        정산
+                    </button>
                 </div>
-                <div class="benefit-settlement-date">
-                    <!--                    <label for="lecture-days" class="settlement-date-label">강의일수</label>-->
-                    <input type="text" placeholder="강의일수" id="lecture-days">
-                </div>
-            </div>
-            <div class="search-form-wrapper">
-                <select name="" class="courseId-filter">
-                    <option value="none">기수</option>
 
-                </select>
-                <input placeholder="수강생을 입력하세요" class="search-input"/>
-                <button type="button" class="filter-search-btn">검색</button>
             </div>
-        </div>
-        <div class="btn-wrapper">
-            <button type="button" id="settlement-btn" class="btn-setting">
-                정산
-            </button>
+            <div id="error"></div>
         </div>
     </article>
-    <section>
-        <article class="page-information">
-            <div class="benefit-cnt-pages">
-            </div>
-        </article>
+</section>
+<section>
+    <article class="page-information">
+        <div class="benefit-cnt-pages">
+        </div>
+    </article>
     <article>
-        <div class="board-table">
+        <div>
             <div class="board-row" id="board-title-row">
                 <div class="benefitSettlement-checkbox">
-                    <input type="checkbox" name=""/>
                 </div>
                 <div class="benefitSettlement-courseId">
                     <span>기수</span>
@@ -94,6 +95,7 @@
             </div>
         </div>
     </article>
+</section>
 <footer></footer>
 <script type="text/javascript" th:src="@{/scripts/benefitBoard.js}"></script>
 
