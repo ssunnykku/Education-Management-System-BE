@@ -26,12 +26,9 @@
         <button id="notification-enroll-btn" class="btn-setting">글 등록</button>
       </div>
     </article>
-    <article>
+    <article >
       <div id="notification-table">
         <div class="notification-row" id="notification-title-row">
-          <div class="notificationBoard-no">
-            <span>NO</span>
-          </div>
           <div class="notificationBoard-title">
             <span>제목</span>
           </div>
@@ -109,9 +106,6 @@
       let result = '';
       for (let i = 0; i < data.length; i++) {
         result += `<div class="notification-row">
-      <div class="notificationBoard-no" id="notificationBoard-no">
-        <span>${data[i].notificationSeq}</span>
-      </div>
       <div class="notificationBoard-title" id="notificationBoard-title">
     <a href="/ems/notification?notificationSeq=${data[i].notificationSeq}">${data[i].title}</a> 
       </div>

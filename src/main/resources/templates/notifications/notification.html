@@ -16,26 +16,21 @@
 </section>
 <section id="notificationPost-section">
     <article class="notificationPost-contents">
+    <div class="notification-title">
         <div id="notification-row" class="underline">
-            <div class="notificationPost-no">
-             <!--  <span th:text="${notification.notificationSeq}"></span>-->
-            </div>
             <div class="notificationPost-title">
-            <!--    <span th:text="${notification.title}"></span>-->
             </div>
             <div class="notificationPost-enroll-date">
-            <!--    <span th:text="${notification.formattedNotificationDate}"></span>-->
             </div>
+        </div>
         </div>
         <div id="notification-contents">
             <div class="writer">
                 <span>작성자 :</span>
                 <span class="notification-writer">
-        <!--        <span th:text="${notification.name}"></span>-->
             </div>
             <div class="notificationPost-content">
                 <p>
-           <!--        <span th:text="${notification.description}">-->
                 </p>
             </div>
         </div>
@@ -66,11 +61,10 @@
     let notificationSeq=data.notificationSeq;
     let notificationTitle = data.title;
     let notificationContent = data.description;
-    let notificationDate = data.notificationDate;
+    let notificationDate = data.formattedNotificationDate;
     let name=data.name;
     let sameWriter=data.sameWriter;
 
-    document.querySelector('.notificationPost-no').textContent = notificationSeq;
     document.querySelector('.notificationPost-title').textContent = notificationTitle;
     document.querySelector('.notificationPost-content').textContent = notificationContent;
     // Update the date element if needed (assuming 'notificationPost-enroll-date' is for the date)
