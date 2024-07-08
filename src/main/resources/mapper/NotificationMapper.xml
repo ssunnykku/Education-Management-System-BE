@@ -14,7 +14,7 @@
 	</select>
 	
 	<select id="selectByKeyword" resultType="com.kosta.ems.notification.NotificationDTO">
-	SELECT n.notification_seq AS notificationSeq,m.manager_id As managerId,n.title,n.description,n.notification_date AS notificationDate,m.Name,n.is_active AS isActive,n.view_count AS viewCount   
+	SELECT n.notification_seq AS notificationSeq,m.manager_id As managerId, n.title,n.description,n.created_at AS notificationDate,m.NAME,n.is_active AS isActive,n.view_count AS viewCount
 FROM notifications n 
 LEFT JOIN managers m ON n.manager_id = m.manager_id 
 WHERE n.is_active='T' AND m.academy_location=(SELECT academy_location 
