@@ -33,6 +33,10 @@ public class EmploymentDTO{
     @Column(name="employment_company", nullable = false)
     private String company;
     
+    
+    @Column(name="employment_memo", nullable = true)
+    private String memo;
+    
     @Column(name="student_course_seq", nullable = false)
     private int sCSeq;
     
