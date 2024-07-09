@@ -12,14 +12,14 @@
                phone_number         as phoneNumber,
                email,
                gender,
-               manager_id           as managerId,
-               is_active            as isActive,
+               s.manager_id           as managerId,
+               s.is_active            as isActive,
                c.student_course_seq as studentCourseSeq,
                c.course_seq         as courseSeq
         from students s
                  left join students_courses c on s.student_id = c.student_id
         where s.name = '%' + #{name} + '%'
-          and is_active = 'T']]>
+          and s.is_active = true
     </select>
     <!-- 수강생 정보 -->
     <select id="findByStudentNumberOrCourseNumberAll" resultType="int">
@@ -139,7 +139,7 @@
     <!--선택한 수강생 삭제(isActive -> F)-->
     <update id="deleteSelectedStudent">
         UPDATE students
-        SET is_active='F'
+        SET is_active=false
         WHERE student_id = #{studentId};
     </update>
 
@@ -161,8 +161,8 @@
                phone_number AS phoneNumber,
                email,
                gender,
-               manager_id   AS managerId,
-               is_active    AS isActive
+               s.manager_id   AS managerId,
+               s.is_active    AS isActive
         FROM students s,
              students_courses sc
         WHERE sc.student_course_seq = #{scq}
