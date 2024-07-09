@@ -26,6 +26,11 @@ public class EmploymentService {
     private final StudentMapper studentMapper;
     private final CourseMapper courseMapper;
     
+    public List<EmploymentInfoResponse> getEmploymentInfoByCourseNumber(int courseNumber, int page, int pageSize){
+        CourseDTO course = courseMapper.getCourseByCourseNumber(courseNumber);
+        return getEmploymentInfoByCourseSeq(course.getCourseSeq(), page, pageSize);
+    }
+    
     //TODO: pageable 기능 구현하기
     public List<EmploymentInfoResponse> getEmploymentInfoByCourseSeq(int courseSeq, int page, int pageSize){
         List<EmploymentInfoResponse> result = new ArrayList<>();

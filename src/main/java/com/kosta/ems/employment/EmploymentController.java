@@ -39,9 +39,9 @@ public class EmploymentController {
     @GetMapping("/info-list")
     public Map getMethodName(@RequestParam(value = "page",    defaultValue = "1"   ) int page,
             @RequestParam(value = "pageSize",       defaultValue = "10"  ) int pageSize,
-            @RequestParam int courseSeq) {
-    	log.info(service.getEmploymentInfoByCourseSeq(courseSeq, page, pageSize).toString());
-        return Map.of("result", service.getEmploymentInfoByCourseSeq(courseSeq, page, pageSize), "total", studentCourseService.countByCourseSeq(courseSeq));
+            @RequestParam int courseNumber) {
+    	log.info(service.getEmploymentInfoByCourseSeq(courseNumber, page, pageSize).toString());
+        return Map.of("result", service.getEmploymentInfoByCourseSeq(courseNumber, page, pageSize), "total", studentCourseService.countByCourseSeq(courseNumber));
     }
     
     @GetMapping("/avg-rate")
