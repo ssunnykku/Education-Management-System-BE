@@ -24,7 +24,6 @@ public interface AttendanceMapper {
 
     // [출결 조회] - 수강생 출석 조회 목록 조회
     // 경우1 _ 기수+수강생명 입력
-    // Collection<StudentAttendanceListDTO> selectAttendanceIntegratedListFilterAll(String name, int courseNumber, int page, int size);
     List<StudentAttendanceListDTO> selectAttendanceIntegratedListFilterAll(String name, int courseNumber, int page, int size);
     // 경우2_ 기수 또는 수강생명 입력
     List<StudentAttendanceListDTO> selectAttendanceIntegratedListFilter(String name, int courseNumber, int page, int size);
@@ -57,7 +56,6 @@ public interface AttendanceMapper {
 
 
     // [출결 수정] - 선택한 수강생 출석 상태 수정
-    // void updateStudentAttendance(UpdateStudentAttendanceStatusDTO dto);
     int updateStudentAttendance(UpdateStudentAttendanceStatusDTO dto);
 
     // [출결 등록]

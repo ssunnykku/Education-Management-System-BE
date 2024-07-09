@@ -41,7 +41,6 @@ public class AttendanceController {
 		log.info(">> -- courseNumber: " + dto.getCourseNumber());
 		log.info(">> -- name: " + dto.getName());
 		log.info(">> -- page: " + page);
-		// log.info(">> -- pageInfo: " + pageRequest.toString());
 
 		if(!dto.getName().equals("none") && dto.getCourseNumber() != -1) {
 			// 기수, 수강생명 모두 입력해 검색
@@ -72,7 +71,6 @@ public class AttendanceController {
 
 		// 페이징 response
 		int totalPage = (totalCount/size) + 1;
-		// int currentPage = pageRequest.getCurrentPage();
 		int currentPage = 1;
 		int prevPage = 0;
 		int nextPage = 0;
@@ -96,22 +94,14 @@ public class AttendanceController {
 	// [출결] - 출결 검색(조건: 날짜, 기수, 수강생명) 데이터 목록 가져오기 -- POSTMAN 테스트 완료
 	@PostMapping("/search-list")
 	public Map<String, Object> getFilteredAttendanceList(@RequestParam(name="page", required = false, defaultValue = "1") int page, @RequestBody RequestStudentAttendanceDTO dto) {
-	// public Map<String, Object> getFilteredAttendanceList(@RequestBody Map<String, Object> request) {
 		Map<String, Object> result = new HashMap<String, Object>();
-
-		// request JSON 분리 (pageRequest, attendanceRequest)
-		// Map<String, Object> pageRequest = (Map<String, Object>) request.get("pageRequest");
-		// Map<String, Object> attendanceRequest = (Map<String, Object>) request.get("attendanceRequest");
 
 		int size = 10;
 
 		// 검색 경우(1~3) 파악
-		// int courseNumber = (int) attendanceRequest.get("courseNumber");
-		// String name = (String) attendanceRequest.get("name") == "" ? "none" : (String) attendanceRequest.get("name");
 		int courseNumber = dto.getCourseNumber();
 		String name = dto.getName().equals("") ? "none" : dto.getName();
 		int totalCount = 0;
-		// String academyLocation = dto.getAcademyLocation();
 		String academyLocation = "가산";
 
 		if(courseNumber != -1 && !name.equals("none")) {
@@ -139,7 +129,6 @@ public class AttendanceController {
 
 		// 페이징 response
 		int totalPage = (totalCount/size) + 1;
-		// int currentPage = (int)pageRequest.get("currentPage");
 		int currentPage = 1;
 		int prevPage = 0;
 		int nextPage = 0;

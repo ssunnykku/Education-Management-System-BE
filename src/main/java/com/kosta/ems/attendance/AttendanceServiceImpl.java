@@ -62,16 +62,6 @@ public class AttendanceServiceImpl implements AttendanceService {
     public List<StudentAttendanceListDTO> getAttendanceIntegratedListNoFilter(String name, int courseNumber, int page, int size) {
         return attendanceMapper.selectAttendanceIntegratedListNoFilter(name,courseNumber,((page*size)-size),size);
     }
-
-
-
-    /*
-    // [출결] - 수강생 출석 조회 목록 조회
-    @Override
-    public Collection<StudentAttendanceListDTO> getStudentAttendanceList(String name, int courseNumber, int page, int size) {
-    	return attendanceMapper.selectAttendanceIntegratedListFilterAll(name, courseNumber, page, size);
-    }
-    */
     
     // [출결] - 특정일의 수강생 출석 상태 목록 조회 (for 출결 입력/수정)
     // 경우1 _ 기수+수강생명 입력

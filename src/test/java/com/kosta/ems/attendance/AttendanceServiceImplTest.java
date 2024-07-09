@@ -19,15 +19,6 @@ class AttendanceServiceImplTest {
     @Autowired
     AttendanceService attendanceService;
 
-//    @Test
-//    void getAttendanceByStudentIdAndDurationTest() {
-//        List<AttendanceStudentCourseDTO> attendance = (ArrayList<AttendanceStudentCourseDTO>) AttendanceServiceImpl.getAttendanceByStudentIdAndDuration("2024-03-03", "2024-04-04", "efa146c5-2fa7-11ef-b0b2-0206f94be675");
-//
-//        for (AttendanceStudentCourseDTO a : attendance) {
-//            log.info(a.getAttendanceStatus());
-//        }
-//    }
-
     // [출결] - 수강생 출결 조회 목록 데이터 개수 (for 페이지네이션)
     // 경우1: 기수+수강생명 입력
     // @Test // 확인 완료
@@ -69,13 +60,12 @@ class AttendanceServiceImplTest {
     // 검색 결과 개수 가져오기 (for 페이지네이션)
     // @Test
     void selectCourseNumberAndStudentNameListAmount() {
-    	// System.out.println(AttendanceServiceImpl.selectCourseNumberAndStudentNameListAmount("2024-06-21", "가산", "유", 277));
-    	// log.info(Integer.toString(AttendanceServiceImpl.selectCourseNumberAndStudentNameListAmount("2024.06.21", "가산", "유", 277)));
+        log.info(Integer.toString(attendanceService.getCourseNumberAndStudentNameListAmount("2024.06.21", "가산", "유", 277)));
     }
     // 검색 결과 데이터 목록 가져오기
     // @Test
     void selectCourseNumberAndStudentNameList() {
-    	// log.info(AttendanceServiceImpl.selectCourseNumberAndStudentNameList("2024-06-21", "가산", "유", 277, 0, 2).toString());
+    	log.info(attendanceService.getCourseNumberAndStudentNameList("2024-06-21", "가산", "유", 277, 0, 2).toString());
     }
     
     // 경우2 _ 기수 또는 수강생명 입력
@@ -88,7 +78,6 @@ class AttendanceServiceImplTest {
     // @Test
     void selectCourseNumberOrStudentNameList() {
         log.info(attendanceService.getCourseNumberOrStudentNameList("2024-06-21", "가산", "none", 277, 1, 10).toString());
-        // log.info(attendanceService.selectCourseNumberOrStudentNameList("2024-06-21", "가산", "철", -1, 0, 2).toString());
     }
     
     // 경우3 _ 기수+수강생명 미입력
@@ -106,7 +95,6 @@ class AttendanceServiceImplTest {
     // [출결] - 선택한 수강생의 출석 상태 수정
  	// @Test
      void updateStudentAttendance() {
-         // attendanceService.updateStudentAttendance("출석", "2024-06-21", "efa148aa-2fa7-11ef-b0b2-0206f94be675");
          attendanceService.updateStudentAttendance("지각", "2024-06-21", 3);
      }
 

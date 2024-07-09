@@ -84,9 +84,7 @@ td {
 .attendance-status-wrapper {
     display: flex;
     gap: 15px;
-    /*padding-left: 55%;*/
     margin-left: 49%;
-    /*width: 100%;*/
     width: fit-content;
 }
 
@@ -95,7 +93,6 @@ label {
     gap: 10px;
     align-items: center;
     justify-content: center;
-    /*width: fit-content;*/
 }
 
 #combine-update-btn {
