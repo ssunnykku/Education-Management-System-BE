@@ -69,7 +69,7 @@ public class EmpController {
                                  Model model
             , Principal principal) {
         ManagerDTO loginUser = getLoginUser();
-        System.out.println(loginUser);
+
         List<CourseDTO> courseList = courseService.searchCourseList(courseNumber, loginUser.getAcademyLocation(), page,
                 pageSize, excludeExpired);
         Integer totalCourseCount = courseService.getSearchCourseListSize(courseNumber, loginUser.getAcademyLocation(),
@@ -95,9 +95,9 @@ public class EmpController {
 
     private ManagerDTO getLoginUser() {
         ManagerDTO loginUser;
-        if(SECURITY_LEVEL.equals("OFF")) {
+        if (SECURITY_LEVEL.equals("OFF")) {
             loginUser = managerService.findByEmployeeNumber("EMP0001");
-        }else {
+        } else {
             loginUser = (ManagerDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         }
         return loginUser;
