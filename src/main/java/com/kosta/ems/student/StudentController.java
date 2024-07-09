@@ -5,21 +5,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
+@RequestMapping("/students")
+@RequiredArgsConstructor
 public class StudentController {
-	@Autowired
-	private StudentServiceImpl studentServiceImpl;
-	
+	private final StudentService studentService;
+
+	/*
 	// [수강생 정보] - 수강생 정보 조회  _POSTMAN 확인 완료
 	@GetMapping("/students/student-list/{name}/{courseNumber}")
-	// public List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumber(@PathVariable String name, @PathVariable int courseNumber) {
-	public Map<String, Object> getStudentsByNameOrCourseNumber(@PathVariable("name") String name, @PathVariable("courseNumber") int courseNumber, @RequestBody PageRequestDTO pageRequest) {
+	public List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumber(@PathVariable String name, @PathVariable int courseNumber) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		int page = pageRequest.getPage();
 		int size = pageRequest.getSize();
@@ -48,34 +54,83 @@ public class StudentController {
 		
 		return result;
 	}
+	*/
+
+	// [수강생 정보] - 수강생 정보 조회
+	@PostMapping("/student-list")
+	public Map<String, Object> getStudentsByNameOrCourseNumber(@RequestParam(name="page", required = false, defaultValue = "1") int page, @RequestBody AddStudentBasicInfoDTO dto) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		int size = 10;
+		int courseNumber = dto.getCourseNumber();
+		String name = dto.getName().equals("") ? "" : dto.getName();
+
+		int totalCount = studentService.getStudentsByNameOrCourseNumberAmount(name, courseNumber);
+		result.put("amount", totalCount);
+		result.put("studentList", studentService.getStudentsByNameOrCourseNumberList(name, courseNumber, page, size));
+
+		// 페이징 response
+		int totalPage = (totalCount/size) + 1;
+		int currentPage = 1;
+		int prevPage = 0;
+		int nextPage = 0;
+		if(currentPage > 1 && currentPage < totalPage) {
+			prevPage = currentPage - 1;
+			nextPage = currentPage + 1;
+		} else if(currentPage == totalPage) {
+			prevPage = currentPage - 1;
+		} else if(currentPage == 1) {
+			nextPage = currentPage + 1;
+		}
+
+		PageResponseDTO pageInfo = PageResponseDTO.builder().totalCount(totalCount).totalPage(totalPage).currentPage(currentPage).prevPage(prevPage).nextPage(nextPage).build();
+		result.put("pageInfo", pageInfo);
+
+		return result;
+	}
 
 	// [수강생 정보] - 수강생 등록
 	// 1. 등록된 hrdNetId인지 확인 _POSTMAN 확인 완료 -- 비동기
-	@GetMapping("/students/valid-id")
-	public Map<String, Object> findByHrdNetId(@RequestBody IsRegisteredStudentDTO request) {
+	// @GetMapping("/students/valid-id")
+	@PostMapping("/valid-id")
+	public Map<String, Object> findByHrdNetId(@RequestBody AddStudentBasicInfoDTO request) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		String hrdNetId = request.getHrdNetId();
 		
-		boolean check = studentServiceImpl.findByHrdNetId(request.getHrdNetId());
-		
-		if(check) {
+		boolean check = studentService.findByHrdNetId(request.getHrdNetId());
+		// check: true - 등록 이력 있는 수강생, false - 신규 수강생 등록
+
+		if(check == false) {
 			result.put("result", String.valueOf(check));
 		} else {
 			// 등록된 수강생 기본 정보 불러오기
 			result.put("result", String.valueOf(check));
-			RegisteredStudentInfoDTO dto = studentServiceImpl.getRegisteredStudentBasicInfo(hrdNetId);
+			RegisteredStudentInfoDTO dto = studentService.getRegisteredStudentBasicInfo(hrdNetId);
 			result.put("data", dto);
 		}
 		return result;
 	}
 
 	// [수강생 정보] - 수강생 등록
-	// 1-1. 신규 수강생 등록
-	@PostMapping("/students")
+	// 2. 현재 진행 중인 수강신청 가능한 교육과정 목록 불러오기
+	@GetMapping("/on-going-courses")
+	// spring security 적용 후에는 principal 로 로그인한 매니저의 교육장을 받아오는 걸로 변경해야함.
+	public Map<String, Object> getOnGoingCourseList() {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String academyLocation = "가산";  // spring security 적용 전, 임시 코드
+		result.put("courseList", studentService.getOnGoingCourseList(academyLocation));
+		return result;
+	}
+
+	// [수강생 정보] - 수강생 등록
+	// 3-1. 신규 수강생 등록
+	@PostMapping()
+	// @RequestBody로 등록 양식 정보 받고, @RequestParam에 '신규 가입', '기존 수강생+수강신청' 여부를 문자로 체킹할 수 있도록 하는게 나을듯함
 	public UpdateDeleteResultDTO setStudentWithCourse(@RequestBody RequestAddStudentBasicInfoDTO request) {
 		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
+		// @principal 적용 후에는 String managerId 제거하고 @principal 내용으로 교체할 것!
+		String managerId = "e84dea58-3784-11ef-b0b2-0206f94be675";  // Name: 테스트용, pw: 1234, 교육장: 가산
 		try {
-			studentServiceImpl.setStudentWithCourse(request.getHrdNetId(), request.getName(), request.getBirth(), request.getAddress(), request.getBank(), request.getAccount(), request.getPhoneNumber(), request.getEmail(), request.getGender(), request.getManagerId(), request.getCourseNumber());
+			studentService.setStudentWithCourse(request.getHrdNetId(), request.getName(), request.getBirth(), request.getAddress(), request.getBank(), request.getAccount(), request.getPhoneNumber(), request.getEmail(), request.getGender(), managerId, request.getCourseNumber());
 		} catch (NoSuchDataException e) {
 			dto.setCode(ResCode.FAIL.value());
 			dto.setMessage("Fail: setStudentWithCourse");
@@ -86,12 +141,13 @@ public class StudentController {
 	}
 	
 	// [수강생 정보] - 수강생 등록
-	// 1-2. 기존 수강생의 과정 수강 신규 등록
-	@PostMapping("/students/new-course")
+	// 3-2. 기존 수강생의 과정 수강 신규 등록 -- POSTMAN 테스트 완료
+	// @PutMapping("/new-course")
+	@PostMapping("/new-course")
 	public UpdateDeleteResultDTO setRegisteredStudentWithNewCourse(@RequestBody RequestAddStudentBasicInfoDTO request) {
 		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
 		try {
-			studentServiceImpl.setStudentCourseSeqInfo(request.getHrdNetId(), request.getCourseNumber());
+			studentService.setStudentCourseSeqInfo(request.getHrdNetId(), request.getCourseNumber());
 		} catch (NoSuchDataException e) {
 			dto.setCode(ResCode.FAIL.value());
 			dto.setMessage("Fail: setRegisteredStudentWithNewCourse");
@@ -104,11 +160,15 @@ public class StudentController {
 	}
 
 	// [수강생 정보] - 수강생 정보 수정
-	@PutMapping("/students")
+	// 1. 선택한 수강생의 등록된 정보 불러오기
+	// @Controller에서 작업
+
+	// 2. 페이지 양식에서 작성한 내용으로 수강생 정보 수정하기
+	@PutMapping()
 	public UpdateDeleteResultDTO updateSelectedStudentInfo(@RequestBody UpdateSelectedStudentInfoDTO request) {
 		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
 		try {
-			studentServiceImpl.updateSelectedStudentInfo(request.getName(), request.getAddress(), request.getBank(), request.getAccount(), request.getPhoneNumber(), request.getEmail(), request.getStudentId());
+			studentService.updateSelectedStudentInfo(request.getName(), request.getAddress(), request.getBank(), request.getAccount(), request.getPhoneNumber(), request.getEmail(), request.getStudentId());
 		} catch (NoSuchDataException e) {
 			dto.setCode(ResCode.FAIL.value());
 			dto.setMessage("Fail: updateSelectedStudentInfo");
@@ -121,12 +181,12 @@ public class StudentController {
 	}
 	
 	// [수강생 정보] - 수강생 삭제
-	@PatchMapping("students/active-status")
+	@PatchMapping("/active-status")
 	// public UpdateDeleteResultDTO deleteSelectedStudent(@PathVariable String studentId) {
 	public UpdateDeleteResultDTO deleteSelectedStudent(@RequestBody UpdateSelectedStudentInfoDTO request) {
 		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
 		try {
-			studentServiceImpl.removeSelectedStudent(request.getStudentId());
+			studentService.removeSelectedStudent(request.getStudentId());
 		} catch (NoSuchDataException e) {
 			dto.setCode(ResCode.FAIL.value());
 			dto.setMessage("Fail: updateSelectedStudentInfo");

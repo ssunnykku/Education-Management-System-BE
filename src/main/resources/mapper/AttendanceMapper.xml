@@ -245,6 +245,7 @@ LIMIT #{page}, #{size}
         AND #{attendanceDate} >= c.course_start_date
         AND #{attendanceDate} <= c.course_end_date
         AND s.is_active='T'
+        GROUP BY sc.student_course_seq
                 ]]>
     </select>
     <!--2. 목록의 학생 중 선택한 학생의 출결 상태 등록하기-->

@@ -29,4 +29,5 @@ public class StudentCourseInfoDTO {
     private Long studentCourseSeq;
     private Long courseSeq;
     private int courseNumber;
+
 }
