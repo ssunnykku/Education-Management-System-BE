@@ -4,14 +4,18 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
+
+import com.kosta.ems.employment.EmploymentDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Getter
 @ToString
@@ -34,9 +38,4 @@ public class StudentCourseDTO{
     
     @Column(name="manager_id", nullable = false)
     private String managerId;
-    
-    
-    
-    
-    
 }

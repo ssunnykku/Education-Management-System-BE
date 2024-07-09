@@ -12,6 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Getter
 @ToString
@@ -24,6 +25,7 @@ public class EmploymentDTO{
     
     @Column(name="employment_company", nullable = false)
     private String company;
+    
     
     @Column(name="employment_memo", nullable = true)
     private String memo;
