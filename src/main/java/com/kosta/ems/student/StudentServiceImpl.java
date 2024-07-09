@@ -29,13 +29,13 @@ public class StudentServiceImpl implements StudentService {
 
         return null;
     }
-    
+
     // 수강생 정보 검색 결과 데이터 개수 (for 페이지네이션)
     @Override
     public int getStudentsByNameOrCourseNumberAmount(String name, int courseNumber) {
-    	return studentMapper.findByStudentNumberOrCourseNumberAll(name, courseNumber);
+        return studentMapper.findByStudentNumberOrCourseNumberAll(name, courseNumber);
     }
-    
+
     // 수강생 정보 검색 결과 데이터 불러오기
     @Override
     public List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumberList(String name, int courseNumber, int page, int size) {
@@ -55,12 +55,12 @@ public class StudentServiceImpl implements StudentService {
             return true;
         }
     }
-    
+
     // * 수강생 등록
     // * 기존 수강생인 경우, 수강생 기본 정보 불러오기
     @Override
     public RegisteredStudentInfoDTO getRegisteredStudentBasicInfo(String hrdNetId) {
-    	return studentMapper.selectRegisteredStudentBasicInfo(hrdNetId);
+        return studentMapper.selectRegisteredStudentBasicInfo(hrdNetId);
     }
 
     // * 수강생 등록
@@ -69,29 +69,29 @@ public class StudentServiceImpl implements StudentService {
     public List<CourseInfoDTO> getOnGoingCourseList(String academyLocation) {
         return studentMapper.selectOnGoingCourseList(academyLocation);
     }
-    
+
     // * 수강생 등록
     // ** 신규 수강생 등록    
     @Override
     public void setStudentWithCourse(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber) {
-    	int year = Integer.parseInt(birth.split("-")[0]);
+        int year = Integer.parseInt(birth.split("-")[0]);
         int month = Integer.parseInt(birth.split("-")[1]);
         int day = Integer.parseInt(birth.split("-")[2]);
         char g = gender.toCharArray()[0];
-    	
+
         AddStudentBasicInfoDTO dto = AddStudentBasicInfoDTO.builder().hrdNetId(hrdNetId).name(name).birth(LocalDate.of(year, month, day)).address(address).bank(bank).account(account).phoneNumber(phoneNumber).email(email).gender(g).managerId(managerId).courseNumber(Integer.parseInt(courseNumber)).build();
-       
+
         int result1 = studentMapper.addStudentBasicInfo(dto);
         if(result1 == 0) {
-        	throw new NoSuchDataException("Fail:: Add new student");
+            throw new NoSuchDataException("Fail:: Add new student");
         }
-        
+
         int result2 = studentMapper.addStudentCourseSeqInfo(dto);
         if(result2 == 0) {
-        	throw new NoSuchDataException("Fail:: Add student_course");
+            throw new NoSuchDataException("Fail:: Add student_course");
         }
     }
-    
+
     // ** students 테이블에 수강생 데이터 등록
     @Override
     public void setStudentBasicInfo(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber) {
@@ -102,15 +102,15 @@ public class StudentServiceImpl implements StudentService {
         AddStudentBasicInfoDTO dto = AddStudentBasicInfoDTO.builder().hrdNetId(hrdNetId).name(name).birth(LocalDate.of(year, month, day)).address(address).bank(bank).account(account).phoneNumber(phoneNumber).email(email).gender(g).managerId(managerId).courseNumber(Integer.parseInt(courseNumber)).build();
         studentMapper.addStudentBasicInfo(dto);
     }
-    
+
     // * 수강생 등록
     // ** students_courses 테이블에 수강생 데이터 등록
     @Override
     public void setStudentCourseSeqInfo(String hrdNetId, String courseNumber) {
-    	AddStudentBasicInfoDTO dto = AddStudentBasicInfoDTO.builder().hrdNetId(hrdNetId).courseNumber(Integer.parseInt(courseNumber)).build();
+        AddStudentBasicInfoDTO dto = AddStudentBasicInfoDTO.builder().hrdNetId(hrdNetId).courseNumber(Integer.parseInt(courseNumber)).build();
         studentMapper.addStudentCourseSeqInfo(dto);
     }
-    
+
     // 수강생 정보 수정
     @Override
     public StudentBasicInfoDTO getRegisteredStudentInfo(String studentId) {
@@ -118,14 +118,14 @@ public class StudentServiceImpl implements StudentService {
     }
     @Override
     public void updateSelectedStudentInfo(String name, String address, String bank, String account, String phoneNumber, String email, String studentId) {
-    	UpdateSelectedStudentInfoDTO dto = UpdateSelectedStudentInfoDTO.builder().name(name).address(address).bank(bank).account(account).phoneNumber(phoneNumber).email(email).studentId(studentId).build();
-    	studentMapper.updateSelectedStudentInfo(dto);
+        UpdateSelectedStudentInfoDTO dto = UpdateSelectedStudentInfoDTO.builder().name(name).address(address).bank(bank).account(account).phoneNumber(phoneNumber).email(email).studentId(studentId).build();
+        studentMapper.updateSelectedStudentInfo(dto);
     }
 
     // 수강생 삭제
     @Override
     public void removeSelectedStudent(String studentId) {
-    	studentMapper.deleteSelectedStudent(studentId);
+        studentMapper.deleteSelectedStudent(studentId);
     }
-    
+
 }

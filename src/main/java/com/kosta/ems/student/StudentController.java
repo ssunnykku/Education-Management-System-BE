@@ -32,7 +32,10 @@ public class StudentController {
 
 		int totalCount = studentService.getStudentsByNameOrCourseNumberAmount(name, courseNumber);
 		result.put("amount", totalCount);
+		log.info("☄️result.amount 0 :" + totalCount);
 		result.put("studentList", studentService.getStudentsByNameOrCourseNumberList(name, courseNumber, page, size));
+		log.info("☄️result.amount 1 :" + totalCount);
+		log.info("☄️result.studentList 1 :" + studentService.getStudentsByNameOrCourseNumberList(name, courseNumber, page, size).toString());
 
 		// 페이징 response
 		int totalPage = (totalCount/size) + 1;
@@ -51,6 +54,10 @@ public class StudentController {
 		PageResponseDTO pageInfo = PageResponseDTO.builder().totalCount(totalCount).totalPage(totalPage).currentPage(currentPage).prevPage(prevPage).nextPage(nextPage).build();
 		result.put("pageInfo", pageInfo);
 
+		log.info("☄️result.amount " + totalCount);
+		log.info("☄️result.studentList " + studentService.getStudentsByNameOrCourseNumberList(name, courseNumber, page, size).toString());
+		log.info("☄️result.pageInfo " + pageInfo.toString());
+
 		return result;
 	}
 
@@ -60,7 +67,7 @@ public class StudentController {
 	public Map<String, Object> findByHrdNetId(@RequestBody AddStudentBasicInfoDTO request) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		String hrdNetId = request.getHrdNetId();
-		
+
 		boolean check = studentService.findByHrdNetId(request.getHrdNetId());
 		// check: true - 등록 이력 있는 수강생, false - 신규 수강생 등록
 
@@ -103,7 +110,7 @@ public class StudentController {
 		}
 		return dto;
 	}
-	
+
 	// [수강생 정보] - 수강생 등록
 	// 3-2. 기존 수강생의 과정 수강 신규 등록
 	@PostMapping("/new-course")
@@ -142,7 +149,7 @@ public class StudentController {
 		}
 		return dto;
 	}
-	
+
 	// [수강생 정보] - 수강생 삭제
 	@PatchMapping("/active-status")
 	public UpdateDeleteResultDTO deleteSelectedStudent(@RequestBody UpdateSelectedStudentInfoDTO request) {
