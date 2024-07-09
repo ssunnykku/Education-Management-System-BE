@@ -23,8 +23,6 @@ public class BenefitController {
     @Value("${security.level}")
     private String SECURITY_LEVEL;
     private final ManagerService managerService;
-
-
     private final BenefitService benefitService;
 
     @PostMapping
