@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kosta.ems.course.dto.AddCourseRequest;
 import com.kosta.ems.manager.ManagerDTO;
+import com.kosta.ems.manager.ManagerService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -29,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CourseController {
 	private final CourseService courseService;
+	private final ManagerService managerService;
     @Value("${security.level}")
     private String SECURITY_LEVEL;
 	
@@ -102,8 +104,13 @@ public class CourseController {
 		return loginUser.getManagerId();
 	}
 	
-	private ManagerDTO getLoginUser() {
-        ManagerDTO loginUser = (ManagerDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    private ManagerDTO getLoginUser() {
+        ManagerDTO loginUser;
+        if (SECURITY_LEVEL.equals("OFF")) {
+            loginUser = managerService.findByEmployeeNumber("EMP0001");
+        } else {
+            loginUser = (ManagerDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }
         return loginUser;
     }
 	
