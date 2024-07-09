@@ -25,14 +25,13 @@ public class EmploymentService {
     private final CourseMapper courseMapper;
     
     //TODO: pageable 기능 구현하기
-    public List<EmploymentInfoResponse> getEmploymentInfoByCourseNumber(int courseNumber, int page, int pageSize){
+    public List<EmploymentInfoResponse> getEmploymentInfoByCourseSeq(int courseSeq, int page, int pageSize){
         List<EmploymentInfoResponse> result = new ArrayList<>();
         
-        //기수를 seq로 바꾸고
-        CourseDTO course = courseMapper.getCourseByCourseNumber(courseNumber);
+        CourseDTO course = courseMapper.getCourse(courseSeq);
         //과정에 다니는 학생 seq 목록을 받아오고 
-        List<StudentCourseDTO> sCList = sCRepo.findByCourseSeq(course.getCourseSeq());
-        //각 학생에 대해 employment 정보를 조사하여 학생정보와 함께 result에 넣는다.
+        List<StudentCourseDTO> sCList = sCRepo.findByCourseSeq(courseSeq);
+        //각 학생의 employment 정보와 학생 기본정보를 result에 넣는다.
         for (StudentCourseDTO sCDto : sCList) {
             EmploymentInfoResponse infoDto;
             String company = null;
@@ -66,6 +65,19 @@ public class EmploymentService {
             result.add(resultDto);
         }
         return result;
+    }
+    
+    public double getEmployeedRatePct(int courseSeq) {
+        List<EmploymentInfoResponse> result = new ArrayList<>();
+        result = getEmploymentInfoByCourseSeq(courseSeq, 0, 1000);
+        int numEmployeed = 0;
+        int numTotal = result.size();
+        for (EmploymentInfoResponse info : result) {
+            if(info.isEmployeed())
+                numEmployeed++;
+        }
+        
+        return 100 * (double)numEmployeed/numTotal;
     }
 
 
