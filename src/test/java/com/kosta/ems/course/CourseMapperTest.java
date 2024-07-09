@@ -35,84 +35,113 @@ public class CourseMapperTest {
 	@Transactional
 	public void GetCourse() {
 		CourseDTO course = mapper.getCourse(5);
-		System.out.println(course.toString());
 		assertThat(course.getCourseSeq()).isEqualTo(5);
 	}
 
+	@Test
+	@Transactional
+	public void getCourseByCourseNumber() {
+	    CourseDTO course= mapper.getCourseByCourseNumber(277);
+	    assertThat(course.getCourseSeq()).isEqualTo(5);
+	}
+	
+	@Test
+	@Transactional
+	public void searchCourseList() {
+	    List<CourseDTO> list = mapper.searchCourseList(277, "가산", 0, 10, false);
+	    assertThat(list.size()).isEqualTo(1);
+	    list = mapper.searchCourseList(0, "가산", 0, 20, false);
+	    assertThat(list.size()).isEqualTo(9);
+	}
+	
+	@Test
+	@Transactional
+	public void getSearchCourseListSize() {
+	    int count = mapper.getSearchCourseListSize(0, "가산", 0, 20, false);
+	    assertThat(count).isEqualTo(9);
+	}
+	
+	@Test
+	@Transactional
+	public void getCourseTypeList() {
+	    assertThat(mapper.getCourseTypeList().size()).isEqualTo(2);
+	}
+	
+	@Test
+	@Transactional
+	public void getCourseNumberList() {
+	    List<Integer> list = mapper.getCourseNumberList("가산", false);
+	    assertThat(list.size()).isEqualTo(9);
+	}
 
-    @Test
-    @Transactional
-    public void AddCourse() {
-        CourseDTO course =
-                CourseDTO.builder()
-                        .managerId("d893c34e-2f8f-11ef-b0b2-0206f94be675")
-                        .courseNumber(3000)
-                        .academyLocation("가산")
-                        .courseName("123")
-                        .courseStartDate(LocalDate.now())
-                        .courseEndDate(LocalDate.now())
-                        .subject("자바")
-                        .courseType("구직자")
-                        .totalTrainingDays(100)
-                        .trainingHoursOfDate(8)
-                        .professorName("정")
-                        .maxStudents(100)
-                        .build();
-        assertThat(mapper.insertCourse(course)).isTrue();
-    }
-
-    @Test
-    @Transactional
-    public void updateCourse() {
-        CourseDTO course =
-                CourseDTO.builder()
-                        .managerId("d893c34e-2f8f-11ef-b0b2-0206f94be675")
-                        .courseNumber(3000)
-                        .academyLocation("가산")
-                        .courseName("123")
-                        .courseStartDate(LocalDate.now())
-                        .courseEndDate(LocalDate.now())
-                        .subject("자바")
-                        .courseType("구직자")
-                        .totalTrainingDays(100)
-                        .trainingHoursOfDate(8)
-                        .professorName("정")
-                        .maxStudents(100)
-                        .build();
-        mapper.insertCourse(course);
-        course = mapper.searchCourseList(3000, "가산", 0, 10, false).get(0);
-        course.setCourseName("수정된 이름");
-        assertThat(mapper.updateCourse(course)).isTrue();
-    }
-
-    @Test
-    @Transactional
-    public void inactivateCourse() {
-        CourseDTO course =
-                CourseDTO.builder()
-                        .managerId("d893c34e-2f8f-11ef-b0b2-0206f94be675")
-                        .courseNumber(3000)
-                        .academyLocation("가산")
-                        .courseName("123")
-                        .courseStartDate(LocalDate.now())
-                        .courseEndDate(LocalDate.now())
-                        .subject("자바")
-                        .courseType("구직자")
-                        .totalTrainingDays(100)
-                        .trainingHoursOfDate(8)
-                        .professorName("정")
-                        .maxStudents(100)
-                        .build();
-        mapper.insertCourse(course);
-        int seq = mapper.searchCourseList(3000, "가산", 0, 10, false).get(0).getCourseSeq();
-        assertThat(mapper.inactivateCourse(seq)).isTrue();
-    }
-
-    @Test
-    void getCourseSeqTest() {
-        assertThat(mapper.getCourseSeq(277)).isEqualTo(19);
-
-    }
-
+	@Test
+	@Transactional
+	public void AddCourse() {
+		CourseDTO course = 
+				CourseDTO.builder()
+				.managerId("bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5")
+				.courseNumber(3000)
+				.academyLocation("가산")
+				.courseName("123")
+				.courseStartDate(LocalDate.now())
+				.courseEndDate(LocalDate.now())
+				.subject("자바")
+				.courseType("구직자")
+				.totalTrainingDays(100)
+				.trainingHoursOfDate(8)
+				.professorName("정")
+				.maxStudents(100)
+				.build();
+		assertThat(mapper.insertCourse(course)).isTrue();
+	}
+	
+	@Test
+	@Transactional
+	public void updateCourse() {
+		CourseDTO course = 
+				CourseDTO.builder()
+				.managerId("bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5")
+				.courseNumber(3000)
+				.academyLocation("가산")
+				.courseName("123")
+				.courseStartDate(LocalDate.now())
+				.courseEndDate(LocalDate.now())
+				.subject("자바")
+				.courseType("구직자")
+				.totalTrainingDays(100)
+				.trainingHoursOfDate(8)
+				.professorName("정")
+				.maxStudents(100)
+				.build();
+		mapper.insertCourse(course);
+		course = mapper.searchCourseList(3000, "가산", 0, 10, false).get(0);
+		course.setCourseName("수정된 이름");
+		assertThat(mapper.updateCourse(course)).isTrue();
+	}
+	
+	@Test
+	@Transactional
+	public void inactivateCourse() {
+		CourseDTO course = 
+				CourseDTO.builder()
+				.managerId("bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5")
+				.courseNumber(3000)
+				.academyLocation("가산")
+				.courseName("123")
+				.courseStartDate(LocalDate.now())
+				.courseEndDate(LocalDate.now())
+				.subject("자바")
+				.courseType("구직자")
+				.totalTrainingDays(100)
+				.trainingHoursOfDate(8)
+				.professorName("정")
+				.maxStudents(100)
+				.build();
+		mapper.insertCourse(course);
+		int seq = mapper.searchCourseList(3000, "가산", 0, 10, false).get(0).getCourseSeq();
+		assertThat(mapper.inactivateCourse(seq)).isTrue();
+	}
+	
+	
 
 }
