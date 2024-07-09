@@ -7,42 +7,25 @@ let currentBlock = 1;
 let totalPages = 0;
 
 async function getSettlementList(data) {
-    let result = '';
+    let tableBody = "";
+  
     for (let i = 0; i < data.length; i++) {
-        result += `<div class="employmentBoard-row">
-                        <div class="employmentBoard-checkbox">
-                            <input type="checkbox" name=${data[i].courseNumber} class="checkbox" value=${data[i].studentCourseSeq}>
-                        </div>
-                        <div class="employmentBoard-courseId">
-                            <span id="courseNumber">${data[i].courseNumber}</span>
-                        </div>
-                        <div class="employmentBoard-course-name">
-                            <span id="courseName">${data[i].courseName}</span>
-                        </div>
-                        <div class="employmentBoard-hrd-net-id">
-                            <span id="hrdNetId">${data[i].hrdNetId}</span>
-                        </div>
-                        <div class="employmentBoard-name">
-                            <span id="name">${data[i].name}</span>
-                        </div>
-                        <div class="employmentBoard-bank">
-                            <span id="bank">${data[i].bank}</span>
-                        </div>
-                        <div class="employmentBoard-account">
-                            <span id="account">${data[i].account}</span>
-                        </div>
-                        <div class="employmentBoard-point">
-                            <span id="point">${data[i].totalPoint}</span>
-                        </div>
-                        <div class="employmentBoard-total-amount">
-                            <span id="totalAmount">${data[i].employmentAmount}</span>
-                        </div>
-                    </div>`;
+      tableBody += `<tr>
+        <td><input type="checkbox" name=${data[i].courseNumber} class="checkbox" value=${data[i].studentCourseSeq}></td>
+        <td><span class="employmentBoard-courseId">${data[i].courseNumber}</span></td>
+        <td><span class="employmentBoard-course-name">${data[i].courseName}</span></td>
+        <td><span class="employmentBoard-hrd-net-id">${data[i].hrdNetId}</span></td>
+        <td><span class="employmentBoard-name">${data[i].name}</span></td>
+        <td><span class="employmentBoard-bank">${data[i].bank}</span></td>
+        <td><span class="employmentBoard-account">${data[i].account}</span></td>
+        <td><span class="employmentBoard-point">${data[i].totalPoint}</span></td>
+        <td><span class="employmentBoard-total-amount">${data[i].employmentAmount}</span></td>
+      </tr>`;
     }
-
+  
     $("#employment-table-contents").html("");
-    $("#employment-table-contents").append(result);
-}
+    $("#employment-table-contents").append(`<table><tbody>${tableBody}</tbody></table>`);
+  }
 
 function searchInput() {
     return $(".search-input").val();
@@ -53,6 +36,8 @@ function courseNumber() {
     return $(".employment-courseId-filter option:selected").text();
 }
 
+/*$(".board-filter-search-btn").click(async function () {
+=======
 $(".board-filter-search-btn").click(async function () {
     $("#page_number").html("");
     const myHeaders = new Headers();
@@ -89,7 +74,9 @@ $(".board-filter-search-btn").click(async function () {
             updatePagination();
         })
         .catch((error) => console.error(error));
-});
+<<<<<<< HEAD
+});*/
+
 
 function updatePagination() {
     $("#page_number").html("");
@@ -124,13 +111,6 @@ async function fetchemploymentBoard(param) {
         redirect: "follow"
     };
 
-    await fetch("/employments?page=" + param, requestOptions)
-        .then((res) => res.json())
-        .then(async (data) => {
-            const dataList = data.result;
-            await getSettlementList(dataList);
-        })
-        .catch((error) => console.error(error));
 }
 
 

@@ -3,7 +3,8 @@
 /* Basic table styles */
 #employmentBoard-table {
     border-collapse: collapse;
-    width: 100%;
+    width: 1190px; /* Set table width to 1190px */
+    margin: 0 auto; /* Center the table horizontally */
   }
   
   #employmentBoard-table th, #employmentBoard-table td {
@@ -15,6 +16,7 @@
     background-color: #eee;
     text-align: left;
     font-weight: bold;
+    width: 500px;
   }
   
   #employmentBoard-table tbody tr {
@@ -28,10 +30,6 @@
   /* Distribute column widths proportionally */
   #employmentBoard-table th, #employmentBoard-table td {
     box-sizing: border-box; /* Include padding and border in width calculation */
-  }
-  
-  #employmentBoard-table {
-    table-layout: auto; /* Enable proportional column width distribution */
   }
   
   /* Responsive design */
