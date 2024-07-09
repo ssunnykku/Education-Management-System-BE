@@ -9,21 +9,8 @@ public interface NotificationService {
 
 
     Collection<NotificationDTO> searchAll(String managerId, int page, int size);
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     Collection<NotificationDTO> searchByKeyword(String keyword, String managerId,int page,int size);
-=======
-    Collection<NotificationDTO> searchByKeyword(String keyword, String managerId,int page,int size) throws NoResultsFoundException;
->>>>>>> da043a0 (feat: 페이지네이션)
-=======
-    Collection<NotificationDTO> searchByKeyword(String keyword, String managerId,int page,int size);
->>>>>>> 5b96194 (feat: 임시 branch commit)
-=======
-    Collection<NotificationDTO> searchByKeyword(String keyword, String managerId,int page,int size);
->>>>>>> ddfbf5dfc842c3a48c5291bcbd72c302c110c8f5
-
+  
     boolean addNotification(NotificationDTO notification);
 
     boolean deleteNotificaiotn(int notificationSeq);
