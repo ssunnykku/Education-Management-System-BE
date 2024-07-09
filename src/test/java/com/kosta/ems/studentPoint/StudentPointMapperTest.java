@@ -28,14 +28,14 @@ public class StudentPointMapperTest {
 	@Test
 	@Transactional
 	public void getTotal() {
-		assertThat(mapper.getCountOfStudentWithPoint(277, null)).isEqualTo(18);
+		assertThat(mapper.getCountOfStudentWithPoint(277, null)).isEqualTo(4);
 	}
 	
 	@Test
 	@Transactional
 	public void getPointHistory() {
-		List<PointHistoryDTO> history = mapper.getPointHistory(1);
-		assertThat(history.size()).isEqualTo(34);
+		List<PointHistoryDTO> history = mapper.getPointHistory(19);
+		assertThat(history.size()).isEqualTo(6);
 	}
 	
 	@Test
@@ -47,7 +47,7 @@ public class StudentPointMapperTest {
 	@Test
 	@Transactional
 	public void insertStudentPoint() {
-		int result = mapper.insertStudentPoint(2, "d893c29b-2f8f-11ef-b0b2-0206f94be675", 1);
+		int result = mapper.insertStudentPoint(2, "bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5", 19);
 		assertThat(result).isEqualTo(1);
 	}
 
