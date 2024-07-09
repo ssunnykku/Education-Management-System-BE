@@ -19,30 +19,12 @@ class NotificationMapperTest {
 		log.info(notificationMapper.selectAll("d893c29b-2f8f-11ef-b0b2-0206f94be675",10,0).toString());
 		assertThat(notificationMapper.selectAll("d893c29b-2f8f-11ef-b0b2-0206f94be675",10,0).size()).isEqualTo(10);
 	}
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	@Test
-	void testFindByKeyword() {
-		log.info(notificationMapper.selectByKeyword("gg","d893c29b-2f8f-11ef-b0b2-0206f94be675", 10, 0 ).toString());
-=======
-	//@Test
 	void testFindByKeyword() {
 		log.info(notificationMapper.selectByKeyword("2025","d893c29b-2f8f-11ef-b0b2-0206f94be675", 10, 0 ).toString());
->>>>>>> da043a0 (feat: 페이지네이션)
-=======
-	@Test
-	void testFindByKeyword() {
-		log.info(notificationMapper.selectByKeyword("gg","d893c29b-2f8f-11ef-b0b2-0206f94be675", 10, 0 ).toString());
->>>>>>> 5b96194 (feat: 임시 branch commit)
-=======
-	@Test
-	void testFindByKeyword() {
-		log.info(notificationMapper.selectByKeyword("gg","d893c29b-2f8f-11ef-b0b2-0206f94be675", 10, 0 ).toString());
->>>>>>> ddfbf5dfc842c3a48c5291bcbd72c302c110c8f5
 	}
 
-	//@Test
+	@Test
 	void testInsertNotification() {
 		NotificationDTO notification=
 				NotificationDTO.builder()
@@ -76,19 +58,7 @@ class NotificationMapperTest {
 	void testGetDescription() {
 		log.info(notificationMapper.selectDescription(160).toString());
 	}
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	//@Test
-=======
-	@Test
->>>>>>> da043a0 (feat: 페이지네이션)
-=======
-	//@Test
->>>>>>> 5b96194 (feat: 임시 branch commit)
-=======
-	//@Test
->>>>>>> ddfbf5dfc842c3a48c5291bcbd72c302c110c8f5
 	void testGetTotalCount() {
 		 log.info(String.valueOf(notificationMapper.getTotalCount("d893c34e-2f8f-11ef-b0b2-0206f94be675", null)));
 	}
