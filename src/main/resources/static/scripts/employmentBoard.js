@@ -11,15 +11,15 @@ async function getSettlementList(data) {
   
     for (let i = 0; i < data.length; i++) {
       tableBody += `<tr>
-        <td><input type="checkbox" name=${data[i].courseNumber} class="checkbox" value=${data[i].studentCourseSeq}></td>
-        <td><span class="employmentBoard-courseId">${data[i].courseNumber}</span></td>
-        <td><span class="employmentBoard-course-name">${data[i].courseName}</span></td>
-        <td><span class="employmentBoard-hrd-net-id">${data[i].hrdNetId}</span></td>
-        <td><span class="employmentBoard-name">${data[i].name}</span></td>
-        <td><span class="employmentBoard-bank">${data[i].bank}</span></td>
-        <td><span class="employmentBoard-account">${data[i].account}</span></td>
-        <td><span class="employmentBoard-point">${data[i].totalPoint}</span></td>
-        <td><span class="employmentBoard-total-amount">${data[i].employmentAmount}</span></td>
+        <td><input type="checkbox" name=${data[i].sCSeq} class="checkbox" value=${data[i].sCSeq}></td>
+        <td><span class="employmentBoard-courseId">${data[i].hrdNetId}</span></td>
+        <td><span class="employmentBoard-course-name">${data[i].courseNumber}</span></td>
+        <td><span class="employmentBoard-hrd-net-id">${data[i].name}</span></td>
+        <td><span class="employmentBoard-name">${data[i].phoneNumber}</span></td>
+        <td><span class="employmentBoard-bank">${data[i].email}</span></td>
+        <td><span class="employmentBoard-account">${data[i].courseEndDate}</span></td>
+        <td><span class="employmentBoard-point">${data[i].company}</span></td>
+        <td><span class="employmentBoard-total-amount">${data[i].isEmployeed}</span></td>
       </tr>`;
     }
   
