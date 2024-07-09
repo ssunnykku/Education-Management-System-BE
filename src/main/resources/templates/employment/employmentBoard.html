@@ -6,9 +6,8 @@
     <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
             integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
     <title>Document</title>
-    <link rel="stylesheet" href="../../static/css/format.css"/>
-    <link rel="stylesheet" href="../../static/css/employment.css"/> 
-
+    <link rel="stylesheet" href="../../css/format.css"/>
+    <link rel="stylesheet" href="../../css/employment.css"/> 
 </head>
 <body id="content-wrapper">
 <div th:insert="~{common/header :: header}"></div>
@@ -20,7 +19,6 @@
                     class="employment-courseId-filter">
                 <option value="course-number" id="course-number">기수</option>
             </select>
-            <input placeholder="수강생을 입력하세요" class="search-input"/>
             <button type="button" class="board-filter-search-btn">검색</button>
         </div>
         <div class="employment-btn-wrapper">
@@ -77,8 +75,33 @@
         </article>
 </section>
 <footer></footer>
+<script>
+
+
+
+ $(".board-filter-search-btn").on("click", async function () {
+      let courseSeq =$(".employment-courseId-filter option:selected").text();
+      try {
+        const response = await fetch("/employments/info-list?courseSeq=" + courseSeq + "&page=" + 1, {
+          method: "GET" // 불필요한 Content-Type 헤더 제거
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP 오류! 상태: ${response.status}`);
+        }
+        const data = await response.json();
+        const notificationList = data.result;
+        console.log(notificationList);
+        await getSettlementList(notificationList);
+      } catch (error) {
+        console.error("공지 사항 페치 오류:", error);
+      }
+
+    });
+
+
+</script>
 </body>
+<script type="text/javascript" th:src="@{/scripts/employmentBoard.js}">
 
-
-<script type="text/javascript" th:src="@{/scripts/employmentBoard.js}"></script>
+</script>
 </html>

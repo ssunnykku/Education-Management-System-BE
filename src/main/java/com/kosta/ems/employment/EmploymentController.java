@@ -10,7 +10,9 @@ import com.kosta.ems.manager.ManagerService;
 import com.kosta.ems.studentCourse.StudentCourseService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+import java.lang.ProcessHandle.Info;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RestController
 @RequestMapping("/employments")
 @RequiredArgsConstructor
+@Slf4j
 public class EmploymentController {
     private final EmploymentService service;
     private final StudentCourseService studentCourseService;
@@ -34,9 +37,10 @@ public class EmploymentController {
     private String SECURITY_LEVEL;
     
     @GetMapping("/info-list")
-    public Map getMethodName(@RequestParam(value = "page",           defaultValue = "1"   ) int page,
+    public Map getMethodName(@RequestParam(value = "page",    defaultValue = "1"   ) int page,
             @RequestParam(value = "pageSize",       defaultValue = "10"  ) int pageSize,
             @RequestParam int courseSeq) {
+    	log.info(service.getEmploymentInfoByCourseSeq(courseSeq, page, pageSize).toString());
         return Map.of("result", service.getEmploymentInfoByCourseSeq(courseSeq, page, pageSize), "total", studentCourseService.countByCourseSeq(courseSeq));
     }
     

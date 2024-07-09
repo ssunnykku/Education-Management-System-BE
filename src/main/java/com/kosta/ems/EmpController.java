@@ -72,7 +72,6 @@ public class EmpController {
                                  Model model
             , Principal principal) {
         ManagerDTO loginUser = getLoginUser();
-
         List<CourseDTO> courseList = courseService.searchCourseList(courseNumber, loginUser.getAcademyLocation(), page,
                 pageSize, excludeExpired);
         Integer totalCourseCount = courseService.getSearchCourseListSize(courseNumber, loginUser.getAcademyLocation(),
@@ -194,6 +193,11 @@ public class EmpController {
     @GetMapping("/students")
     public String studentBoard() {
         return "students/studentBoard";
+    }
+    
+    @GetMapping("/employments")
+    public String employmentBoard() {
+    	return "employment/employmentBoard";
     }
 
 
