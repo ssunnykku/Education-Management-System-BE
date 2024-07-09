@@ -31,9 +31,10 @@ class StudentMapperTest {
         ;
     }
 
-    // @Test
+    @Test
     public void findByStudentNameOrCourseNumberList() {
-        log.info(studentMapper.findByStudentNameOrCourseNumberList("진", 277, 0, 2).toString());
+        log.info(Integer.toString(studentMapper.findByStudentNameOrCourseNumberList("", 0, 0, 10).size()));
+        log.info(studentMapper.findByStudentNameOrCourseNumberList("", -1, 0, 10).toString());
     }
 
     // @Test
@@ -45,12 +46,17 @@ class StudentMapperTest {
     // 수강생 등록
     // @Test
     public void findByHrdNetId() {
-        log.info(Integer.toString(studentMapper.findByHrdNetId("youyou33")));
+        log.info(Integer.toString(studentMapper.findByHrdNetId("ㅁㅁㅇㄹsyc1234")));
     }
 
     // @Test
     public void getRegisteredStudentBasicInfo() {
         log.info(studentMapper.selectRegisteredStudentBasicInfo("youyou33").toString());
+    }
+
+    // @Test
+    public void selectOnGoingCourseList() {
+        log.info(studentMapper.selectOnGoingCourseList("가산").toString());
     }
 
     // @Test

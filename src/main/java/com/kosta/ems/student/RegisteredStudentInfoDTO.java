@@ -22,4 +22,5 @@ public class RegisteredStudentInfoDTO {
 	private String account;
 	private String phoneNumber;
 	private String email;
+	private char gender;
 }

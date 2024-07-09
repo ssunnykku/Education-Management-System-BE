@@ -28,6 +28,7 @@ public interface StudentService {
     // 수강생 등록
     boolean findByHrdNetId(String hrdNetId);
     RegisteredStudentInfoDTO getRegisteredStudentBasicInfo(String hrdNetId);
+    List<CourseInfoDTO> getOnGoingCourseList(String academyLocation);
     // 신규 수강생 등록
     void setStudentWithCourse(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber);
     // void setStudentWithCourse(String hrdNetId, String name, LocalDate birth, String address, String bank, String account, String phoneNumber, String email, char gender, String managerId, int courseNumber);
@@ -35,6 +36,8 @@ public interface StudentService {
     void setStudentCourseSeqInfo(String hrdNetId, String courseNumber);
 
     // 수강생 정보 수정
+    StudentBasicInfoDTO getRegisteredStudentInfo(String studentId);
+
     void updateSelectedStudentInfo(String name, String address, String bank, String account, String phoneNumber, String email, String studentId);
     
     // 수강생 삭제(isActive 값 수정)

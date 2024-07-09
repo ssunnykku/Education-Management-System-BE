@@ -28,8 +28,6 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/attendances")
 @RequiredArgsConstructor
 public class AttendanceController {
-	// @Autowired
-	// private AttendanceServiceImpl attendanceServiceImpl;
 	private final AttendanceService attendanceService;
 
 	// [출결] - 수강생 출석 조회 목록 조회 __POSTMAN 테스트 완료 __예외 처리 고려 필요!
@@ -161,7 +159,7 @@ public class AttendanceController {
 	}
 
 	// [출결] - 선택한 수강생의 출석 상태 수정, 입력
-	@PutMapping("/student-status")
+	@PutMapping("/attendance-status")
 	public UpdateDeleteResultDTO updateStudentAttendance(@RequestBody List<RequestStudentAttendanceDTO> request) {
 		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
 		try {
@@ -194,4 +192,33 @@ public class AttendanceController {
 		return result;
 	}
 
+	@PostMapping("/attendance-status")
+	public Map<String, Object> setStudentAttendance(@RequestBody List<RequestStudentAttendanceDTO> request) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
+		try {
+			log.info("🚀 request 확인");
+			log.info(">> request.length: " + request.size());
+			log.info(">> request: " + request.toString());
+			for(int i=0; i<request.size(); i++) {
+				attendanceService.setAttendanceStatus(request.get(i).getAttendanceStatus(), request.get(i).getAttendanceDate(), request.get(i).getStudentCourseSeq());
+			}
+			dto.setCode(ResCode.SUCCESS.value());
+			dto.setMessage("Success: setStudentAttendance");
+			result.put("code", dto.getCode());
+			result.put("message", dto.getMessage());
+		} catch (NoSuchDataException e) {
+			dto.setCode(ResCode.FAIL.value());
+			dto.setMessage("Fail: setStudentAttendance");
+			result.put("code", dto.getCode());
+			result.put("message", dto.getMessage());
+		} catch (Exception e) {
+			log.error("[AttendanceController setStudentAttendance]", e);
+			dto.setCode(ResCode.FAIL.value());
+			dto.setMessage("Fail: setStudentAttendance");
+			result.put("code", dto.getCode());
+			result.put("message", dto.getMessage());
+		}
+		return result;
+	}
 }
