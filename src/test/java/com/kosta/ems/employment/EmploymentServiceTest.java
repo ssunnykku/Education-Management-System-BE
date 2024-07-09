@@ -2,6 +2,8 @@ package com.kosta.ems.employment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,21 +15,17 @@ import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
 @Slf4j
-public class EmploymentRepoTest {
+public class EmploymentServiceTest {
 	@Autowired
-	EmploymentRepo repo;
+	EmploymentService service;
 	
 	@Test
 	@Transactional
-	public void findBySeq() {
-	    Optional<EmploymentDTO> result = repo.findBysCSeq(19);
-	    if(result.isPresent()) {
-	        assertThat(result.get().getCompany()).isEqualTo("금호IDT");
-	        log.info(result.get().toString());
-	        return;
-	    }
-	    log.error(result.toString());
-	    fail();
+	public void getEmploymentInfoByCourseNumber() {
+	    List<EmploymentInfoDTO> list = service.getEmploymentInfoByCourseNumber(277, -1, -1);
+	    for (EmploymentInfoDTO dto : list) {
+            System.out.println(dto.getStudent().getName() + "는 취업 " + dto.isEmployeed());
+        }
 	    
 	}
 

@@ -24,4 +24,5 @@ public interface CourseMapper {
     boolean inactivateCourse(int courseSeq);
 
     Integer getCourseSeq(int courseNumber);
+    CourseDTO getCourseByCourseNumber(int courseNumber);
 }
