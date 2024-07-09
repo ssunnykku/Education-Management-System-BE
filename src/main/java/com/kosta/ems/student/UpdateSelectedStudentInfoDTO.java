@@ -21,4 +21,5 @@ public class UpdateSelectedStudentInfoDTO {
 	private String account;
 	private String phoneNumber;
 	private String email;
+	private int courseNumber;
 }

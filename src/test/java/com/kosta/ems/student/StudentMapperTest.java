@@ -31,9 +31,10 @@ class StudentMapperTest {
         ;
     }
 
-    // @Test
+    @Test
     public void findByStudentNameOrCourseNumberList() {
-        log.info(studentMapper.findByStudentNameOrCourseNumberList("", 277, 0, 10).toString());
+        log.info(Integer.toString(studentMapper.findByStudentNameOrCourseNumberList("", 0, 0, 10).size()));
+        log.info(studentMapper.findByStudentNameOrCourseNumberList("", -1, 0, 10).toString());
     }
 
     // @Test

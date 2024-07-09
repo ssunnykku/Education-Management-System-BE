@@ -46,7 +46,7 @@ public class StudentServiceImpl implements StudentService {
 		 * courseNumber)); return result;
 		 */
     	// return studentMapper.findByStudentNameOrCourseNumber(name, courseNumber);
-    	return studentMapper.findByStudentNameOrCourseNumberList(name, courseNumber, ((page*size)-size), size);
+        return studentMapper.findByStudentNameOrCourseNumberList(name, courseNumber, ((page*size)-size), size);
     }
 
     // * 수강생 등록
@@ -122,10 +122,16 @@ public class StudentServiceImpl implements StudentService {
     
     // 수강생 정보 수정
     @Override
+    public StudentBasicInfoDTO getRegisteredStudentInfo(String studentId) {
+        return studentMapper.selectRegisteredStudentInfo(studentId);
+    }
+    @Override
     public void updateSelectedStudentInfo(String name, String address, String bank, String account, String phoneNumber, String email, String studentId) {
     	UpdateSelectedStudentInfoDTO dto = UpdateSelectedStudentInfoDTO.builder().name(name).address(address).bank(bank).account(account).phoneNumber(phoneNumber).email(email).studentId(studentId).build();
     	studentMapper.updateSelectedStudentInfo(dto);
     }
+
+
     
     // 수강생 삭제
     @Override

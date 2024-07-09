@@ -36,6 +36,8 @@ public interface StudentService {
     void setStudentCourseSeqInfo(String hrdNetId, String courseNumber);
 
     // 수강생 정보 수정
+    StudentBasicInfoDTO getRegisteredStudentInfo(String studentId);
+
     void updateSelectedStudentInfo(String name, String address, String bank, String account, String phoneNumber, String email, String studentId);
     
     // 수강생 삭제(isActive 값 수정)

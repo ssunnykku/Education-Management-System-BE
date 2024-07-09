@@ -23,9 +23,9 @@ public class StudentServiceTest {
 	}
 	
 	// -- 검색 결과 데이터 목록 가져오기
-	// @Test
+	@Test
 	void getStudentsByNameOrCourseNumber() {
-		log.info(studentService.getStudentsByNameOrCourseNumberList("진", 277, 1, 2).toString());
+		log.info(studentService.getStudentsByNameOrCourseNumberList("", 0, 1, 10).toString());
 	}
 
 	// 수강생 정보 - 수강생 등록

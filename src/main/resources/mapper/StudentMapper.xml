@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kosta.ems.student.StudentMapper">
     <select id="selectStudentByName" parameterType="string" resultType="com.kosta.ems.student.StudentCourseInfoDTO">
-        select s.student_id         as studentId,
+        <![CDATA[select s.student_id         as studentId,
                hrd_net_id           as hrdNetID,
                name,
                birth,
@@ -19,7 +19,7 @@
         from students s
                  left join students_courses c on s.student_id = c.student_id
         where s.name = '%' + #{name} + '%'
-          and is_active = 'T'
+          and is_active = 'T']]>
     </select>
     <!-- 수강생 정보 -->
     <select id="findByStudentNumberOrCourseNumberAll" resultType="int">
@@ -36,17 +36,25 @@
         WHERE course_number = #{courseNumber}));
     </select>
     <select id="findByStudentNameOrCourseNumberList" resultType="com.kosta.ems.student.StudentBasicInfoDTO">
-        SELECT sc.student_course_seq AS studentCourseSeq,
+        SELECT s.student_id AS studentId,
+               sc.student_course_seq AS studentCourseSeq,
                c.course_number AS courseNumber,
                s.hrd_net_id AS hrdNetId,
-               s.name, s.address, s.bank, s.account, s.email,
-               s.phone_number AS phoneNumber
+               s.name,
+               s.birth,
+               s.address,
+               s.bank,
+               s.account,
+               s.email,
+               s.phone_number AS phoneNumber,
+               s.gender
         FROM students_courses sc
                  JOIN courses c ON sc.course_seq=c.course_seq
                  LEFT JOIN students s ON sc.student_id=s.student_id
         WHERE s.is_active='T'
-          AND (IF(#{courseNumber}, 0, '전체')='전체' OR c.course_number=#{courseNumber})
           AND s.name LIKE CONCAT('%', #{name},'%')
+          AND (IF(#{courseNumber}, 0, '기수')='기수' OR c.course_number=#{courseNumber})
+            ORDER BY c.course_number DESC, s.name ASC
             LIMIT #{page}, #{size}
     </select>
     <!--입력 hrdNetId인지 확인-->
@@ -101,12 +109,29 @@
                 WHERE course_number = #{courseNumber}))
     </insert>
     <!--선택한 수강생 정보 수정-->
+    <select id="selectRegisteredStudentInfo" resultType="com.kosta.ems.student.StudentBasicInfoDTO">
+        SELECT s.student_id AS studentId,
+               s.name,
+               s.hrd_net_id AS hrdNetId,
+               s.birth,
+               s.gender,
+               c.course_number AS courseNumber,
+               s.address,
+               s.bank,
+               s.account,
+               s.phone_number AS phoneNumber,
+               s.email
+        FROM students s, courses c, students_courses sc
+        WHERE s.student_id=sc.student_id AND c.course_seq=sc.course_seq AND s.student_id=#{studentId}
+        ORDER BY sc.student_course_seq DESC
+        LIMIT 0, 1;
+    </select>
     <update id="updateSelectedStudentInfo">
         UPDATE students
-        SET NAME=#{name},
+        SET name=#{name},
             address=#{address},
             bank=#{bank},
-            ACCOUNT=#{account},
+            account=#{account},
             phone_number=#{phoneNumber},
             email=#{email}
         WHERE student_id = #{studentId};

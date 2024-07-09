@@ -5,8 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.extern.log4j.Log4j2;
@@ -123,8 +127,10 @@ public class StudentController {
 	// @RequestBody로 등록 양식 정보 받고, @RequestParam에 '신규 가입', '기존 수강생+수강신청' 여부를 문자로 체킹할 수 있도록 하는게 나을듯함
 	public UpdateDeleteResultDTO setStudentWithCourse(@RequestBody RequestAddStudentBasicInfoDTO request) {
 		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
+		// @principal 적용 후에는 String managerId 제거하고 @principal 내용으로 교체할 것!
+		String managerId = "e84dea58-3784-11ef-b0b2-0206f94be675";  // Name: 테스트용, pw: 1234, 교육장: 가산
 		try {
-			studentService.setStudentWithCourse(request.getHrdNetId(), request.getName(), request.getBirth(), request.getAddress(), request.getBank(), request.getAccount(), request.getPhoneNumber(), request.getEmail(), request.getGender(), request.getManagerId(), request.getCourseNumber());
+			studentService.setStudentWithCourse(request.getHrdNetId(), request.getName(), request.getBirth(), request.getAddress(), request.getBank(), request.getAccount(), request.getPhoneNumber(), request.getEmail(), request.getGender(), managerId, request.getCourseNumber());
 		} catch (NoSuchDataException e) {
 			dto.setCode(ResCode.FAIL.value());
 			dto.setMessage("Fail: setStudentWithCourse");
@@ -136,14 +142,11 @@ public class StudentController {
 	
 	// [수강생 정보] - 수강생 등록
 	// 3-2. 기존 수강생의 과정 수강 신규 등록 -- POSTMAN 테스트 완료
+	// @PutMapping("/new-course")
 	@PostMapping("/new-course")
 	public UpdateDeleteResultDTO setRegisteredStudentWithNewCourse(@RequestBody RequestAddStudentBasicInfoDTO request) {
 		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
 		try {
-			log.info(">>> getHrdNetID() ");
-			log.info(request.getHrdNetId());
-			log.info(">>> getCourseNumber() ");
-			log.info(request.getCourseNumber());
 			studentService.setStudentCourseSeqInfo(request.getHrdNetId(), request.getCourseNumber());
 		} catch (NoSuchDataException e) {
 			dto.setCode(ResCode.FAIL.value());
@@ -157,7 +160,11 @@ public class StudentController {
 	}
 
 	// [수강생 정보] - 수강생 정보 수정
-	@PutMapping("/students")
+	// 1. 선택한 수강생의 등록된 정보 불러오기
+	// @Controller에서 작업
+
+	// 2. 페이지 양식에서 작성한 내용으로 수강생 정보 수정하기
+	@PutMapping()
 	public UpdateDeleteResultDTO updateSelectedStudentInfo(@RequestBody UpdateSelectedStudentInfoDTO request) {
 		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
 		try {

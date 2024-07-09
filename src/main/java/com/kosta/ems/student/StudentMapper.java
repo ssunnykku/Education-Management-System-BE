@@ -36,7 +36,7 @@ public interface StudentMapper {
     int addStudentCourseSeqInfo(AddStudentBasicInfoDTO dto);
 
     // 수강생 정보 수정
-    // void updateSelectedStudentInfo(UpdateSelectedStudentInfoDTO dto, String studentId);
+    StudentBasicInfoDTO selectRegisteredStudentInfo(String studentId);
     int updateSelectedStudentInfo(UpdateSelectedStudentInfoDTO dto);
 
     // 수강생 삭제 (isActive 업데이트)
