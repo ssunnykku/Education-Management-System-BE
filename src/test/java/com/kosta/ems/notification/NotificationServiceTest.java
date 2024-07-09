@@ -22,6 +22,7 @@ class NotificationServiceTest {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	@Test
 	void testSearchByKeyword() {
 		assertThat(notificationService.searchByKeyword("gg","d893c34e-2f8f-11ef-b0b2-0206f94be675", 1, 10 ).size()).isEqualTo(3);
@@ -35,6 +36,11 @@ class NotificationServiceTest {
 	void testSearchByKeyword() {
 		assertThat(notificationService.searchByKeyword("gg","d893c34e-2f8f-11ef-b0b2-0206f94be675", 1, 10 ).size()).isEqualTo(3);
 >>>>>>> 5b96194 (feat: 임시 branch commit)
+=======
+	@Test
+	void testSearchByKeyword() {
+		assertThat(notificationService.searchByKeyword("gg","d893c34e-2f8f-11ef-b0b2-0206f94be675", 1, 10 ).size()).isEqualTo(3);
+>>>>>>> ddfbf5dfc842c3a48c5291bcbd72c302c110c8f5
 	}
 
 	//@Test
@@ -69,6 +75,7 @@ class NotificationServiceTest {
 	}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	//@Test
 	void testTotalCount() {
 		 log.info(String.valueOf(notificationService.getTotalCount("d893c34e-2f8f-11ef-b0b2-0206f94be675", "gg")));
@@ -82,6 +89,11 @@ class NotificationServiceTest {
 	void testTotalCount() {
 		 log.info(String.valueOf(notificationService.getTotalCount("d893c34e-2f8f-11ef-b0b2-0206f94be675", "gg")));
 >>>>>>> 5b96194 (feat: 임시 branch commit)
+=======
+	//@Test
+	void testTotalCount() {
+		 log.info(String.valueOf(notificationService.getTotalCount("d893c34e-2f8f-11ef-b0b2-0206f94be675", "gg")));
+>>>>>>> ddfbf5dfc842c3a48c5291bcbd72c302c110c8f5
 	}
 
 }

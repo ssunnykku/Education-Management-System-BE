@@ -1,11 +1,17 @@
 @import "reset.css";
 
 /* Basic table styles */
+<<<<<<< HEAD
 /* Basic table styles */
 #employmentBoard-table {
     border-collapse: collapse;
     width: 1190px; /* Set table width to 1190px */
     margin: 0 auto; /* Center the table horizontally */
+=======
+#employmentBoard-table {
+    border-collapse: collapse;
+    width: 100%;
+>>>>>>> ddfbf5dfc842c3a48c5291bcbd72c302c110c8f5
   }
   
   #employmentBoard-table th, #employmentBoard-table td {
@@ -17,7 +23,10 @@
     background-color: #eee;
     text-align: left;
     font-weight: bold;
+<<<<<<< HEAD
     width: 500px;
+=======
+>>>>>>> ddfbf5dfc842c3a48c5291bcbd72c302c110c8f5
   }
   
   #employmentBoard-table tbody tr {
@@ -33,6 +42,13 @@
     box-sizing: border-box; /* Include padding and border in width calculation */
   }
   
+<<<<<<< HEAD
+=======
+  #employmentBoard-table {
+    table-layout: auto; /* Enable proportional column width distribution */
+  }
+  
+>>>>>>> ddfbf5dfc842c3a48c5291bcbd72c302c110c8f5
   /* Responsive design */
   @media (max-width: 768px) {
     #employmentBoard-table {

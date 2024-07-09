@@ -24,6 +24,7 @@
           <button type="button" class="board-filter-search-btn">검색</button>
         </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <button id="notification-enroll-btn" class="btn-setting">글 등록</button>
 =======
         </article>
@@ -113,6 +114,9 @@
       <div class="notificationBoard-no" id="notificationBoard-no">
         <span>${data[i].notificationSeq}</span>
 >>>>>>> da043a0 (feat: 페이지네이션)
+=======
+        <button id="notification-enroll-btn" class="btn-setting">글 등록</button>
+>>>>>>> ddfbf5dfc842c3a48c5291bcbd72c302c110c8f5
       </div>
     </article>
     <article >
@@ -168,7 +172,11 @@
     })
 
     $(".board-filter-search-btn").on("click", async function () {
+<<<<<<< HEAD
 
+=======
+      console.log("버튼 누름")
+>>>>>>> ddfbf5dfc842c3a48c5291bcbd72c302c110c8f5
       let keyword = document.querySelector('#search-input').value;
 
       try {
@@ -213,6 +221,7 @@
 
       $("#notification-table-contents").html("");
       $("#notification-table-contents").append(result);
+<<<<<<< HEAD
     }
 <<<<<<< HEAD
 
@@ -235,6 +244,29 @@
 
     $(document).ready(function () {
 
+=======
+    }
+
+    function fetchTotalCount(keyword = "") {
+      fetch("/notifications/count?keyword=" + keyword, {
+        method: "GET",
+      })
+        .then((res) => res.json())
+        .then(async (data) => {
+          // $(".scholarship-cnt-pages").html(`<span>총 ${data.result}</span>건`);
+          // const countPage = Math.ceil(data.result / 10);
+          // const countPage = 12;  // Example total pages
+          totalPages = Math.ceil(data.result / 10);
+          updatePagination();
+          console.log(totalPages);
+          console.log("총 게시글 수: " + data.result)
+        })
+        .catch((error) => console.error(error));
+    }
+
+    $(document).ready(function () {
+
+>>>>>>> ddfbf5dfc842c3a48c5291bcbd72c302c110c8f5
       fetchTotalCount(); // 초기 로드를 위한 총 페이지 수 가져오기
     });
 
@@ -313,6 +345,7 @@
       await getSettlementList(notificationList); // 공지 사항 목록으로 페이지 콘텐츠 업데이트
     }
   </script>
+<<<<<<< HEAD
 =======
 let keyword=document.querySelector('#search-input').value;
 
@@ -418,4 +451,6 @@ let keyword=document.querySelector('#search-input').value;
 }
 </script>
 >>>>>>> da043a0 (feat: 페이지네이션)
+=======
+>>>>>>> ddfbf5dfc842c3a48c5291bcbd72c302c110c8f5
 </body>

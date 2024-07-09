@@ -35,6 +35,10 @@ public class CourseMapperTest {
 	@Transactional
 	public void GetCourse() {
 		CourseDTO course = mapper.getCourse(5);
+<<<<<<< HEAD
+=======
+		System.out.println(course.toString());
+>>>>>>> ddfbf5dfc842c3a48c5291bcbd72c302c110c8f5
 		assertThat(course.getCourseSeq()).isEqualTo(5);
 	}
 

@@ -113,7 +113,11 @@ public class NotificationServiceImpl implements NotificationService{
 		viewCount=notificationMapper.updateViewCount(notificationSeq);
 		dto.setViewCount(viewCount);
 		return dto;
+
 	}
+
+
+
 
 
 	@Override

@@ -6,8 +6,8 @@
     <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
             integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
     <title>Document</title>
-    <link rel="stylesheet" href="../../css/format.css"/>
-    <link rel="stylesheet" href="../../css/employment.css"/> 
+    <link rel="stylesheet" href="../../static/css/format.css"/>
+    <link rel="stylesheet" href="../../static/css/employment.css"/> 
 </head>
 <body id="content-wrapper">
 <div th:insert="~{common/header :: header}"></div>
@@ -19,6 +19,7 @@
                     class="employment-courseId-filter">
                 <option value="course-number" id="course-number">기수</option>
             </select>
+            <input placeholder="수강생을 입력하세요" class="search-input"/>
             <button type="button" class="board-filter-search-btn">검색</button>
         </div>
         <div class="employment-btn-wrapper">
@@ -31,30 +32,41 @@
         <div class="employment-cnt-pages">
         </div>
     </article>
-    <section id="employment-contents">
-        <article>
-          <div id="employmentBoard-table">
-            <table class="employmentBoard-table">
-              <thead>
-                <tr>
-                  <th>
-                    <input type="checkbox" name="" id="title-checkbox" />
-                  </th>
-                  <th><span>hrd-net-id</span></th>
-                  <th><span>기수</span></th>
-                  <th><span>이름</span></th>
-                  <th><span>전화번호</span></th>
-                  <th><span>이메일</span></th>
-                  <th><span>과정종료일</span></th>
-                  <th><span>취업처</span></th>
-                  <th><span>취업 여부</span></th>
-                </tr>
-              </thead>
-              <tbody id="employment-table-contents"></tbody>
-            </table>
-          </div>
-        </article>
-      </section>
+    <article>
+        <div id="employmentBoard-table">
+            <div class="employmentBoard-row" id="employmentBoard-title-row">
+                <div class="employmentBoard-checkbox">
+                    <input type="checkbox" name="" id="title-checkbox"/>
+                </div>
+                <div class="employmentBoard-hrd-net-id">
+                    <span>hrd-net-id</span>
+                </div>
+                <div class="employmentBoard-courseId">
+                    <span>기수</span>
+                </div>
+                <div class="employmentBoard-name">
+                    <span>이름</span>
+                </div>
+                <div class="employmentBoard-phoneNumber">
+                    <span>전화번호</span>
+                </div>
+                <div class="employmentBoard-email">
+                    <span>이메일</span>
+                </div>
+                <div class="employmentBoard-endDate">
+                    <span>과정종료일</span>
+                </div>
+                <div class="employmentBoard-company">
+                    <span>취업처</span>
+                </div>
+                <div class="employmentBoard-isActive">
+                    <span>취업 여부</span>
+                </div>
+            </div>
+            <div style="display: contents" id="employment-table-contents">
+            </div>
+        </div>
+    </article>
         <article class="employment-page-information">
             <ul id="pagination">
                 <li>
@@ -75,32 +87,8 @@
         </article>
 </section>
 <footer></footer>
-<script>
-
-
-
- $(".board-filter-search-btn").on("click", async function () {
-      let courseSeq =$(".employment-courseId-filter option:selected").text();
-      try {
-        const response = await fetch("/employments/info-list?courseSeq=" + courseSeq + "&page=" + 1, {
-          method: "GET" // 불필요한 Content-Type 헤더 제거
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP 오류! 상태: ${response.status}`);
-        }
-        const data = await response.json();
-        const notificationList = data.result;
-        console.log(notificationList);
-        await getSettlementList(notificationList);
-      } catch (error) {
-        console.error("공지 사항 페치 오류:", error);
-      }
-
-    });
-
-
-</script>
 </body>
-<script type="text/javascript" th:src="@{/scripts/employmentBoard.js}">
-</script>
+
+
+<script type="text/javascript" th:src="@{/scripts/employmentBoard.js}"></script>
 </html>
