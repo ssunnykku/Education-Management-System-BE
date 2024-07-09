@@ -18,12 +18,12 @@ public interface AttendanceService {
     int getAttendanceIntegratedListFilterAllAmount(String name, int courseNumber);
     // -- 데이터 결과 목록 가져오기
     List<StudentAttendanceListDTO> getAttendanceIntegratedListFilterAll(String name, int courseNumber, int page, int size);
-    // 경우2_ 기수 또는 수강생명 입력
+    // 경우2 _ 기수 또는 수강생명 입력
     // -- 데이터 개수 가져오기 (for 페이지네이션)
     int getAttendanceIntegratedListFilterAmount(String name, int courseNumber);
     // -- 데이터 결과 목록 가져오기
     List<StudentAttendanceListDTO> getAttendanceIntegratedListFilter(String name, int courseNumber, int page, int size);
-    // 경우3_ 기수, 수강생명 미입력 (전체 데이터)
+    // 경우3 _ 기수, 수강생명 미입력 (전체 데이터)
     // -- 데이터 개수 가져오기 (for 페이지네이션)
     int getAttendanceIntegratedListNoFilterAmount(String name, int courseNumber);
     // -- 데이터 결과 목록 가져오기
