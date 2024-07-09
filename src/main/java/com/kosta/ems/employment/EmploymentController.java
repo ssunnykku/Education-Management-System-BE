@@ -21,11 +21,16 @@ public class EmploymentController {
     private final EmploymentService service;
     private final StudentCourseService studentCourseService;
     
-    @GetMapping("/infoList")
+    @GetMapping("/info-list")
     public Map getMethodName(@RequestParam(value = "page",           defaultValue = "1"   ) int page,
             @RequestParam(value = "pageSize",       defaultValue = "10"  ) int pageSize,
             @RequestParam int courseSeq) {
         return Map.of("result", service.getEmploymentInfoByCourseSeq(courseSeq, page, pageSize), "total", studentCourseService.countByCourseSeq(courseSeq));
+    }
+    
+    @GetMapping("/avg-rate")
+    public Map getCourseAvgRate(@RequestParam int courseSeq) {
+        return Map.of("result", service.getEmployeedRatePct(courseSeq));
     }
     
 }
