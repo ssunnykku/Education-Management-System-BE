@@ -31,7 +31,6 @@ public interface StudentService {
     List<CourseInfoDTO> getOnGoingCourseList(String academyLocation);
     // 신규 수강생 등록
     void setStudentWithCourse(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber);
-    // void setStudentWithCourse(String hrdNetId, String name, LocalDate birth, String address, String bank, String account, String phoneNumber, String email, char gender, String managerId, int courseNumber);
     void setStudentBasicInfo(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber);
     void setStudentCourseSeqInfo(String hrdNetId, String courseNumber);
 

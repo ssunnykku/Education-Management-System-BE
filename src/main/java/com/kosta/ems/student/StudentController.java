@@ -22,40 +22,6 @@ import lombok.extern.log4j.Log4j2;
 public class StudentController {
 	private final StudentService studentService;
 
-	/*
-	// [수강생 정보] - 수강생 정보 조회  _POSTMAN 확인 완료
-	@GetMapping("/students/student-list/{name}/{courseNumber}")
-	public List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumber(@PathVariable String name, @PathVariable int courseNumber) {
-		Map<String, Object> result = new HashMap<String, Object>();
-		int page = pageRequest.getPage();
-		int size = pageRequest.getSize();
-		
-		// 페이징 response
-		int totalCount = studentServiceImpl.getStudentsByNameOrCourseNumberAmount(name, courseNumber);
-		int totalPage = (totalCount/size) + 1;
-		int currentPage = pageRequest.getCurrentPage();
-		// int currentPage = 2;  // 브라우저에서 받아올 값인데 아직 연결안해서 controller 테스트를 위해 작성했던 코드.
-		int prevPage = 0;
-		int nextPage = 0;
-		if(currentPage > 1 && currentPage < totalPage) {
-			prevPage = currentPage - 1;
-			nextPage = currentPage + 1;
-		} else if(currentPage == totalPage) {
-			prevPage = currentPage - 1;
-		} else if(currentPage == 1) {
-			nextPage = currentPage + 1;
-		}
-		
-		PageResponseDTO pageInfo = PageResponseDTO.builder().totalCount(totalCount).totalPage(totalPage).currentPage(currentPage).prevPage(prevPage).nextPage(nextPage).build();
-		result.put("pageInfo", pageInfo);
-		
-		// 수강생 정보 데이터
-		result.put("data", studentServiceImpl.getStudentsByNameOrCourseNumberList(name, courseNumber, page, size));
-		
-		return result;
-	}
-	*/
-
 	// [수강생 정보] - 수강생 정보 조회
 	@PostMapping("/student-list")
 	public Map<String, Object> getStudentsByNameOrCourseNumber(@RequestParam(name="page", required = false, defaultValue = "1") int page, @RequestBody AddStudentBasicInfoDTO dto) {
@@ -90,7 +56,6 @@ public class StudentController {
 
 	// [수강생 정보] - 수강생 등록
 	// 1. 등록된 hrdNetId인지 확인 _POSTMAN 확인 완료 -- 비동기
-	// @GetMapping("/students/valid-id")
 	@PostMapping("/valid-id")
 	public Map<String, Object> findByHrdNetId(@RequestBody AddStudentBasicInfoDTO request) {
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -124,7 +89,6 @@ public class StudentController {
 	// [수강생 정보] - 수강생 등록
 	// 3-1. 신규 수강생 등록
 	@PostMapping()
-	// @RequestBody로 등록 양식 정보 받고, @RequestParam에 '신규 가입', '기존 수강생+수강신청' 여부를 문자로 체킹할 수 있도록 하는게 나을듯함
 	public UpdateDeleteResultDTO setStudentWithCourse(@RequestBody RequestAddStudentBasicInfoDTO request) {
 		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
 		// @principal 적용 후에는 String managerId 제거하고 @principal 내용으로 교체할 것!
@@ -141,8 +105,7 @@ public class StudentController {
 	}
 	
 	// [수강생 정보] - 수강생 등록
-	// 3-2. 기존 수강생의 과정 수강 신규 등록 -- POSTMAN 테스트 완료
-	// @PutMapping("/new-course")
+	// 3-2. 기존 수강생의 과정 수강 신규 등록
 	@PostMapping("/new-course")
 	public UpdateDeleteResultDTO setRegisteredStudentWithNewCourse(@RequestBody RequestAddStudentBasicInfoDTO request) {
 		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
@@ -182,7 +145,6 @@ public class StudentController {
 	
 	// [수강생 정보] - 수강생 삭제
 	@PatchMapping("/active-status")
-	// public UpdateDeleteResultDTO deleteSelectedStudent(@PathVariable String studentId) {
 	public UpdateDeleteResultDTO deleteSelectedStudent(@RequestBody UpdateSelectedStudentInfoDTO request) {
 		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
 		try {

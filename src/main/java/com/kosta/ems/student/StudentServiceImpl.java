@@ -38,14 +38,7 @@ public class StudentServiceImpl implements StudentService {
     
     // 수강생 정보 검색 결과 데이터 불러오기
     @Override
-    // public Map<String, Collection> getStudentsByNameOrCourseNumber(String name, int courseNumber) {
     public List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumberList(String name, int courseNumber, int page, int size) {
-		/*
-		 * Map<String, Collection> result = new HashMap<String, Collection>();
-		 * result.put("data", studentMapper.findByStudentNameOrCourseNumber(name,
-		 * courseNumber)); return result;
-		 */
-    	// return studentMapper.findByStudentNameOrCourseNumber(name, courseNumber);
         return studentMapper.findByStudentNameOrCourseNumberList(name, courseNumber, ((page*size)-size), size);
     }
 
@@ -114,8 +107,6 @@ public class StudentServiceImpl implements StudentService {
     // ** students_courses 테이블에 수강생 데이터 등록
     @Override
     public void setStudentCourseSeqInfo(String hrdNetId, String courseNumber) {
-        // AddStudentCourseSeqDTO dto = AddStudentCourseSeqDTO.builder().hrdNetId(hrdNetId).courseNumber(Integer.parseInt(courseNumber)).build();
-        // studentMapper.addStudentCourseSeqInfo(dto);
     	AddStudentBasicInfoDTO dto = AddStudentBasicInfoDTO.builder().hrdNetId(hrdNetId).courseNumber(Integer.parseInt(courseNumber)).build();
         studentMapper.addStudentCourseSeqInfo(dto);
     }
@@ -131,8 +122,6 @@ public class StudentServiceImpl implements StudentService {
     	studentMapper.updateSelectedStudentInfo(dto);
     }
 
-
-    
     // 수강생 삭제
     @Override
     public void removeSelectedStudent(String studentId) {

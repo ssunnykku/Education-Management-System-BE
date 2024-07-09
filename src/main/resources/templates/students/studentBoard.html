@@ -29,14 +29,11 @@
                 </button>
             </div>
         </div>
-        <div class="student-cnt-pages">
-            <!--<span>총 13건</span>-->
-        </div>
+        <div class="student-cnt-pages"></div>
     </article>
-    <article class="content-article">  <!--addAttendanceBoard.html의 #content-section-->
+    <article class="content-article">
         <table class="board-table">
             <tr>
-                <!--<th><div><input type="checkbox" class="checkbox all" name="check-all"/></div></th>-->
                 <th><div></div></th>
                 <th class="hrd-net-id">HRD-Net ID</th>
                 <th class="course-number">기수</th>
@@ -69,7 +66,6 @@
     let currentPage = 1;
     let currentBlock = 1;
     const pageSize = 10;
-    // const page = new URL(location.href).search.split("=")[0];
     const page = 1;
 
     // '등록' 버튼 클릭하면 수강생 등록 페이지로 이동
@@ -127,8 +123,6 @@
         }
         $(".board-table").html("");
         $(".board-table").append(result);
-        /*$(".table-row-wrapper").html("");
-        $(".table-row-wrapper").append(result);*/
     }
 
     // -- 검색한 수강생 목록 결과 데이터 가져오기
@@ -172,7 +166,6 @@
         const selectedId = tmp.substring(0, tmp.length-1);
         sessionStorage.setItem("selected", selectedId);
         window.location.href = "/ems/students/update/"+selectedId;
-        // window.location.href = "/ems/students/update";
     });
 
     // 페이지네이션

@@ -144,7 +144,7 @@
     };
     // 검색한 출결 데이터 목록 개수 가져오기
     async function getAmountAttendanceList(data) {
-        totalPage = Math.ceil(data/10); // 페이징 확인을 위해 '2'로 해둔 것. 10으로 바꿔야함.
+        totalPage = Math.ceil(data/10);
 
         let result = '';
         result += `<span class="span-attendance-list-amount">총 ${data}건</span>`;
@@ -170,7 +170,6 @@
             redirect: "follow"
         };
 
-        // await fetch("/attendances/student-list?courseNumber="+getCourseNumber()+"&name="+getStudentName()+"&page="+clickPage, requestOptions)
         await fetch("/attendances/student-list?page="+param, requestOptions)
                 .then((res) => res.json())
             .then(async(data) => {

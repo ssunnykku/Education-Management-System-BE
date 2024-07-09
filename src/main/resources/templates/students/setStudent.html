@@ -153,7 +153,7 @@
             .catch((error) => console.error(error));
     }
     // 현재 진행 중인 교육과정 목록 화면에 보여주기
-    // thymleaf로 가져온 수강생 기수 데이터
+    // thymeleaf로 가져온 수강생 기수 데이터
     const courseNumberVal = $("#course-number").val();
 
     // 교육과정 변경/신규 등록시 기수 변경을 위함
@@ -161,7 +161,6 @@
         $("#course_number").on("change", function () {
             const selectedCourseNumber = $(this).val();
 
-            // Update the selected attribute of all options based on the selected value
             $("#course_number option").each(function () {
                 $(this).prop("selected", $(this).val() === selectedCourseNumber);
             });
@@ -229,7 +228,7 @@
         console.log(JSON.stringify(raw));
 
         const requestOptions = {
-            method: "POST",      // 이전에 POST로 하고 있었음
+            method: "POST",
             headers: myHeaders,
             body: JSON.stringify(raw),
             redirect: "follow"

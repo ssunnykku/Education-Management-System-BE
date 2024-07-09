@@ -181,31 +181,12 @@ public class EmpController {
         return "students/pointBoard";
     }
 
-
     @GetMapping("/students/update/{selected}")
     public String updateStudent(@PathVariable String selected, Model model) {
         StudentBasicInfoDTO dto = studentService.getRegisteredStudentInfo(selected);
         model.addAttribute("dto", dto);
-        /*model.addAttribute("name", dto.getName());
-        model.addAttribute("hrdNetId", dto.getHrdNetId());
-        model.addAttribute("birth", dto.getBirth());
-        model.addAttribute("address", dto.getAddress());
-        model.addAttribute("bank", dto.getBank());
-        model.addAttribute("account", dto.getAccount());
-        model.addAttribute("email", dto.getEmail());
-        model.addAttribute("gender", dto.getGender());
-        model.addAttribute("phoneNumber", dto.getPhoneNumber());
-        model.addAttribute("studentCourseSeq", dto.getStudentCourseSeq());
-        model.addAttribute("courseNumber", dto.getCourseNumber());*/
         return "students/setStudent";
     }
-
-     /*
-    @GetMapping("/students/update")
-    public String updateStudent() {
-        return "students/setStudent";
-    }
-      */
 
     @GetMapping("/students/set")
     public String addStudent() { return "students/addStudent"; }

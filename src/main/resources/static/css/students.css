@@ -1,24 +1,18 @@
 @import "reset.css";
 
 
-
-
-
 /**************** addStudentModal *******************/
 article {
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
 }
 
 #addStudent-wrapper {
   display: grid;
   grid-template-columns: 1fr;
-  /*grid-template-rows: repeat(7, 1fr);*/
   grid-template-rows: repeat(7, 70px);
   width: 460px;
-  /*height: 800px;*/
   height: 600px;
   margin: 5px 0px;
   padding: 40px;
@@ -92,8 +86,6 @@ select {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
-  /* row-gap: 20px; */
-  /* gap: 20px 30px; */
   column-gap: 20px;
   padding-left: 5px;
 }
@@ -275,10 +267,8 @@ body {
   font-weight: bolder;
   font-size: 17px;
   line-height: 144%;
-  /* or 24px */
   text-align: center;
 
-  /* Text/Text_900 */
   color: #1d1d1d;
 }
 
@@ -441,16 +431,6 @@ body {
   line-height: 1.5em;
   border-radius: 8px;
 
-  /*
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 16px;
-  gap: 10px;
-  */
-
-  /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15); */
 
   box-shadow: 0px 0px 2px #888;
   line-height: 1.5em;
@@ -458,11 +438,6 @@ body {
   background: rgba(244, 244, 244, 1);
   color: #000000;
 
-  /*
-  flex: none;
-  order: 0;
-  flex-grow: 1;
-   */
 }
 
 .student-btn-wrapper {
@@ -642,7 +617,6 @@ body {
 
 .chk-result-popup {
   display: none;
-  /*display: flex;*/
   justify-content: center;
   position: absolute;
   top: 40%;
