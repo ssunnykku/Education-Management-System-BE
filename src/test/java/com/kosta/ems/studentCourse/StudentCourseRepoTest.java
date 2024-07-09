@@ -26,5 +26,11 @@ public class StudentCourseRepoTest {
 	    assertThat(result.get(0).getStudentId()).isEqualTo("01236aec-39ca-11ef-aad4-06a5a7b26ae5");
 	    
 	}
+	
+	@Test
+	@Transactional
+	public void countOfStudentsByCourseSeq() {
+	    assertThat(repo.countByCourseSeq(5)).isEqualTo(5);
+	}
 
 }
