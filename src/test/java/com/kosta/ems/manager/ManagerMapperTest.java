@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kosta.ems.manager.ManagerMapper;
+
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
@@ -28,6 +30,11 @@ public class ManagerMapperTest {
 			String val = entry.getValue();
 			System.out.println(key + " : " + val);
 		}
+	}
+	
+	@Test
+	public void userDetails() {
+	    System.out.println(mapper.findByEmployeeNumber("TEST0001"));
 	}
 	
 

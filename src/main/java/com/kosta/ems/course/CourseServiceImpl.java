@@ -13,28 +13,45 @@ public class CourseServiceImpl implements CourseService {
 	private final CourseMapper courseMapper;
 
 	@Override
-	public CourseDTO getCourse(int courseNumber, String academyLocation) {
-		CourseDTO course = courseMapper.getCourse(courseNumber);
+	public CourseDTO getCourse(int courseSeq, String academyLocationOfManager) {
+		CourseDTO course = courseMapper.getCourse(courseSeq);
 		//권한 검사
-		if(Objects.nonNull(course) && !course.getAcademyLocation().equals(academyLocation))
+		if(course == null || !course.getAcademyLocation().equals(academyLocationOfManager))
 			return null;
-		
 		return course;
 	}
 
 	@Override
-	public List<CourseDTO> searchCourseList(int courseNumber, String academyLocation, int page, int pageSize) {
-		return courseMapper.searchCourseList(courseNumber, academyLocation, (page-1) * pageSize, pageSize);
+	public List<CourseDTO> searchCourseList(int courseNumber, String academyLocation, int page, int pageSize, boolean excludeExpired) {
+		return courseMapper.searchCourseList(courseNumber, academyLocation, (page-1) * pageSize, pageSize, excludeExpired);
+	}
+	
+	@Override
+	public Integer getSearchCourseListSize(int courseNumber, String academyLocation, int page, int pageSize, boolean excludeExpired) {
+		Integer result =courseMapper.getSearchCourseListSize(courseNumber, academyLocation, (page-1) * pageSize, pageSize, excludeExpired);
+		if(result == null) {
+			result = 0;
+		}
+		return result;
 	}
 
 	@Override
 	public boolean addCourse(CourseDTO course) {
-		return courseMapper.insertCourse(course);
+		boolean result = false;
+		try {
+			result = courseMapper.insertCourse(course);
+		}catch (Exception e) {
+		}
+		return result;
 	}
 
 	@Override
 	public boolean editCourse(CourseDTO course) {
-		return courseMapper.updateCourse(course);
+		CourseDTO ori = courseMapper.getCourse(course.getCourseSeq()); 
+		if(course.getAcademyLocation().equals(ori.getAcademyLocation()))
+			return courseMapper.updateCourse(course);
+		//TODO:보안 런타임 오류 
+		return false;
 	}
 
 	@Override
@@ -45,6 +62,16 @@ public class CourseServiceImpl implements CourseService {
 			return false;
 		}
 		return courseMapper.inactivateCourse(courseSeq);
+	}
+
+	@Override
+	public List<Integer> getCourseNumberList(String academyLocation, boolean excludeExpired) {
+		return courseMapper.getCourseNumberList(academyLocation, excludeExpired);
+	}
+
+	@Override
+	public List<String> getCourseTypeList() {
+		return courseMapper.getCourseTypeList();
 	}
 
 }

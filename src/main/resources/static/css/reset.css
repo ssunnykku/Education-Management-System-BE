@@ -187,8 +187,6 @@ a {
 
 select {
     background: #fff;
-    padding: 0.4rem;
-    margin: 0 0.2rem;
     border: 0;
     border-radius: 0.3rem;
     font-size: 0.9rem;
@@ -196,4 +194,14 @@ select {
     -moz-appearance: none;
     -webkit-appearance: none;
     outline: 0;
+}
+
+input[type='date']::before {
+    content: attr(data-placeholder);
+    width: 100%;
+}
+
+input[type='date']:focus::before,
+input[type='date']:valid::before {
+    display: none;
 }

@@ -1,426 +1,569 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="../../css/format.css" />
-    <link rel="stylesheet" href="../../css/courses.css" />
-    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
-            integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>  </head>
-  <body id="content-wrapper">
-    <div th:insert="~{common/header :: header}"></div>
-    <div th:insert="~{common/title :: title ('과정 관리')}"></div>
-    <section id="content-section">
-      <article id="courseBoard-btns-container">
-        <div id="courseBoard-btn-wrapper">
-          <button id="enroll-btn" class="btn-setting">등록</button>
-          <button id="delete-btn" class="btn-setting">삭제</button>
-        </div>
-        <div class="search-form-wrapper">
-          <!-- form???? -->
-          <select name="courseId-filter" class="data-filter">
-            <option value="none">기수</option>
-            <option value="227">227</option>
-            <option value="191">191</option>
-          </select>
-          <select name="location-filter" class="data-filter">
-            <option value="none">강의장</option>
-            <option value="227">가산</option>
-            <option value="191">성남</option>
-          </select>
-          <button type="button" class="filter-search-btn">검색</button>
-        </div>
-      </article>
-      <article>
-        <div id="courseBoard-table">
-          <div class="courseBoard-row" id="courseBoard-title-row">
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <span> 수정하기 </span>
-            </div>
-          </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>채용 예정자 무료</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>277</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>Java Web</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>Java 기반 클라우드 개발자 양성 과정</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>2024.02.27 ~ 2024.07.31</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>5</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>800<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>8</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>가산</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>
-          </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>        
-           </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>          </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>          </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>          </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>          </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>          </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>          </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>          </div>
-          <div class="courseBoard-row" >
-            <div id="courseBoard-no">
-              <input type="checkbox" name="" />
-            </div>
-            <div id="courseBoard-classification">
-              <span>과정구분</span>
-            </div>
-            <div id="courseBoard-course-id">
-              <span>기수</span>
-            </div>
-            <div id="courseBoard-subject">
-              <span>주제명</span>
-            </div>
-            <div id="courseBoard-course-name">
-              <span>과정명</span>
-            </div>
-            <div id="courseBoard-duration">
-              <span>기간</span>
-            </div>
-            <div id="courseBoard-count-mounth">
-              <span>총 개월 수</span>
-            </div>
-            <div id="courseBoard-total-hours">
-              <span>총 교육시간<span>
-            </div>
-            <div id="courseBoard-total-days">
-              <span>교육시간(일)</span>
-            </div>
-            <div id="courseBoard-location">
-              <span>강의장</span>
-            </div>
-            <div id="courseBoard-edit">
-              <button id="edit-btn" class="btn-setting">수정</button>
-            </div>         
-           </div>
-          </div>
-      </article>
 
-      <article class="page-information">
-        <div class="cnt-pages">
-          <span>총 14건</span>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="../../css/format.css" />
+  <link rel="stylesheet" href="../../css/courses.css" />
+  <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
+    integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+</head>
+
+<body id="content-wrapper">
+  <div th:insert="~{common/header :: header}"></div>
+  <div th:insert="~{common/title :: title ('과정 관리')}"></div>
+  <section id="content-section">
+    <article id="courseBoard-btns-container">
+      <div class="search-form-wrapper">
+        <!-- form???? -->
+        <form action="/ems/courses">
+          <select id="courseNumberSelect" name="courseNumber" class="data-filter">
+            <option value="0">기수</option>
+            <option th:each="courseNumber: ${courseNumberList}" th:text="${courseNumber}" th:attr="value=${courseNumber}" th:selected="${selectedCourseNumber} == ${courseNumber}">기수 alt</option>
+          </select>
+          <select name="excludeExpired" class="data-filter" onChange="updateCourseNumber(event)">
+            <option value="true" th:selected="${paging.excludeExpired} == 1">진행중</option>
+            <option value="false" th:selected="${paging.excludeExpired} == 0">전체</option>
+          </select>
+          <button type="submit" class="filter-search-btn">검색</button>
+        </form>
+      </div>
+      <div id="courseBoard-btn-wrapper">
+        <button id="enroll-btn" class="btn-setting" popovertarget="addCourseModal">등록</button>
+        <button id="delete-btn" class="btn-setting" popovertarget="removeCourseModal">삭제</button>
+      </div>
+      
+    </article>
+    <article>
+      <div id="courseBoard-table">
+        <div class="courseBoard-row" id="courseBoard-title-row">
+          <div id="courseBoard-no">
+            <input type="checkbox" id="all-checkbox" name="" />
+          </div>
+          <div id="courseBoard-classification">
+            <span>과정구분</span>
+          </div>
+          <div id="courseBoard-course-id">
+            <span>기수</span>
+          </div>
+          <div id="courseBoard-subject">
+            <span>주제명</span>
+          </div>
+          <div id="courseBoard-course-name">
+            <span>과정명</span>
+          </div>
+          <div id="courseBoard-duration">
+            <span>기간</span>
+          </div>
+          <div id="courseBoard-total-hours">
+            <span>총 교육일수<span>
+          </div>
+          <div id="courseBoard-total-days">
+            <span>교육시간(일)</span>
+          </div>
+          <div id="courseBoard-location">
+            <span>강의장</span>
+          </div>
+          <div id="courseBoard-edit">
+            <span> 수정하기 </span>
+          </div>
         </div>
-      </article>
-    </section>
-    <footer></footer>
-  </body>
+        <div th:each="course : ${courseList}" style="display: contents;">
+          <div class="courseBoard-row" th:attr="data-course-seq=${course.courseSeq}">
+            <div id="courseBoard-no">
+              <input type="checkbox" name="" />
+            </div>
+            <div id="courseBoard-classification">
+              <span th:text="${course.courseType}">과정 구분 alt</span>
+            </div>
+            <div id="courseBoard-course-id">
+              <span th:text="${course.courseNumber}">기수 alt</span>
+            </div>
+            <div id="courseBoard-subject">
+              <span th:text="${course.subject}">과목 alt</span>
+            </div>
+            <div id="courseBoard-course-name">
+              <span th:text="${course.courseName}">Java 기반 클라우드 개발자 양성 과정</span>
+            </div>
+            <div id="courseBoard-duration">
+              <span th:text="${course.getCourseStartDate().toString() + ' ~ ' + course.getCourseEndDate().toString()}"
+                th:attr="data-start-date=${course.getCourseStartDate()},data-end-date=${course.getCourseEndDate()}">2024.02.27
+                ~ 2024.07.31</span>
+            </div>
+            <div id="courseBoard-total-hours">
+              <!-- 총 시간 대신 교육일수 적기 -->
+              <span th:text="${course.totalTrainingDays}">교육일수 alt<span>
+            </div>
+            <div id="courseBoard-total-days">
+              <!-- 교육시간 -->
+              <span th:text="${course.trainingHoursOfDate}">일당 교육시간 alt</span>
+            </div>
+            <div id="courseBoard-location">
+              <span th:text="${course.academyLocation}">강의장 alt</span>
+            </div>
+            <div id="courseBoard-edit">
+              <button id="edit-btn" class="btn-setting" onclick="initEditCourseModal(event)"
+                popovertarget="editCourseModal">수정</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </article>
+
+    <article class="page-information">
+      <div class="cnt-pages">
+        <span th:text="${'총 ' + paging.totalCourseCount +'개'}">총 개수 alt</span>
+      </div>
+      <ul id="pagination">
+        <li th:classappend="${paging.pageOffset == 1} ? 'inactivePage'">
+          <a class="page-link"
+            th:href="@{|?page=${paging.pageOffset-1}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}">
+            <span>이전</span>
+          </a>
+        </li>
+        <li th:each="page: ${#numbers.sequence(0, 9)}"
+          th:if="${(paging.pageOffset + page) <= ((paging.totalCourseCount/paging.pageSize) + 1)}"
+          th:classappend="${(paging.pageOffset + page) == paging.page} ? 'activePage'" class="page-item">
+          <a th:text="${paging.pageOffset + page}" class="page-link"
+            th:href="@{|?page=${paging.pageOffset + page}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}"></a>
+        </li>
+        <li class="page-item"
+          th:classappend="${(paging.pageOffset + 10) > (paging.totalCourseCount/paging.pageSize)} ? 'inactivePage'">
+          <a class="page-link"
+            th:href="@{|?page=${paging.pageOffset + 10}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}">
+            <span>다음</span>
+          </a>
+        </li>
+      </ul>
+      <!-- 페이징처리 끝 -->
+      </div>
+    </article>
+  </section>
+  <footer></footer>
+
+
+
+  <!-- 과정등록 모달 -->
+  <div id="addCourseModal" class="course-modal" popover>
+    <div id="course-wrapper">
+      <div>
+        <h1>과정 등록</h1>
+        <input type="text" id="course_seq" hidden>
+        <form method="post" class="course-form-row">
+          <h4>과정 구분</h4>
+          <select name="course_type" id="course_type">
+            <option>과정 구분을 선택하세요.</option>
+            <option th:each="type : ${courseTypeList}" th:attr="value=${type}" th:text="${type}">타입 alt</option>
+          </select>
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>기수</h4>
+          <input type="text" id="course_number" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>주제명</h4>
+          <input type="text" id="subject" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>과정명</h4>
+          <input type="text" id="course_name" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>시작일</h4>
+          <input type="date" id="course_start_date" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>종료일</h4>
+          <input type="date" id="course_end_date" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>교수자 이름</h4>
+          <input type="text" id="professor_name" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>총 교육일</h4>
+          <input type="text" id="total_training_hours" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>교육 시간(일)</h4>
+          <input type="text" id="training_hours_of_day" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>정원 수</h4>
+          <input type="number" id="course_max_students" />
+        </form>
+
+        <div id="btn-wrapper">
+          <button id="enroll-btn" class="btn-setting" onclick="addCourse(event)">등록</button>
+          <button id="edit-btn" class="btn-setting" popovertarget="addCourseModal"
+            popovertargetaction="hide">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 과정수정 모달 -->
+  <div id="editCourseModal" class="course-modal" popover>
+    <div id="course-wrapper">
+      <div>
+        <h1>과정 수정</h1>
+        <input type="text" id="course_seq" hidden>
+        <form method="post" class="course-form-row">
+          <h4>과정 구분</h4>
+          <select name="course_type" id="course_type">
+            <option>과정 구분을 선택하세요.</option>
+            <option th:each="type : ${courseTypeList}" th:attr="value=${type}" th:text="${type}">타입 alt</option>
+          </select>
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>기수</h4>
+          <input type="text" id="course_number" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>주제명</h4>
+          <input type="text" id="subject" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>과정명</h4>
+          <input type="text" id="course_name" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>시작일</h4>
+          <input type="date" id="course_start_date" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>종료일</h4>
+          <input type="date" id="course_end_date" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>교수자 이름</h4>
+          <input type="text" id="professor_name" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>총 교육일</h4>
+          <input type="text" id="total_training_hours" />
+        </form>
+        <form method="post" class="course-form-row">
+          <h4>교육 시간(일)</h4>
+          <input type="text" id="training_hours_of_day" />
+        </form>
+
+        <div id="btn-wrapper">
+          <button id="enroll-btn" class="btn-setting" onclick="editCourse(event)">수정</button>
+          <button id="edit-btn" class="btn-setting" popovertarget="editCourseModal"
+            popovertargetaction="hide">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <!-- 과정삭제 모달 -->
+  <div id="removeCourseModal" class="course-modal" popover>
+    <div class="removecourse-wrapper">
+      <div class="removecourse-info">
+        <h1 class="upperline title">삭제 확인</h1>
+        <h1>선택하신 과정을 삭제하겠습니까?</h1>
+      </div>
+      <div id="btn-wrapper">
+        <button id="enroll-btn-format" class="btn-setting-format" onclick="removeCourse()">삭제</button>
+        <button id="edit-btn" class="btn-setting" popovertarget="removeCourseModal"
+          popovertargetaction="hide">취소</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 과정삭제 완료 모달 -->
+  <div id="removeCourseCompleteModal" class="course-modal" popover>
+    <div class="removecourse-wrapper">
+      <div class="removecourse-info">
+        <h1 class="upperline title">알림</h1>
+        <h1 id="message">삭제되었습니다.</h1>
+      </div>
+      <div id="btn-wrapper">
+        <button id="enroll-btn-format" class="btn-setting-format" onclick="location.reload()">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $("#pagination li").each((index, item) => {
+      if ($(item).hasClass("inactivePage")) {
+        let a = $(item).children("a");
+        a.removeAttr("href");
+      }
+    });
+    $("#all-checkbox").on("change", toggleAll);
+
+    function toggleAll() {
+      const isChecked = $("#all-checkbox").prop('checked');
+      $("#courseBoard-table input[type=checkbox]").prop('checked', isChecked);
+    }
+    async function initEditCourseModal(e) {
+      const courseDiv = $(e.target).closest(".courseBoard-row");
+      const editCourseModalDiv = $("#editCourseModal");
+
+      const courseSeq = courseDiv.data("courseSeq");
+
+      const res = await fetch("/courses/course?courseSeq=" + courseSeq);
+      const data = await res.json();
+      setCourseData(data.result);
+
+
+
+      function setCourseData(courseDTO) {
+        setCourseSeq(courseDTO.courseSeq);
+        setCourseType(courseDTO.courseType);
+        setcourseNumber(courseDTO.courseNumber)
+        setCourseName(courseDTO.courseName)
+        setCourseStartDate(courseDTO.courseStartDate)
+        setCourseEndDate(courseDTO.courseEndDate)
+        setCourseSubject(courseDTO.subject)
+        setCourseTotalTrainingDays(courseDTO.totalTrainingDays)
+        setCourseTrainingHoursOfDate(courseDTO.trainingHoursOfDate)
+        setCourseProfessorName(courseDTO.professorName)
+        setCourseMaxStudents(courseDTO.maxStudents)
+
+      }
+      function setCourseSeq(data) {
+        editCourseModalDiv.find("#course_seq").val(data)
+      }
+      function setcourseNumber(data) {
+        editCourseModalDiv.find("#course_number").val(data)
+      }
+      function setCourseName(data) {
+        editCourseModalDiv.find("#course_name").val(data)
+      }
+      function setCourseStartDate(data) {
+        editCourseModalDiv.find("#course_start_date").val(data)
+      }
+      function setCourseEndDate(data) {
+        editCourseModalDiv.find("#course_end_date").val(data)
+      }
+      function setCourseSubject(data) {
+        editCourseModalDiv.find("#subject").val(data)
+      }
+      function setCourseTotalTrainingDays(data) {
+        editCourseModalDiv.find("#total_training_hours").val(data)
+      }
+      function setCourseTrainingHoursOfDate(data) {
+        editCourseModalDiv.find("#training_hours_of_day").val(data)
+      }
+      function setCourseProfessorName(data) {
+        editCourseModalDiv.find("#professor_name").val(data)
+      }
+      function setCourseMaxStudents(data) {
+        editCourseModalDiv.find("#course_max_students").val(data)
+      }
+      function setCourseType(data) {
+        // editCourseModalDiv.find("#course_type").val(data)
+        // $("#editCourseModal #course_type [value='SMEs']").prop("selected", true);
+        $("#editCourseModal #course_type [value='" + data + "']").prop("selected", true);
+
+      }
+    }
+    function editCourse() {
+      const editCourseModalDiv = $("#editCourseModal");
+
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      const raw = JSON.stringify({
+        "courseSeq": getCourseSeq(),
+        "courseNumber": getCourseNumber(),
+        "courseName": getCourseName(),
+        "courseStartDate": getCourseStartDate(),
+        "courseEndDate": getCourseEndDate(),
+        "subject": getCourseSubject(),
+        "courseType": getCourseType(),
+        "totalTrainingDays": getTotalTrainingDays(),
+        "trainingHoursOfDate": getTrainingHoursOfDate(),
+        "professorName": getProfessorName(),
+        "maxStudents": getMaxStudents()
+      });
+
+      const requestOptions = {
+        method: "PUT",
+        headers: myHeaders,
+        body: raw
+      };
+
+      fetch("/courses/course", requestOptions)
+        .then((response) => response.json())
+        .then((result) => { if (result.result) { showMessage("수정 성공") } })
+        .catch((error) => showMessage("수정에 실패하였습니다. \n같은 현상이 반복된다면 시스템 관리자에게 문의하여 주십시오."));
+
+
+      function getCourseSeq() {
+        return editCourseModalDiv.find("#course_seq").val()
+      }
+      function getCourseNumber() {
+        return editCourseModalDiv.find("#course_number").val()
+      }
+      function getCourseName() {
+        return editCourseModalDiv.find("#course_name").val()
+      }
+      function getCourseStartDate() {
+        return editCourseModalDiv.find("#course_start_date").val()
+      }
+      function getCourseEndDate() {
+        return editCourseModalDiv.find("#course_end_date").val()
+      }
+      function getCourseSubject() {
+        return editCourseModalDiv.find("#subject").val()
+      }
+      function getTotalTrainingDays() {
+        return editCourseModalDiv.find("#total_training_hours").val()
+      }
+      function getTrainingHoursOfDate() {
+        return editCourseModalDiv.find("#training_hours_of_day").val()
+      }
+      function getProfessorName() {
+        return editCourseModalDiv.find("#professor_name").val()
+      }
+      function getMaxStudents() {
+        return editCourseModalDiv.find("#course_max_students").val()
+      }
+      function getCourseType() {
+        // editCourseModalDiv.find("#course_type").val()
+        // $("#editCourseModal #course_type [value='SMEs']").prop("selected", true);
+        return $("#editCourseModal #course_type option:selected").val()
+
+      }
+    }
+
+    function addCourse() {
+      const addCourseModalDiv = $("#addCourseModal");
+
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      const raw = JSON.stringify({
+        "courseNumber": getCourseNumber(),
+        "courseName": getCourseName(),
+        "courseStartDate": getCourseStartDate(),
+        "courseEndDate": getCourseEndDate(),
+        "subject": getCourseSubject(),
+        "courseType": getCourseType(),
+        "totalTrainingDays": getTotalTrainingDays(),
+        "trainingHoursOfDate": getTrainingHoursOfDate(),
+        "professorName": getProfessorName(),
+        "maxStudents": getMaxStudents()
+      });
+
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw
+      };
+
+      fetch("/courses/course", requestOptions)
+        .then((response) => response.json())
+        .then((result) => { if (result.result) { showMessage("등록 성공") } else { showMessage("등록에 실패하였습니다.\n 이미 등록된 기수가 아닌지 확인하시고, 같은 현상이 반복된다면 시스템 관리자에게 문의하여 주십시오.") } })
+        .catch((error) => showMessage("등록에 실패하였습니다. \n네트워크 문제일 가능성이 높습니다. 서버 관리자에게 문의하여 주시기 바랍니다."));
+
+
+      function getCourseSeq() {
+        return addCourseModalDiv.find("#course_seq").val()
+      }
+      function getCourseNumber() {
+        return addCourseModalDiv.find("#course_number").val()
+      }
+      function getCourseName() {
+        return addCourseModalDiv.find("#course_name").val()
+      }
+      function getCourseStartDate() {
+        return addCourseModalDiv.find("#course_start_date").val()
+      }
+      function getCourseEndDate() {
+        return addCourseModalDiv.find("#course_end_date").val()
+      }
+      function getCourseSubject() {
+        return addCourseModalDiv.find("#subject").val()
+      }
+      function getTotalTrainingDays() {
+        return addCourseModalDiv.find("#total_training_hours").val()
+      }
+      function getTrainingHoursOfDate() {
+        return addCourseModalDiv.find("#training_hours_of_day").val()
+      }
+      function getProfessorName() {
+        return addCourseModalDiv.find("#professor_name").val()
+      }
+      function getMaxStudents() {
+        return addCourseModalDiv.find("#course_max_students").val()
+      }
+      function getCourseType() {
+        // editCourseModalDiv.find("#course_type").val()
+        // $("#editCourseModal #course_type [value='SMEs']").prop("selected", true);
+        return $("#addCourseModal #course_type option:selected").val()
+
+      }
+    }
+
+    async function removeCourse() {
+      let selectedCourseSeqList = [];
+      $("div.courseBoard-row").not("#courseBoard-title-row").each((index, item) => {
+        if ($(item).find("input[type=checkbox]").prop("checked")) {
+          const courseSeq = $(item).data("courseSeq");
+          selectedCourseSeqList.push(courseSeq);
+        }
+      });
+      if(!selectedCourseSeqList.length){
+        showMessage("삭제할 과정을 선택해주십시오.");
+        return;
+      }
+
+      let result = await deleteCourse(selectedCourseSeqList);
+      if(result){
+        showMessage("삭제되었습니다.");
+      }else{
+        showMessage("삭제 중 오류가 발생하였습니다.\n같은 현상이 반복되면 관리자에게 문의해주시기 바랍니다.");
+      }
+    }
+
+    async function deleteCourse(courseSeqList) {
+      let promiseList = [];
+      courseSeqList.forEach(courseSeq => {
+        const requestOptions = {
+          method: "PATCH"
+        };
+        promiseList.push(fetch("/courses/course/" + courseSeq, requestOptions));
+      });
+
+      let resList = await Promise.all(promiseList);
+      resList.forEach(element => {
+        if(element == false){
+          return false;
+        }
+      });
+      return true;
+    }
+    async function updateCourseNumber(e){
+      const courseNumberList = await getCourseNumberList(e.target.value);
+      const courseNumberSelect = $("#courseNumberSelect");
+      courseNumberSelect.html("");
+      let element = `<option value="` + 0 +`">` + "기수" + `</option>`;
+      courseNumberList.forEach(courseNumber => {
+        element += `<option value="` + courseNumber +`">` + courseNumber + `</option>`;
+      });
+      courseNumberSelect.get()[0].innerHTML = element;
+    }
+
+    async function getCourseNumberList(excludeExpired){
+      const res = await fetch("/courses/course-number-list?excludeExpired=" + excludeExpired);
+      const data = await res.json();
+      return data.result;
+    }
+
+    function showMessage(msg) {
+      const messageModal = $("#removeCourseCompleteModal").get()[0];
+      messageModal.querySelector("#message").innerText = msg;
+      messageModal.showPopover();
+    }
+  </script>
+</body>
+
 </html>

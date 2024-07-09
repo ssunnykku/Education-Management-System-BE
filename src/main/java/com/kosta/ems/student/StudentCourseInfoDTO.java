@@ -1,11 +1,17 @@
 package com.kosta.ems.student;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Builder
 public class StudentCourseInfoDTO {
     private String studentId;
@@ -22,4 +28,6 @@ public class StudentCourseInfoDTO {
     private String isActive;
     private Long studentCourseSeq;
     private Long courseSeq;
+    private int courseNumber;
+
 }

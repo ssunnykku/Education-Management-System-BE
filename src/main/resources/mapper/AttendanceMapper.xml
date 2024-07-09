@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kosta.ems.attendance.AttendanceMapper">
+    <select id="selectAttendanceByStudentIdAndDuration"
+            resultType="com.kosta.ems.attendance.AttendanceStudentCourseDTO">
+        select attendance_date      as attendanceDate,
+               a.student_course_seq as studentCourseSeq,
+               attendance_status    as attendanceStatus,
+               student_id           as studentId,
+               course_seq           as courseSeq
+        from attendances a
+                 left join students_courses sc on a.student_course_seq = sc.student_course_seq
+        where student_id = #{studentId}
+          and attendance_date <![CDATA[>=]]> #{startDate}
+          and attendance_date <![CDATA[<=]]> #{endDate}
+    </select>
+
+    <select id="selectCountAttendance" resultType="int">
+        select count(attendance_date) as countAttencance
+        from attendances a
+                 left join students_courses sc on a.student_course_seq = sc.student_course_seq
+        where attendance_date <![CDATA[>=]]> #{startDate}
+          and attendance_date <![CDATA[<=]]> #{endDate}
+          and student_id = #{studentId}
+          and attendance_status = '출석';
+    </select>
+    <select id="selectCountLeave" resultType="int">
+        select count(attendance_date) countLeave
+        from attendances a
+                 left join students_courses sc on a.student_course_seq = sc.student_course_seq
+        where attendance_date <![CDATA[>=]]> #{startDate}
+          and attendance_date <![CDATA[<=]]> #{endDate}
+          and student_id = #{studentId}
+          and attendance_status != '출석';
+    </select>
+    <!--[출결 조회] 수강생 출결 목록 데이터 개수-->
+    <!--경우1: 기수+이름 모두 입력해 검색-->
+    <select id="selectAttendanceIntegratedListFilterAllAmount" resultType="string">
+    	SELECT sc.student_course_seq AS studentCourseSeq
+FROM students_courses sc
+JOIN students s ON s.student_id = sc.student_id
+JOIN courses c ON sc.course_seq = c.course_seq
+LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+WHERE (s.student_id IN (SELECT student_id FROM students WHERE NAME LIKE CONCAT('%', #{name}, '%')) AND c.course_seq = (SELECT course_seq FROM courses WHERE course_number = #{courseNumber}))
+GROUP BY c.course_number, s.name, s.hrd_net_id, c.total_training_days
+HAVING SUM(CASE WHEN a.attendance_status = '출석' THEN 1 ELSE 0 END) > 0;
+    </select>
+    <!--수강생 출결 목록 가져오기-->
+    <!--경우1: 기수+이름 모두 입력해 검색-->
+    <select id="selectAttendanceIntegratedListFilterAll" resultType="com.kosta.ems.attendance.StudentAttendanceListDTO">
+    	SELECT c.course_number AS courseNumber, s.name, s.hrd_net_id AS hrdNetId, c.total_training_days AS totalTrainingDays,
+    SUM(CASE WHEN a.attendance_status = '출석' THEN 1 ELSE 0 END) AS 'sumAttendance',
+    SUM(CASE WHEN a.attendance_status = '지각' THEN 1 ELSE 0 END) AS 'sumLateness',
+    SUM(CASE WHEN a.attendance_status = '조퇴' THEN 1 ELSE 0 END) AS 'sumGoOut',
+    SUM(CASE WHEN a.attendance_status = '외출' THEN 1 ELSE 0 END) AS 'sumEarlyLeave',
+    SUM(CASE WHEN a.attendance_status = '결석' THEN 1 ELSE 0 END) AS 'sumAbsence',
+                SUM(CASE WHEN a.attendance_status = '출석 인정' THEN 1 ELSE 0 END) AS 'sumAcknowledge',
+    	sc.student_course_seq AS studentCourseSeq
+FROM students_courses sc
+JOIN students s ON s.student_id = sc.student_id
+JOIN courses c ON sc.course_seq = c.course_seq
+LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+WHERE (s.student_id IN (SELECT student_id FROM students WHERE NAME LIKE CONCAT('%', #{name}, '%')) AND c.course_seq = (SELECT course_seq FROM courses WHERE course_number = #{courseNumber}))
+GROUP BY c.course_number, s.name, s.hrd_net_id, c.total_training_days
+HAVING SUM(CASE WHEN a.attendance_status = '출석' THEN 1 ELSE 0 END) > 0
+LIMIT #{page}, #{size};
+    </select>
+    <!--수강생 출결 목록 데이터 개수-->
+    <!--경우2: 기수 또는 이름 입력해 검색-->
+    <select id="selectAttendanceIntegratedListFilterAmount" resultType="com.kosta.ems.attendance.StudentAttendanceListDTO">
+        SELECT sc.student_course_seq AS studentCourseSeq
+        FROM students_courses sc
+                 JOIN students s ON s.student_id = sc.student_id
+                 JOIN courses c ON sc.course_seq = c.course_seq
+                 LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+        WHERE (s.student_id IN (SELECT student_id FROM students WHERE NAME LIKE CONCAT('%', #{name}, '%')) OR c.course_seq = (SELECT course_seq FROM courses WHERE course_number = #{courseNumber}))
+        GROUP BY c.course_number, s.name, s.hrd_net_id, c.total_training_days
+        HAVING SUM(CASE WHEN a.attendance_status = '출석' THEN 1 ELSE 0 END) > 0;
+    </select>
+    <!--수강생 출결 목록 가져오기-->
+    <!--경우2: 기수 또는 이름 입력해 검색-->
+    <select id="selectAttendanceIntegratedListFilter" resultType="com.kosta.ems.attendance.StudentAttendanceListDTO">
+        SELECT c.course_number AS courseNumber, s.name, s.hrd_net_id AS hrdNetId, c.total_training_days AS totalTrainingDays,
+               SUM(CASE WHEN a.attendance_status = '출석' THEN 1 ELSE 0 END) AS 'sumAttendance',
+                SUM(CASE WHEN a.attendance_status = '지각' THEN 1 ELSE 0 END) AS 'sumLateness',
+                SUM(CASE WHEN a.attendance_status = '조퇴' THEN 1 ELSE 0 END) AS 'sumGoOut',
+                SUM(CASE WHEN a.attendance_status = '외출' THEN 1 ELSE 0 END) AS 'sumEarlyLeave',
+                SUM(CASE WHEN a.attendance_status = '결석' THEN 1 ELSE 0 END) AS 'sumAbsence',
+                SUM(CASE WHEN a.attendance_status = '출석 인정' THEN 1 ELSE 0 END) AS 'sumAcknowledge',
+                sc.student_course_seq AS studentCourseSeq
+        FROM students_courses sc
+                 JOIN students s ON s.student_id = sc.student_id
+                 JOIN courses c ON sc.course_seq = c.course_seq
+                 LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+        WHERE (s.student_id IN (SELECT student_id FROM students WHERE NAME LIKE CONCAT('%', #{name}, '%')) OR c.course_seq = (SELECT course_seq FROM courses WHERE course_number = #{courseNumber}))
+        GROUP BY c.course_number, s.name, s.hrd_net_id, c.total_training_days
+        HAVING SUM(CASE WHEN a.attendance_status = '출석' THEN 1 ELSE 0 END) > 0
+            LIMIT #{page}, #{size};
+    </select>
+    <!--수강생 출결 목록 데이터 개수-->
+    <!--경우3: 기수, 이름 미입력 _ 전체 데이터-->
+    <select id="selectAttendanceIntegratedListNoFilterAmount" resultType="com.kosta.ems.attendance.StudentAttendanceListDTO">
+        SELECT sc.student_course_seq AS studentCourseSeq
+        FROM students_courses sc
+                 JOIN students s ON s.student_id = sc.student_id
+                 JOIN courses c ON sc.course_seq = c.course_seq
+                 LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+        GROUP BY c.course_number, s.name, s.hrd_net_id, c.total_training_days
+        HAVING SUM(CASE WHEN a.attendance_status = '출석' THEN 1 ELSE 0 END) > 0;
+    </select>
+    <!--수강생 출결 목록 가져오기-->
+    <!--경우3: 기수, 이름 미입력 _ 전체 데이터-->
+    <select id="selectAttendanceIntegratedListNoFilter" resultType="com.kosta.ems.attendance.StudentAttendanceListDTO">
+        SELECT c.course_number AS courseNumber, s.name, s.hrd_net_id AS hrdNetId, c.total_training_days AS totalTrainingDays,
+               SUM(CASE WHEN a.attendance_status = '출석' THEN 1 ELSE 0 END) AS 'sumAttendance',
+                SUM(CASE WHEN a.attendance_status = '지각' THEN 1 ELSE 0 END) AS 'sumLateness',
+                SUM(CASE WHEN a.attendance_status = '조퇴' THEN 1 ELSE 0 END) AS 'sumGoOut',
+                SUM(CASE WHEN a.attendance_status = '외출' THEN 1 ELSE 0 END) AS 'sumEarlyLeave',
+                SUM(CASE WHEN a.attendance_status = '결석' THEN 1 ELSE 0 END) AS 'sumAbsence',
+                SUM(CASE WHEN a.attendance_status = '출석 인정' THEN 1 ELSE 0 END) AS 'sumAcknowledge',
+                sc.student_course_seq AS studentCourseSeq
+        FROM students_courses sc
+                 JOIN students s ON s.student_id = sc.student_id
+                 JOIN courses c ON sc.course_seq = c.course_seq
+                 LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+        GROUP BY c.course_number, s.name, s.hrd_net_id, c.total_training_days
+        HAVING SUM(CASE WHEN a.attendance_status = '출석' THEN 1 ELSE 0 END) > 0
+            LIMIT #{page}, #{size};
+    </select>
+
+    <!--[출결 입력/수정]출결조건 검색 (기수+이름 입력)-->
+    <!--검색 결과 개수 가져오기 (for 페이지네이션)-->
+    <select id="selectCourseNumberAndStudentNameListAmount" resultType="int">
+    	SELECT COUNT(s.hrd_net_id) AS count
+FROM students_courses sc
+JOIN students s ON sc.student_id = s.student_id
+JOIN courses c ON sc.course_seq = c.course_seq
+LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocation}
+        AND (s.name LIKE CONCAT('%', #{name}, '%') AND c.course_number=#{courseNumber});
+    </select>
+    <!--검색 결과 데이터 목록 가져오기-->
+    <select id="selectCourseNumberAndStudentNameList" resultType="com.kosta.ems.attendance.AttendanceListBySearchFilterDTO">
+    	SELECT 
+    	c.course_number AS courseNumber, 
+    	s.hrd_net_id AS hrdNetId, 
+    	s.name as name, 
+    	c.academy_location AS academyLocation,
+    	 a.attendance_status AS attendanceStatus, 
+    	 a.attendance_date AS attendanceDate, 
+    	 sc.student_course_seq AS studentCourseSeq
+FROM students_courses sc
+JOIN students s ON sc.student_id = s.student_id
+JOIN courses c ON sc.course_seq = c.course_seq
+LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocation}
+        AND (s.name LIKE CONCAT('%', #{name}, '%') AND c.course_number=#{courseNumber})
+LIMIT #{page}, #{size};
+    </select>
+    <!--출결조건 검색 (기수 또는 이름 입력)-->
+    <!--검색 결과 개수 가져오기 (for 페이지네이션)-->
+    <select id="selectCourseNumberOrStudentNameListAmount" resultType="int">
+    	SELECT COUNT(s.hrd_net_id) AS count
+FROM students_courses sc
+JOIN students s ON sc.student_id = s.student_id
+JOIN courses c ON sc.course_seq = c.course_seq
+LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocation}
+  AND (s.name LIKE CONCAT('%', #{name}, '%') OR c.course_number=#{courseNumber})
+    </select>
+    <!--검색 결과 데이터 목록 가져오기-->
+    <select id="selectCourseNumberOrStudentNameList" resultType="com.kosta.ems.attendance.AttendanceListBySearchFilterDTO">
+    	SELECT c.course_number AS courseNumber, s.hrd_net_id AS hrdNetId, s.name, c.academy_location AS academyLocation, a.attendance_status AS attendanceStatus, a.attendance_date AS attendanceDate, sc.student_course_seq AS studentCourseSeq
+FROM students_courses sc
+JOIN students s ON sc.student_id = s.student_id
+JOIN courses c ON sc.course_seq = c.course_seq
+LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocation}
+  AND (s.name LIKE CONCAT('%', #{name}, '%') OR c.course_number=#{courseNumber})
+LIMIT #{page}, #{size}
+    </select>
+    <!--출결조건 검색 (기수, 이름 미입력)-->
+    <!--검색 결과 개수 가져오기 (for 페이지네이션)-->
+    <select id="selectDateAndLocationListAmount" resultType="int">
+    	SELECT COUNT(s.hrd_net_id) AS count
+FROM students_courses sc
+JOIN students s ON sc.student_id = s.student_id
+JOIN courses c ON sc.course_seq = c.course_seq
+LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocation}
+        OR (s.name LIKE CONCAT('%', #{name}, '%') OR c.course_number=#{courseNumber});
+    </select>
+    <!--검색 결과 데이터 목록 가져오기-->
+    <select id="selectDateAndLocationList" resultType="com.kosta.ems.attendance.AttendanceListBySearchFilterDTO">
+    	SELECT c.course_number AS courseNumber, s.hrd_net_id AS hrdNetId, s.name, c.academy_location AS academyLocation, a.attendance_status AS attendanceStatus, a.attendance_date AS attendanceDate, sc.student_course_seq AS studentCourseSeq
+FROM students_courses sc
+JOIN students s ON sc.student_id = s.student_id
+JOIN courses c ON sc.course_seq = c.course_seq
+LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocation}
+	OR (s.name LIKE CONCAT('%', #{name}, '%') OR c.course_number=#{courseNumber})
+LIMIT #{page}, #{size}
+    </select>
+    <!--(테스트)검색 결과 데이터 목록 가져오기-->
+    <select id="selectAttendanceStatusList" resultType="com.kosta.ems.attendance.AttendanceListBySearchFilterDTO">
+        SELECT
+            c.course_number AS courseNumber,
+            s.hrd_net_id AS hrdNetId,
+            s.name as name,
+            c.academy_location AS academyLocation,
+            a.attendance_status AS attendanceStatus,
+            a.attendance_date AS attendanceDate,
+            sc.student_course_seq AS studentCourseSeq
+        FROM students_courses sc
+                 JOIN students s ON sc.student_id = s.student_id
+                 JOIN courses c ON sc.course_seq = c.course_seq
+                 LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+        WHERE a.attendance_date=#{attendanceDate} AND c.academy_location=#{academyLocation}
+          AND s.name LIKE CONCAT('%', #{name}, '%')
+          AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
+            LIMIT #{page}, #{size}
+    </select>
+
+    <!--수강생 출결 상태 수정-->
+    <update id="updateStudentAttendance" parameterType="com.kosta.ems.attendance.UpdateStudentAttendanceStatusDTO">
+        UPDATE attendances
+        SET attendance_status=#{attendanceStatus}
+        WHERE attendance_date=#{attendanceDate} AND student_course_seq=#{studentCourseSeq};
+    </update>
+    <!--수강생 출결 상태 등록-->
+    <!--1. 특정일의 출결 상태가 등록되지 않은 수강생 목록 가져오기-->
+    <select id="selectNoAttendanceStatusStudentList" resultType="com.kosta.ems.attendance.AttendanceListBySearchFilterDTO">
+        <![CDATA[
+        SELECT s.hrd_net_id AS hrdNetId, s.name, c.course_number AS courseNumber, sc.student_course_seq AS studentCourseSeq
+        FROM students_courses sc
+        JOIN students s ON sc.student_id = s.student_id
+        JOIN courses c ON sc.course_seq = c.course_seq
+        LEFT JOIN attendances a ON sc.student_course_seq = a.student_course_seq
+        WHERE sc.student_course_seq NOT IN (
+        SELECT scc.student_course_seq
+        FROM students_courses scc
+        JOIN attendances a ON scc.student_course_seq=a.student_course_seq
+        WHERE a.attendance_date=#{attendanceDate})
+        AND c.academy_location=#{academyLocation}
+        AND #{attendanceDate} >= c.course_start_date
+        AND #{attendanceDate} <= c.course_end_date
+        AND s.is_active='T'
+        GROUP BY sc.student_course_seq
+                ]]>
+    </select>
+    <!--2. 목록의 학생 중 선택한 학생의 출결 상태 등록하기-->
+    <insert id="insertAttendanceStatus" parameterType="com.kosta.ems.attendance.UpdateStudentAttendanceStatusDTO">
+        INSERT INTO attendances (attendance_date, student_course_seq, attendance_status)
+        VALUES(#{attendanceDate}, #{studentCourseSeq}, #{attendanceStatus})
+    </insert>
+</mapper>

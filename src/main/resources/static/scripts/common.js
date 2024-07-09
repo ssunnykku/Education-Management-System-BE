@@ -10,5 +10,8 @@ $(document).ready(() => {
 })
 
 
-let urlParams = new URL(location.href).searchParams;
-let cmd = urlParams.get('cmd');
+
+
+
+//let urlParams = new URL(location.href).searchParams;
+//let cmd = urlParams.get('cmd');

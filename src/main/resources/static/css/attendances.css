@@ -1,0 +1,272 @@
+body {
+    font-size: 10px;
+}
+
+#content-section {
+    width: 80%;
+    margin-top: 25px;
+}
+
+#attendance-content-article {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    padding-left: 0;
+    margin-left: 0;
+}
+
+.student-cnt-pages {
+    width: 100%;
+    margin-left: 15px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.btn {
+    padding: 5px 10px;
+    border-radius: 10px;
+    color: #fff;
+    box-shadow: 0px 0px 2px #888;
+    background-color: rgb(64, 64, 64);
+}
+
+/* 검색 영역 */
+.input-date {
+    width: 130px;
+    height: 41px;
+    border: none;
+    border: 1px solid #d3d3d3;
+    border-radius: 10px;
+    padding: 0 10px;
+}
+
+
+/* board-table */
+.board-table td:not(:nth-child(2)), .board-table th:not(:nth-child(2)) {
+    width: 15%;
+}
+.board-table td:nth-child(2), .board-table th:nth-child(2) {
+    width: 10%;
+}
+.board-table td:nth-child(3), .board-table th:nth-child(3) {
+    width: 20%;
+}
+.board-table td:nth-child(6), .board-table th:nth-child(6) {
+    width: 12%;
+}
+.board-table td:first-child, .board-table th:first-child {
+    width: 5%;
+}
+.board-table td:last-child, .board-table th:last-child {
+    width: 18%;
+}
+
+.board-table-row {
+    text-align: center;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0px 13px;
+}
+
+.board-table {
+    padding: 0 10px;
+}
+
+td {
+    vertical-align: middle;
+}
+
+/* 선택 수강생 출결상태 처리 옵션 */
+.attendance-status-wrapper {
+    display: flex;
+    gap: 15px;
+    margin-left: 49%;
+    width: fit-content;
+}
+
+label {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+#combine-update-btn {
+    width: 130px;
+    height: 33px;
+}
+
+/* 각 수강생의 출결상태 select box */
+select {
+    padding: 0 13px;
+    width: 65%;
+    height: 27px;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    background-image: url(../assets/Polygon.svg);
+    background-repeat: no-repeat;
+    background-size: 10px;
+    background-position: 88%;
+}
+
+/* 각 수강생의 출결 인정 증빙 서류 input file 버튼*/
+.file-input-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+#file-upload-btn {
+    display: none;
+}
+.input-file-label {
+    padding: 6.5px 16px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 2px #888;
+    background: rgba(244, 244, 244, 1);
+}
+
+/* 해당 페이지의 수강생 출결 상태 내용 저장 */
+.update-btn-div {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    width: 100%;
+    margin-top: 20px;
+    padding-right: 7%;
+    .btn {
+        width: 65px;
+        height: 33px;
+    }
+}
+#update-btn {
+    color: #000;
+    background: rgba(244, 244, 244, 1);
+}
+
+/* 수강생 출결 입력(등록) 모달 */
+.addAttendanceModal {
+    margin: auto;
+    border: 1px solid lightgray;
+    border-radius: 8px;
+}
+.modal-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    width: 600px;
+    height: 660px;
+    padding: 5% 10%;
+    box-sizing: border-box;
+}
+.modal-container hr {
+    margin: 10px 0;
+}
+.add-attendance-wrapper {
+    display: flex;
+    width: 100%;
+    .btn {
+        width: 65px;
+        height: 33px;
+    }
+}
+.add-attendance-wrapper:first-child {
+    justify-content: space-between;
+}
+.add-attendance-wrapper:nth-child(2) {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0;
+    height: 400px;
+    p {
+        height: 20px;
+    }
+}
+.add-attendance-wrapper:last-child {
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+    #cancel-btn {
+        color: #000;
+        background-color: rgba(244, 244, 244, 1);;
+    }
+}
+.add-attendance-wrapper p {
+    font-size: 20px;
+    font-weight: 500;
+}
+.modal-section {
+    height: fit-content;
+}
+.modal-section:first-child {
+    width: 31%;
+}
+.input-date.modal {
+    width: 100%;
+}
+.modal-section:last-child {
+    width: 64%;
+    .attendance-status-wrapper {
+        height: 41px;
+        width: 100%;
+        margin: 0;
+    }
+}
+.list-wrapper {
+    height: calc(400px - 20px);
+    border-bottom: 1px solid #cdcdcd;
+    .modal-checkbox {
+        width: 5%;
+    }
+    .course-number {
+        width: 10%;
+        text-align: center;
+    }
+    .hrd-net-id {
+        width: 30%;
+        text-align: center;
+    }
+    .name {
+        width: 20%;
+        text-align: center;
+    }
+
+}
+.list-header {
+    height: 29px;
+    padding: 0 5px 12px 5px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #cdcdcd;
+    p {
+        font-size: 16px;
+    }
+}
+.list-header,
+.list-content {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.list-contents {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    height: calc(380px - 16px - 29px);
+    padding: 0 10px;
+    overflow-y: scroll;
+    p {
+        font-weight: 300;
+        font-size: 16px;
+    }
+}
+.list-content {
+    width: 100%;
+    input {
+        margin-right: 8px;
+    }
+}

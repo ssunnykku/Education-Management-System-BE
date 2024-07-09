@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kosta.ems.course.CourseDTO;
+import com.kosta.ems.course.CourseService;
+
 @SpringBootTest
 public class CourseServiceTest {
 	@Autowired
@@ -18,15 +21,15 @@ public class CourseServiceTest {
 	@Test
 	@Transactional
 	public void getCourse() {
-		assertThat(service.getCourse(277, "가산")).isNotNull();
-		assertThat(service.getCourse(277, "강남")).isNull();
+		assertThat(service.getCourse(27, "가산")).isNotNull();
+		assertThat(service.getCourse(27, "강남")).isNull();
 	}
 	
 	@Test
 	@Transactional
     public void searchCourseList() {
-		assertThat(service.searchCourseList(277, "가산", 1, 10).size()).isEqualTo(1);
-		assertThat(service.searchCourseList(0, "가산", 1, 10).size()).isGreaterThan(2);
+		assertThat(service.searchCourseList(277, "가산", 1, 10, false).size()).isEqualTo(1);
+		assertThat(service.searchCourseList(0, "가산", 1, 10, false).size()).isGreaterThan(2);
 	}
     
 	@Test
@@ -68,14 +71,15 @@ public class CourseServiceTest {
 				.maxStudents(100)
 				.build();
 		service.addCourse(course);
-		course = service.getCourse(3000, "가산");
-		course.setAcademyLocation("강남");
+		course = service.searchCourseList(3000, "가산", 1, 10, false).get(0);
+		System.out.println(course);
+		course.setCourseName("새로 수정된 이름");
 		assertThat(service.editCourse(course)).isTrue();
 	}
 	@Test
 	@Transactional
     public void deleteCourse() {
-		assertThat(service.deleteCourse(277, "가산")).isTrue();
+		assertThat(service.deleteCourse(27, "가산")).isTrue();
 	}
 	
 	
