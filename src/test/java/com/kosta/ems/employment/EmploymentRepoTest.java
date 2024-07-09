@@ -23,12 +23,9 @@ public class EmploymentRepoTest {
 	    Optional<EmploymentDTO> result = repo.findBysCSeq(19);
 	    if(result.isPresent()) {
 	        assertThat(result.get().getCompany()).isEqualTo("금호IDT");
-	        log.info(result.get().toString());
 	        return;
 	    }
-	    log.error(result.toString());
 	    fail();
-	    
 	}
 
 }
