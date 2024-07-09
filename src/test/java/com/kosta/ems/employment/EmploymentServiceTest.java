@@ -22,9 +22,9 @@ public class EmploymentServiceTest {
 	@Test
 	@Transactional
 	public void getEmploymentInfoByCourseNumber() {
-	    List<EmploymentInfoDTO> list = service.getEmploymentInfoByCourseNumber(277, -1, -1);
-	    for (EmploymentInfoDTO dto : list) {
-            System.out.println(dto.getStudent().getName() + "는 취업 " + dto.isEmployeed());
+	    List<EmploymentInfoResponse> list = service.getEmploymentInfoByCourseNumber(277, -1, -1);
+	    for (EmploymentInfoResponse dto : list) {
+            System.out.println(dto.getName() + "는 취업 " + dto.isEmployeed());
         }
 	    
 	}

@@ -25,8 +25,8 @@ public class EmploymentService {
     private final CourseMapper courseMapper;
     
     //TODO: pageable 기능 구현하기
-    public List<EmploymentInfoDTO> getEmploymentInfoByCourseNumber(int courseNumber, int page, int pageSize){
-        List<EmploymentInfoDTO> result = new ArrayList<>();
+    public List<EmploymentInfoResponse> getEmploymentInfoByCourseNumber(int courseNumber, int page, int pageSize){
+        List<EmploymentInfoResponse> result = new ArrayList<>();
         
         //기수를 seq로 바꾸고
         CourseDTO course = courseMapper.getCourseByCourseNumber(courseNumber);
@@ -34,7 +34,8 @@ public class EmploymentService {
         List<StudentCourseDTO> sCList = sCRepo.findByCourseSeq(course.getCourseSeq());
         //각 학생에 대해 employment 정보를 조사하여 학생정보와 함께 result에 넣는다.
         for (StudentCourseDTO sCDto : sCList) {
-            EmploymentInfoDTO infoDto;
+            EmploymentInfoResponse infoDto;
+            String company = null;
             boolean isEmployeed;
             
             //학생seq로 학생정보를 받아오고
@@ -46,14 +47,19 @@ public class EmploymentService {
                 employmentDto = null;
                 isEmployeed = false;
             }else {
-                employmentDto = employmentOptional.get();
                 isEmployeed = true;
+                company = employmentOptional.get().getCompany();
             }
             
-            EmploymentInfoDTO resultDto = EmploymentInfoDTO.builder()
-            .course(course) //course는 반복문 밖에서 한번만 불러옴.
-            .employmentInfo(employmentDto)
-            .student(studentDto)
+            EmploymentInfoResponse resultDto = EmploymentInfoResponse.builder()
+            .sCSeq(sCDto.getSeq())
+            .hrdNetId(studentDto.getHrdNetId())
+            .courseNumber(course.getCourseNumber())
+            .name(studentDto.getName())
+            .phoneNumber(studentDto.getPhoneNumber())
+            .email(studentDto.getEmail())
+            .courseEndDate(course.getCourseEndDate())
+            .company(company)
             .isEmployeed(isEmployeed)
             .build();
             
