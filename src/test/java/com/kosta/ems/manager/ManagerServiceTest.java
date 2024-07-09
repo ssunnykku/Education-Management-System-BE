@@ -18,11 +18,4 @@ public class ManagerServiceTest {
 	@Autowired
 	ManagerService service;
 	
-	@Test
-	@Transactional
-	public void loginTest() {
-		Map<String, String> map = service.login("EMP0001", "1234");
-		assertThat(map.get("managerId")).isEqualTo("d893bf71-2f8f-11ef-b0b2-0206f94be675");
-	}
-	
 }

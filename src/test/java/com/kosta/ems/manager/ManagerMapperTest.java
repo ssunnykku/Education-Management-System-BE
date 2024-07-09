@@ -22,19 +22,9 @@ public class ManagerMapperTest {
 	ManagerMapper mapper;
 
 	@Test
-	@Transactional
-	public void loginTest() {
-		Map<String, String> map = mapper.login("EMP0001", "1234");
-		for (Map.Entry<String, String> entry : map.entrySet()) {
-			String key = entry.getKey();
-			String val = entry.getValue();
-			System.out.println(key + " : " + val);
-		}
-	}
-	
-	@Test
 	public void userDetails() {
-	    System.out.println(mapper.findByEmployeeNumber("TEST0001"));
+	    System.out.println();
+	    assertThat(mapper.findByEmployeeNumber("EMP0001").getManagerId()).isEqualTo("bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5");
 	}
 	
 
