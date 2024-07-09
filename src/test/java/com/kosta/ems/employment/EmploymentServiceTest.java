@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kosta.ems.employment.dto.AddEmployeedStatusRequest;
+import com.kosta.ems.employment.dto.EditEmployeedStatusRequest;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,6 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 public class EmploymentServiceTest {
 	@Autowired
 	EmploymentService service;
+	
+	@Autowired
+	EmploymentRepo repo;
 	
 	@Test
 	@Transactional
@@ -31,6 +36,24 @@ public class EmploymentServiceTest {
 	@Transactional
 	public void getEmployeedRate() {
 	    assertThat(service.getEmployeedRatePct(5)).isEqualTo(40.0);
+	}
+	
+	@Test
+	@Transactional
+	public void addStatus() {
+	    assertThat(service.addEmployeedStatus(new AddEmployeedStatusRequest(19, "테스트회사"), "bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5")).isTrue();
+	}
+	
+	@Test
+	@Transactional
+	public void editStatus() {
+	    assertThat(service.editEmployeedStatus(new EditEmployeedStatusRequest(1, "금호IDT"), "bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5")).isTrue();
+	}
+	
+	@Test
+	@Transactional
+	public void deleteStatus() {
+	    service.deleteEmployeeStatus(1, "bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5");
 	}
 
 }
