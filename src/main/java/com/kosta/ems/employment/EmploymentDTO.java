@@ -1,6 +1,9 @@
 package com.kosta.ems.employment;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -14,8 +17,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
+@Setter
 @Getter
+@Builder
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity(name="employments")
 public class EmploymentDTO{
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)

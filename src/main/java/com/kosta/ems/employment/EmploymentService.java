@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.kosta.ems.course.CourseDTO;
 import com.kosta.ems.course.CourseMapper;
+import com.kosta.ems.employment.dto.AddEmployeedStatusRequest;
+import com.kosta.ems.employment.dto.EditEmployeedStatusRequest;
 import com.kosta.ems.student.GetStudentInfoByScqDTO;
 import com.kosta.ems.student.StudentBasicInfoDTO;
 import com.kosta.ems.student.StudentMapper;
@@ -80,5 +82,33 @@ public class EmploymentService {
         return 100 * (double)numEmployeed/numTotal;
     }
 
-
+    public boolean editEmployeedStatus(EditEmployeedStatusRequest request, String managerId) {
+        EmploymentDTO dto = repo.findById(request.getSeq()).orElseThrow();
+        dto.setCompany(request.getCompany());
+        dto.setManagerId(managerId);
+        if(repo.save(dto) == null) {
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean addEmployeedStatus(AddEmployeedStatusRequest request, String managerId) {
+        EmploymentDTO dto = EmploymentDTO.builder()
+                .company(request.getCompany())
+                .managerId(managerId)
+                .sCSeq(request.getSCSeq())
+                .build();
+        if(repo.save(dto) == null) {
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean deleteEmployeeStatus(int employmentSeq, String managerId) {
+        EmploymentDTO dto = repo.findById(employmentSeq).orElseThrow();
+        dto.setActive(false);
+        if(repo.save(dto) == null)
+            return false;
+        return true;
+    }
 }
