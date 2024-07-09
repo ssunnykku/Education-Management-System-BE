@@ -26,6 +26,8 @@ public class StudentCourseInfoDTO {
     private char gender;
     private String managerId;
     private String isActive;
-    private int studentCourseSeq;
-    private int courseSeq;
+    private Long studentCourseSeq;
+    private Long courseSeq;
+    private int courseNumber;
+
 }

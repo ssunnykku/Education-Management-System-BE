@@ -1,5 +1,6 @@
 package com.kosta.ems.benefit.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,12 +13,19 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BenefitDTO {
-    private int benefitSeq;
-    private int trainingAidAmount;
-    private int mealAidAmount;
-    private int settlementAidAmount;
+    @NotNull
+    private Integer benefitSeq;
+    @NotNull
+    private Integer trainingAidAmount;
+    @NotNull
+    private Integer mealAidAmount;
+    @NotNull
+    private Integer settlementAidAmount;
+    @NotNull
     private LocalDate benefitSettlementDate;
+    @NotNull
     private String studentId;
+    @NotNull
     private int settlementDurationSeq;
 
 }

@@ -1,50 +1,108 @@
 package com.kosta.ems.benefit;
 
-import com.kosta.ems.benefit.dto.BenefitSettlementReqDTO;
-import com.kosta.ems.benefit.dto.BenefitSettlementResultDTO;
 import com.kosta.ems.benefit.dto.BenefitTargetInfoDTO;
+import com.kosta.ems.manager.ManagerDTO;
+import com.kosta.ems.manager.ManagerService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/benefits")
 @RequiredArgsConstructor
+@Slf4j
 public class BenefitController {
+    @Value("${security.level}")
+    private String SECURITY_LEVEL;
+    private final ManagerService managerService;
+
 
     private final BenefitService benefitService;
 
     @PostMapping
-    public Map<String, ArrayList<BenefitTargetInfoDTO>> getBenefitTargetList(@RequestBody BenefitTargetInfoDTO dto, @RequestParam int page) {
-        dto.setAcademyLocation("가산");
-        return Map.of("result", (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitTargetList(dto, page, 10));
+    public ResponseEntity<Map<String, List<BenefitTargetInfoDTO>>> getBenefitTargetList(@RequestBody BenefitTargetInfoDTO dto) {
+        log.info("{}", dto);
+        ManagerDTO loginUser = getLoginUser();
+        String managerId = loginUser.getManagerId();
+        String academyLocation = loginUser.getAcademyLocation();
+
+        dto.setAcademyLocation(academyLocation);
+        dto.setManagerId(managerId);
+        List<BenefitTargetInfoDTO> result = (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitTargetList(dto);
+        return ResponseEntity.ok(Map.of("result", result));
+
     }
 
     @PostMapping("/settlement")
-    public void setBenefitSettlement(@RequestBody BenefitSettlementReqDTO dto) {
-        benefitService.setBenefitSettlement(dto);
+    public ResponseEntity<Map<String, Boolean>> setBenefitSettlement(@RequestBody BenefitTargetInfoDTO dto) {
+        try {
+
+            ManagerDTO loginUser = getLoginUser();
+            String managerId = loginUser.getManagerId();
+            String academyLocation = loginUser.getAcademyLocation();
+
+            dto.setAcademyLocation(academyLocation);
+            dto.setManagerId(managerId);
+            benefitService.setBenefitSettlement(dto);
+            return ResponseEntity.ok(Map.of("result", true));
+        } catch (ResponseStatusException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.ok(Map.of("result", false));
+        }
+
     }
 
     @PostMapping("/result")
-    public Map<String, ArrayList<BenefitSettlementResultDTO>> getBenefitSettlementResult(@RequestBody BenefitSettlementReqDTO dto, @RequestParam int page) {
-        dto.setAcademyLocation("가산");
+    public ResponseEntity<Map<String, ArrayList<BenefitTargetInfoDTO>>> getBenefitSettlementResult(@RequestBody BenefitTargetInfoDTO dto, @RequestParam int page) {
+        ManagerDTO loginUser = getLoginUser();
+        String managerId = loginUser.getManagerId();
+        String academyLocation = loginUser.getAcademyLocation();
 
-        return Map.of("result", (ArrayList<BenefitSettlementResultDTO>) benefitService.getBenefitSettlementResult(dto, page, 10));
+        dto.setAcademyLocation(academyLocation);
+        dto.setManagerId(managerId);
+
+        return ResponseEntity.ok(Map.of("result", (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitSettlementResult(dto, page, 10)));
     }
 
     @PostMapping("/count")
-    public Map<String, Integer> countSettlementTarget(@RequestBody BenefitTargetInfoDTO dto) {
-        dto.setAcademyLocation("가산");
-        return Map.of("result", benefitService.countBenefitSettlement(dto));
+    public ResponseEntity<Map<String, Integer>> countSettlementTarget(@RequestBody BenefitTargetInfoDTO dto) {
+        ManagerDTO loginUser = getLoginUser();
+        String managerId = loginUser.getManagerId();
+        String academyLocation = loginUser.getAcademyLocation();
+
+        dto.setAcademyLocation(academyLocation);
+        dto.setManagerId(managerId);
+        return ResponseEntity.ok(Map.of("result", benefitService.countBenefitSettlement(dto)));
     }
 
     @PostMapping("/result/count")
-    public Map<String, Integer> countBenefitResult(@RequestBody BenefitSettlementReqDTO dto) {
-        dto.setAcademyLocation("가산");
+    public ResponseEntity<Map<String, Integer>> countBenefitResult(@RequestBody BenefitTargetInfoDTO dto) {
+        ManagerDTO loginUser = getLoginUser();
+        String managerId = loginUser.getManagerId();
+        String academyLocation = loginUser.getAcademyLocation();
 
-        return Map.of("result", benefitService.countBenefitResult(dto));
+        dto.setAcademyLocation(academyLocation);
+        dto.setManagerId(managerId);
 
+        return ResponseEntity.ok(Map.of("result", benefitService.countBenefitResult(dto)));
+
+    }
+
+    private ManagerDTO getLoginUser() {
+        ManagerDTO loginUser;
+        if (SECURITY_LEVEL.equals("OFF")) {
+            loginUser = managerService.findByEmployeeNumber("EMP0001");
+        } else {
+            loginUser = (ManagerDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }
+        return loginUser;
     }
 }

@@ -12,36 +12,35 @@
 <body id="content-wrapper">
 <div th:insert="~{common/header :: header}"></div>
 <div th:insert="~{common/title :: title ('정산 결과 조회')}"></div>
-<section>
+<section id="result-content-section">
     <article class="benefitResult-search-btn-wrapper">
         <div class="benefitResult-search-form-wrapper">
-            <!-- form???? -->
-            <div id="benefit-result-settlement-filter-wrapper">
-                <select name="courseId-filter" class="courseId-filter">
-                    <option value="none">기수</option>
-                    <option value="227">227</option>
-                    <option value="191">191</option>
-                </select>
-                <div id="benefit-result-settlement-date">
-                    <label for="benefit-settlement-date" id="benefit-settlement-date-label">정산일</label>
-                    <input type="date" id="benefit-settlement-date">
-                </div>
+            <div id="benefit-result-settlement-date">
+                <input type="date" class="result-settlement-date" id="settlement-date"
+                       data-placeholder="정산일"
+                       required
+                       aria-required="true">
             </div>
-            <input placeholder="수강생을 입력하세요" class="benefit-result-search-input"/>
+
+            <select name="courseId-filter" class="courseId-filter">
+                <option value="none">기수</option>
+            </select>
+            <input placeholder="수강생을 입력하세요" class="search-input"/>
             <button type="button" class="filter-search-btn">검색</button>
+
         </div>
     </article>
-    <article>
-        <div class="board-table">
-            <div class="board-row" id="board-title-row">
-                <div class="benefitSettlementResult-no">
-                    <span>NO</span>
-                </div>
+    <article class="page-information">
+        <div class="benefitResult-cnt-pages">
+        </div>
+    </article>
+    <article class="benefit-result-board-table">
+            <div class="result-board-row" id="board-title-row">
                 <div class="benefitSettlementResult-courseId">
                     <span>기수</span>
                 </div>
-                <div class="benefitSettlementResult-birth">
-                    <span>생년월일</span>
+                <div class="benefitSettlementResult-hrd-net-id">
+                    <span>hrd-Id</span>
                 </div>
                 <div class="benefitSettlementResult-name">
                     <span>이름</span>
@@ -67,58 +66,33 @@
                 <div class="benefitSettlementResult-total-amount">
                     <span>합계(원)</span>
                 </div>
-                <div>
-                    <span class="benefit-settlementdate">정산일</span>
+                <div class="benefit-result-settlement-date-row">
+                    <span>정산일</span>
                 </div>
             </div>
-            <div class="board-row">
-                <div class="benefitSettlementResult-no">
-                    <span>NO</span>
-                </div>
-                <div class="benefitSettlementResult-courseId">
-                    <span>277</span>
-                </div>
-                <div class="benefitSettlementResult-birth">
-                    <span>9306298</span>
-                </div>
-                <div class="benefitSettlementResult-name">
-                    <span>김선희</span>
-                </div>
-                <div class="benefitSettlementResult-bank">
-                    <span>신한</span>
-                </div>
-                <div class="benefitSettlementResult-account">
-                    <span>9384759278172</span>
-                </div>
-                <div class="benefitSettlementResult-settlement-duration">
-                    <span>2024.03.01 ~ 2024.03.31</span>
-                </div>
-                <div class="benefitSettlementResult-training-aid">
-                    <span>200,000</span>
-                </div>
-                <div class="benefitSettlementResult-meal-aid-amount">
-                    <span>95,000</span>
-                </div>
-                <div class="benefitSettlementResult-settlement_aid_amount">
-                    <span>200,000</span>
-                </div>
-                <div class="benefitSettlementResult-total-amount">
-                    <span>495,000</span>
-                </div>
-                <div>
-                    <span class="benefit-settlementdate">정산일</span>
-                </div>
+            <div style="display: contents" id="result-contents">
             </div>
+    </article>
+    <article class="benefit-page-information">
+        <ul id="pagination">
+            <li>
+                <a class="page-link" id="before">
+                    이전
+                </a>
+            </li>
+            <!--// 이게 페이지 번호-->
+            <ul class="page-item" id="page_number">
+            </ul>
+            <li class="page-item">
+                <a class="page-link" id="next">
+                    다음
+                </a>
+            </li>
+        </ul>
         </div>
     </article>
 </section>
-<section>
-    <article class="page-information">
-        <div class="benefitResult-cnt-pages">
-            <span>총 2건</span>
-        </div>
-    </article>
-</section>
+
 <footer></footer>
 <script type="text/javascript" th:src="@{/scripts/benefitResultBoard.js}"></script>
 </body>

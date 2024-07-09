@@ -187,8 +187,6 @@ a {
 
 select {
     background: #fff;
-    padding: 0.4rem;
-    margin: 0 0.2rem;
     border: 0;
     border-radius: 0.3rem;
     font-size: 0.9rem;
@@ -198,25 +196,6 @@ select {
     outline: 0;
 }
 
-/*input[type=date]::-webkit-datetime-edit-text {*/
-/*    -webkit-appearance: none;*/
-/*    display: none;*/
-/*}*/
-
-/*input[type=date]::-webkit-datetime-edit-month-field {*/
-/*    -webkit-appearance: none;*/
-/*    display: none;*/
-/*}*/
-
-/*input[type=date]::-webkit-datetime-edit-day-field {*/
-/*    -webkit-appearance: none;*/
-/*    display: none;*/
-/*}*/
-
-/*input[type=date]::-webkit-datetime-edit-year-field {*/
-/*    -webkit-appearance: none;*/
-/*    display: none;*/
-/*}*/
 input[type='date']::before {
     content: attr(data-placeholder);
     width: 100%;

@@ -70,9 +70,9 @@ public class EmpController {
                                  @RequestParam(value = "courseNumber", defaultValue = "0") int courseNumber,
                                  @RequestParam(value = "excludeExpired", defaultValue = "true") boolean excludeExpired,
                                  Model model
-                                 , Principal principal) {
+            , Principal principal) {
         ManagerDTO loginUser = getLoginUser();
-        System.out.println(loginUser);
+
         List<CourseDTO> courseList = courseService.searchCourseList(courseNumber, loginUser.getAcademyLocation(), page,
                 pageSize, excludeExpired);
         Integer totalCourseCount = courseService.getSearchCourseListSize(courseNumber, loginUser.getAcademyLocation(),
@@ -95,12 +95,12 @@ public class EmpController {
 
         return "courses/courseBoard";
     }
-    
+
     private ManagerDTO getLoginUser() {
         ManagerDTO loginUser;
-        if(SECURITY_LEVEL.equals("OFF")) {
+        if (SECURITY_LEVEL.equals("OFF")) {
             loginUser = managerService.findByEmployeeNumber("EMP0001");
-        }else {
+        } else {
             loginUser = (ManagerDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         }
         return loginUser;
@@ -116,21 +116,20 @@ public class EmpController {
         return "notifications/notificationBoard";
     }
 
-	 
-	@GetMapping("/notification")
-	public String notificationPost(@RequestParam("notificationSeq") int notificationSeq) {
-		return "notifications/notification";
-	}
+    @GetMapping("/notification")
+    public String notificationPost(@RequestParam("notificationSeq") int notificationSeq) {
+        return "notifications/notification";
+    }
 
-	@GetMapping("/notifications/write")
-	public String notificationWrite() {
-		return "notifications/setNotification";
-	}
+    @GetMapping("/notifications/write")
+    public String notificationWrite() {
+        return "notifications/setNotification";
+    }
 
-	@GetMapping("/notification/update")
-	public String notificationSet(@RequestParam("notificationSeq") int notificationSeq) {
-		return "notifications/editNotification";
-	}
+    @GetMapping("/notification/update")
+    public String notificationSet(@RequestParam("notificationSeq") int notificationSeq) {
+        return "notifications/editNotification";
+    }
 
     @GetMapping("/scholarships")
     public String scholarshipBoard() {
@@ -142,19 +141,11 @@ public class EmpController {
         return "scholarships/scholarshipResultBoard";
     }
 
-    // 여기부터
     @GetMapping("/attendances/add")
     public String addAttendance() {
         return "students/addAttendance";
     }
 
-    /*
-    @GetMapping("/attendances")
-    public String attendanceBoard() {
-        return "attendances/attendanceBoard";
-        // return "students/attendanceBoard";
-    }
-    */
     @GetMapping("/attendances")
     public String attendanceBoard() {
         return "students/attendanceBoard";
@@ -224,16 +215,5 @@ public class EmpController {
         return "students/studentBoard";
     }
 
-    /* templete */
-    @GetMapping("header")
-    public String header() {
-        return "common/header";
-    }
-
-    /**/
-    @GetMapping("/data/add")
-    public String data2() {
-        return "courses/addCourseModal";
-    }
 
 }

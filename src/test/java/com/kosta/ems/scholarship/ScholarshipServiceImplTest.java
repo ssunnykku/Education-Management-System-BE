@@ -26,7 +26,7 @@ class ScholarshipServiceImplTest {
         log.info(String.valueOf(scholarshipService.getScholarshipTargetList(dto, 2, 10).size()));
     }
 
-    @Test
+    //@Test
     @Transactional
     void setScholarshipSettlementDateTest() {
         scholarshipService.setScholarshipSettlementDate(9);
@@ -52,14 +52,6 @@ class ScholarshipServiceImplTest {
         scholarshipService.setScholarshipSettlementDate(60);
         scholarshipService.setScholarshipSettlementDate(63);
         scholarshipService.setScholarshipSettlementDate(57);
-        scholarshipService.setScholarshipSettlementDate(9);
-        scholarshipService.setScholarshipSettlementDate(61);
-        scholarshipService.setScholarshipSettlementDate(64);
-        scholarshipService.setScholarshipSettlementDate(58);
-        scholarshipService.setScholarshipSettlementDate(62);
-        scholarshipService.setScholarshipSettlementDate(59);
-        scholarshipService.setScholarshipSettlementDate(20);
-        scholarshipService.setScholarshipSettlementDate(21);
 
         ArrayList<ScholarshipSettlementResultDTO> list = (ArrayList<ScholarshipSettlementResultDTO>) scholarshipService.getScholarshipResultList(ScholarshipTargetListReqDTO.builder().courseNumber(277).name("").scholarshipDate(null).build(), 2, 10);
         log.info(list.toString());

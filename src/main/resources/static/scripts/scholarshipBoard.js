@@ -49,7 +49,6 @@ function searchInput() {
 }
 
 function courseNumber() {
-    // console.log($(".scholarship-courseId-filter option:selected").text());
     return $(".scholarship-courseId-filter option:selected").text();
 }
 
@@ -137,20 +136,24 @@ async function fetchScholarshipBoard(param) {
 let selected = [];
 $("#settlement-btn").click(function () {
 
-    // $("#settlementListModal").removeClass('check-settlement-modal');
+    $("#settlementListModal").removeClass('check-settlement-modal');
 
-    // $(".checkbox").each(function () {
-    //     if ($(this).prop("checked")) {
-    //         fetch("http://localhost:8080/scholarships/settlement/" + this.value, {
-    //             method: "POST",
-    //         })
-    //             .then((res) => res.json())
-    //             .catch((error) => console.error(error));
-    //     }
-    // 모달창
-    // 진행하시겠습니까? + 세부 내역 보여주기
-    // 정산이 완료되었습니다.
-    // });
+    $(".checkbox").each(function () {
+        if ($(this).prop("checked")) {
+            fetch("http://localhost:8080/scholarships/settlement/" + this.value, {
+                method: "POST",
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.result) {
+                        alert("정산이 완료되었습니다.")
+                        location.href = "/ems/scholarships";
+                    }
+                })
+                .catch((error) => console.error(error));
+        }
+
+    });
 });
 
 

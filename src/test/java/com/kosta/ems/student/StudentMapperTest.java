@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kosta.ems.attendance.UpdateStudentAttendanceStatusDTO;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -91,12 +92,23 @@ class StudentMapperTest {
     void deleteSelectedStudent() {
         studentMapper.deleteSelectedStudent("8b48e083-2fa8-11ef-b0b2-0206f94be675");
     }
-    
 
-    // 유철님 요청:: scq로 수강생 기본 정보 가져오기
+
+    // scq로 수강생 기본 정보 가져오기
     // @Test
     void selectStudentInfoByScq() {
-    	log.info(studentMapper.selectStudentInfoByScq(66).toString());
+        log.info(studentMapper.selectStudentInfoByScq(66).toString());
+    }
+
+    @Test
+    void selectStudentListByCourseSeqTest() {
+
+        List<StudentCourseInfoDTO> list = studentMapper.selectStudentListBycourseSeq(19);
+
+        for (int i = 0; i < list.size(); i++) {
+            assertThat(list.get(i).getCourseNumber()).isEqualTo(277);
+        }
+
     }
 
 }
