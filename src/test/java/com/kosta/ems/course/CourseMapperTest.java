@@ -22,22 +22,22 @@ public class CourseMapperTest {
     @Autowired
     CourseMapper mapper;
 
-    @Test
-    @Transactional
-    public void GetCoursesList() {
-        List<CourseDTO> list = mapper.searchCourseList(277, "가산", 0, 10, false);
-        assertThat(list.get(0).getCourseSeq()).isEqualTo(19);
-        list = mapper.searchCourseList(0, "가산", 0, 10, false);
-        assertThat(list.size()).isGreaterThan(1);
-    }
-
-    @Test
-    @Transactional
-    public void GetCourse() {
-        CourseDTO course = mapper.getCourse(27);
-        System.out.println(course.toString());
-        assertThat(course.getCourseSeq()).isEqualTo(27);
-    }
+	@Test
+	@Transactional
+	public void GetCoursesList() {
+		List<CourseDTO> list = mapper.searchCourseList(277, "가산", 0, 10, false);
+		assertThat(list.get(0).getCourseSeq()).isEqualTo(5);
+		list = mapper.searchCourseList(0, "가산", 0, 10, false);
+		assertThat(list.size()).isGreaterThan(1);
+	}
+	
+	@Test
+	@Transactional
+	public void GetCourse() {
+		CourseDTO course = mapper.getCourse(5);
+		System.out.println(course.toString());
+		assertThat(course.getCourseSeq()).isEqualTo(5);
+	}
 
 
     @Test
