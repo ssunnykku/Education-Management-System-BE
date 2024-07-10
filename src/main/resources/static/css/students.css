@@ -294,50 +294,55 @@ body {
   width: 100%;
   font-style: normal;
   font-weight: 500;
-  font-size: 14px;
   line-height: 100%;
-  margin-left: 10%;
+  margin-left: 18%;
   color: #999999;
 }
 
 .content-article {
   width: 80%;
+  height: 495px;
 }
 
 /* board-table */
 .board-table {
+  width: 80%;
   padding: 0;
+  border-bottom: 1px solid #5c5c5c;
   th, td {
     vertical-align: middle;
     text-align: center;
   }
-}
-.board-table td:not(:first-child), .board-table th:not(:first-child) {
-  width: 13%;
-}
-.board-table td:first-child, .board-table th:first-child {
-  width: 3%;
-  div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 27px;
+  tr:first-child {
+    height: 45px;
+    background-color: #f9f9f9;
+  }
+  th{
+    font-weight: 600;
+    border-top: 1px solid #5c5c5c;
+  }
+  tr {
+    border-bottom: 0.5px solid lightgray;
+    height: 45px;
   }
 }
-.board-table td:nth-child(6),
-.board-table th:nth-child(6) {
-  width: 8%;
+.board-table td:nth-child(2), .board-table th:first-child,
+.board-table td:nth-child(2), .board-table th:last-child {
+  width: 15%;
+}
+.board-table td:first-child,
+.board-table th:first-child {
+  width: 24%;
 }
 .board-table td:nth-child(3),
 .board-table td:nth-child(4),
-.board-table td:last-child,
 .board-table th:nth-child(3),
-.board-table th:nth-child(4),
-.board-table th:last-child {
-  width: 6%;
+.board-table th:nth-child(4) {
+  width: 23%;
 }
-.board-table td:nth-child(9), .board-table th:nth-child(9) {
-  width: 14%;
+
+.board-table tr:not(:first-child) {
+  cursor: pointer;
 }
 
 
@@ -350,7 +355,6 @@ body {
   flex-wrap: wrap;
   width: 100%;
   margin-top: 20px;
-  margin-bottom: 15px;
 }
 
 .search-form-wrapper {
@@ -444,7 +448,8 @@ body {
   display: flex;
   flex-direction: row;
   gap: 10px;
-  margin-left: 80%;
+  margin-left: 63%;
+  margin-top: 20px;
 }
 
 .student-btn-setting {
@@ -583,6 +588,23 @@ body {
 }
 .student-completion-status {
   width: 10%;
+}
+
+/********************** Pagination **********************/
+.page-information {
+  width: 100%;
+}
+
+#pagination {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: 50%;
+}
+
+.page-item {
+  display: flex;
+  gap: 20px;
 }
 
 
