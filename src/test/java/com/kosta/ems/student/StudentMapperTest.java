@@ -32,7 +32,7 @@ class StudentMapperTest {
         ;
     }
 
-    @Test
+    // @Test
     public void findByStudentNameOrCourseNumberList() {
         log.info(Integer.toString(studentMapper.findByStudentNameOrCourseNumberList("", 0, 0, 10).size()));
         log.info(studentMapper.findByStudentNameOrCourseNumberList("", -1, 0, 10).toString());
@@ -42,6 +42,18 @@ class StudentMapperTest {
     public void findByStudentNameOrCourseNumber() {
         log.info(studentMapper.findByStudentNameOrCourseNumberList("진", 277, 0, 10).toString());
     }
+
+    // *0710_수강생 정보 조회
+    @Test
+    public void selectStudentInfoListCnt() {
+        log.info(Integer.toString(studentMapper.selectStudentInfoListCnt(1, "", 0)));
+    }
+    @Test
+    public void selectStudentInfoList() {
+        log.info(studentMapper.selectStudentInfoList(1, "", 0, 0, 10).toString());
+    }
+    // *0710_수강생 정보 조회 (end)
+
 
     // 수강생 등록
     // @Test

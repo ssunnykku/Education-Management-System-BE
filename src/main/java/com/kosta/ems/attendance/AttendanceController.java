@@ -37,37 +37,53 @@ public class AttendanceController {
 		Map<String, Object> result = new HashMap<String, Object>();
 		int size=10;
 		int totalCount = 0;
-		log.info(">> getStudentAttendanceList");
-		log.info(">> -- courseNumber: " + dto.getCourseNumber());
-		log.info(">> -- name: " + dto.getName());
-		log.info(">> -- page: " + page);
 
-		if(!dto.getName().equals("none") && dto.getCourseNumber() != -1) {
+		log.info("😇 dto.getName(): " + dto.getName());
+		log.info("😇 dto.getCourseNumber(): " + dto.getCourseNumber());
+
+		if(!dto.getName().equals("") && dto.getCourseNumber() != 0) {
 			// 기수, 수강생명 모두 입력해 검색
 			totalCount = attendanceService.getAttendanceIntegratedListFilterAllAmount(dto.getName(), dto.getCourseNumber());
-
 			// 수강생 출결 목록 데이터
 			result.put("attendanceList", attendanceService.getAttendanceIntegratedListFilterAll(dto.getName(), dto.getCourseNumber(), page, size));
 			result.put("amount", totalCount);
 			result.put("searchCourseNumber", dto.getCourseNumber());
 			result.put("searchStudentName", dto.getName());
-		} else if(dto.getName().equals("none") && dto.getCourseNumber() == -1) {
+			log.info("😇 amount: " + totalCount);
+			log.info("😇 attendanceList: " + attendanceService.getAttendanceIntegratedList(dto.getName(), dto.getCourseNumber(), page, size).size());
+		} else if(dto.getName().equals("") && dto.getCourseNumber() == 0) {
 			// 기수, 수강생명 미입력 검색 (전체 데이터)
 			totalCount = attendanceService.getAttendanceIntegratedListNoFilterAmount(dto.getName(), dto.getCourseNumber());
 			result.put("attendanceList", attendanceService.getAttendanceIntegratedListNoFilter(dto.getName(), dto.getCourseNumber(), page, size));
 			result.put("amount", totalCount);
 			result.put("searchCourseNumber", dto.getCourseNumber());
 			result.put("searchStudentName", dto.getName());
-		} else if((!dto.getName().equals("none") && dto.getCourseNumber() == -1) || (dto.getName().equals("none") && dto.getCourseNumber() != -1)) {
+			log.info("😇 amount: " + totalCount);
+			log.info("😇 attendanceList: " + attendanceService.getAttendanceIntegratedList(dto.getName(), dto.getCourseNumber(), page, size).size());
+		} else if((!dto.getName().equals("") && dto.getCourseNumber() == 0) || (dto.getName().equals("") && dto.getCourseNumber() != 0)) {
 			// 기수 또는 수강생명 입력하여 검색
-			log.info("else if 또는");
 			totalCount = attendanceService.getAttendanceIntegratedListFilterAmount(dto.getName(), dto.getCourseNumber());
 			// 수강생 출결 목록 데이터
 			result.put("attendanceList", attendanceService.getAttendanceIntegratedListFilter(dto.getName(), dto.getCourseNumber(), page, size));
 			result.put("amount", totalCount);
 			result.put("searchCourseNumber", dto.getCourseNumber());
 			result.put("searchStudentName", dto.getName());
+			log.info("😇 amount: " + totalCount);
+			log.info("😇 attendanceList: " + attendanceService.getAttendanceIntegratedList(dto.getName(), dto.getCourseNumber(), page, size).size());
 		}
+
+		/*
+		log.info("😇 dto.getName(): " + dto.getName());
+		log.info("😇 dto.getCourseNumber(): " + dto.getCourseNumber());
+
+		totalCount = attendanceService.getAttendanceIntegratedListAmount(dto.getName(), dto.getCourseNumber(), "가산");
+		result.put("amount", totalCount);
+		log.info("😇 amount: " + totalCount);
+		result.put("attendanceList", attendanceService.getAttendanceIntegratedList(dto.getName(), dto.getCourseNumber(), page, size));
+		log.info("😇 attendanceList: " + attendanceService.getAttendanceIntegratedList(dto.getName(), dto.getCourseNumber(), page, size).size());
+		result.put("searchCourseNumber", dto.getCourseNumber());
+		result.put("searchStudentName", dto.getName());
+		*/
 
 		// 페이징 response
 		int totalPage = (totalCount/size) + 1;

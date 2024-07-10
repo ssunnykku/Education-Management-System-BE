@@ -53,6 +53,57 @@
                  ORDER BY c.course_number DESC, s.name ASC
                      LIMIT #{page}, #{size}]]>
     </select>
+    <!--0710_수강생 이름 또는 기수로 수강생의 기본 정보 select 전체 개수-->
+    <select id="selectStudentInfoListCnt" resultType="int">
+        <![CDATA[SELECT COUNT(DISTINCT s.student_id) as count
+                 FROM students_courses sc
+                          JOIN courses c ON sc.course_seq=c.course_seq
+                          LEFT JOIN students s ON sc.student_id=s.student_id
+                 WHERE s.is_active=#{isActive}
+                   AND s.name LIKE CONCAT('%', #{name},'%')
+                   AND (IF(#{courseNumber}, 0, '기수')='기수' OR c.course_number=#{courseNumber})
+                 ORDER BY c.course_number DESC, s.name ASC]]>
+    </select>
+    <!--0710_수강생 이름 또는 기수로 수강생의 기본 정보 select-->
+    <select id="selectStudentInfoList" resultType="com.kosta.ems.student.StudentInfoDTO">
+        <![CDATA[SELECT DISTINCT s.student_id AS studentId,
+                        s.hrd_net_id AS hrdNetId,
+                        c.course_number AS courseNumber,
+                        s.name,
+                        s.birth,
+                        s.address,
+                        s.bank,
+                        s.account,
+                        s.email,
+                        s.phone_number AS phoneNumber,
+                        s.gender,
+                        s.is_active AS isActive,
+                        s.manager_id AS managerId
+                 FROM students_courses sc
+                          JOIN courses c ON sc.course_seq=c.course_seq
+                          LEFT JOIN students s ON sc.student_id=s.student_id
+                 WHERE s.is_active=#{isActive}
+                   AND s.name LIKE CONCAT('%', #{name},'%')
+                   AND (IF(#{courseNumber}, 0, '기수')='기수' OR c.course_number=#{courseNumber})
+                 ORDER BY c.course_number DESC, s.name ASC
+                     LIMIT #{page}, #{size}]]>
+    </select>
+    <!--0710_studentId로 해당 수강생의 수강내역 select-->
+    <select id="selectStudentCourseHistory" resultType="com.kosta.ems.student.StudentCourseHistoryDTO">
+        select s.student_id AS studentId,
+               sc.student_course_seq AS studentCourseSeq,
+               c.course_seq AS courseSeq,
+               c.course_type AS courseType,
+               c.course_number AS courseNumber,
+               c.course_name AS courseName,
+               c.professor_name AS professorName,
+               c.course_start_date AS courseStartDate,
+               c.course_end_date AS courseEndDate
+        from students_courses sc
+                 JOIN students s ON sc.student_id=s.student_id
+                 LEFT JOIN courses c ON c.course_seq=sc.course_seq
+        WHERE s.student_id=#{studentId}
+    </select>
     <!--입력 hrdNetId인지 확인-->
     <select id="findByHrdNetId" parameterType="string" resultType="int">
         SELECT COUNT(hrd_net_id)

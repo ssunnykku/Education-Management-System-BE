@@ -49,6 +49,10 @@ public interface AttendanceMapper {
     int selectDateAndLocationListAmount(LocalDate attendanceDate, String academyLocation, String name, int courseNumber);
     // 검색 결과 데이터 목록 가져오기
     List<AttendanceListBySearchFilterDTO> selectDateAndLocationList(LocalDate attendanceDate, String academyLocation, String name, int courseNumber, int page, int size);
+    // 2차 - 경우 1~3을 하나의 쿼리문으로 해결하기
+    int selectAttendanceIntegratedListAmount(String name, int courseNumber, String academyLocation);
+    List<StudentAttendanceListDTO> selectAttendanceIntegratedList(String name, int courseNumber, int page, int size);
+
 
     // 테스트_sql if문
     // 검색 결과 데이터 목록 가져오기  __ "전체 데이터 목록"은 못 가져오는 것 같다?

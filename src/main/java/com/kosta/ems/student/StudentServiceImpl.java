@@ -42,6 +42,23 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.findByStudentNameOrCourseNumberList(name, courseNumber, ((page*size)-size), size);
     }
 
+    // *0710_수강생 정보 조회
+    @Override
+    public int getStudentInfoListCnt(int isActive, String name, int courseNumber) {
+        return studentMapper.selectStudentInfoListCnt(isActive, name, courseNumber);
+    }
+    @Override
+    public List<StudentInfoDTO> getStudentInfoList(int isActive, String name, int courseNumber, int page, int size) {
+        return studentMapper.selectStudentInfoList(isActive, name, courseNumber, ((page*size)-size), size);
+    }
+    // *0710_수강생 정보 조회 (end)
+
+    // *0710_수강생 id로 수강내역 조회
+    @Override
+    public List<StudentCourseHistoryDTO> getStudentCourseHistory(String studentId) {
+        return studentMapper.selectStudentCourseHistory(studentId);
+    }
+
     // * 수강생 등록
     // ** 입력 id가 등록된 hrdNetId인지 확인
     @Override

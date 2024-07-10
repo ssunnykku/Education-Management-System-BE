@@ -22,6 +22,14 @@ public interface StudentMapper {
 
     List<StudentBasicInfoDTO> findByStudentNameOrCourseNumberList(@Param("name") String name, @Param("courseNumber") int courseNumber, int page, int size);
 
+    // *0710_수강생 정보 조회
+    int selectStudentInfoListCnt(int isActive, String name, int courseNumber);
+    List<StudentInfoDTO> selectStudentInfoList(int isActive, String name, int courseNumber, int page, int size);
+    // *0710_수강생 정보 조회 (end)
+
+    // *0710_수강생 id로 수강내역 조회
+    List<StudentCourseHistoryDTO> selectStudentCourseHistory(String studentId);
+
     // 수강생 등록
     int findByHrdNetId(String hrdNetId);
 
