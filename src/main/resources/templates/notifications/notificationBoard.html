@@ -103,25 +103,32 @@
 
 
     async function getSettlementList(data) {
-      let result = '';
-      for (let i = 0; i < data.length; i++) {
-        result += `<div class="notification-row">
-      <div class="notificationBoard-title" id="title-content">
-    <a href="/ems/notification?notificationSeq=${data[i].notificationSeq}">${data[i].title}</a> 
-      </div>
-      <div class="notificationBoard-enroll-date">
-        <span>${data[i].formattedNotificationDate}</span>
-      </div>
-      <div class="notificationBoard-writer">
-        <span>${data[i].name}</span>
-      </div>
-      <div class="notification-view-count">
-      <span>${data[i].viewCount}</span>
-    </div>
-    </div>`;
-      }
-      let keyword = document.querySelector('#search-input').value;
+  let result = '';
 
+  // Check if data is empty or undefined
+  if (!data || data.length === 0) {
+    result = '<div class="no-data-message">데이터가 없습니다</div>';
+  } else {
+    // Process data as usual to create the notification table content
+    for (let i = 0; i < data.length; i++) {
+      result += `
+        <div class="notification-row">
+          <div class="notificationBoard-title" id="title-content">
+            <a href="/ems/notification?notificationSeq=${data[i].notificationSeq}">${data[i].title}</a>
+          </div>
+          <div class="notificationBoard-enroll-date">
+            <span>${data[i].formattedNotificationDate}</span>
+          </div>
+          <div class="notificationBoard-writer">
+            <span>${data[i].name}</span>
+          </div>
+          <div class="notification-view-count">
+            <span>${data[i].viewCount}</span>
+          </div>
+        </div>
+      `;
+    }
+  }
       $("#notification-table-contents").html("");
       $("#notification-table-contents").append(result);
     }

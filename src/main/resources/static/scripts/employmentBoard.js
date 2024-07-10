@@ -8,8 +8,12 @@ let totalPages = 0;
 
 async function getSettlementList(data) {
   let tableBody = "";
-
+if (!data || data.length === 0) {
+    tableBody = '<div class="no-data-message">데이터가 없습니다</div>';
+  } else {
   for (let i = 0; i < data.length; i++) {
+	const employmentStatusText = data[i].employeed ? "취업" : "미취업";
+	const companyText = data[i].company || "";
     tableBody += `<tr>
       <td><input type="checkbox" name=${data[i].sCSeq} class="checkbox" value=${data[i].sCSeq}></td>
       <td><span class="employmentBoard-hrd-net-id">${data[i].hrdNetId}</span></td>
@@ -18,11 +22,11 @@ async function getSettlementList(data) {
       <td><span class="employmentBoard-phone-number">${data[i].phoneNumber}</span></td>
       <td><span class="employmentBoard-email">${data[i].email}</span></td>
       <td><span class="employmentBoard-course-end-date">${data[i].courseEndDate}</span></td>
-      <td><span class="employmentBoard-company">${data[i].company}</span></td>
-      <td><span class="employmentBoard-is-employed">${data[i].isEmployeed}</span></td>
+      <td><input class="employmentBoard-company" value=${companyText}></td>
+      <td><input class="employmentBoard-is-employed">${employmentStatusText}</td>
     </tr>`;
   }
-
+}
   // Clear the existing table body
   $("#employment-table-contents").html("");
 

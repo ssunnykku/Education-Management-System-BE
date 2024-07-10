@@ -19,4 +19,5 @@ public class EmploymentInfoDTO {
     private CourseDTO course;
     private boolean isEmployeed;
 
+   
 }

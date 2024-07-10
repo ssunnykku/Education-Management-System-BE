@@ -537,7 +537,12 @@ footer {
 	display: flex;
 	flex-direction: row;
 }
-
+.no-data-message{
+	font-size: 16px;
+	text-align: center;
+	color: red;
+	padding: 30px;
+}
 /*  setNotification button */
 #setNotification-btn-wrapper {
     width: 900px;

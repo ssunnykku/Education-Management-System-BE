@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
             integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
     <title>Document</title>
     <link rel="stylesheet" href="../../css/format.css"/>
     <link rel="stylesheet" href="../../css/employment.css"/> 
@@ -19,9 +21,9 @@
                     class="employment-courseId-filter">
                 <option value="course-number" id="course-number">기수</option>
             </select>
-            <button type="button" class="board-filter-search-btn">검색</button>
         </div>
         <div class="employment-btn-wrapper">
+        <button type="button" id="export-to-excel" class="btn-setting">엑셀 추출</button>
             <button type="button" id="settlement-btn" class="btn-setting" popovertarget="settlementListModal">
                 저장
             </button>
@@ -76,27 +78,64 @@
 </section>
 <footer></footer>
 <script>
+const excelDownload = document.querySelector('#export-to-excel');
+
+document.addEventListener('DOMContentLoaded', ()=>{
+    excelDownload.addEventListener('click', exportExcel);
+});
 
 
+function exportExcel() {
+  // 엑셀 시트 생성
+  var wb = XLSX.utils.book_new();
+  var newSh = excelHandler.getWorksheet();
+  XLSX.utils.book_append_sheet(wb, newSh, excelHandler.getSheetName());
+  var wb = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
 
- $(".board-filter-search-btn").on("click", async function () {
-      let courseNumber =$(".employment-courseId-filter option:selected").text();
-      try {
-        const response = await fetch("/employments/info-list?courseNumber=" + courseNumber + "&page=" + 1, {
-          method: "GET" // 불필요한 Content-Type 헤더 제거
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP 오류! 상태: ${response.status}`);
-        }
-        const data = await response.json();
-        const notificationList = data.result;
-        console.log(notificationList);
-        await getSettlementList(notificationList);
-      } catch (error) {
-        console.error("공지 사항 페치 오류:", error);
+  saveAs(new Blob([stab(wb)], { type: 'application/octet-stream' }), excelHandler.getExcelFileName());
+}
+
+var excelHandler = {
+  getExcelFileName: function() {
+    return '기수별 취업 데이터.xlsx'; // 파일 이름
+  },
+  getSheetName: function() {
+    return '시트 이름'; // 시트 이름
+  },
+  getExcelData: function() {
+    return document.getElementById('employmentBoard-table'); // TABLE id
+  },
+  getWorksheet: function() {
+    return XLSX.utils.table_to_sheet(this.getExcelData());
+  }
+};
+
+function stab(s) {
+  var buf = new ArrayBuffer(s.length); // convert s to arrayBuffer
+  var view = new Uint8Array(buf); // create uint8array as viewer
+  for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; // convert to octet
+  return buf;
+}
+
+
+  $(".employment-courseId-filter").on("change", async function() {
+    let courseNumber = $(this).val(); // 'this' refers to the selected dropdown element
+
+    try {
+      const response = await fetch("/employments/info-list?courseNumber=" + courseNumber + "&page=" + 1, {
+        method: "GET" // 불필요한 Content-Type 헤더 제거
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP 오류! 상태: ${response.status}`);
       }
-
-    });
+      const data = await response.json();
+      const notificationList = data.result;
+      console.log(notificationList);
+      await getSettlementList(notificationList);
+    } catch (error) {
+      console.error("공지 사항 페치 오류:", error);
+    }
+  });
 
 
 </script>
