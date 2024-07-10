@@ -52,6 +52,66 @@
     </article>
 </section>
 <footer></footer>
+
+<div id="student-detail-modal" class="studentDetailModal">
+    <div class="modal-container">
+        <div class="student-detail-wrapper">
+            <div class="detail-info-item">
+                <label>수강생 이름:</label><br/>
+                <input type="text" id="modal-student-name" disabled/>
+            </div>
+            <div class="detail-info-item">
+                <label>생년월일:</label><br/>
+                <input type="date" id="modal-student-birth" disabled/>
+            </div>
+            <div class="detail-info-item">
+                <label>HRD-Net ID: </label><br/>
+                <input type="text" id="modal-student-hrd-net-id" value="yyj1234" disabled/>
+            </div>
+            <div class="detail-info-item">
+                <label>성별:</label><br/>
+                <input type="text" id="modal-student-gender" value="F" disabled/>
+            </div>
+            <div class="detail-info-item">
+                <label>전화번호:</label><br/>
+                <input type="text" id="modal-student-phone-number" value="01098263771" disabled/>
+            </div>
+            <div class="detail-info-item">
+                <label>이메일: </label><br/>
+                <input type="text" id="modal-student-email" value="yyj1234@gmail.com" disabled/>
+            </div>
+            <div class="detail-info-item">
+                <label>주소: </label><br/>
+                <input type="text" id="modal-student-address" value="서울시 동작구 여의동작대로8길 두산위브 102동 1503호" disabled/>
+            </div>
+            <div class="detail-info-item">
+                <label>은행: </label><br/>
+                <input type="text" id="modal-student-bank" value="국민" disabled/>
+            </div>
+            <div class="detail-info-item">
+                <label>계좌: </label><br/>
+                <input type="text" id="modal-student-account" value="03877204115826" disabled/>
+            </div>
+            <div id="student-course-wrapper" class="detail-info-item">
+                <p>교육과정 이수내역</p>
+                <table class="modal-table">
+                    <tr>
+                        <th>과정 구분</th>
+                        <th>기수</th>
+                        <th>과정명</th>
+                        <th>강사명</th>
+                        <th>교육기간</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="student-detail-wrapper">
+            <button id="update-btn" class="btn">수정</button>
+            <button id="delete-btn" class="btn">삭제</button>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(async function() {
         await fetchStudentList(1);
@@ -107,12 +167,79 @@
                     <td class="student-phonenumber">${data[i].phoneNumber}</td>
                     <td class="student-completion-status">
                         <span>수료예정</span>
+                        <input type="hidden" class="student-email" value="${data[i].email}" />
+                        <input type="date" class="student-birth" style="display: none" value="${data[i].birth}" />
+                        <input type="hidden" class="student-gender" value="${data[i].gender}" />
+                        <input type="hidden" class="student-address" value="${data[i].address}" />
+                        <input type="hidden" class="student-bank" value="${data[i].bank}" />
+                        <input type="hidden" class="student-account" value="${data[i].account}" />
                     </td>
                 </tr>`;
         }
         $(".board-table").html("");
         $(".board-table").append(result);
+
+        $(".board-table tr").on("click", async function() {
+            const studentId = $(this).find(".fetch-student-id").val();
+            console.log(studentId);
+            // *0710_선택한 수강생의 상세정보(수강내역 포함) 가져오기
+            await fetchStudentCourseHistory(studentId);
+            $("#modal-student-name").val($(this).find(".student-name").text());
+            $("#modal-student-birth").val($(this).find(".student-birth").val());
+            $("#modal-student-hrd-net-id").val($(this).find(".hrd-net-id").text());
+            let gender = $(this).find(".student-gender").val() == "F" ? "여성" : "남성";
+            $("#modal-student-gender").val(gender);
+            $("#modal-student-phone-number").val($(this).find(".student-phonenumber").text());
+            $("#modal-student-email").val($(this).find(".student-email").val());
+            $("#modal-student-address").val($(this).find(".student-address").val());
+            $("#student-detail-modal").css("display", "flex");
+        });
     }
+    // *0710_선택한 수강생의 수강내역 데이터 가져오기
+    async function fetchStudentCourseHistory(params) {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "studentId": params
+        });
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        await fetch("/students/student-course-history", requestOptions)
+            .then((res) => res.json())
+            .then(async(data) => {
+                // console.log(data);
+                // console.log(data.studentCourseHistory);
+                // console.log(data.studentCourseHistory.length);
+                console.log(data.studentCourseHistory[0]);
+                await getStudentCourseHistory(data.studentCourseHistory);
+            })
+            .catch((error) => console.error(error));
+    }
+
+    // *0710_가져온 수강내역 데이터를 모달에 연결
+    async function getStudentCourseHistory(data) {
+        console.log("모달에 수강내역 넣기");
+        let result = `<tr><th>과정 구분</th><th>기수</th><th>과정명</th><th>강사명</th><th>교육기간</th></tr>`;
+        for(let i=0; i<data.length; i++) {
+            result += `<tr class="board-table-row">
+                    <td class="course-type">${data[i].courseType}</td>
+                    <td class="course-number">${data[i].courseNumber}</td>
+                    <td class="course-name">${data[i].courseName}</td>
+                    <td class="professor-name">${data[i].professorName}</td>
+                    <td class="training-period">${data[i].courseStartDate} ~ ${data[i].courseEndDate}</td>
+                </tr>`;
+        }
+        $(".modal-table").html("");
+        $(".modal-table").append(result);
+    }
+
 
     // -- 검색한 수강생 목록 결과 데이터 가져오기
     async function fetchStudentList(param) {
@@ -162,8 +289,7 @@
         $("#page-number").html("");
         let firstPage = (currentBlock * pageSize) - pageSize + 1;
         let lastPage = totalPage <= currentBlock * pageSize ? totalPage : currentBlock * pageSize;
-        console.log("param: " + param);
-        lastPage = 7;
+
         if(lastPage != 1) {
             for (let i = firstPage; i <= lastPage; i++) {
                 let num = i;

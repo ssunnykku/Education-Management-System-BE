@@ -32,7 +32,7 @@ class AttendanceMapperTest {
     
     // [출결] - 수강생 출석 조회 목록 조회
     // 경우1_ 기수+수강생명 입력
-    @Test
+    // @Test
     public void selectAttendanceIntegratedListFilterAll() {
     	log.info(attendanceMapper.selectAttendanceIntegratedListFilterAll("유", 277, 0, 10).toString());
     }
@@ -84,6 +84,15 @@ class AttendanceMapperTest {
     // @Test
     public void selectDateAndLocationList() {
     	log.info(attendanceMapper.selectDateAndLocationList(LocalDate.of(2024, 6, 21), "가산", "none", -1, 2, 2).toString());
+    }
+
+    // @Test
+    public void selectAttendanceIntegratedListAmount() {
+        // log.info(attendanceMapper.selectAttendanceIntegratedListAmount("", 0, "가산"));
+    }
+    // @Test
+    public void selectAttendanceIntegeratedList() {
+        log.info(attendanceMapper.selectAttendanceIntegratedList("", 0, 0, 10).toString());
     }
     
     

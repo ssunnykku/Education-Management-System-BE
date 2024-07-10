@@ -29,12 +29,11 @@ public class StudentController {
 		int size = 10;
 		int courseNumber = dto.getCourseNumber();
 		String name = dto.getName().equals("") ? "" : dto.getName();
+		int isActive = 1;  // 임시
 
-		int totalCount = studentService.getStudentsByNameOrCourseNumberAmount(name, courseNumber);
+		int totalCount = studentService.getStudentInfoListCnt(isActive, name, courseNumber);
 		result.put("amount", totalCount);
-		log.info("☄️result.amount 0 :" + totalCount);
-		result.put("studentList", studentService.getStudentsByNameOrCourseNumberList(name, courseNumber, page, size));
-		log.info("☄️result.amount 1 :" + totalCount);
+		result.put("studentList", studentService.getStudentInfoList(isActive, name, courseNumber, page, size));
 		log.info("☄️result.studentList 1 :" + studentService.getStudentsByNameOrCourseNumberList(name, courseNumber, page, size).toString());
 
 		// 페이징 response
@@ -58,6 +57,16 @@ public class StudentController {
 		log.info("☄️result.studentList " + studentService.getStudentsByNameOrCourseNumberList(name, courseNumber, page, size).toString());
 		log.info("☄️result.pageInfo " + pageInfo.toString());
 
+		return result;
+	}
+	// *0710 선택 수강생의 수강내역 조회
+	@PostMapping("/student-course-history")
+	public Map<String, Object> getStudentCourseHistory(@RequestBody StudentInfoDTO request) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		log.info("🙃 request.studentId(): " + request.getStudentId());
+		log.info("🙃 request.studentId() substring: " + request.getStudentId().substring(0, request.getStudentId().length()-1));
+		result.put("studentCourseHistory", studentService.getStudentCourseHistory(request.getStudentId().substring(0, request.getStudentId().length()-1)));
+		log.info("🙃 studentCourseHistory"+studentService.getStudentCourseHistory(request.getStudentId().substring(0, request.getStudentId().length()-1)).toString());
 		return result;
 	}
 

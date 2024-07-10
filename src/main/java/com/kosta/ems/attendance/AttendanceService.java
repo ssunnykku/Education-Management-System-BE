@@ -28,7 +28,9 @@ public interface AttendanceService {
     int getAttendanceIntegratedListNoFilterAmount(String name, int courseNumber);
     // -- 데이터 결과 목록 가져오기
     List<StudentAttendanceListDTO> getAttendanceIntegratedListNoFilter(String name, int courseNumber, int page, int size);
-
+    // 2차 - 경우 1~3을 하나의 쿼리문으로 해결하기
+    int getAttendanceIntegratedListAmount(String name, int courseNumber, String academyLocation);
+    List<StudentAttendanceListDTO> getAttendanceIntegratedList(String name, int courseNumber, int page, int size);
 
     // 출결 입력 페이지
     // [출결] - 특정일의 수강생 출석 상태 목록 조회 (for 출결 입력/수정)
@@ -49,7 +51,7 @@ public interface AttendanceService {
     int getDateAndLocationListAmount(String attendanceDate, String academyLocation, String name, int courseNumber);
     // 검색 결과 데이터 목록 가져오기
     List<AttendanceListBySearchFilterDTO> getDateAndLocationList(String attendanceDate, String academyLocation, String name, int courseNumber, int page, int size);
-    
+
     // [출결] - 선택한 수강생의 출석 상태 수정
     void updateStudentAttendance(String attendanceStatus, String attendanceDate, int studentCourseSeq);
 

@@ -25,6 +25,14 @@ public interface StudentService {
     // 수강생 검색 결과 목록
     List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumberList(String name, int courseNumber, int page, int size);
 
+    // *0710_수강생 정보 조회
+    int getStudentInfoListCnt(int isActive, String name, int courseNumber);
+    List<StudentInfoDTO> getStudentInfoList(int isActive, String name, int courseNumber, int page, int size);
+    // *0710_수강생 정보 조회 (end)
+
+    // *0710_수강생 id로 수강내역 조회
+    List<StudentCourseHistoryDTO> getStudentCourseHistory(String studentId);
+
     // 수강생 등록
     boolean findByHrdNetId(String hrdNetId);
     RegisteredStudentInfoDTO getRegisteredStudentBasicInfo(String hrdNetId);

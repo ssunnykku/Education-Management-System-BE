@@ -28,6 +28,12 @@ public class StudentServiceTest {
 		log.info(studentService.getStudentsByNameOrCourseNumberList("", 0, 1, 10).toString());
 	}
 
+	// *0710_선택한 수강생 id로 수강내역 데이터 가져오기
+	@Test
+	void getStudentCourseHistory() {
+		log.info(studentService.getStudentCourseHistory("01236f03-39ca-11ef-aad4-06a5a7b26ae5").toString());
+	}
+
 	// 수강생 정보 - 수강생 등록
 	// -- 입력 id가 등록된 hrdNetId인지 확인
 	// @Test
