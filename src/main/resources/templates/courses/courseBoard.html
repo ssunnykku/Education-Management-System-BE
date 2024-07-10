@@ -535,12 +535,19 @@
     async function updateCourseNumber(e){
       const courseNumberList = await getCourseNumberList(e.target.value);
       const courseNumberSelect = $("#courseNumberSelect");
+      const oriValue = $("#courseNumberSelect option:selected").val();
       courseNumberSelect.html("");
       let element = `<option value="` + 0 +`">` + "기수" + `</option>`;
       courseNumberList.forEach(courseNumber => {
-        element += `<option value="` + courseNumber +`">` + courseNumber + `</option>`;
+          element += `<option value="` + courseNumber +`">` + courseNumber + `</option>`;
       });
       courseNumberSelect.get()[0].innerHTML = element;
+
+      //이미 설정되어있던 값이 있으면 그걸로 초기화하고, 없으면 초기값 "기수"로 초기화한다.
+      courseNumberSelect.val(oriValue);
+      if(!courseNumberSelect.val()){
+        courseNumberSelect.val(0);
+      }
     }
 
     async function getCourseNumberList(excludeExpired){
