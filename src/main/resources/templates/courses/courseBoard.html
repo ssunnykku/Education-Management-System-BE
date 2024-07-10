@@ -150,50 +150,52 @@
   <div id="addCourseModal" class="course-modal" popover>
     <div id="course-wrapper">
       <div>
-        <h1>과정 등록</h1>
-        <input type="text" id="course_seq" hidden>
-        <form method="post" class="course-form-row">
-          <h4>과정 구분</h4>
-          <select name="course_type" id="course_type">
-            <option>과정 구분을 선택하세요.</option>
-            <option th:each="type : ${courseTypeList}" th:attr="value=${type}" th:text="${type}">타입 alt</option>
-          </select>
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>기수</h4>
-          <input type="text" id="course_number" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>주제명</h4>
-          <input type="text" id="subject" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>과정명</h4>
-          <input type="text" id="course_name" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>시작일</h4>
-          <input type="date" id="course_start_date" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>종료일</h4>
-          <input type="date" id="course_end_date" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>교수자 이름</h4>
-          <input type="text" id="professor_name" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>총 교육일</h4>
-          <input type="text" id="total_training_hours" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>교육 시간(일)</h4>
-          <input type="text" id="training_hours_of_day" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>정원 수</h4>
-          <input type="number" id="course_max_students" />
+        <form id="addCourseForm">
+          <h1>과정 등록</h1>
+          <input type="text" id="course_seq" hidden>
+          <div method="post" class="course-form-row">
+            <h4>과정 구분</h4>
+            <select name="course_type" id="course_type" required>
+              <option>과정 구분을 선택하세요.</option>
+              <option th:each="type : ${courseTypeList}" th:attr="value=${type}" th:text="${type}">타입 alt</option>
+            </select>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>기수</h4>
+            <input type="text" name="courseNumber" id="course_number" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>주제명</h4>
+            <input type="text" id="subject" name="courseSubject" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>과정명</h4>
+            <input type="text" id="course_name" name="courseName" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>시작일</h4>
+            <input type="date" id="course_start_date" name="courseStartDate" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>종료일</h4>
+            <input type="date" id="course_end_date" name="courseEndDate" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>교수자 이름</h4>
+            <input type="text" id="professor_name" name="courseProfessorName" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>총 교육일</h4>
+            <input type="text" id="total_training_hours" name="totalTrainingDays" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>교육 시간(일)</h4>
+            <input type="text" id="training_hours_of_day" name="trainingHoursOfDay" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>정원 수</h4>
+            <input type="number" id="course_max_students" name="maxStudents" required/>
+          </div>
         </form>
 
         <div id="btn-wrapper">
@@ -213,42 +215,42 @@
         <input type="text" id="course_seq" hidden>
         <form method="post" class="course-form-row">
           <h4>과정 구분</h4>
-          <select name="course_type" id="course_type">
+          <select name="course_type" id="course_type"  required>
             <option>과정 구분을 선택하세요.</option>
             <option th:each="type : ${courseTypeList}" th:attr="value=${type}" th:text="${type}">타입 alt</option>
           </select>
         </form>
         <form method="post" class="course-form-row">
           <h4>기수</h4>
-          <input type="text" id="course_number" />
+          <input type="text" id="course_number"  required/>
         </form>
         <form method="post" class="course-form-row">
           <h4>주제명</h4>
-          <input type="text" id="subject" />
+          <input type="text" id="subject"  required/>
         </form>
         <form method="post" class="course-form-row">
           <h4>과정명</h4>
-          <input type="text" id="course_name" />
+          <input type="text" id="course_name"  required/>
         </form>
         <form method="post" class="course-form-row">
           <h4>시작일</h4>
-          <input type="date" id="course_start_date" />
+          <input type="date" id="course_start_date"  required/>
         </form>
         <form method="post" class="course-form-row">
           <h4>종료일</h4>
-          <input type="date" id="course_end_date" />
+          <input type="date" id="course_end_date"  required/>
         </form>
         <form method="post" class="course-form-row">
           <h4>교수자 이름</h4>
-          <input type="text" id="professor_name" />
+          <input type="text" id="professor_name"  required/>
         </form>
         <form method="post" class="course-form-row">
           <h4>총 교육일</h4>
-          <input type="text" id="total_training_hours" />
+          <input type="text" id="total_training_hours"  required/>
         </form>
         <form method="post" class="course-form-row">
           <h4>교육 시간(일)</h4>
-          <input type="text" id="training_hours_of_day" />
+          <input type="text" id="training_hours_of_day" required/>
         </form>
 
         <div id="btn-wrapper">
@@ -277,6 +279,7 @@
 
   <!-- 공용 알림창 모달 -->
   <div th:replace="~{courses/alertModal :: alertModal}"></div>
+  <div th:replace="~{courses/messageModal :: messageModal}"></div>
 
 
   <script>
@@ -426,6 +429,12 @@
     }
 
     function addCourse() {
+      const addCourseForm = $("#addCourseForm");
+      const addCourseInputs = addCourseForm.serializeArray();
+      if(!isValidate(addCourseInputs)){
+        showMessage("모든 내용을 작성해주세요.")
+        return false;
+      }
       const addCourseModalDiv = $("#addCourseModal");
 
       const myHeaders = new Headers();
@@ -491,6 +500,15 @@
         // $("#editCourseModal #course_type [value='SMEs']").prop("selected", true);
         return $("#addCourseModal #course_type option:selected").val()
 
+      }
+
+      function isValidate(addCourseInputs){
+        let result = true;
+        addCourseInputs.forEach(item => {
+          if(!item.value)
+            result = false;
+        });
+        return result;
       }
     }
 
