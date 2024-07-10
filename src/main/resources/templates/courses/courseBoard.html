@@ -5,8 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
-  <link rel="stylesheet" href="../../css/format.css" />
-  <link rel="stylesheet" href="../../css/courses.css" />
+  <link rel="stylesheet" href="/css/format.css" />
+  <link rel="stylesheet" href="/css/courses.css" />
   <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
     integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
 </head>
@@ -275,18 +275,9 @@
     </div>
   </div>
 
-  <!-- 과정삭제 완료 모달 -->
-  <div id="removeCourseCompleteModal" class="course-modal" popover>
-    <div class="removecourse-wrapper">
-      <div class="removecourse-info">
-        <h1 class="upperline title">알림</h1>
-        <h1 id="message">삭제되었습니다.</h1>
-      </div>
-      <div id="btn-wrapper">
-        <button id="enroll-btn-format" class="btn-setting-format" onclick="location.reload()">확인</button>
-      </div>
-    </div>
-  </div>
+  <!-- 공용 알림창 모달 -->
+  <div th:replace="~{courses/alertModal :: alertModal}"></div>
+
 
   <script>
     $("#pagination li").each((index, item) => {
@@ -558,11 +549,7 @@
       return data.result;
     }
 
-    function showMessage(msg) {
-      const messageModal = $("#removeCourseCompleteModal").get()[0];
-      messageModal.querySelector("#message").innerText = msg;
-      messageModal.showPopover();
-    }
+
   </script>
 </body>
 
