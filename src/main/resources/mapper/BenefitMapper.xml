@@ -19,8 +19,8 @@
         AND s.name LIKE CONCAT('%', #{name}, '%')
         AND course_start_date <![CDATA[<=]]> #{startDate}
         AND course_end_date <![CDATA[>=]]> #{endDate}
-        AND c.is_active = 'T'
-        AND s.is_active = 'T'
+        AND c.is_active = true
+        AND s.is_active = true
         AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
         ORDER BY name
         <if test="limit != null and offset != null">
@@ -72,8 +72,8 @@
           AND (#{benefitSettlementDate} IS NULL OR #{benefitSettlementDate} = '' OR
                benefit_settlement_date = #{benefitSettlementDate})
           AND c.academy_location = #{academyLocation}
-          AND c.is_active = 'T'
-          AND s.is_active = 'T'
+          AND c.is_active = true
+          AND s.is_active = true
         ORDER BY b.benefit_settlement_date desc, sd.settlement_duration_start_date desc, s.name
         limit #{limit} offset #{offset}
     </select>
@@ -89,8 +89,8 @@
           AND course_start_date <= #{startDate}
           AND course_end_date >= #{endDate}
           AND s.student_id != ''
-          AND c.is_active = 'T'
-          AND s.is_active = 'T'
+          AND c.is_active = true
+          AND s.is_active = true
           AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
         ]]>
     </select>
@@ -106,8 +106,8 @@
           AND (#{courseNumber} IS NULL OR #{courseNumber} = '' OR c.course_number = #{courseNumber})
           AND (#{benefitSettlementDate} IS NULL OR #{benefitSettlementDate} = '' OR
                benefit_settlement_date = #{benefitSettlementDate})
-          AND c.is_active = 'T'
-          AND s.is_active = 'T'
+          AND c.is_active = true
+          AND s.is_active = true
     </select>
 
     <select id="selectLastSettlementDate" parameterType="String">
