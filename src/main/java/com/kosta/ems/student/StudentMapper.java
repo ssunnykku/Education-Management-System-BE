@@ -18,7 +18,7 @@ public interface StudentMapper {
     Collection<StudentCourseInfoDTO> selectStudentByName(@Param("name") String name);
 
     // 수강생 정보 조회
-    int findByStudentNumberOrCourseNumberAll(@Param("name") String name, @Param("courseNumber") int courseNumber);
+    int findByStudentNumberOrCourseNumberAll(String name, int courseNumber);
 
     List<StudentBasicInfoDTO> findByStudentNameOrCourseNumberList(@Param("name") String name, @Param("courseNumber") int courseNumber, int page, int size);
 

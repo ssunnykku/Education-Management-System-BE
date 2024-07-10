@@ -24,9 +24,6 @@
                 <button type="button" id="enroll-btn" class="student-btn-setting">
                     등록
                 </button>
-                <button type="button" id="edit-btn" class="student-btn-setting">
-                    수정
-                </button>
             </div>
         </div>
         <div class="student-cnt-pages"></div>
@@ -34,15 +31,10 @@
     <article class="content-article">
         <table class="board-table">
             <tr>
-                <th><div></div></th>
                 <th class="hrd-net-id">HRD-Net ID</th>
                 <th class="course-number">기수</th>
                 <th class="student-name">이름</th>
-                <th class="student-address">주소</th>
-                <th class="student-bank">은행</th>
-                <th class="student-account">계좌번호</th>
                 <th class="student-phonenumber">전화번호</th>
-                <th class="student-email">이메일</th>
                 <th class="student-completion-status">수료 여부</th>
             </tr>
         </table>
@@ -50,17 +42,21 @@
     <article class="page-information">
         <ul id="pagination" style="margin-top: 35px;">
             <li>
-                <a class="page-link" id="prev">이전</a>
+                <a class="page-link" id="prev"><img src="../../assets/navigate_prev_white_24dp%201.svg" alt="이전"/></a>
             </li>
             <li id="page-number" class="page-item" style="display: flex; gap: 20px"></li>
             <li class="page-item">
-                <a id="next" class="page-link">다음</a>
+                <a id="next" class="page-link"><img src="../../assets/navigate_next_white_24dp%201.svg" alt="다음"/></a>
             </li>
         </ul>
     </article>
 </section>
 <footer></footer>
 <script>
+    $(document).ready(async function() {
+        await fetchStudentList(1);
+    });
+
     // 페이징 관련 멤버 데이터
     let totalPage = 0;
     let currentPage = 1;
@@ -75,7 +71,7 @@
 
     function getCourseNumber() {
         if($("#input-course-number").val() == "") {
-            return -1;
+            return 0;
         }
         return parseInt($(".courseId-filter").val());
     }
@@ -91,31 +87,24 @@
     // -- 검색 결과 '총 **건' 화면에 연결
     async function getAmountStudentList(data) {
         totalPage = Math.ceil(data/10);   // 페이징 확인을 위해 임시로 '2'해둔 것. 10으로 바꿔야함.
-
+        console.log("totalPage: " + totalPage);
         let result = '';
         result += `<span class="span-attendance-list-amount">총 ${data}건</span>`;
         $(".student-cnt-pages").html("");
         $(".student-cnt-pages").append(result);
 
-        await updatePagination();
+        await updatePagination(totalPage);
     }
 
     // -- 검색 결과 목록 화면에 연결
     async function getSearchedStudentList(data) {
-        let result = `<tr><th><div></div></th><th class="hrd-net-id">HRD-Net ID</th><th class="course-number">기수</th><th class="student-name">이름</th><th class="student-address">주소</th><th class="student-bank">은행</th><th class="student-account">계좌번호</th><th class="student-phonenumber">전화번호</th><th class="student-email">이메일</th><th class="student-completion-status">수료 여부</th></tr>`;
+        let result = `<tr><th class="hrd-net-id">HRD-Net ID</th><th class="course-number">기수</th><th class="student-name">이름</th><th class="student-phonenumber">전화번호</th><th class="student-completion-status">수료 여부</th></tr>`;
         for(let i=0; i<data.length; i++) {
             result += `<tr class="board-table-row">
-                    <td class="student-radio">
-                        <div><input type="radio" name="student-radio" class="radio" value=${data[i].studentId}/></div>
-                    </td>
-                    <td class="hrd-net-id">${data[i].hrdNetId}</td>
+                    <td class="hrd-net-id">${data[i].hrdNetId}<input type="hidden" name="student-id" class="fetch-student-id" value=${data[i].studentId}/></td>
                     <td class="course-number">${data[i].courseNumber}</td>
                     <td class="student-name">${data[i].name}</td>
-                    <td class="student-address">${data[i].address}</td>
-                    <td class="student-bank">${data[i].bank}</td>
-                    <td class="student-account">${data[i].account}</td>
                     <td class="student-phonenumber">${data[i].phoneNumber}</td>
-                    <td class="student-email">${data[i].email}</td>
                     <td class="student-completion-status">
                         <span>수료예정</span>
                     </td>
@@ -173,10 +162,16 @@
         $("#page-number").html("");
         let firstPage = (currentBlock * pageSize) - pageSize + 1;
         let lastPage = totalPage <= currentBlock * pageSize ? totalPage : currentBlock * pageSize;
-
-        for (let i = firstPage; i <= lastPage; i++) {
-            let num = i;
-            $("#page-number").append(`<li><a class="page-link" onclick="fetchStudentList(${num})">${num}</a></li>`);
+        console.log("param: " + param);
+        lastPage = 7;
+        if(lastPage != 1) {
+            for (let i = firstPage; i <= lastPage; i++) {
+                let num = i;
+                $("#page-number").append(`<li><a class="page-link" onclick="fetchStudentList(${num})">${num}</a></li>`);
+            }
+        } else {
+            $("#next").css("display", "none");
+            $("#prev").css("display", "none");
         }
     }
 

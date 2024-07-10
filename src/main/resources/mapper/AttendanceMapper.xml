@@ -244,7 +244,7 @@ LIMIT #{page}, #{size}
         AND c.academy_location=#{academyLocation}
         AND #{attendanceDate} >= c.course_start_date
         AND #{attendanceDate} <= c.course_end_date
-        AND s.is_active='T'
+        AND s.is_active=1
         GROUP BY sc.student_course_seq
                 ]]>
     </select>
