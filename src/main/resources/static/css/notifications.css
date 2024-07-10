@@ -9,7 +9,6 @@
 }
 
 
-
 /*************button ***************/
 #notification-btn-wrapper {
     padding-right: 50px;
@@ -26,34 +25,34 @@
 
 .board-filter-search-btn {
     font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 144%;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 144%;
 
-  width: 100px;
-  height: 40px;
+    width: 100px;
+    height: 40px;
 
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 16px;
-  gap: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 16px;
+    gap: 10px;
 
-  line-height: 1.5em;
-  border-radius: 8px;
+    line-height: 1.5em;
+    border-radius: 8px;
 
-  /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15); */
+    /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15); */
 
-  box-shadow: 0px 0px 2px #888;
-  line-height: 1.5em;
+    box-shadow: 0px 0px 2px #888;
+    line-height: 1.5em;
 
-  background: rgba(244, 244, 244, 1);
-  color: #000000;
+    background: rgba(244, 244, 244, 1);
+    color: #000000;
 
-  flex: none;
-  order: 0;
-  flex-grow: 1;
+    flex: none;
+    order: 0;
+    flex-grow: 1;
 }
 
 
@@ -62,15 +61,15 @@
     background-color: rgb(64, 64, 64);
     border-radius: 8px;
     position: relative;
-   right: 10px;
-   margin-left: 240px;
-  top: 40%; 
-  display: flex;
-  flex-direction: row;
-  transform: translateY(-50%);
-	width: 80px;
-	height: 40px;
-  box-shadow: 0px 0px 5px #888;
+    right: 10px;
+    margin-left: 240px;
+    top: 40%;
+    display: flex;
+    flex-direction: row;
+    transform: translateY(-50%);
+    width: 80px;
+    height: 40px;
+    box-shadow: 0px 0px 5px #888;
 
 }
 
@@ -83,11 +82,11 @@
 
 /*********** table ***************/
 .notification-contents {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding-left: 36%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 36%;
 }
 
 #notification-btn-article {
@@ -104,21 +103,22 @@
 
 
 .notification-row {
-   display: flex;
-  flex-direction: row;
-  height: 60px;
-  width: 100%;
-  align-items: center;
-  text-align: center;
-  justify-content: space-between;
- border-bottom: 1px solid #f3f5f9;
-  font-style: normal;
-  font-weight: 300;
-  font-size: 15px;
-  line-height: 144%;
+    display: flex;
+    flex-direction: row;
+    height: 60px;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #f3f5f9;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 144%;
 
-  color: #1d1d1d;
+    color: #1d1d1d;
 }
+
 .search-input {
     width: 300px;
     height: 41px;
@@ -141,12 +141,25 @@
     color: #000000;
     text-align: center;
 }
+
 #notification-table {
-  width: 90%;
-  margin: 0 auto;
-  padding: 0 100px 0 100px;
-  
+    width: 90%;
+    margin: 0 auto;
+    padding: 0 100px 0 100px;
+
 }
+
+
+.notificationBoard-title {
+    width: 40%;
+}
+
+#title-content {
+    font-weight: 400;
+    text-align: left;
+    padding-left: 36px;
+}
+
 
 #notification-title-row {
     font-style: normal !important;
@@ -163,27 +176,18 @@
     border-radius: 10px 10px 0px 0px;
 }
 
-#notificationBoard-title.notificationBoard-title {
-  font-weight:500;
-  text-align: left;
-  
-}
-
-
-.notificationBoard-title {
-    width: 50%;
-}
-
 .notificationBoard-enroll-date {
     width: 20%
 }
 
 .notificationBoard-writer {
-    width: 10%;
+    width: 15%;
 }
-.notificaitionBoard-view-count {
-	width: 20%;
+
+.notification-view-count {
+    width: 15%;
 }
+
 /************page*********/
 #notificationBoard-pagenation-section {
     height: 35px;
@@ -265,13 +269,15 @@ footer {
     flex-direction: column;
     line-height: 1.5;
 }
-.notification-title{
-	  float: left;
+
+.notification-title {
+    float: left;
 }
-.notificationPost-title  {
+
+.notificationPost-title {
     font-size: 25px;
     font-weight: 500;
-     text-align: left;
+    text-align: left;
 }
 
 .notificationPost-contents {
@@ -344,56 +350,60 @@ footer {
     box-shadow: 0px 0px 3px #888;
     line-height: 1.5em;
 }
+
 .is-writer {
-  display: block; /* Initially show both buttons */
-  
+    display: block; /* Initially show both buttons */
+
 }
 
 .is-writer:not([data-same-button="true"]) {
-  display: none; /* Hide buttons with data-show-button attribute set to false */
+    display: none; /* Hide buttons with data-show-button attribute set to false */
 }
-#btn-edit{
-	font-weight: 600;
+
+#btn-edit {
+    font-weight: 600;
     color: rgb(64, 64, 64);
     background-color: rgb(255, 255, 255);
     border-radius: 8px;
 }
+
 #enroll-btn {
     color: #ffffff;
     background-color: rgb(64, 64, 64);
     border-radius: 8px;
 }
+
 /* 기본 버튼 스타일 */
 .button {
-  display: inline-block;
-  padding: 10px 15px;
-  margin: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  cursor: pointer;
-  text-decoration: none;
-  font-family: sans-serif;
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: sans-serif;
 }
 
 /* 모든 버튼에 대한 마우스 오버 효과 */
 .button:hover {
-  background-color: #eee;
+    background-color: #eee;
 }
 
 /* 개별 버튼 스타일 */
 #notificationPost-btn-wrapper#back-btn {
-  background-color: #007bff;
-  color: #fff;
+    background-color: #007bff;
+    color: #fff;
 }
 
-#notificationPost-btn-wrapper >div #btn-edit {
-  background-color: #28a745;
-  color: #fff;
+#notificationPost-btn-wrapper > div #btn-edit {
+    background-color: #28a745;
+    color: #fff;
 }
 
-#notificationPost-btn-wrapper >div #delete-btn {
-  background-color: #dc3545;
-  color: #fff;
+#notificationPost-btn-wrapper > div #delete-btn {
+    background-color: #dc3545;
+    color: #fff;
 }
 
 #edit-btn, #delete-btn, #cancel-btn {
@@ -426,11 +436,11 @@ footer {
     height: 40px;
     width: 100%;
     margin-bottom: 20px;
-  /*   padding: 0 45px; */
-  	flex-direction: row;
+    /*   padding: 0 45px; */
+    flex-direction: row;
     justify-content: center;
     gap: 14px;
-   
+
 }
 
 .setNotification-title-wrapper > h3 {
@@ -438,21 +448,23 @@ footer {
     text-align: center;
     transform: translateY(30%);
     font-size: 16px;
-    font-weight:500;
+    font-weight: 500;
     margin-right: 0px;
 }
 
 .setNotification-title-input-wrapper {
     width: 90%;
 }
-.setNotification-title-input-wrapper >h3{
-	  width: 10%;
+
+.setNotification-title-input-wrapper > h3 {
+    width: 10%;
     text-align: center;
     transform: translateY(70%);
     font-size: 16px;
-    font-weight:500;
+    font-weight: 500;
     margin-right: 0px;
 }
+
 .setNotification-title-input-wrapper > input {
     width: 100%;
     height: 100%;
@@ -466,38 +478,42 @@ footer {
 
 .setNotification-input-wrapper {
     height: 600px;
-  /*   padding: 0 45px; */
-  	display: flex;
-  	flex-direction: row;
+    /*   padding: 0 45px; */
+    display: flex;
+    flex-direction: row;
     justify-content: center;
     gap: 14px;
-   
+
     width: 100%;
-  	
-}
-#title-item{
-	width: 50px;
-	text-align: center;
-}
-#content-item {
-	width: 50px;
-	text-align: center;
+
 }
 
-#content-textarea-wrapper{
-	width: 810px;
+#title-item {
+    width: 50px;
+    text-align: center;
 }
-#title-input{
-/* 	 font-size: 15px;
-    border: none;
-    outline: none;
-    resize: none;
-    width: 100%;
-    height: 100%;
-    background: #ffffff;
-    border: 1px solid #cfcfcf;
-    border-radius: 10px; */
+
+#content-item {
+    width: 50px;
+    text-align: center;
 }
+
+#content-textarea-wrapper {
+    width: 810px;
+}
+
+#title-input {
+    /* 	 font-size: 15px;
+        border: none;
+        outline: none;
+        resize: none;
+        width: 100%;
+        height: 100%;
+        background: #ffffff;
+        border: 1px solid #cfcfcf;
+        border-radius: 10px; */
+}
+
 #content-input {
     font-size: 15px;
     border: none;
@@ -508,7 +524,7 @@ footer {
     background: #ffffff;
     border: 1px solid #cfcfcf;
     border-radius: 10px;
-     padding: 20px
+    padding: 20px
 }
 
 /*  setNotification button */
@@ -575,24 +591,24 @@ footer {
     border-radius: 8px;
 }
 
-ul#pagination{
-  display: inline-flex;
-  justify-content: center;
-  width: 100%;
-  font-size: 1.3rem;
+ul#pagination {
+    display: inline-flex;
+    justify-content: center;
+    width: 100%;
+    font-size: 1.3rem;
 
-  li{
-    display: inline;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-  }
+    li {
+        display: inline;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
 
-  .activePage{
-    text-decoration: underline;
-    font-weight: bold;
-  }
+    .activePage {
+        text-decoration: underline;
+        font-weight: bold;
+    }
 
-  .inactivePage a{
-    cursor:default;
-  }
+    .inactivePage a {
+        cursor: default;
+    }
 }
