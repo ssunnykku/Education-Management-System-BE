@@ -383,8 +383,8 @@
 
       fetch("/courses/course", requestOptions)
         .then((response) => response.json())
-        .then((result) => { if (result.result) { showMessage("수정 성공") } })
-        .catch((error) => showMessage("수정에 실패하였습니다. \n같은 현상이 반복된다면 시스템 관리자에게 문의하여 주십시오."));
+        .then((result) => { if (result.result) { alertBeforeReload("수정 성공") } })
+        .catch((error) => alertBeforeReload("수정에 실패하였습니다. \n같은 현상이 반복된다면 시스템 관리자에게 문의하여 주십시오."));
 
 
       function getCourseSeq() {
@@ -452,8 +452,8 @@
 
       fetch("/courses/course", requestOptions)
         .then((response) => response.json())
-        .then((result) => { if (result.result) { showMessage("등록 성공") } else { showMessage("등록에 실패하였습니다.\n 이미 등록된 기수가 아닌지 확인하시고, 같은 현상이 반복된다면 시스템 관리자에게 문의하여 주십시오.") } })
-        .catch((error) => showMessage("등록에 실패하였습니다. \n네트워크 문제일 가능성이 높습니다. 서버 관리자에게 문의하여 주시기 바랍니다."));
+        .then((result) => { if (result.result) { alertBeforeReload("등록 성공") } else { alertBeforeReload("등록에 실패하였습니다.\n 이미 등록된 기수가 아닌지 확인하시고, 같은 현상이 반복된다면 시스템 관리자에게 문의하여 주십시오.") } })
+        .catch((error) => alertBeforeReload("등록에 실패하였습니다. \n네트워크 문제일 가능성이 높습니다. 서버 관리자에게 문의하여 주시기 바랍니다."));
 
 
       function getCourseSeq() {
@@ -509,9 +509,9 @@
 
       let result = await deleteCourse(selectedCourseSeqList);
       if(result){
-        showMessage("삭제되었습니다.");
+        alertBeforeReload("삭제되었습니다.");
       }else{
-        showMessage("삭제 중 오류가 발생하였습니다.\n같은 현상이 반복되면 관리자에게 문의해주시기 바랍니다.");
+        alertBeforeReload("삭제 중 오류가 발생하였습니다.\n같은 현상이 반복되면 관리자에게 문의해주시기 바랍니다.");
       }
     }
 
