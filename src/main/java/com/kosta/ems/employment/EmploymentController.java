@@ -41,7 +41,7 @@ public class EmploymentController {
             @RequestParam(value = "pageSize",       defaultValue = "10"  ) int pageSize,
             @RequestParam int courseNumber) {
     	log.info(service.getEmploymentInfoByCourseSeq(courseNumber, page, pageSize).toString());
-        return Map.of("result", service.getEmploymentInfoByCourseSeq(courseNumber, page, pageSize), "total", studentCourseService.countByCourseSeq(courseNumber));
+        return Map.of("result", service.getEmploymentInfoByCourseNumber(courseNumber, page, pageSize), "total", studentCourseService.countByCourseSeq(courseNumber));
     }
     
     @GetMapping("/avg-rate")

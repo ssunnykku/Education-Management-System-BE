@@ -1,15 +1,19 @@
 @import "reset.css";
 
 /* Basic table styles */
+td{
+	 height: 10px; /* Adjust the height as needed */
+  		overflow-y: auto;
+}
 #employmentBoard-table {
     border-collapse: collapse;
-    width: 1190px; /* Set table width to 1190px */
-    margin: 0 auto; /* Center the table horizontally */
+   
   }
   
   #employmentBoard-table th, #employmentBoard-table td {
     padding: 12px;
     border: 1px solid #ddd;
+    
   }
   
   #employmentBoard-table th {
@@ -20,7 +24,8 @@
   }
   
   #employmentBoard-table tbody tr {
-    height: 1190px; /* Fixed row height */
+     width: 1190px; /* Set table width to 1190px */
+    margin: 0 auto; /* Center the table horizontally */
   }
   
   #employmentBoard-table th, #employmentBoard-table td {
@@ -48,6 +53,7 @@
   
     #employmentBoard-table td {
       min-width: 120px;
+      
     }
   }
 /************pointBoard*****************/
