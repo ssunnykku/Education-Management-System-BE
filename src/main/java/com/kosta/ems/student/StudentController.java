@@ -63,10 +63,16 @@ public class StudentController {
 	@PostMapping("/student-course-history")
 	public Map<String, Object> getStudentCourseHistory(@RequestBody StudentInfoDTO request) {
 		Map<String, Object> result = new HashMap<String, Object>();
+		/*
 		log.info("🙃 request.studentId(): " + request.getStudentId());
 		log.info("🙃 request.studentId() substring: " + request.getStudentId().substring(0, request.getStudentId().length()-1));
 		result.put("studentCourseHistory", studentService.getStudentCourseHistory(request.getStudentId().substring(0, request.getStudentId().length()-1)));
 		log.info("🙃 studentCourseHistory"+studentService.getStudentCourseHistory(request.getStudentId().substring(0, request.getStudentId().length()-1)).toString());
+		*/
+
+		log.info("🙃 request.studentId(): " + request.getStudentId());
+		result.put("studentCourseHistory", studentService.getStudentCourseHistory(request.getStudentId()));
+		log.info("🙃 studentCourseHistory"+studentService.getStudentCourseHistory(request.getStudentId()));
 		return result;
 	}
 
@@ -146,6 +152,8 @@ public class StudentController {
 	@PutMapping()
 	public UpdateDeleteResultDTO updateSelectedStudentInfo(@RequestBody UpdateSelectedStudentInfoDTO request) {
 		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
+		log.info("🧰 수강생 정보 수정: ");
+		log.info("🧰 requestDTO: " + request.toString());
 		try {
 			studentService.updateSelectedStudentInfo(request.getName(), request.getAddress(), request.getBank(), request.getAccount(), request.getPhoneNumber(), request.getEmail(), request.getStudentId());
 		} catch (NoSuchDataException e) {
