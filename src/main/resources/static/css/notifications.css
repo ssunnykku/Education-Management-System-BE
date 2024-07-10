@@ -91,14 +91,6 @@
 
 #notification-btn-article {
     /* height: 50px; */
-    width: 100%;
-}
-
-
-.search-form-wrapper {
-    display: flex;
-    width: 450px;
-    align-items: center;
 }
 
 
@@ -275,7 +267,7 @@ footer {
 }
 
 .notificationPost-title {
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 500;
     text-align: left;
 }
@@ -286,12 +278,12 @@ footer {
     display: flex;
     flex-direction: column;
     padding: 30px 0 30px 0;
-    gap: 30px;
+    gap: 20px;
 }
 
 .underline {
     background: #ffffff;
-    border-bottom: 1px solid #f3f5f9;
+    border-bottom: 1px solid #eee;
     border-radius: 10px 10px 0px 0px;
     justify-content: space-around;
     padding-bottom: 20px;
@@ -315,6 +307,7 @@ footer {
     align-items: flex-start;
     row-gap: 40px;
     line-height: 1.8;
+    min-height: 350px;
 }
 
 .notificationPost-content {
@@ -526,6 +519,24 @@ footer {
     border-radius: 10px;
     padding: 20px
 }
+#menu-btn {
+  background-image: url("../assets/arrow_left.svg");
+  background-repeat: no-repeat;
+  background-size: 12px;
+  background-position: left 10px top 7px; /* 이미지 위치 조절 */
+  height: 30px;
+  width: 150px;
+  margin: 0;
+  display: flex; /* 버튼을 Flexbox 레이아웃으로 설정 */
+  align-items: center; /* 버튼 안쪽 요소들을 수직 중앙 정렬 */
+  justify-content: space-between; /* 버튼 안쪽 요소들을 좌우 양쪽 끝에 정렬하고, 중간에 여백 발생 */
+  padding: 0 30px; /* 버튼 안쪽 여백 설정 */
+  font-size: 16px;
+}
+.search-form-wrapper{
+	display: flex;
+	flex-direction: row;
+}
 
 /*  setNotification button */
 #setNotification-btn-wrapper {
@@ -596,6 +607,7 @@ ul#pagination {
     justify-content: center;
     width: 100%;
     font-size: 1.3rem;
+        margin-top:20px;
 
     li {
         display: inline;
@@ -612,3 +624,4 @@ ul#pagination {
         cursor: default;
     }
 }
+
