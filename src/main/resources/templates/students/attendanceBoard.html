@@ -44,7 +44,7 @@
                     <th class="attendance-cnt-early-leave">조퇴</th>
                     <th class="attendance-cnt-go-out">외출</th>
                     <th class="attendance-cnt-absence">결석</th>
-                    <th class="attendance-cnt-">출석 인정</th>
+                    <th class="attendance-cnt-acknowledge">출석 인정</th>
                     <th class="attendance-ratio">출석률</th>
                 </tr>
             </table>
@@ -65,6 +65,10 @@
 
 <footer></footer>
 <script>
+    $(document).ready(async function() {
+        await fetchStudentAttendanceList(1);
+    });
+
     let totalPage = 0;
     let currentPage = 1;
     let currentBlock = 1;
