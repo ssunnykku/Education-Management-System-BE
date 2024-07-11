@@ -24,7 +24,7 @@ public class ScholarshipTargetDTO {
     private int courseNumber;
     private String academyLocation;
     private String courseName;
-    private LocalDate ScholarshipDate;
+    private LocalDate settlementDate;
     private int totalPoint;
     private int scholarshipAmount;
 }

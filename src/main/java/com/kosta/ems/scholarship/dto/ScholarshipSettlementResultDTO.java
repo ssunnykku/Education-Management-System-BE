@@ -25,6 +25,6 @@ public class ScholarshipSettlementResultDTO {
     private Long courseSeq;
     private int courseNumber;
     private String courseName;
-    private LocalDate scholarshipDate;
+    private LocalDate settlementDate;
     private int scholarshipAmount;
 }
