@@ -2,6 +2,7 @@ package com.kosta.ems.employment;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kosta.ems.course.CourseDTO;
 import com.kosta.ems.student.GetStudentInfoByScqDTO;
 
@@ -16,6 +17,7 @@ import lombok.ToString;
 @ToString
 public class EmploymentInfoResponse {
     private int employmentSeq;
+    @JsonProperty("sCSeq")
     private int sCSeq;
     private String hrdNetId;
     private int courseNumber;
