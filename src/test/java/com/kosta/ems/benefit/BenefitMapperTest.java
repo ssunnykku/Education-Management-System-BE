@@ -1,21 +1,18 @@
 package com.kosta.ems.benefit;
 
 import com.kosta.ems.benefit.dto.*;
-import com.kosta.ems.student.StudentCourseInfoDTO;
+import com.kosta.ems.benefit.enums.BenefitCategory;
 import com.kosta.ems.student.StudentMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -31,12 +28,9 @@ class BenefitMapperTest {
     @Autowired
     private BenefitServiceImpl benefitServiceImpl;
 
-    @Value("${benefit.category.seq.training}")
-    private Integer BENEFIT_CATEGORY_SEQ_TRAINING;
-    @Value("${benefit.category.seq.meal}")
-    private Integer BENEFIT_CATEGORY_SEQ_MEAL;
-    @Value("${benefit.category.seq.settlement}")
-    private Integer BENEFIT_CATEGORY_SEQ_SETTLEMENT;
+    BenefitCategory training = BenefitCategory.BENEFIT_CATEGORY_SEQ_TRAINING;
+    BenefitCategory meal = BenefitCategory.BENEFIT_CATEGORY_SEQ_MEAL;
+    BenefitCategory settlement = BenefitCategory.BENEFIT_CATEGORY_SEQ_SETTLEMENT;
 
     @Test
     public void selectBenefitTargetTest() {
@@ -60,7 +54,7 @@ class BenefitMapperTest {
                 .amount(200000)
                 .studentId("738006e2-3eb0-11ef-bd30-0206f94be675")
                 .settlementDurationSeq(16)
-                .benefitsCategoriesSeq(BENEFIT_CATEGORY_SEQ_TRAINING)
+                .benefitsCategoriesSeq(training.getBenefitCategory())
                 .managerId("3ddf8303-3eaf-11ef-bd30-0206f94be675")
                 .build();
         benefitMapper.insertBenefitSettlementAmount(build);
@@ -144,7 +138,7 @@ class BenefitMapperTest {
                     .studentId(targetInfo.getStudentId())
                     .settlementDurationSeq(dto.getSettlementDurationSeq())
                     .managerId(dto.getManagerId())
-                    .benefitsCategoriesSeq(BENEFIT_CATEGORY_SEQ_TRAINING)
+                    .benefitsCategoriesSeq(training.getBenefitCategory())
                     .build());
 
             // 정착지원금
@@ -153,7 +147,7 @@ class BenefitMapperTest {
                     .studentId(targetInfo.getStudentId())
                     .settlementDurationSeq(dto.getSettlementDurationSeq())
                     .managerId(dto.getManagerId())
-                    .benefitsCategoriesSeq(BENEFIT_CATEGORY_SEQ_SETTLEMENT)
+                    .benefitsCategoriesSeq(settlement.getBenefitCategory())
                     .build());
 
             // 식비
@@ -162,7 +156,7 @@ class BenefitMapperTest {
                     .studentId(targetInfo.getStudentId())
                     .settlementDurationSeq(dto.getSettlementDurationSeq())
                     .managerId(dto.getManagerId())
-                    .benefitsCategoriesSeq(BENEFIT_CATEGORY_SEQ_MEAL)
+                    .benefitsCategoriesSeq(meal.getBenefitCategory())
                     .build());
 
         }

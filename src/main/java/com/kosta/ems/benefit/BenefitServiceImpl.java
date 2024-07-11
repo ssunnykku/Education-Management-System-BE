@@ -3,11 +3,12 @@ package com.kosta.ems.benefit;
 
 import com.kosta.ems.attendance.AttendanceMapper;
 import com.kosta.ems.benefit.dto.*;
+import com.kosta.ems.benefit.enums.BenefitCategory;
+import com.kosta.ems.benefit.enums.Calculation;
 import com.kosta.ems.course.CourseMapper;
 import com.kosta.ems.student.StudentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,14 +28,6 @@ public class BenefitServiceImpl implements BenefitService {
     private final AttendanceMapper attendanceMapper;
     private final StudentMapper studentMapper;
     private final CourseMapper courseMapper;
-
-    @Value("${benefit.category.seq.training}")
-    private Integer BENEFIT_CATEGORY_SEQ_TRAINING;
-    @Value("${benefit.category.seq.meal}")
-    private Integer BENEFIT_CATEGORY_SEQ_MEAL;
-    @Value("${benefit.category.seq.settlement}")
-    private Integer BENEFIT_CATEGORY_SEQ_SETTLEMENT;
-
 
     @Override
     @Transactional
@@ -91,7 +84,7 @@ public class BenefitServiceImpl implements BenefitService {
                         .studentId(targetInfo.getStudentId())
                         .settlementDurationSeq(settlementDurationSeq)
                         .managerId(dto.getManagerId())
-                        .benefitsCategoriesSeq(BENEFIT_CATEGORY_SEQ_TRAINING)
+                        .benefitsCategoriesSeq(BenefitCategory.BENEFIT_CATEGORY_SEQ_TRAINING.getBenefitCategory())
                         .build());
             }
             if (settlementAidAmount > 0) {
@@ -101,7 +94,7 @@ public class BenefitServiceImpl implements BenefitService {
                         .studentId(targetInfo.getStudentId())
                         .settlementDurationSeq(settlementDurationSeq)
                         .managerId(dto.getManagerId())
-                        .benefitsCategoriesSeq(BENEFIT_CATEGORY_SEQ_SETTLEMENT)
+                        .benefitsCategoriesSeq(BenefitCategory.BENEFIT_CATEGORY_SEQ_SETTLEMENT.getBenefitCategory())
                         .build());
             }
             if (mealAidAmount > 0) {
@@ -111,7 +104,7 @@ public class BenefitServiceImpl implements BenefitService {
                         .studentId(targetInfo.getStudentId())
                         .settlementDurationSeq(settlementDurationSeq)
                         .managerId(dto.getManagerId())
-                        .benefitsCategoriesSeq(BENEFIT_CATEGORY_SEQ_MEAL)
+                        .benefitsCategoriesSeq(BenefitCategory.BENEFIT_CATEGORY_SEQ_MEAL.getBenefitCategory())
                         .build());
             }
 
@@ -149,11 +142,11 @@ public class BenefitServiceImpl implements BenefitService {
             for (BenefitTargetInfoDTO category : benefitAmount) {
 
                 if (data.getStudentId().equals(category.getStudentId())) {
-                    if (category.getBenefitsCategoriesSeq() == BENEFIT_CATEGORY_SEQ_TRAINING) {
+                    if (category.getBenefitsCategoriesSeq() == BenefitCategory.BENEFIT_CATEGORY_SEQ_TRAINING.getBenefitCategory()) {
                         newData.setTrainingAidAmount(category.getAmount());
-                    } else if (category.getBenefitsCategoriesSeq() == BENEFIT_CATEGORY_SEQ_MEAL) {
+                    } else if (category.getBenefitsCategoriesSeq() == BenefitCategory.BENEFIT_CATEGORY_SEQ_MEAL.getBenefitCategory()) {
                         newData.setMealAidAmount(category.getAmount());
-                    } else if (category.getBenefitsCategoriesSeq() == BENEFIT_CATEGORY_SEQ_SETTLEMENT) {
+                    } else if (category.getBenefitsCategoriesSeq() == BenefitCategory.BENEFIT_CATEGORY_SEQ_SETTLEMENT.getBenefitCategory()) {
                         newData.setSettlementAidAmount(category.getAmount());
                     }
 
@@ -234,16 +227,16 @@ public class BenefitServiceImpl implements BenefitService {
     }
 
     public int mealAid(LocalDate startDate, LocalDate endDate, String studentId, int lectureDays) {
-        int mealAid = attendanceDays(startDate, endDate, studentId) * 5000;
+        int mealAid = attendanceDays(startDate, endDate, studentId) * (int) Calculation.MEAL_AMOUNT.getValue();
         log.info("mealAid {} ", mealAid);
         log.info("attendanceDays(startDate, endDate, studentId) {}", attendanceDays(startDate, endDate, studentId));
-        return attendanceDays(startDate, endDate, studentId) / (double) lectureDays >= 0.8 ? mealAid : 0;
+        return attendanceDays(startDate, endDate, studentId) / (double) lectureDays >= Calculation.COMPLETION_RATE.getValue() ? mealAid : 0;
 
     }
 
     public int trainingAid(LocalDate startDate, LocalDate endDate, String studentId, int lectureDays) {
 
-        return attendanceDays(startDate, endDate, studentId) / (double) lectureDays >= 0.8 ? 200000 : 0;
+        return attendanceDays(startDate, endDate, studentId) / (double) lectureDays >= Calculation.COMPLETION_RATE.getValue() ? (int) Calculation.TRAINING_AMOUNT.getValue() : 0;
     }
 
     public int settlementAid(LocalDate startDate, LocalDate endDate, String studentId, int lectureDays) {
@@ -252,12 +245,12 @@ public class BenefitServiceImpl implements BenefitService {
                 || studentMapper.selectAddressByStudentId(studentId).contains("인천")) {
             return 0;
         }
-        return attendanceDays(startDate, endDate, studentId) / (double) lectureDays >= 0.8 ? 200000 : 0;
+        return attendanceDays(startDate, endDate, studentId) / (double) lectureDays >= Calculation.COMPLETION_RATE.getValue() ? (int) Calculation.TRAINING_AMOUNT.getValue() : 0;
     }
 
     public int attendanceDays(LocalDate startDate, LocalDate endDate, String studentId) {
         int countAttendance = attendanceMapper.selectCountAttendance(startDate, endDate, studentId);
-        int countLeave = (attendanceMapper.selectCountLeave(startDate, endDate, studentId) / 3);
+        int countLeave = (attendanceMapper.selectCountLeave(startDate, endDate, studentId) / (int) Calculation.LEAVE_CONVERSION_COUNT.getValue());
         return countAttendance - countLeave;
     }
 
