@@ -42,7 +42,7 @@ public class EmploymentController {
     public Map getMethodName(@RequestParam(value = "page",    defaultValue = "1"   ) int page,
             @RequestParam(value = "pageSize",       defaultValue = "10"  ) int pageSize,
             @RequestParam int courseNumber) {
-        return Map.of("result", service.getEmploymentInfoByCourseNumber(courseNumber, page, pageSize), "total", studentCourseService.countByCourseSeq(courseNumber));
+        return Map.of("result", service.getEmploymentInfoByCourseNumber(courseNumber, page, pageSize), "total", studentCourseService.countByCourseNumber(courseNumber));
     }
     
     @GetMapping("/avg-rate")
