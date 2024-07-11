@@ -3,6 +3,7 @@ package com.kosta.ems.attendance;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,7 +31,10 @@ public interface AttendanceService {
     List<StudentAttendanceListDTO> getAttendanceIntegratedListNoFilter(String name, int courseNumber, int page, int size);
     // 2차 - 경우 1~3을 하나의 쿼리문으로 해결하기
     int getAttendanceIntegratedListAmount(String name, int courseNumber, String academyLocation);
-    List<StudentAttendanceListDTO> getAttendanceIntegratedList(String name, int courseNumber, int page, int size);
+    // List<StudentAttendanceListDTO> getAttendanceIntegratedList(String name, int courseNumber, String academyLocation, int page, int size);
+    List<ArrayList> getAttendanceIntegratedList(String name, int courseNumber, String academyLocation, int page, int size);
+
+
 
     // 출결 입력 페이지
     // [출결] - 특정일의 수강생 출석 상태 목록 조회 (for 출결 입력/수정)

@@ -128,7 +128,14 @@ LIMIT #{page}, #{size};
     <!--2차: 경우1~3을 쿼리문 1개로-->
     <!--수강생 출결 목록 데이터 개수-->
     <select id="selectAttendanceIntegratedListAmount" resultType="com.kosta.ems.attendance.StudentAttendanceListDTO">
-        SELECT sc.student_course_seq AS studentCourseSeq
+        SELECT c.course_number AS courseNumber, s.name, s.hrd_net_id AS hrdNetId, c.total_training_days AS totalTrainingDays,
+               SUM(CASE WHEN a.attendance_status = '출석' THEN 1 ELSE 0 END) AS 'sumAttendance',
+                SUM(CASE WHEN a.attendance_status = '지각' THEN 1 ELSE 0 END) AS 'sumLateness',
+                SUM(CASE WHEN a.attendance_status = '조퇴' THEN 1 ELSE 0 END) AS 'sumGoOut',
+                SUM(CASE WHEN a.attendance_status = '외출' THEN 1 ELSE 0 END) AS 'sumEarlyLeave',
+                SUM(CASE WHEN a.attendance_status = '결석' THEN 1 ELSE 0 END) AS 'sumAbsence',
+                SUM(CASE WHEN a.attendance_status = '출석 인정' THEN 1 ELSE 0 END) AS 'sumAcknowledge',
+                sc.student_course_seq AS studentCourseSeq
         FROM students_courses sc
                  JOIN students s ON s.student_id = sc.student_id
                  JOIN courses c ON sc.course_seq = c.course_seq
@@ -139,6 +146,7 @@ LIMIT #{page}, #{size};
           AND c.academy_location=#{academyLocation}
         GROUP BY c.course_number, s.name, s.hrd_net_id, c.total_training_days
         HAVING SUM(CASE WHEN a.attendance_status = '출석' THEN 1 ELSE 0 END) > 0
+        ORDER BY c.course_number DESC, s.name ASC
     </select>
     <!--수강생 출결 목록 가져오기-->
     <select id="selectAttendanceIntegratedList" resultType="com.kosta.ems.attendance.StudentAttendanceListDTO">
@@ -157,6 +165,7 @@ LIMIT #{page}, #{size};
         WHERE s.name LIKE CONCAT('%', #{name}, '%')
           AND (IF(#{courseNumber}, 0, '기수')='기수' OR c.course_number=#{courseNumber})
           AND s.is_active=1
+          AND c.academy_location=#{academyLocation}
         GROUP BY c.course_number, s.name, s.hrd_net_id, c.total_training_days
         HAVING SUM(CASE WHEN a.attendance_status = '출석' THEN 1 ELSE 0 END) > 0
         ORDER BY c.course_number DESC, s.name ASC

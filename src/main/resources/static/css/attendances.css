@@ -271,7 +271,8 @@ select {
 
 #content-section {
     width: 100%;
-    margin-top: 25px;
+    /*margin-top: 25px;*/
+    margin-top: 15px;
     z-index: 9;
 }
 
@@ -281,6 +282,9 @@ select {
 }
 .board-table.refer-attendance-status {
     width: 90%;
+    tr {
+        height: 38px;
+    }
 }
 
 .board-table.refer-attendance-status td:not(:nth-child(2)), .board-table.refer-attendance-status th:not(:nth-child(2)) {
