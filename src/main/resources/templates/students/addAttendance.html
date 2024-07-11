@@ -41,7 +41,7 @@
             </div>
         </article>
         <article>
-            <table class="board-table"></table>
+            <table class="board-table set-attendance"></table>
         </article>
         <div class="update-btn-div">
             <button id="set-btn" class="btn" popovertarget="add-attendance-modal">입력</button>
@@ -157,13 +157,13 @@
     // 검색한 출결 상태 목록 데이터 화면에 보여주기
     async function getAttendanceList(data) {
         let result = `<tr>
-                    <th><input type="checkbox" id="check-all"/></th>
-                    <th>기수</th>
-                    <th>HRD-Net ID</th>
-                    <th>이름</th>
-                    <th>강의장</th>
-                    <th>출결 상태</th>
-                    <th>증빙 서류</th>
+                    <th class="set-attendance"><input type="checkbox" id="check-all"/></th>
+                    <th class="set-attendance">기수</th>
+                    <th class="set-attendance">HRD-Net ID</th>
+                    <th class="set-attendance">이름</th>
+                    <th class="set-attendance">강의장</th>
+                    <th class="set-attendance">출결 상태</th>
+                    <th class="set-attendance">증빙 서류</th>
                 </tr>`;
         for(let i=0; i<data.length; i++) {
             let attendanceCheck = "";
@@ -195,13 +195,13 @@
                     break;
             }
 
-            result += `<tr class="board-table-row">
-                    <td class="board-checkbox"><input type="checkbox" name="checkbox" class="check-box"/><span class="student-course-seq" style="display:none;">${data[i].studentCourseSeq}</span></td>
-                    <td class="course-number">${data[i].courseNumber}</td>
-                    <td class="hrd-net-id">${data[i].hrdNetId}</td>
-                    <td class="student-name">${data[i].name}</td>
-                    <td class="academy-location">${data[i].academyLocation}</td>
-                    <td class="attendance-status">
+            result += `<tr class="board-table-row set-attendance">
+                    <td class="set-attendance board-checkbox"><input type="checkbox" name="checkbox" class="check-box"/><span class="student-course-seq" style="display:none;">${data[i].studentCourseSeq}</span></td>
+                    <td class="set-attendance course-number">${data[i].courseNumber}</td>
+                    <td class="set-attendance hrd-net-id">${data[i].hrdNetId}</td>
+                    <td class="set-attendance student-name">${data[i].name}</td>
+                    <td class="set-attendance academy-location">${data[i].academyLocation}</td>
+                    <td class="set-attendance attendance-status">
                         <select name="attendance-status-select" id="attendance-status-select">
                             <option value="attendance" ${attendanceCheck}>출석</option>
                             <option value="lateness" ${latenessCheck}>지각</option>
@@ -211,7 +211,7 @@
                             <option value="acknowledge" ${acknowledgeCheck}>출석 인정</option>
                         </select>
                     </td>
-                    <td class="evidentiary-documents">
+                    <td class="set-attendance evidentiary-documents">
                         <div class="file-input-wrapper">
                             <label class="input-file-label" for="file-upload-btn">파일 첨부</label>
                             <input type="file" id="file-upload-btn"/>
