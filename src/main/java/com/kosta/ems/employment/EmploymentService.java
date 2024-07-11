@@ -47,28 +47,50 @@ public class EmploymentService {
             GetStudentInfoByScqDTO studentDto = studentMapper.selectStudentInfoByScq(sCDto.getSeq());
             //또한 고용정보를 받아온다.
             Optional<EmploymentDTO> employmentOptional = repo.findBysCSeq(sCDto.getSeq());
-            EmploymentDTO employmentDto;
+            EmploymentInfoResponse resultDto;
             if(employmentOptional.isEmpty()) {
-                employmentDto = null;
                 isEmployeed = false;
+                resultDto = EmploymentInfoResponse.builder()
+                        .sCSeq(sCDto.getSeq())
+                        .hrdNetId(studentDto.getHrdNetId())
+                        .courseNumber(course.getCourseNumber())
+                        .name(studentDto.getName())
+                        .phoneNumber(studentDto.getPhoneNumber())
+                        .email(studentDto.getEmail())
+                        .courseEndDate(course.getCourseEndDate())
+                        .company(company)
+                        .isEmployeed(isEmployeed)
+                        .build();
             }else {
                 isEmployeed = true;
-                employmentDto = employmentOptional.get();
+                EmploymentDTO employmentDto = employmentOptional.get();
                 company = employmentDto.getCompany();
+                resultDto = EmploymentInfoResponse.builder()
+                        .employmentSeq(employmentDto.getSeq())
+                        .sCSeq(sCDto.getSeq())
+                        .hrdNetId(studentDto.getHrdNetId())
+                        .courseNumber(course.getCourseNumber())
+                        .name(studentDto.getName())
+                        .phoneNumber(studentDto.getPhoneNumber())
+                        .email(studentDto.getEmail())
+                        .courseEndDate(course.getCourseEndDate())
+                        .company(company)
+                        .isEmployeed(isEmployeed)
+                        .build();
             }
             
-            EmploymentInfoResponse resultDto = EmploymentInfoResponse.builder()
-            .employmentSeq(employmentDto.getSeq())
-            .sCSeq(sCDto.getSeq())
-            .hrdNetId(studentDto.getHrdNetId())
-            .courseNumber(course.getCourseNumber())
-            .name(studentDto.getName())
-            .phoneNumber(studentDto.getPhoneNumber())
-            .email(studentDto.getEmail())
-            .courseEndDate(course.getCourseEndDate())
-            .company(company)
-            .isEmployeed(isEmployeed)
-            .build();
+//            EmploymentInfoResponse resultDto = EmploymentInfoResponse.builder()
+//            .employmentSeq(employmentDto.getSeq())
+//            .sCSeq(sCDto.getSeq())
+//            .hrdNetId(studentDto.getHrdNetId())
+//            .courseNumber(course.getCourseNumber())
+//            .name(studentDto.getName())
+//            .phoneNumber(studentDto.getPhoneNumber())
+//            .email(studentDto.getEmail())
+//            .courseEndDate(course.getCourseEndDate())
+//            .company(company)
+//            .isEmployeed(isEmployeed)
+//            .build();
             
             result.add(resultDto);
         }
