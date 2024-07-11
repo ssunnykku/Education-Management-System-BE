@@ -26,6 +26,6 @@ public class StudentInfoDTO {
     private String email;
     private String phoneNumber;
     private char gender;
-    private boolean isActive;
+    private int isActive;
     private String managerId;
 }

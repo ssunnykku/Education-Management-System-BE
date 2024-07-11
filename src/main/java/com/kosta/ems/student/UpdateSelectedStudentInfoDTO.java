@@ -22,4 +22,5 @@ public class UpdateSelectedStudentInfoDTO {
 	private String phoneNumber;
 	private String email;
 	private int courseNumber;
+	private int isActive;
 }

@@ -23,18 +23,21 @@ public class StudentController {
 	private final StudentService studentService;
 
 	// [수강생 정보] - 수강생 정보 조회
+	// @RequestBody AddStudentBasicInfoDTO dto
 	@PostMapping("/student-list")
-	public Map<String, Object> getStudentsByNameOrCourseNumber(@RequestParam(name="page", required = false, defaultValue = "1") int page, @RequestBody AddStudentBasicInfoDTO dto) {
+	public Map<String, Object> getStudentsByNameOrCourseNumber(@RequestParam(name="page", required = false, defaultValue = "1") int page, @RequestBody StudentInfoDTO dto) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		int size = 10;
 		int courseNumber = dto.getCourseNumber();
+		log.info("☄️☄️ request courseNumber: " + courseNumber);
 		String name = dto.getName().equals("") ? "" : dto.getName();
-		int isActive = 1;  // 임시
+		log.info("☄️☄️ request name: " + name);
+		int isActive = dto.getIsActive();  // 임시
+		log.info("☄️☄️ request isActive: " + isActive);
 
 		int totalCount = studentService.getStudentInfoListCnt(isActive, name, courseNumber);
 		result.put("amount", totalCount);
 		result.put("studentList", studentService.getStudentInfoList(isActive, name, courseNumber, page, size));
-		log.info("☄️result.studentList 1 :" + studentService.getStudentsByNameOrCourseNumberList(name, courseNumber, page, size).toString());
 
 		// 페이징 response
 		int totalPage = (totalCount/size) + 1;
@@ -155,7 +158,7 @@ public class StudentController {
 		log.info("🧰 수강생 정보 수정: ");
 		log.info("🧰 requestDTO: " + request.toString());
 		try {
-			studentService.updateSelectedStudentInfo(request.getName(), request.getAddress(), request.getBank(), request.getAccount(), request.getPhoneNumber(), request.getEmail(), request.getStudentId());
+			studentService.updateSelectedStudentInfo(request.getName(), request.getAddress(), request.getBank(), request.getAccount(), request.getPhoneNumber(), request.getEmail(), request.getStudentId(), request.getIsActive());
 		} catch (NoSuchDataException e) {
 			dto.setCode(ResCode.FAIL.value());
 			dto.setMessage("Fail: updateSelectedStudentInfo");
