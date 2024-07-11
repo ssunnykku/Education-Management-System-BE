@@ -95,7 +95,7 @@ if (!data || data.length === 0) {
       <td><span class="employmentBoard-phone-number">${data[i].phoneNumber}</span></td>
       <td><span class="employmentBoard-email">${data[i].email}</span></td>
       <td><span class="employmentBoard-course-end-date">${data[i].courseEndDate}</span></td>
-      <td class="employmentBoard-company" data-scseq="${data[i].scseq}"><span>${companyText}</span></td>
+      <td class="employmentBoard-company" data-scseq="${data[i].scseq}" data-employed="${employmentStatusText}"><span>${companyText}</span></td>
       <td><span class="employmentBoard-is-employed">${employmentStatusText}</span></td>
     </tr>`
   }
@@ -117,6 +117,9 @@ $('.employmentBoard-table').on('click','.employmentBoard-company', function (e) 
 		myModal.show();
 
 	$(".save-btn").on("click", function(){
+	console.log(clickedCellText);
+
+	if(clickedCellText===null){
 	fetch("/employments/student" ,{
 			method: "post",
 			headers: {
@@ -127,10 +130,23 @@ $('.employmentBoard-table').on('click','.employmentBoard-company', function (e) 
 				company: document.getElementById("company-input").value,
 			})
 		})
-		.then(myModal.hide())
+		.then(myModal.hide())}
+		else{
+		fetch("/employments/student" ,{
+			method: "put",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				company: document.getElementById("company-input").value,
+			})
+		})
+		.then(myModal.hide())	
+		}
  })
 
-})
+	})
+	
 const excelDownload = document.querySelector('#export-to-excel');
 
 document.addEventListener('DOMContentLoaded', ()=>{
