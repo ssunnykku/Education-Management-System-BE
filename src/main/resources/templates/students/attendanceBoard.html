@@ -35,9 +35,10 @@
             <table class="board-table refer-attendance-status">   <!--div class="board-row" id="board-title-row" 였던것-->
                 <tr>
                     <th class="course-number">기수</th>
-                    <th class="student-name">이름</th>
+                    <th class="course-name">교육과정명</th>
+                    <th class="student-name">수강생 이름</th>
                     <th class="hrd-net-id">HRD-Net ID</th>
-                    <th class="attendance-duration">과정 기간</th>
+                    <th class="attendance-duration">교육일수</th>
                     <th class="attendance-cnt">출석</th>
                     <th class="attendance-cnt-late">지각</th>
                     <th class="attendance-cnt-early-leave">조퇴</th>
@@ -84,11 +85,12 @@
     // 검색한 출결 데이터 목록 가져오기
     async function getAttendanceList(data) {
         console.log(data);
-        let result = `<tr><th class="course-number">기수</th><th class="student-name">이름</th><th class="hrd-net-id">HRD-Net ID</th><th class="attendance-duration">과정 기간</th><th class="attendance-cnt">출석</th><th class="attendance-cnt-late">지각</th><th class="attendance-cnt-early-leave">조퇴</th><th class="attendance-cnt-go-out">외출</th><th class="attendance-cnt-absence">결석</th><th class="attendance-cnt-">출석 인정</th><th class="attendance-ratio">출석률</th></tr>`;
-        for(let i= 0; i < data.length; i++) {
+        let result = `<tr><th className="course-number">기수</th><th className="course-name">교육과정명</th><th className="student-name">수강생 이름</th><th className="hrd-net-id">HRD-Net ID</th><th className="attendance-duration">교육일수</th><th class="attendance-cnt">출석</th><th class="attendance-cnt-late">지각</th><th class="attendance-cnt-early-leave">조퇴</th><th class="attendance-cnt-go-out">외출</th><th class="attendance-cnt-absence">결석</th><th class="attendance-cnt-">출석 인정</th><th class="attendance-ratio">출석률</th></tr>`;
+        for (let i = 0; i < data.length; i++) {
             result +=
                 `<tr class="board-table-row">
                     <td class="course-number">${data[i].courseNumber}</td>
+                    <td class="course-name">자바클라우드개발자 교육과정1</td>
                     <td class="student-name">${data[i].name}</td>
                     <td class="hrd-net-id">${data[i].hrdNetId}</td>
                     <td class="attendance-duration">${data[i].totalTrainingDays}</td>
@@ -104,9 +106,10 @@
         $(".board-table.refer-attendance-status").html("");
         $(".board-table.refer-attendance-status").append(result);
     };
+
     // 검색한 출결 데이터 목록 개수 가져오기
     async function getAmountAttendanceList(data) {
-        totalPage = Math.ceil(data/10);
+        totalPage = Math.ceil(data / 10);
 
         let result = '';
         result += `<span class="span-attendance-list-amount">총 ${data}건</span>`;

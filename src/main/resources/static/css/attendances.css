@@ -12,7 +12,6 @@
     width: 100%;
     margin-left: 15px;
     margin-top: 0;
-    margin-bottom: 20px;
 }
 
 .btn {
@@ -290,12 +289,20 @@ select {
 .board-table.refer-attendance-status td:first-child, .board-table.refer-attendance-status th:first-child {
     width: 7%;
 }
-.board-table.refer-attendance-status td:nth-child(2), .board-table.refer-attendance-status th:nth-child(2) {
-    width: 8%;
-}
-.board-table.refer-attendance-status td:nth-child(4), .board-table.refer-attendance-status th:nth-child(4),
 .board-table.refer-attendance-status td:last-child, .board-table.refer-attendance-status th:last-child {
+    width: 10%;
+}
+.board-table.refer-attendance-status td:nth-child(5), .board-table.refer-attendance-status th:nth-child(5) {
+    widht: 8%;
+}
+.board-table.refer-attendance-status td:nth-child(2), .board-table.refer-attendance-status th:nth-child(2) {
     width: 20%;
+}
+.board-table.refer-attendance-status td:nth-child(3), .board-table.refer-attendance-status th:nth-child(3) {
+    width: 12%;
+}
+.board-table.refer-attendance-status td:nth-child(4), .board-table.refer-attendance-status th:nth-child(4) {
+    width: 13%;
 }
 
 .board-table.refer-attendance-status tr:not(:first-child) {
