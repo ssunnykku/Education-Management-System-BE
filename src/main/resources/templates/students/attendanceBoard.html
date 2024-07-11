@@ -88,23 +88,24 @@
 
     // 검색한 출결 데이터 목록 가져오기
     async function getAttendanceList(data) {
+        console.log("getAttendanceList - data");
         console.log(data);
         let result = `<tr><th className="course-number">기수</th><th className="course-name">교육과정명</th><th className="student-name">수강생 이름</th><th className="hrd-net-id">HRD-Net ID</th><th className="attendance-duration">교육일수</th><th class="attendance-cnt">출석</th><th class="attendance-cnt-late">지각</th><th class="attendance-cnt-early-leave">조퇴</th><th class="attendance-cnt-go-out">외출</th><th class="attendance-cnt-absence">결석</th><th class="attendance-cnt-">출석 인정</th><th class="attendance-ratio">출석률</th></tr>`;
         for (let i = 0; i < data.length; i++) {
             result +=
                 `<tr class="board-table-row">
-                    <td class="course-number">${data[i].courseNumber}</td>
+                    <td class="course-number">${data[i][0].courseNumber}</td>
                     <td class="course-name">자바클라우드개발자 교육과정1</td>
-                    <td class="student-name">${data[i].name}</td>
-                    <td class="hrd-net-id">${data[i].hrdNetId}</td>
-                    <td class="attendance-duration">${data[i].totalTrainingDays}</td>
-                    <td class="attendance-cnt">${data[i].sumAttendance}</td>
-                    <td class="attendance-cnt-late">${data[i].sumLateness}</td>
-                    <td class="attendance-cnt-early-leave">${data[i].sumEarlyLeave}</td>
-                    <td class="attendance-cnt-go-out">${data[i].sumGoOut}</td>
-                    <td class="attendance-cnt-absence">${data[i].sumAbsence}</td>
-                    <td class="attendance-cnt-acknowledge">${data[i].sumAcknowledge}</td>
-                    <td class="attendance-ratio">75%</td>
+                    <td class="student-name">${data[i][0].name}</td>
+                    <td class="hrd-net-id">${data[i][0].hrdNetId}</td>
+                    <td class="attendance-duration">${data[i][0].totalTrainingDays}</td>
+                    <td class="attendance-cnt">${data[i][0].sumAttendance}</td>
+                    <td class="attendance-cnt-late">${data[i][0].sumLateness}</td>
+                    <td class="attendance-cnt-early-leave">${data[i][0].sumEarlyLeave}</td>
+                    <td class="attendance-cnt-go-out">${data[i][0].sumGoOut}</td>
+                    <td class="attendance-cnt-absence">${data[i][0].sumAbsence}</td>
+                    <td class="attendance-cnt-acknowledge">${data[i][0].sumAcknowledge}</td>
+                    <td class="attendance-ratio">${data[i][1]}</td>
                 </tr>`;
         }
         $(".board-table.refer-attendance-status").html("");
@@ -142,6 +143,10 @@
         await fetch("/attendances/student-list?page="+param, requestOptions)
                 .then((res) => res.json())
             .then(async(data) => {
+                console.log("출결 조회 Data");
+                console.log(data);
+                console.log(data.attendanceList);
+                console.log(data.attendanceList[0]);
                 let attendanceList = data.attendanceList;
 
                 let amount = data.amount;

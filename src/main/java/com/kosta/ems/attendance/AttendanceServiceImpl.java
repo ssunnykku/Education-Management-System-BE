@@ -1,13 +1,17 @@
 package com.kosta.ems.attendance;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 
 @Log4j2
@@ -65,11 +69,40 @@ public class AttendanceServiceImpl implements AttendanceService {
     // 2차 - 경우 1~3을 하나의 쿼리문으로 해결하기
     @Override
     public int getAttendanceIntegratedListAmount(String name, int courseNumber, String academyLocation) {
-        return attendanceMapper.selectAttendanceIntegratedListAmount(name, courseNumber, academyLocation);
+        List<StudentAttendanceListDTO> attendanceList = attendanceMapper.selectAttendanceIntegratedListAmount(name, courseNumber, "가산");
+        return attendanceList.size();
     }
+    /*@Override
+    public List<StudentAttendanceListDTO> getAttendanceIntegratedList(String name, int courseNumber, String academyLocation, int page, int size) {
+        return attendanceMapper.selectAttendanceIntegratedList(name, courseNumber, "가산", ((page*size)-size), size);
+    }*/
+
     @Override
-    public List<StudentAttendanceListDTO> getAttendanceIntegratedList(String name, int courseNumber, int page, int size) {
-        return attendanceMapper.selectAttendanceIntegratedList(name, courseNumber, ((page*size)-size), size);
+    public List<ArrayList> getAttendanceIntegratedList(String name, int courseNumber, String academyLocation, int page, int size) {
+        List<ArrayList> item = new ArrayList<>();
+        List<StudentAttendanceListDTO> attendanceList = attendanceMapper.selectAttendanceIntegratedList(name, courseNumber, "가산", ((page*size)-size), size);
+
+        for(int i=0; i<attendanceList.size(); i++) {
+            ArrayList tmp = new ArrayList<>(2);
+            int countAttendance = attendanceList.get(i).getSumAttendance();
+            int countLateness = attendanceList.get(i).getSumLateness();
+            int countEarlyLeave = attendanceList.get(i).getSumEarlyLeave();
+            int countGoOut = attendanceList.get(i).getSumGoOut();
+            int countAbsence = attendanceList.get(i).getSumAbsence();
+            int countAcknowledge = attendanceList.get(i).getSumAcknowledge();
+            int calcAcknowledgeAbsence =  (int)((countLateness + countEarlyLeave + countGoOut) / 3);
+            int totalTrainingDays = attendanceList.get(i).getTotalTrainingDays();
+
+            double attendanceRatio = (double)(countAttendance + countAcknowledge - calcAcknowledgeAbsence - countAbsence) / totalTrainingDays * 100;
+            String attendanceRatioFormatted = String.format("%.1f", attendanceRatio) + "%";
+
+            tmp.add(attendanceList.get(i));
+            tmp.add(attendanceRatioFormatted);
+
+            item.add(tmp);
+        }
+
+        return item;
     }
 
 

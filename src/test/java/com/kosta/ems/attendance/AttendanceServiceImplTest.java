@@ -91,6 +91,12 @@ class AttendanceServiceImplTest {
     void selectDateAndLocationList() {
     	log.info(attendanceService.getDateAndLocationList("2024-06-21", "가산", "none", -1, 0, 10).toString());
     }
+
+    @Test
+    void getAttendanceIntegratedList2() {
+        log.info(attendanceService.getAttendanceIntegratedList("", 0, "가산", 1, 10).toString());
+    }
+
     
     // [출결] - 선택한 수강생의 출석 상태 수정
  	// @Test

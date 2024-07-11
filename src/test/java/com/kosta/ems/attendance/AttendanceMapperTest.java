@@ -92,7 +92,7 @@ class AttendanceMapperTest {
     }
     // @Test
     public void selectAttendanceIntegeratedList() {
-        log.info(attendanceMapper.selectAttendanceIntegratedList("", 0, 0, 10).toString());
+        log.info(attendanceMapper.selectAttendanceIntegratedList("", 0, "가산", 0, 10).toString());
     }
     
     
