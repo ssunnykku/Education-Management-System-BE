@@ -28,6 +28,7 @@ public class EmploymentServiceTest {
 	@Transactional
 	public void getEmploymentInfoByCourseNumber() {
 	    List<EmploymentInfoResponse> list = service.getEmploymentInfoByCourseSeq(5, -1, -1);
+	    log.info(service.getEmploymentInfoByCourseSeq(5, -1, -1).toString());
 	    assertThat(list.size()).isEqualTo(5);
 	    
 	}

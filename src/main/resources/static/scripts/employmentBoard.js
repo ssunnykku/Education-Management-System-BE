@@ -7,26 +7,32 @@ let currentBlock = 1;
 let totalPages = 0;
 
 async function getSettlementList(data) {
-    let tableBody = "";
-  
-    for (let i = 0; i < data.length; i++) {
-      tableBody += `<tr>
-        <td><input type="checkbox" name=${data[i].courseNumber} class="checkbox" value=${data[i].studentCourseSeq}></td>
-        <td><span class="employmentBoard-courseId">${data[i].courseNumber}</span></td>
-        <td><span class="employmentBoard-course-name">${data[i].courseName}</span></td>
-        <td><span class="employmentBoard-hrd-net-id">${data[i].hrdNetId}</span></td>
-        <td><span class="employmentBoard-name">${data[i].name}</span></td>
-        <td><span class="employmentBoard-bank">${data[i].bank}</span></td>
-        <td><span class="employmentBoard-account">${data[i].account}</span></td>
-        <td><span class="employmentBoard-point">${data[i].totalPoint}</span></td>
-        <td><span class="employmentBoard-total-amount">${data[i].employmentAmount}</span></td>
-      </tr>`;
-    }
-  
-    $("#employment-table-contents").html("");
-    $("#employment-table-contents").append(`<table><tbody>${tableBody}</tbody></table>`);
+  let tableBody = "";
+if (!data || data.length === 0) {
+    tableBody = '<div class="no-data-message">데이터가 없습니다</div>';
+  } else {
+  for (let i = 0; i < data.length; i++) {
+	const employmentStatusText = data[i].employeed ? "취업" : "미취업";
+	const companyText = data[i].company || "";
+    tableBody += `<tr>
+      <td><input type="checkbox" name=${data[i].sCSeq} class="checkbox" value=${data[i].sCSeq}></td>
+      <td><span class="employmentBoard-hrd-net-id">${data[i].hrdNetId}</span></td>
+      <td><span class="employmentBoard-course-number">${data[i].courseNumber}</span></td>
+      <td><span class="employmentBoard-name">${data[i].name}</span></td>
+      <td><span class="employmentBoard-phone-number">${data[i].phoneNumber}</span></td>
+      <td><span class="employmentBoard-email">${data[i].email}</span></td>
+      <td><span class="employmentBoard-course-end-date">${data[i].courseEndDate}</span></td>
+      <td><input class="employmentBoard-company" value=${companyText}></td>
+      <td><input class="employmentBoard-is-employed">${employmentStatusText}</td>
+    </tr>`;
   }
+}
+  // Clear the existing table body
+  $("#employment-table-contents").html("");
 
+  // Append the generated table body to the existing table
+  $("#employment-table-contents").append(tableBody);
+}
 function searchInput() {
     return $(".search-input").val();
 }
