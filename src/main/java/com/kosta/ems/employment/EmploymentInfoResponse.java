@@ -15,6 +15,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class EmploymentInfoResponse {
+    private int employmentSeq;
     private int sCSeq;
     private String hrdNetId;
     private int courseNumber;
