@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kosta.ems.course.CourseService;
+import com.kosta.ems.employment.dto.AddEmployeedStatusRequest;
 import com.kosta.ems.employment.dto.EditEmployeedStatusRequest;
 import com.kosta.ems.manager.ManagerDTO;
 import com.kosta.ems.manager.ManagerService;
@@ -56,8 +57,7 @@ public class EmploymentController {
     }
     
     @PostMapping("/student")
-    public Map addEmployeedStatus(@RequestBody EditEmployeedStatusRequest request) {
-        
+    public Map addEmployeedStatus(@RequestBody AddEmployeedStatusRequest request) {
         return Map.of("result", false);
     }
     
