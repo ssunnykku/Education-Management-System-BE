@@ -134,8 +134,12 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.selectRegisteredStudentInfo(studentId);
     }
     @Override
-    public void updateSelectedStudentInfo(String name, String address, String bank, String account, String phoneNumber, String email, String studentId) {
-        UpdateSelectedStudentInfoDTO dto = UpdateSelectedStudentInfoDTO.builder().name(name).address(address).bank(bank).account(account).phoneNumber(phoneNumber).email(email).studentId(studentId).build();
+    public void updateSelectedStudentInfo(String name, String address, String bank, String account, String phoneNumber, String email, String studentId, int isActiveStatus) {
+        boolean tmp = true;
+        if(isActiveStatus == 0) {
+            tmp = false;
+        }
+        UpdateSelectedStudentInfoDTO dto = UpdateSelectedStudentInfoDTO.builder().name(name).address(address).bank(bank).account(account).phoneNumber(phoneNumber).email(email).studentId(studentId).isActive(isActiveStatus).build();
         studentMapper.updateSelectedStudentInfo(dto);
     }
 

@@ -1,6 +1,7 @@
 package com.kosta.ems.student;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,18 @@ public class StudentServiceTest {
 	void getStudentsByNameOrCourseNumber() {
 		log.info(studentService.getStudentsByNameOrCourseNumberList("", 0, 1, 10).toString());
 	}
+	// *0710_수강생 정보 조회
+	@Test
+	void getStudentInfoListCnt() {
+		log.info(Integer.toString(studentService.getStudentInfoListCnt(0, "", 0)));
+		log.info(Integer.toString(studentService.getStudentInfoListCnt(1, "", 0)));
+	}
+	@Test
+	void getStudentInfoList() {
+		log.info(studentService.getStudentInfoList(0, "", 0, 1, 10).toString());
+		log.info(studentService.getStudentInfoList(1, "", 0, 1, 10).toString());
+	}
+	// *0710_수강생 정보 조회 (end)
 
 	// *0710_선택한 수강생 id로 수강내역 데이터 가져오기
 	@Test
@@ -68,7 +81,7 @@ public class StudentServiceTest {
 	// 수강생 정보 수정
 	// @Test
 	void updateSelectedStudentInfo() {
-		studentService.updateSelectedStudentInfo("박기영","부산광역시 사상구 사상중앙로12길", "부산", "110583195038", "01059341921", "syc1234@gmail.com", "78b21862-32bf-11ef-b0b2-0206f94be675");
+		studentService.updateSelectedStudentInfo("박기영","부산광역시 사상구 사상중앙로12길", "부산", "110583195038", "01059341921", "syc1234@gmail.com", "78b21862-32bf-11ef-b0b2-0206f94be675", 1);
 	}
 	
 	// 수강생 삭제

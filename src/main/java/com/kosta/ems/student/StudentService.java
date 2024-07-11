@@ -45,7 +45,7 @@ public interface StudentService {
     // 수강생 정보 수정
     StudentBasicInfoDTO getRegisteredStudentInfo(String studentId);
 
-    void updateSelectedStudentInfo(String name, String address, String bank, String account, String phoneNumber, String email, String studentId);
+    void updateSelectedStudentInfo(String name, String address, String bank, String account, String phoneNumber, String email, String studentId, int isActiveStatus);
     
     // 수강생 삭제(isActive 값 수정)
     void removeSelectedStudent(String studentId);
