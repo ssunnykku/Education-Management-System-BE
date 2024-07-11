@@ -13,19 +13,30 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BenefitDTO {
+
+//    insert into benefits (training_aid_amount,
+//                          meal_aid_amount,
+//                          settlement_aid_amount,
+//                          student_id,
+//                          settlement_duration_seq)
+
     @NotNull
     private Integer benefitSeq;
     @NotNull
-    private Integer trainingAidAmount;
+//    private Integer trainingAidAmount;
     @NotNull
-    private Integer mealAidAmount;
+//    private Integer mealAidAmount;
     @NotNull
-    private Integer settlementAidAmount;
+//    private Integer settlementAidAmount;
     @NotNull
     private LocalDate benefitSettlementDate;
     @NotNull
     private String studentId;
     @NotNull
-    private int settlementDurationSeq;
+    private Integer settlementDurationSeq;
+    private int amount;
+    private Integer benefitsCategoriesSeq;
+    private String managerId;
+
 
 }

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -32,10 +33,10 @@ class ScholarshipMapperTest {
 //        assertThat(data).size().isEqualTo(1);
     }
 
-    //@Test
-    //@Transactional
-    public void insertScholarshipSettlementDate() {
-        scholarshipMapper.insertScholarshipSettlementDate(6);
+    @Test
+    @Transactional
+    public void insertScholarshipSettlementTest() {
+        scholarshipMapper.insertScholarshipSettlement(20, "3ddf8577-3eaf-11ef-bd30-0206f94be675");
     }
 
     @Test

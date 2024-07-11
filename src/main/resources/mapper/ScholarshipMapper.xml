@@ -14,15 +14,15 @@
                         c.course_number                   AS courseNumber,
                         c.academy_location                AS academyLocation,
                         c.course_name                     AS courseName,
-                        (select scholarship_date
-                        from view_students_course_scholarship_settlement_Date
+                        (select settlement_date
+                        from view_students_course_scholarship_settlement
                         where student_id = s.student_id
-                          and course_seq = sc.course_seq) as scholarshipDate,
+                          and course_seq = sc.course_seq) as settlementDate,
                         (select totalPoint
                         from view_students_course_point
                         where student_id = s.student_id
                           and course_seq = sc.course_seq
-                          and pc.is_active = 'T')         as totalPoint,
+                          and pc.is_active = true)        as totalPoint,
                         500000                            as scholarshipAmount
         FROM students s
                  LEFT JOIN students_courses sc ON s.student_id = sc.student_id
@@ -31,16 +31,16 @@
                  LEFT JOIN point_categories pc on sp.point_seq = pc.point_seq
         WHERE c.academy_location = #{academyLocation}
           AND s.name LIKE CONCAT('%', #{name}, '%')
-          AND s.is_active = 'T'
-          AND c.is_active = 'T'
+          AND s.is_active = true
+          AND c.is_active = true
           AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
           AND (select totalPoint
         from view_students_course_point
         where student_id = s.student_id
           and course_seq = sc.course_seq
-          and pc.is_active = 'T') >= 50
-          AND (select scholarship_date
-        from view_students_course_scholarship_settlement_Date
+          and pc.is_active = true) >= 50
+          AND (select settlement_date
+        from view_students_course_scholarship_settlement
         where student_id = s.student_id
           and course_seq = sc.course_seq) is null
         ORDER BY c.course_number desc, name
@@ -56,24 +56,24 @@
                  LEFT JOIN point_categories pc on sp.point_seq = pc.point_seq
         WHERE c.academy_location = #{academyLocation}
           AND s.name LIKE CONCAT('%', #{name}, '%')
-          AND s.is_active = 'T'
-          AND c.is_active = 'T'
+          AND s.is_active = true
+          AND c.is_active = true
           AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
           AND (select totalPoint
         from view_students_course_point
         where student_id = s.student_id
           and course_seq = sc.course_seq
-          and pc.is_active = 'T') >= 50
-          AND (select scholarship_date
-        from view_students_course_scholarship_settlement_Date
+          and pc.is_active = true) >= 50
+          AND (select settlement_date
+        from view_students_course_scholarship_settlement
         where student_id = s.student_id
           and course_seq = sc.course_seq) is null
         ORDER BY name
     </select>
 
-    <insert id="insertScholarshipSettlementDate" parameterType="int">
-        insert into scholarship_settlement_date (student_course_seq)
-        values (#{studentCourseSeq})
+    <insert id="insertScholarshipSettlement">
+        insert into scholarships (student_course_seq, manager_id)
+        VALUES (#{studentCourseSeq}, #{managerId})
     </insert>
 
     <select id="selectScholarshipResultList"
@@ -89,22 +89,22 @@
                sc.course_seq         AS courseSeq,
                c.course_number       AS courseNumber,
                c.course_name         AS courseName,
-               ssd.scholarship_date  AS scholarshipDate,
-               500000                as scholarshipAmount
+               ssd.settlement_date   AS settlementDate,
+               ssd.amount            as scholarshipAmount
         FROM students s
                  LEFT JOIN students_courses sc ON s.student_id = sc.student_id
                  LEFT JOIN courses c ON c.course_seq = sc.course_seq
-                 LEFT JOIN scholarship_settlement_date ssd ON ssd.student_course_seq = sc.student_course_seq
+                 LEFT JOIN scholarships ssd ON ssd.student_course_seq = sc.student_course_seq
         WHERE (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
-          AND s.is_active = 'T'
+          AND s.is_active = true
           AND c.academy_location = #{academyLocation}
           AND s.name like CONCAT('%', #{name}, '%')
-          AND s.is_active = 'T'
-          AND c.is_active = 'T'
-          AND (#{scholarshipDate} IS NULL OR #{scholarshipDate} = '' OR
-               scholarship_date = #{scholarshipDate})
-          AND scholarship_date != ''
-        ORDER BY ssd.scholarship_date desc, c.course_number desc, s.name
+          AND s.is_active = true
+          AND c.is_active = true
+          AND (#{settlementDate} IS NULL OR #{settlementDate} = '' OR
+               settlement_date = #{settlementDate})
+          AND settlement_date != ''
+        ORDER BY ssd.settlement_date desc, c.course_number desc, s.name
         limit #{limit} offset #{offset};
     </select>
 
@@ -113,16 +113,16 @@
         FROM students s
                  LEFT JOIN students_courses sc ON s.student_id = sc.student_id
                  LEFT JOIN courses c ON c.course_seq = sc.course_seq
-                 LEFT JOIN scholarship_settlement_date ssd ON ssd.student_course_seq = sc.student_course_seq
+                 LEFT JOIN scholarships ssd ON ssd.student_course_seq = sc.student_course_seq
         WHERE (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
-          AND s.is_active = 'T'
+          AND s.is_active = true
           AND c.academy_location = #{academyLocation}
           AND s.name like CONCAT('%', #{name}, '%')
-          AND s.is_active = 'T'
-          AND c.is_active = 'T'
-          AND (#{scholarshipDate} IS NULL OR #{scholarshipDate} = '' OR
-               scholarship_date = #{scholarshipDate})
-          AND scholarship_date != ''
+          AND s.is_active = true
+          AND c.is_active = true
+          AND (#{settlementDate} IS NULL OR #{settlementDate} = '' OR
+               settlement_date = #{settlementDate})
+          AND settlement_date != ''
     </select>
 
 </mapper>
