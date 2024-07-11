@@ -42,13 +42,13 @@ public class EmploymentServiceTest {
 	@Test
 	@Transactional
 	public void addStatus() {
-	    assertThat(service.addEmployeedStatus(new AddEmployeedStatusRequest(19, "테스트회사"), "bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5")).isTrue();
+	    assertThat(service.addEmployeedStatus(new AddEmployeedStatusRequest(19, "테스트회사"), "3ddf8303-3eaf-11ef-bd30-0206f94be675")).isTrue();
 	}
 	
 	@Test
 	@Transactional
 	public void editStatus() {
-	    assertThat(service.editEmployeedStatus(new EditEmployeedStatusRequest(1, "금호IDT"), "bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5")).isTrue();
+	    assertThat(service.editEmployeedStatus(new EditEmployeedStatusRequest(1, "금호IDT"), "3ddf8303-3eaf-11ef-bd30-0206f94be675")).isTrue();
 	}
 	
 	@Test
