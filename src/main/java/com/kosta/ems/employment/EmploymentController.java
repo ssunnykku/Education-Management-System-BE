@@ -42,7 +42,6 @@ public class EmploymentController {
     public Map getMethodName(@RequestParam(value = "page",    defaultValue = "1"   ) int page,
             @RequestParam(value = "pageSize",       defaultValue = "10"  ) int pageSize,
             @RequestParam int courseNumber) {
-    	log.info(service.getEmploymentInfoByCourseSeq(courseNumber, page, pageSize).toString());
         return Map.of("result", service.getEmploymentInfoByCourseNumber(courseNumber, page, pageSize), "total", studentCourseService.countByCourseSeq(courseNumber));
     }
     

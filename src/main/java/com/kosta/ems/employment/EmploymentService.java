@@ -87,7 +87,7 @@ public class EmploymentService {
     }
 
     public boolean editEmployeedStatus(EditEmployeedStatusRequest request, String managerId) {
-        EmploymentDTO dto = repo.findById(request.getSeq()).orElseThrow();
+        EmploymentDTO dto = repo.findById(request.getEmploymentSeq()).orElseThrow();
         dto.setCompany(request.getCompany());
         dto.setManagerId(managerId);
         if(repo.save(dto) == null) {
