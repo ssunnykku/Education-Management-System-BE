@@ -104,6 +104,7 @@
           AND (#{settlementDate} IS NULL OR #{settlementDate} = '' OR
                settlement_date = #{settlementDate})
           AND settlement_date != ''
+          AND ssd.is_active = true
         ORDER BY ssd.settlement_date desc, c.course_number desc, s.name
         limit #{limit} offset #{offset};
     </select>
@@ -123,6 +124,7 @@
           AND (#{settlementDate} IS NULL OR #{settlementDate} = '' OR
                settlement_date = #{settlementDate})
           AND settlement_date != ''
+          and ssd.is_active = true
     </select>
 
 </mapper>
