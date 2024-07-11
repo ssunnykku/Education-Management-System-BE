@@ -108,44 +108,62 @@ if (!data || data.length === 0) {
   $("#employment-table-contents").append(tableBody);
 }
 
-//modal에서 취업처 수정
-$('.employmentBoard-table').on('click','.employmentBoard-company', function (e) {
+$(document).ready(function() {
+  $('.employmentBoard-table').on('click', '.employmentBoard-company', function (e) {
     const clickedCellText = $(this).text();
-    const sCSeq =  $(this).data('scseq');
+    const sCSeq = $(this).data('scseq'); // Retrieve sCSeq from data attribute
     document.querySelector('#company-input').value = clickedCellText;
-	const myModal = new bootstrap.Modal('#exampleModal', {});
-		myModal.show();
+    const myModal = new bootstrap.Modal('#exampleModal', {});
+    myModal.show();
 
-	$(".save-btn").on("click", function(){
-	console.log(clickedCellText);
+    $(".save-btn").on("click", function() {
+      const newCompany = document.getElementById("company-input").value;
 
-	if(clickedCellText===null){
-	fetch("/employments/student" ,{
-			method: "post",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify({
-				sCSeq: sCSeq,
-				company: document.getElementById("company-input").value,
-			})
-		})
-		.then(myModal.hide())}
-		else{
-		fetch("/employments/student" ,{
-			method: "put",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify({
-				company: document.getElementById("company-input").value,
-			})
-		})
-		.then(myModal.hide())	
-		}
- })
-
-	})
+      if (clickedCellText === "") { //새로운 회사
+        fetch("/employments/student", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            sCSeq: sCSeq,
+            company: newCompany
+          })
+        })
+        .then(response => {
+          if (response.ok) {
+            myModal.hide(); 
+          } else {
+            console.error("Error saving new company:", response.statusText);
+          }
+        })
+        .catch(error => {
+          console.error("Error sending POST request:", error);
+        });
+      } else { // 업데이트
+        fetch("/employments/student", { 
+          method: "put",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            company: newCompany
+          })
+        })
+        .then(response => {
+          if (response.ok) {
+            myModal.hide();
+          } else {
+            console.error("Error updating company:", response.statusText);
+          }
+        })
+        .catch(error => {
+          console.error("Error sending PUT request:", error);
+        });
+      }
+    });
+  });
+});
 	
 const excelDownload = document.querySelector('#export-to-excel');
 
