@@ -5,11 +5,12 @@ body {
     font-size: 14px;
     font-family: "Pretendard";
 }
-
+::backdrop{
+    background-color: rgb(0,0,0,0.5);
+}
 /******* addCourseModal / setCourseModal.html ********/
 .course-modal {
     margin: auto;
-    border: solid;
 }
 
 #course-wrapper {

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>과정 삭제</title>
+  <link rel="stylesheet" href="../../css/courses.css" />
+</head>
+
+<body>
+  <div th:fragment="alertModal" id="removeCourseCompleteModal" class="course-modal" popover>
+    <div class="removecourse-wrapper">
+      <div class="removecourse-info">
+        <h1 class="upperline title">알림</h1>
+        <h1 id="message">삭제되었습니다.</h1>
+      </div>
+      <div id="btn-wrapper">
+        <button id="enroll-btn-format" class="btn-setting-format" onclick="location.reload()">확인</button>
+      </div>
+    </div>
+    <script>
+      function alertBeforeReload(msg) {
+        const messageModal = $("#removeCourseCompleteModal").get()[0];
+        messageModal.querySelector("#message").innerText = msg;
+        messageModal.showPopover();
+      }
+    </script>
+  </div>
+</body>
+
+</html>

@@ -21,4 +21,6 @@ public class AttendanceListBySearchFilterDTO {
 	private String attendanceStatus;
 	private LocalDate attendanceDate;
 	private int studentCourseSeq;
+	private float attendanceRate;  // 추가 _ 출석률
+	private float courseProgressRate;  // 추가 _ 과정 진행률
 }
