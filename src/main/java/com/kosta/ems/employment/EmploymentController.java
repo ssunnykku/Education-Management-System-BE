@@ -10,6 +10,7 @@ import com.kosta.ems.manager.ManagerDTO;
 import com.kosta.ems.manager.ManagerService;
 import com.kosta.ems.studentCourse.StudentCourseService;
 
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,19 +53,20 @@ public class EmploymentController {
     
     @PutMapping("/student")
     public Map editEmployeedStatus(@RequestBody EditEmployeedStatusRequest request) {
-        
-        return Map.of("result", service.editEmployeedStatus(request, null));
+        ManagerDTO loginUser = getLoginUser();
+        return Map.of("result", service.editEmployeedStatus(request, loginUser.getManagerId()));
     }
     
     @PostMapping("/student")
     public Map addEmployeedStatus(@RequestBody AddEmployeedStatusRequest request) {
-        return Map.of("result", false);
+        ManagerDTO loginUser = getLoginUser();
+        return Map.of("result", service.addEmployeedStatus(request, loginUser.getManagerId()));
     }
     
     @DeleteMapping("/student/{employmentSeq}")
-    public Map deleteEmployeedStatus() {
-        
-        return Map.of("result", false);
+    public Map deleteEmployeedStatus(@PathParam("employmentSeq") int employmentSeq) {
+        ManagerDTO loginUser = getLoginUser();
+        return Map.of("result", service.deleteEmployeeStatus(employmentSeq, loginUser.getManagerId()));
     }
     
     private ManagerDTO getLoginUser() {

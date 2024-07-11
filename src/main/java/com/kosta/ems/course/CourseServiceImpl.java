@@ -57,11 +57,11 @@ public class CourseServiceImpl implements CourseService {
 	@Override
 	public boolean deleteCourse(int courseSeq, String academyLocationOfManager) {
 		// 삭제권한 체크목적
-		CourseDTO course = getCourse(courseSeq, academyLocationOfManager);
-		if(course == null) {
-			return false;
+		CourseDTO course = courseMapper.getCourse(courseSeq);
+		if(course.getAcademyLocation().equals(academyLocationOfManager)) {
+		    return courseMapper.inactivateCourse(courseSeq);
 		}
-		return courseMapper.inactivateCourse(courseSeq);
+		return false;
 	}
 
 	@Override

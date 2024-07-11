@@ -56,6 +56,6 @@
 	</update>
 	<update id="inactivateCourse" parameterType="int">
 	update courses set 
-	is_active = true where course_seq = #{courseSeq};
+	is_active = false where course_seq = #{courseSeq};
 	</update>
 </mapper>
