@@ -259,7 +259,7 @@ select {
 
 /**************************************************************************/
 
-/********************** addStudent.html *****************/
+/********************** attendanceBoard.html *****************/
 #attendance-contents {
     display: flex;
     flex-direction: column;
@@ -305,15 +305,15 @@ select {
     width: 13%;
 }
 
-.board-table.refer-attendance-status tr:not(:first-child) {
+.board-table.refer-attendance-status tr:not(:first-child),
+.board-table.set-attendance tr:not(:first-child){
     cursor: initial;
 }
 
-.board-table.refer-attendance-status tr:not(:first-child):hover {
+.board-table.refer-attendance-status tr:not(:first-child):hover,
+.board-table.set-attendance tr:not(:first-child):hover{
     font-weight: 400;
 }
-
-
 
 .id-chk-wrapper {
     width: 100%;
@@ -497,4 +497,43 @@ select {
 }
 .attendance-total {
     width: 8%;
+}
+
+
+/**************************************************************************/
+/********************** addAttendance.html *****************/
+#content-section.attendance-add {
+    width: 90%;
+    margin-top: 10px;
+}
+#attendance-content-article.attendance-add {
+    margin: 0;
+}
+.attendance-status-wrapper.attendance-add {
+    margin-left: 44%;
+}
+.student-cnt-pages.attendance-add {
+    margin-left: 10%;
+}
+#attendance-add-table-article {
+    display: flex;
+    /*height: 495px;*/
+    height: 490px;
+}
+.board-table.set-attendance {
+    tr:first-child {
+        height: 40px;
+    }
+    tr {
+        height: 23px;
+    }
+}
+.update-btn-div.attendance-add {
+    padding-right: 10%;
+}
+#pagination.attendance-add {
+    margin: 0;
+}
+.page-information.attendance-add {
+    margin-top: 15px;
 }
