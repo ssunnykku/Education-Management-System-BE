@@ -95,7 +95,7 @@ if (!data || data.length === 0) {
       <td><span class="employmentBoard-phone-number">${data[i].phoneNumber}</span></td>
       <td><span class="employmentBoard-email">${data[i].email}</span></td>
       <td><span class="employmentBoard-course-end-date">${data[i].courseEndDate}</span></td>
-      <td class="employmentBoard-company" data-scseq="${data[i].scseq}" data-employed="${employmentStatusText}"><span>${companyText}</span></td>
+      <td class="employmentBoard-company" data-scseq="${data[i].scseq}" data-employed="${employmentStatusText}" data-employmentSeq="${data[i].employmentSeq}"><span>${companyText}</span></td>
       <td><span class="employmentBoard-is-employed">${employmentStatusText}</span></td>
     </tr>`
   }
@@ -112,6 +112,8 @@ $(document).ready(function() {
   $('.employmentBoard-table').on('click', '.employmentBoard-company', function (e) {
     const clickedCellText = $(this).text();
     const sCSeq = $(this).data('scseq'); // Retrieve sCSeq from data attribute
+    const employmentSeq = $(this).data('employmentseq');
+    console.log(employmentSeq);
     document.querySelector('#company-input').value = clickedCellText;
     const myModal = new bootstrap.Modal('#exampleModal', {});
     myModal.show();
@@ -141,13 +143,15 @@ $(document).ready(function() {
           console.error("Error sending POST request:", error);
         });
       } else { // 업데이트
+        if(newCompany!==""){
         fetch("/employments/student", { 
           method: "put",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            company: newCompany
+            company: newCompany,
+            employmentSeq : employmentSeq
           })
         })
         .then(response => {
@@ -161,6 +165,25 @@ $(document).ready(function() {
           console.error("Error sending PUT request:", error);
         });
       }
+   else{
+    fetch("/employments/student/" +employmentSeq, { 
+          method: "delete",
+          headers: {
+            "Content-Type": "application/json"
+          },
+        })
+        .then(response => {
+          if (response.ok) {
+            myModal.hide();
+          } else {
+            console.error("Error delete company:", response.statusText);
+          }
+        })
+        .catch(error => {
+          console.error("Error sending delete request:", error);
+        });
+   }
+    }
     });
   });
 });

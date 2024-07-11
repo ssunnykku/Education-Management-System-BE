@@ -10,7 +10,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class EditEmployeedStatusRequest {
-    private int employmentSeq;
-    
+    private int employmentSeq;  
     private String company;
 }
