@@ -53,10 +53,12 @@ public class EmploymentService {
                 isEmployeed = false;
             }else {
                 isEmployeed = true;
-                company = employmentOptional.get().getCompany();
+                employmentDto = employmentOptional.get();
+                company = employmentDto.getCompany();
             }
             
             EmploymentInfoResponse resultDto = EmploymentInfoResponse.builder()
+            .employmentSeq(employmentDto.getSeq())
             .sCSeq(sCDto.getSeq())
             .hrdNetId(studentDto.getHrdNetId())
             .courseNumber(course.getCourseNumber())
