@@ -62,9 +62,9 @@ public class EmploymentService {
                         .isEmployeed(isEmployeed)
                         .build();
             }else {
-                isEmployeed = true;
                 EmploymentDTO employmentDto = employmentOptional.get();
                 company = employmentDto.getCompany();
+                isEmployeed = !company.isEmpty();
                 resultDto = EmploymentInfoResponse.builder()
                         .employmentSeq(employmentDto.getSeq())
                         .sCSeq(sCDto.getSeq())
@@ -134,6 +134,7 @@ public class EmploymentService {
     
     public boolean deleteEmployeeStatus(int employmentSeq, String managerId) {
         EmploymentDTO dto = repo.findById(employmentSeq).orElseThrow();
+        dto.setCompany("");
         dto.setActive(false);
         if(repo.save(dto) == null)
             return false;
