@@ -7,6 +7,7 @@ import com.kosta.ems.course.CourseMapper;
 import com.kosta.ems.student.StudentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,11 +28,19 @@ public class BenefitServiceImpl implements BenefitService {
     private final StudentMapper studentMapper;
     private final CourseMapper courseMapper;
 
+    @Value("${benefit.category.seq.training}")
+    private Integer BENEFIT_CATEGORY_SEQ_TRAINING;
+    @Value("${benefit.category.seq.meal}")
+    private Integer BENEFIT_CATEGORY_SEQ_MEAL;
+    @Value("${benefit.category.seq.settlement}")
+    private Integer BENEFIT_CATEGORY_SEQ_SETTLEMENT;
+
+
     @Override
     @Transactional
     public void setBenefitSettlement(BenefitTargetInfoDTO dto) {
 
-        int courseSeq = courseMapper.getCourseSeq(Integer.parseInt(dto.getCourseNumber()));
+        int courseSeq = courseMapper.getCourseByCourseNumber(Integer.parseInt(dto.getCourseNumber())).getCourseSeq();
 
         int settlementDurationSeq = 0;
 
@@ -75,17 +84,38 @@ public class BenefitServiceImpl implements BenefitService {
             int trainingAidAmount = trainingAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays());
             int mealAidAmount = mealAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays());
 
-            if (settlementAidAmount + trainingAidAmount + mealAidAmount > 0) {
+            if (trainingAidAmount > 0) {
+                // 훈련수당
                 benefitMapper.insertBenefitSettlementAmount(BenefitDTO.builder()
-                        .trainingAidAmount(trainingAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
-                        .mealAidAmount(mealAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
-                        .settlementAidAmount(settlementAid(dto.getSettlementDurationStartDate(), dto.getSettlementDurationEndDate(), targetInfo.getStudentId(), dto.getLectureDays()))
+                        .amount(trainingAidAmount)
                         .studentId(targetInfo.getStudentId())
                         .settlementDurationSeq(settlementDurationSeq)
+                        .managerId(dto.getManagerId())
+                        .benefitsCategoriesSeq(BENEFIT_CATEGORY_SEQ_TRAINING)
                         .build());
             }
-        }
+            if (settlementAidAmount > 0) {
+                // 정착지원금
+                benefitMapper.insertBenefitSettlementAmount(BenefitDTO.builder()
+                        .amount(settlementAidAmount)
+                        .studentId(targetInfo.getStudentId())
+                        .settlementDurationSeq(settlementDurationSeq)
+                        .managerId(dto.getManagerId())
+                        .benefitsCategoriesSeq(BENEFIT_CATEGORY_SEQ_SETTLEMENT)
+                        .build());
+            }
+            if (mealAidAmount > 0) {
+                // 식비
+                benefitMapper.insertBenefitSettlementAmount(BenefitDTO.builder()
+                        .amount(mealAidAmount)
+                        .studentId(targetInfo.getStudentId())
+                        .settlementDurationSeq(settlementDurationSeq)
+                        .managerId(dto.getManagerId())
+                        .benefitsCategoriesSeq(BENEFIT_CATEGORY_SEQ_MEAL)
+                        .build());
+            }
 
+        }
     }
 
     @Override
@@ -93,7 +123,49 @@ public class BenefitServiceImpl implements BenefitService {
         int limit = size;
         int offset = size * (page - 1);
 
-        List<BenefitTargetInfoDTO> result = (ArrayList<BenefitTargetInfoDTO>) benefitMapper.selectBenefitSettlementResult(dto.getAcademyLocation(), dto.getName(), dto.getCourseNumber(), dto.getBenefitSettlementDate(), limit, offset);
+        List<BenefitTargetInfoDTO> studentInfo = (ArrayList<BenefitTargetInfoDTO>) benefitMapper.resultList(dto.getAcademyLocation(), dto.getName(), dto.getCourseNumber(), dto.getBenefitSettlementDate(), limit, offset);
+        List<BenefitTargetInfoDTO> benefitAmount = (ArrayList<BenefitTargetInfoDTO>) benefitMapper.getBefitAmount(dto.getBenefitSettlementDate());
+        List<BenefitTargetInfoDTO> result = new ArrayList<BenefitTargetInfoDTO>();
+
+//                  .totalAmount()
+
+        for (BenefitTargetInfoDTO data : studentInfo) {
+            BenefitTargetInfoDTO newData = null;
+            newData = BenefitTargetInfoDTO.builder()
+                    .courseSeq(data.getCourseSeq())
+                    .studentId(data.getStudentId())
+                    .courseNumber(data.getStudentId())
+                    .hrdNetId(data.getHrdNetId())
+                    .name(data.getName())
+                    .bank(data.getBank())
+                    .account(data.getAccount())
+                    .benefitSeq(data.getBenefitSeq())
+                    .settlementDurationSeq(data.getSettlementDurationSeq())
+                    .settlementDurationStartDate(data.getSettlementDurationStartDate())
+                    .settlementDurationEndDate(data.getSettlementDurationEndDate())
+                    .benefitsCategoriesSeq(data.getBenefitsCategoriesSeq())
+                    .build();
+
+            for (BenefitTargetInfoDTO category : benefitAmount) {
+
+                if (data.getStudentId().equals(category.getStudentId())) {
+                    if (category.getBenefitsCategoriesSeq() == BENEFIT_CATEGORY_SEQ_TRAINING) {
+                        newData.setTrainingAidAmount(category.getAmount());
+                    } else if (category.getBenefitsCategoriesSeq() == BENEFIT_CATEGORY_SEQ_MEAL) {
+                        newData.setMealAidAmount(category.getAmount());
+                    } else if (category.getBenefitsCategoriesSeq() == BENEFIT_CATEGORY_SEQ_SETTLEMENT) {
+                        newData.setSettlementAidAmount(category.getAmount());
+                    }
+
+                }
+
+            }
+            int totalAmount = newData.getTrainingAidAmount() + newData.getMealAidAmount() + newData.getSettlementAidAmount();
+            newData.setTotalAmount(totalAmount);
+            result.add(newData);
+        }
+
+
         return result;
     }
 
@@ -163,11 +235,14 @@ public class BenefitServiceImpl implements BenefitService {
 
     public int mealAid(LocalDate startDate, LocalDate endDate, String studentId, int lectureDays) {
         int mealAid = attendanceDays(startDate, endDate, studentId) * 5000;
-        return attendanceDays(startDate, endDate, studentId) / lectureDays >= 0.8 ? mealAid : 0;
+        log.info("mealAid {} ", mealAid);
+        log.info("attendanceDays(startDate, endDate, studentId) {}", attendanceDays(startDate, endDate, studentId));
+        return attendanceDays(startDate, endDate, studentId) / (double) lectureDays >= 0.8 ? mealAid : 0;
 
     }
 
     public int trainingAid(LocalDate startDate, LocalDate endDate, String studentId, int lectureDays) {
+
         return attendanceDays(startDate, endDate, studentId) / (double) lectureDays >= 0.8 ? 200000 : 0;
     }
 
