@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>main</title>
+    <link rel="stylesheet" href="../../css/format.css"/>
+    <link rel="stylesheet" href="../../css/main.css"/>
+    <link rel="stylesheet" href="../../css/reset.css"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
+            integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+</head>
+<body id="content-wrapper">
+<div th:insert="~{common/header :: header}"></div>
+<section id="main-section">
+    <article id="manager-course-info-wrapper">
+        <div id="main-manager-info-wrapper">
+            <div id="manager-info-title" class="info-title">
+                <h1>관리자 정보</h1>
+            </div>
+            <div id="manager-contents-wrapper">
+                <div id="manager-info-wrapper">
+                    <div id="manager-info-name-wrapper" class="manager-info-item">
+                        <span>이름</span>
+                        <span>손유철</span>
+                    </div>
+                    <div id="manager-info-job-wrapper" class="manager-info-item">
+                        <span class="manager-info-item">담당</span>
+                        <span id="manager-info-job">총괄 매니저</span>
+                    </div>
+                    <div id="manager-info-location-wrapper" class="manager-info-item">
+                        <span class="manager-info-item">교육장 </span>
+                        <span id="manager-info-location">가산 교육장</span>
+                    </div>
+                </div>
+                <div id="manager-info-img-wrapper">
+                    <img src="#"/>
+                </div>
+            </div>
+        </div>
+        <div id="main-course-info-wrapper">
+            <div id="course-info-title" class="info-title">
+                <h1>진행중인 교육 과정</h1>
+            </div>
+            <div>
+                <div id="course-info-location-wrapper">
+                    <span id="course-info-item">교육장: </span>
+                    <span id="course-info-location">가산 교육장</span>
+                </div>
+                <table id="course-info-table">
+                    <tr>
+                        <th>기수</th>
+                        <th>과정명</th>
+                        <th>강사명</th>
+                        <th>개강일</th>
+                        <th>종강일</th>
+                    </tr>
+                    <tr>
+                        <td>기수</td>
+                        <td>과정명</td>
+                        <td>강사명</td>
+                        <td>개강일</td>
+                        <td>종강일</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </article>
+    <article id="attendance-info-wrapper">
+        <div>
+            <div id="attendance-title-wrapper">
+                <div class="info-title">
+                    <h1>출결 관리</h1>
+                </div>
+                <div id="today">
+                    <p>2024.07.09 화요일</p>
+                </div>
+            </div>
+            <div id="course-number-wrapper">
+                <select name="course-number-filter" id="course-number-filter">
+                    <option value="none">기수</option>
+                    <option value="277">277</option>
+                    <option value="278">278</option>
+                </select>
+            </div>
+        </div>
+        <table id="attendance-table">
+            <tr>
+                <th>기수</th>
+                <th>과정명</th>
+                <th>수강생 이름</th>
+                <th>출결 상태</th>
+            </tr>
+            <tr>
+                <td>기수</td>
+                <td>과정명</td>
+                <td>수강생 이름</td>
+                <td>출결 상태</td>
+            </tr>
+        </table>
+    </article>
+</section>
+</body>
+</html>

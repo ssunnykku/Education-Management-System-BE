@@ -198,5 +198,10 @@ public class EmsController {
         return "employment/employmentBoard";
     }
 
+    @GetMapping
+    public String main() {
+        return "main";
+    }
+
 
 }
