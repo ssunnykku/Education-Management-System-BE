@@ -48,8 +48,8 @@ public class EmploymentController {
     }
     
     @GetMapping("/avg-rate")
-    public Map getCourseAvgRate(@RequestParam int courseSeq) {
-        return Map.of("result", service.getEmployeedRatePct(courseSeq));
+    public Map getCourseAvgRate(@RequestParam int courseNumber) {
+        return Map.of("result", service.getEmployeedRatePct(courseNumber));
     }
     
     @PutMapping("/student")
