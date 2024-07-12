@@ -25,9 +25,9 @@ import jakarta.persistence.ManyToOne;
 @NoArgsConstructor
 @Entity(name="employments")
 public class EmploymentDTO{
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "employment_seq", updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int seq;
     
     @Column(name="employment_company", nullable = false)
