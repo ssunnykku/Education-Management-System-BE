@@ -11,11 +11,11 @@ function searchInput() {
     return $(".search-input").val();
 }
 
-function courseNumber() {
+/*function courseNumber() {
     // console.log($(".employment-courseId-filter option:selected").text());
     return $(".employment-courseId-filter option:selected").text();
 }
-
+*/
 /*$(".board-filter-search-btn").click(async function () {
 =======
 $(".board-filter-search-btn").click(async function () {
