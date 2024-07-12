@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface BenefitMapper {
-    Collection<BenefitTargetInfoDTO> selectBenefitTarget(String academyLocation, LocalDate startDate, LocalDate endDate, String courseNumber, String name, Integer limit, Integer offset);
+    List<BenefitTargetInfoDTO> selectBenefitTarget(String academyLocation, LocalDate startDate, LocalDate endDate, String courseNumber, String name, Integer limit, Integer offset);
 
     void insertBenefitSettlementDuration(SettlementDurationDTO settlementDurationDTO);
 

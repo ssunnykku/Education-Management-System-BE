@@ -47,7 +47,7 @@
         limit #{limit} offset #{offset}
     </select>
 
-    <select id="countScholarshipTarget">
+    <select id="countScholarshipTarget" resultType="int">
         SELECT count(distinct s.student_id) as countBenefitTarget
         FROM students s
                  LEFT JOIN students_courses sc ON s.student_id = sc.student_id
@@ -68,7 +68,6 @@
         from view_students_course_scholarship_settlement
         where student_id = s.student_id
           and course_seq = sc.course_seq) is null
-        ORDER BY name
     </select>
 
     <insert id="insertScholarshipSettlement">

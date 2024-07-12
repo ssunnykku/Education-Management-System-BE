@@ -11,32 +11,30 @@
 <body id="content-wrapper">
 <div th:insert="~{common/header :: header}"></div>
 <div th:insert="~{common/title :: title ('지원금 정산')}"></div>
-<section>
+<section id="benefit-settlement-search-btn-section">
     <article class="benefit-settlement-search-btn-wrapper">
-        <div class="benefit-settlement-filter_search_wrapper">
+        <div class="benefit-settlement-filter-search-wrapper">
             <div id="settlement-filter-wrapper">
-                <div id="filter-and-btn-wrapper">
-                    <div id="benefit-settlement-input-wrapper">
-                        <div class="benefit-settlement-duration" id="settlement-start-date">
-                            <input type="date" class="settlement-date" id="start-date"
-                                   data-placeholder="정산 시작일"
-                                   required
-                                   aria-required="true">
-                        </div>
-                        <div class="benefit-settlement-duration" id="settlement-end-date">
-                            <input type="date" class="settlement-date" id="end-date"
-                                   data-placeholder="정산 종료일"
-                                   required
-                                   aria-required="true">
-                        </div>
-                        <div class="benefit-settlement-date">
-                            <input type="text" placeholder="강의일수" id="lecture-days">
-                        </div>
-                        <select name="" class="courseId-filter">
-                            <option value="none">기수</option>
-                        </select>
-                        <button type="button" class="filter-search-btn">검색</button>
+                <div id="benefit-settlement-input-wrapper">
+                    <div class="benefit-settlement-duration" id="settlement-start-date">
+                        <input type="date" class="settlement-date" id="start-date"
+                               data-placeholder="정산 시작일"
+                               required
+                               aria-required="true">
                     </div>
+                    <div class="benefit-settlement-duration" id="settlement-end-date">
+                        <input type="date" class="settlement-date" id="end-date"
+                               data-placeholder="정산 종료일"
+                               required
+                               aria-required="true">
+                    </div>
+                    <div class="benefit-settlement-date">
+                        <input type="text" placeholder="강의일수" id="lecture-days">
+                    </div>
+                    <select name="" class="courseId-filter">
+                        <option value="none">기수</option>
+                    </select>
+                    <button type="button" class="filter-search-btn">검색</button>
                 </div>
                 <div class="btn-wrapper">
                     <button type="button" id="settlement-btn" class="btn-setting">
@@ -47,8 +45,6 @@
             <div id="error"></div>
         </div>
     </article>
-</section>
-<section>
     <article class="page-information">
         <div class="benefit-cnt-pages">
         </div>
@@ -56,9 +52,6 @@
     <article>
         <div>
             <div class="board-row" id="board-title-row">
-                <div class="benefitSettlement-checkbox">
-                    <span>No</span>
-                </div>
                 <div class="benefitSettlement-courseId">
                     <span>기수</span>
                 </div>

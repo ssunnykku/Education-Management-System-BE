@@ -64,9 +64,6 @@ async function fetchSettlementTarget() {
         for (let i = 0; i < dataList.length; i++) {
 
             result += `<div class="board-row">
-                <div class="benefitSettlement-checkbox">
-                    <span>${i + 1}</span>
-                </div>
                 <div class="benefitSettlement-courseId">
                     <span>${dataList[i].courseNumber}</span>
                 </div>
