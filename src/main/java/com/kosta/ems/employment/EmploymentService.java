@@ -63,8 +63,9 @@ public class EmploymentService {
         return result;
     }
     
-    public double getEmployeedRatePct(int courseSeq) {
+    public double getEmployeedRatePct(int courseNumber) {
         List<EmploymentInfoResponse> result = new ArrayList<>();
+        int courseSeq = courseMapper.getCourseByCourseNumber(courseNumber).getCourseSeq();
         result = getEmploymentInfoByCourseSeq(courseSeq);
         int numEmployeed = 0;
         int numTotal = result.size();
