@@ -6,5 +6,4 @@ import java.util.Optional;
 
 public interface EmploymentRepo extends JpaRepository<EmploymentDTO, Integer>{
     Optional<EmploymentDTO> findBysCSeq(int sCSeq);
-		
 }
