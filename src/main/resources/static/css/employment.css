@@ -1,26 +1,93 @@
 @import "reset.css";
 
+.avg-form{
+	font-weight: 500;
+	margin-left: 20px;
+}
+
+.modal-content{
+	margin-top: 300px;
+	 width: 500px;
+  height: 250px;
+}
+.modal-title{
+	margin-left: 200px;
+	font-weight: 600;
+}
+#company-input{
+	resize: none;
+	height: 100%;
+	width: 100%;
+	padding: 20px;
+	border: none;
+}
+.btn-secondary{
+	        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 34px;
+        width: 50px;
+        color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0px 0px 5px #d4d4d4;
+        background-color: rgb(64, 64, 64);
+}
+.save-btn{
+	    font-weight: 600;
+    color: rgb(64, 64, 64);
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+     height: 34px;
+        width: 50px;
+            display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid black;
+}
+.modal-footer{
+	margin-left: 200px;
+	justify-content: flex-start;
+	border-top: none;
+}
 /* Basic table styles */
 td{
-	 height: 10px; /* Adjust the height as needed */
-  		overflow-y: auto;
+	 height: 45px; /* Adjust the height as needed */
+  	overflow-y: auto;
+  	  vertical-align: middle;
 }
 #employmentBoard-table {
     border-collapse: collapse;
+     text-align: center;
+     vertical-align: middle;
+
    
   }
   
   #employmentBoard-table th, #employmentBoard-table td {
-    padding: 12px;
-    border: 1px solid #ddd;
+    border-bottom: 0.5px solid lightgray;
+    
     
   }
+ 
+ #employmentBoard-table td.employmentBoard-company:not(:first-child) {
+  cursor: pointer;
+}
+ #employmentBoard-table td.employmentBoard-company:not(:first-child):hover {
+  /*color: rgb(0, 141, 206);*/
+  font-weight: 600;
+   outline: 2px solid #008dbc; /* Add outline on hover */
+  outline-offset: 0; /* Ensure outline appears within the cell */
+}
+   
   
   #employmentBoard-table th {
     background-color: #eee;
-    text-align: left;
-    font-weight: bold;
+    font-weight: 600;
     width: 500px;
+     border-top: 1px solid #5c5c5c;
+    text-align: center;
+
+     
   }
   
   #employmentBoard-table tbody tr {
@@ -29,7 +96,8 @@ td{
   }
   
   #employmentBoard-table th, #employmentBoard-table td {
-    vertical-align: top; /* Align content to the top of the cell */
+    vertical-align: middle;
+        height: 45px;
   }
   
   /* Distribute column widths proportionally */
@@ -41,6 +109,7 @@ td{
   @media (max-width: 768px) {
     #employmentBoard-table {
       font-size: 14px;
+          height: 45px;
     }
   
     #employmentBoard-table th, #employmentBoard-table td {
@@ -49,6 +118,7 @@ td{
   
     #employmentBoard-table tbody tr {
       min-height: 30px;
+          height: 45px;
     }
   
     #employmentBoard-table td {
@@ -126,25 +196,18 @@ td{
 }
 
 .btn-setting {
-    /* border-radius: 6px; */
-    font-style: normal;
-
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 144%;
-
-    height: 32px;
-    display: flex;
+      color: #ffffff;
+    background-color: rgb(64, 64, 64);
+    border-radius: 8px;
+    position: relative;
+    right: 55px;
+    top: 40%;
     flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 16px;
-    gap: 10px;
-
-    float: right;
-    background: #eee;
-    box-shadow: 0px 0px 3px #888;
-    line-height: 1.5em;
+    transform: translateY(-50%);
+    width: 80px;
+    height: 40px;
+    text-align:center;
+    box-shadow: 0px 0px 5px #888;
 }
 
 
@@ -430,6 +493,7 @@ td{
     width: 100%;
     /* padding: 0 100px 0 100px; */
     min-height: 700px;
+    
 }
 
 .employmentBoard-row {
@@ -997,27 +1061,7 @@ ul#pagination {
     margin-top: 20px;
 }
 
-.btn-setting {
-    font-style: normal;
 
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 144%;
-
-    width: 57px;
-    height: 32px;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-
-    background: #eee;
-    padding: 5px;
-    box-shadow: 0px 0px 3px #888;
-    line-height: 1.5em;
-}
 
 #enroll-btn {
     color: #ffffff;
