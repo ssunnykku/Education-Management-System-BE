@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.ProcessHandle.Info;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -40,10 +41,10 @@ public class EmploymentController {
     private String SECURITY_LEVEL;
     
     @GetMapping("/info-list")
-    public Map getMethodName(@RequestParam(value = "page",    defaultValue = "1"   ) int page,
-            @RequestParam(value = "pageSize",       defaultValue = "10"  ) int pageSize,
-            @RequestParam int courseNumber) {
-        return Map.of("result", service.getEmploymentInfoByCourseNumber(courseNumber, page, pageSize), "total", studentCourseService.countByCourseNumber(courseNumber));
+    public Map getMethodName(@RequestParam int courseNumber) {
+        List<EmploymentInfoResponse> list = service.getEmploymentInfoByCourseNumber(courseNumber);
+        return Map.of("result", list, "total", list.size());
+//        return Map.of("result", service.getEmploymentInfoByCourseNumber(courseNumber), "total", studentCourseService.countByCourseNumber(courseNumber));
     }
     
     @GetMapping("/avg-rate")
@@ -55,18 +56,6 @@ public class EmploymentController {
     public Map editEmployeedStatus(@RequestBody EditEmployeedStatusRequest request) {
         ManagerDTO loginUser = getLoginUser();
         return Map.of("result", service.editEmployeedStatus(request, loginUser.getManagerId()));
-    }
-    
-    @PostMapping("/student")
-    public Map addEmployeedStatus(@RequestBody AddEmployeedStatusRequest request) {
-        ManagerDTO loginUser = getLoginUser();
-        return Map.of("result", service.addEmployeedStatus(request, loginUser.getManagerId()));
-    }
-    
-    @DeleteMapping("/student/{employmentSeq}")
-    public Map deleteEmployeedStatus(@PathVariable("employmentSeq") int employmentSeq) {
-        ManagerDTO loginUser = getLoginUser();
-        return Map.of("result", service.deleteEmployeeStatus(employmentSeq, loginUser.getManagerId()));
     }
     
     private ManagerDTO getLoginUser() {
