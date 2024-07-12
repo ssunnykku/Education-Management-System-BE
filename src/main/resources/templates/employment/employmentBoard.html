@@ -26,9 +26,6 @@
         </div>
         <div class="employment-btn-wrapper">
         <button type="button" id="export-to-excel" class="btn-setting">엑셀 추출</button>
-            <button type="button" id="settlement-btn" class="btn-setting" popovertarget="settlementListModal">
-                저장
-            </button>
         </div>
     </article>
     <article class="employment-page-information">
@@ -88,14 +85,14 @@ if (!data || data.length === 0) {
 	const employmentStatusText = data[i].employeed ? "취업" : "미취업";
 	const companyText = data[i].company || "";
     tableBody += `<tr>
-      <td><input type="checkbox" name=${data[i].sCSeq} class="checkbox" value=${data[i].scseq}></td>
+      <td><input type="checkbox" name=${data[i].sCSeq} class="checkbox" value=${data[i].sCSeq}></td>
       <td><span class="employmentBoard-hrd-net-id">${data[i].hrdNetId}</span></td>
       <td><span class="employmentBoard-course-number">${data[i].courseNumber}</span></td>
       <td><span class="employmentBoard-name">${data[i].name}</span></td>
       <td><span class="employmentBoard-phone-number">${data[i].phoneNumber}</span></td>
       <td><span class="employmentBoard-email">${data[i].email}</span></td>
       <td><span class="employmentBoard-course-end-date">${data[i].courseEndDate}</span></td>
-      <td class="employmentBoard-company" data-scseq="${data[i].scseq}" data-employed="${employmentStatusText}" data-employmentSeq="${data[i].employmentSeq}"><span>${companyText}</span></td>
+      <td class="employmentBoard-company" data-scseq="${data[i].sCSeq}" data-employed="${employmentStatusText}" data-employmentSeq="${data[i].employmentSeq}"><span>${companyText}</span></td>
       <td><span class="employmentBoard-is-employed">${employmentStatusText}</span></td>
     </tr>`
   }
@@ -112,6 +109,7 @@ $(document).ready(function() {
   $('.employmentBoard-table').on('click', '.employmentBoard-company', function (e) {
     const clickedCellText = $(this).text();
     const sCSeq = $(this).data('scseq'); // Retrieve sCSeq from data attribute
+    console.log(sCSeq);
     const employmentSeq = $(this).data('employmentseq');
     console.log(employmentSeq);
     document.querySelector('#company-input').value = clickedCellText;
