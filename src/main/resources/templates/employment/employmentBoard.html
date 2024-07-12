@@ -38,9 +38,6 @@
     <table class="employmentBoard-table">
       <thead>
         <tr>
-          <th>
-            <input type="checkbox" name="" id="title-checkbox" />
-          </th>
           <th><span>hrd-net-id</span></th>
           <th><span>기수</span></th>
           <th><span>이름</span></th>
@@ -57,7 +54,7 @@
 </article>
      </section>
      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">취업처 수정</h1>
@@ -85,7 +82,6 @@ if (!data || data.length === 0) {
 	const employmentStatusText = data[i].employeed ? "취업" : "미취업";
 	const companyText = data[i].company || "";
     tableBody += `<tr>
-      <td><input type="checkbox" name=${data[i].sCSeq} class="checkbox" value=${data[i].sCSeq}></td>
       <td><span class="employmentBoard-hrd-net-id">${data[i].hrdNetId}</span></td>
       <td><span class="employmentBoard-course-number">${data[i].courseNumber}</span></td>
       <td><span class="employmentBoard-name">${data[i].name}</span></td>
@@ -106,87 +102,42 @@ if (!data || data.length === 0) {
 }
 
 $(document).ready(function() {
-  $('.employmentBoard-table').on('click', '.employmentBoard-company', function (e) {
+  $('.employmentBoard-table').on('click', '.employmentBoard-company', function(e) {
     const clickedCellText = $(this).text();
     const sCSeq = $(this).data('scseq'); // Retrieve sCSeq from data attribute
     console.log(sCSeq);
     const employmentSeq = $(this).data('employmentseq');
     console.log(employmentSeq);
     document.querySelector('#company-input').value = clickedCellText;
+
     const myModal = new bootstrap.Modal('#exampleModal', {});
     myModal.show();
 
     $(".save-btn").on("click", function() {
       const newCompany = document.getElementById("company-input").value;
-
-      if (clickedCellText === "") { //새로운 회사
-        fetch("/employments/student", {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            sCSeq: sCSeq,
-            company: newCompany
-          })
+      fetch("/employments/student", {
+        method: "put",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          sCSeq: sCSeq,
+          company: newCompany
         })
-        .then(response => {
-          if (response.ok) {
-            myModal.hide(); 
-          } else {
-            console.error("Error saving new company:", response.statusText);
-          }
-        })
-        .catch(error => {
-          console.error("Error sending POST request:", error);
-        });
-      } else { // 업데이트
-        if(newCompany!==""){
-        fetch("/employments/student", { 
-          method: "put",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            company: newCompany,
-            employmentSeq : employmentSeq
-          })
-        })
-        .then(response => {
-          if (response.ok) {
-            myModal.hide();
-          } else {
-            console.error("Error updating company:", response.statusText);
-          }
-        })
-        .catch(error => {
-          console.error("Error sending PUT request:", error);
-        });
-      }
-   else{
-   
-    fetch("/employments/student/" +employmentSeq, { 
-          method: "delete",
-          headers: {
-            "Content-Type": "application/json"
-          },
-        })
-        .then(response => {
-          if (response.ok) {
-            myModal.hide();
-          } else {
-            console.error("Error delete company:", response.statusText);
-          }
-        })
-        .catch(error => {
-          console.error("Error sending delete request:", error);
-        });
-   }
-    }
+      })
+      .then(response => {
+        if (response.ok) {
+          myModal.hide();
+        } else {
+          console.error("Error updating company:", response.statusText);
+        }
+      })
+      .catch(error => {
+        console.error("Error sending PUT request:", error);
+      });
     });
   });
 });
-	
 const excelDownload = document.querySelector('#export-to-excel');
 
 document.addEventListener('DOMContentLoaded', ()=>{
