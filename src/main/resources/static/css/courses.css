@@ -13,7 +13,7 @@ body {
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  padding-left: 120px;
+  padding-left: 200px;
 }
 /******* addCourseModal / setCourseModal.html ********/
 .course-modal {
@@ -204,7 +204,7 @@ select {
      display: flex;
   flex-direction: row;
   gap: 10px;
-  padding-left: 228%;
+  padding-left: 180%;
 
 }
 .courseBoard-table {
@@ -396,12 +396,12 @@ select {
   font-style: normal;
   font-weight: 500;
   line-height: 100%;
-  padding-left: 7%;
+  padding-left: 8%;
   color: #999999;
 }
 
 ul#pagination {
-	padding-left:600px;
+	padding-left:500px;
     width: 100%;
     font-size: 1.3rem;
     margin-top:20px;
