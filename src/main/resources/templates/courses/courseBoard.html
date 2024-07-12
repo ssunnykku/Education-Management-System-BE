@@ -14,29 +14,31 @@
 <body id="content-wrapper">
   <div th:insert="~{common/header :: header}"></div>
   <div th:insert="~{common/title :: title ('과정 관리')}"></div>
-  <section id="content-section">
+  <section id="course-section">
     <article id="courseBoard-btns-container">
       <div class="search-form-wrapper">
         <!-- form???? -->
         <form action="/ems/courses">
-          <select id="courseNumberSelect" name="courseNumber" class="data-filter">
-            <option value="0">기수</option>
-            <option th:each="courseNumber: ${courseNumberList}" th:text="${courseNumber}" th:attr="value=${courseNumber}" th:selected="${selectedCourseNumber} == ${courseNumber}">기수 alt</option>
-          </select>
           <select name="excludeExpired" class="data-filter" onChange="updateCourseNumber(event)">
             <option value="true" th:selected="${paging.excludeExpired} == 1">진행중</option>
             <option value="false" th:selected="${paging.excludeExpired} == 0">전체</option>
           </select>
-          <button type="submit" class="filter-search-btn">검색</button>
+          <select id="courseNumberSelect" name="courseNumber" class="data-filter">
+            <option value="0">기수</option>
+            <option th:each="courseNumber: ${courseNumberList}" th:text="${courseNumber}" th:attr="value=${courseNumber}" th:selected="${selectedCourseNumber} == ${courseNumber}">기수 alt</option>
+          </select>
         </form>
-      </div>
-      <div id="courseBoard-btn-wrapper">
+            <div id="courseBoard-btn-wrapper">
         <button id="enroll-btn" class="btn-setting" popovertarget="addCourseModal">등록</button>
         <button id="delete-btn" class="btn-setting" popovertarget="removeCourseModal">삭제</button>
       </div>
-      
+      </div>
     </article>
-    <article>
+ 
+      
+    <div class="cnt-pages">
+        <span th:text="${'총 ' + paging.totalCourseCount +'개'}">총 개수 alt</span>
+      </div>
       <div id="courseBoard-table">
         <div class="courseBoard-row" id="courseBoard-title-row">
           <div id="courseBoard-no">
@@ -111,12 +113,8 @@
 
         </div>
       </div>
-    </article>
 
     <article class="page-information">
-      <div class="cnt-pages">
-        <span th:text="${'총 ' + paging.totalCourseCount +'개'}">총 개수 alt</span>
-      </div>
       <ul id="pagination">
         <li th:classappend="${paging.pageOffset == 1} ? 'inactivePage'">
           <a class="page-link"

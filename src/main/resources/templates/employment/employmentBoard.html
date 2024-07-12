@@ -23,13 +23,10 @@
                     class="employment-courseId-filter">
                 <option value="course-number" id="course-number">기수</option>
             </select>
+            <div class="avg-form"></div>
         </div>
         <div class="employment-btn-wrapper">
         <button type="button" id="export-to-excel" class="btn-setting">엑셀 추출</button>
-        </div>
-    </article>
-    <article class="employment-page-information">
-        <div class="employment-cnt-pages">
         </div>
     </article>
     <section id="employment-contents">
@@ -54,18 +51,18 @@
 </article>
      </section>
      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">취업처 수정</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">취업처 입력</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <input name="company" id="company-input"></input>
+        <textarea name="company" id="company-input"></textarea>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="save-btn">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+        <button type="button" class="save-btn">저장</button>
       </div>
     </div>
   </div>
@@ -100,14 +97,12 @@ if (!data || data.length === 0) {
   // Append the generated table body to the existing table
   $("#employment-table-contents").append(tableBody);
 }
-
+let sCSeq=null;
 $(document).ready(function() {
   $('.employmentBoard-table').on('click', '.employmentBoard-company', function(e) {
     const clickedCellText = $(this).text();
-    const sCSeq = $(this).data('scseq'); // Retrieve sCSeq from data attribute
-    console.log(sCSeq);
+	 sCSeq = $(this).data('scseq'); // Retrieve sCSeq from data attribute
     const employmentSeq = $(this).data('employmentseq');
-    console.log(employmentSeq);
     document.querySelector('#company-input').value = clickedCellText;
 
     const myModal = new bootstrap.Modal('#exampleModal', {});
@@ -126,18 +121,17 @@ $(document).ready(function() {
         })
       })
       .then(response => {
-        if (response.ok) {
+        
           myModal.hide();
-        } else {
-          console.error("Error updating company:", response.statusText);
-        }
-      })
-      .catch(error => {
-        console.error("Error sending PUT request:", error);
+         updateEmploymentData(courseNumber);
+         sCSeq=null;
+        } 
+        
+      )
       });
     });
   });
-});
+
 const excelDownload = document.querySelector('#export-to-excel');
 
 document.addEventListener('DOMContentLoaded', ()=>{
@@ -176,27 +170,42 @@ function stab(s) {
   for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; // convert to octet
   return buf;
 }
+let courseNumber = "";
+
+ function updateEmploymentData(courseNumber) {
+  fetch("/employments/info-list?courseNumber=" + courseNumber + "&page=" + 1, {
+    method: "GET" // 불필요한 Content-Type 헤더 제거
+  })
+  .then(response => response.json())
+  .then(async (data) => {
+    const notificationList = data.result;
+    await getSettlementList(notificationList);
+  })
 
 
-  $(".employment-courseId-filter").on("change", async function() {
-    let courseNumber = $(this).val(); // 'this' refers to the selected dropdown element
-
-    try {
-      const response = await fetch("/employments/info-list?courseNumber=" + courseNumber + "&page=" + 1, {
-        method: "GET" // 불필요한 Content-Type 헤더 제거
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP 오류! 상태: ${response.status}`);
-      }
-      const data = await response.json();
-      const notificationList = data.result;
-      console.log(notificationList);
-      await getSettlementList(notificationList);
-    } catch (error) {
-      console.error("공지 사항 페치 오류:", error);
+  fetch("/employments/avg-rate?courseNumber=" + courseNumber, {
+    method: "get",
+    headers: {
+      "Content-Type": "application/json"
     }
-  });
+  })
+  .then(res => res.json())
+  .then(async (data) => {
+    const avg = data.result; // Assuming "result" property holds the average rate
+    const avgForm = document.querySelector(".avg-form");
+    avgForm.innerHTML = ""; // Clear existing content (optional)
+    avgForm.textContent = `평균 취업률 : ${avg.toFixed(2)}%`; // Format and display avg rate (rounded to 2 decimals)
+  })
+}
 
+// Call the function initially with the selected course number
+updateEmploymentData(courseNumber);
+
+// Call the function again when the dropdown value changes
+$(".employment-courseId-filter").on("change", async function() {
+  courseNumber = $(this).val(); // 'this' refers to the selected dropdown element
+  updateEmploymentData(courseNumber);
+});
 
 </script>
 </body>
