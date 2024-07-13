@@ -14,7 +14,7 @@
     justify-content: center;
     align-items: center;
     padding: 32px;
-    gap: 48px;
+    gap: 32px;
 }
 
 #content-wrapper {
@@ -27,6 +27,7 @@
     justify-content: center;
     align-items: center;
     gap: 24px;
+
 }
 
 
@@ -37,6 +38,9 @@
     background: #FFFFFF;
 
     padding: 48px 56px;
+    box-shadow: 0px 2px 10px rgba(231, 233, 242, 0.7);
+
+    border: #E7E7E7 solid 0.5px;
 
 }
 
@@ -50,6 +54,7 @@
 
     gap: 16px;
     font-size: 20px;
+
 }
 
 .manager-info-item {
@@ -139,6 +144,9 @@
     flex-direction: column;
     justify-content: flex-start;
 
+    box-shadow: 0px 2px 10px rgba(231, 233, 242, 0.7);
+    border: #E7E7E7 solid 0.5px;
+
 }
 
 #attendance-info-wrapper > div:first-child {
@@ -199,6 +207,10 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+
+    box-shadow: 0px 2px 10px rgba(231, 233, 242, 0.7);
+
+    border: #E7E7E7 solid 0.5px;
 
 }
 
