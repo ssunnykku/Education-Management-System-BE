@@ -57,7 +57,8 @@ public interface AttendanceService {
     List<AttendanceListBySearchFilterDTO> getDateAndLocationList(String attendanceDate, String academyLocation, String name, int courseNumber, int page, int size);
 
     // [출결] - 선택한 수강생의 출석 상태 수정
-    void updateStudentAttendance(String attendanceStatus, String attendanceDate, int studentCourseSeq);
+    // void updateStudentAttendance(String attendanceStatus, String attendanceDate, int studentCourseSeq);
+    void updateStudentAttendance(List<RequestStudentAttendanceDTO> dto);
 
     // [출결 입력]
     // 1. 특정일의 출결 상태가 등록되지 않은 수강생 목록 가져오기

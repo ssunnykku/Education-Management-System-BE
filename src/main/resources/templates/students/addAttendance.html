@@ -121,38 +121,6 @@
         $('body').css('overflow', 'hidden'); // 스크롤 방지
     });
 
-    /*$(document).ready(function(){
-        $("#attendance-status-select").change(function(){
-            const selectedAttendanceStatus = $(this).val();
-            const originalAttendanceStatus = $(this).closest('tr').find('.attendance-status-db').data('attendance-status');
-
-            if (selectedAttendanceStatus != originalAttendanceStatus) {
-                $(this).css("border", "1px solid violet");
-            } else {
-                $(this).css("border", "");
-            }
-
-            // Update border for all rows with matching student ID
-            const studentCourseSeq = $(this).closest('tr').find('.student-course-seq').text();
-            $('.board-table-row').each(function() {
-                const rowStudentCourseSeq = $(this).find('.student-course-seq').text();
-                if (rowStudentCourseSeq === studentCourseSeq) {
-                    const rowSelect = $(this).find('.attendance-status select');
-                    const rowOriginalStatus = $(this).find('.attendance-status-db').data('attendance-status');
-                    const rowSelectedStatus = rowSelect.val();
-
-                    if (rowSelectedStatus != rowOriginalStatus) {
-                        rowSelect.css("border", "1px solid violet");
-                    } else {
-                        rowSelect.css("border", "");
-                    }
-                }
-            });
-        });
-    });*/
-
-
-
     function getCourseNumber() {
         if($("#input-course-number").val() == "") {
             return -1;
@@ -237,9 +205,7 @@
                         break;
                 }
 
-                console.log(data[i].name + " - " + data[i].attendanceStatus);
                 const fileUploadInputHTML = data[i].attendanceStatus === "출석 인정" ? `<label class="input-file-label" for="file-upload-btn">파일 첨부</label><input type="file" id="file-upload-btn" enabled />` : `<input type="text" id="file-upload-btn" readonly/>`;
-                console.log(fileUploadInputHTML);
 
                 result += `<tr class="board-table-row set-attendance">
                         <td class="set-attendance board-checkbox"><input type="checkbox" name="checkbox" class="check-box"/><span class="student-course-seq" style="display:none;">${data[i].studentCourseSeq}</span></td>
@@ -276,7 +242,6 @@
         }
 
         console.log(initialAttendanceData);
-
 
         // 출결상태 변경에 따른 select Border 처리
         $("select[name='attendance-status-select']").change(function() {
@@ -365,8 +330,8 @@
                 let amount = data.amount;
                 // totalPage = data.pageInfo.totalPage;
 
-                await getAttendanceList(attendanceList);
                 await getAmountAttendanceList(amount);
+                await getAttendanceList(attendanceList);
 
             })
             .catch((error) => console.error(error));
@@ -397,43 +362,6 @@
             await fetchAttendanceList(page);
             checkAll(); // <th>의 체크박스 클릭 -> 모든 <tr>의 체크박스 선택 처리
 
-            // 선택 내용 일괄 출결 처리
-            $("#combine-update-btn").click(async function() {
-                const checkedStudentData = [];
-                const selectedRadio = $("input[name=attendanceStatus]:checked");
-                if(!selectedRadio.length) {
-                    alert("처리할 출결 상태를 체크해주세요!");
-                    return;
-                }
-                const combineAttendanceStatus = selectedRadio.val();
-                $('input[type="checkbox"][name="checkbox"]:checked:not(#check-all)').each(function(index, checkboxElement) {
-                    const studentCourseSeq = $(this).closest('tr').find('.student-course-seq').text();
-                    const studentRow = $(this).closest('tr');
-                    checkedStudentData.push({
-                        "studentCourseSeq": studentCourseSeq,
-                        "attendanceDate": getAttendanceDate(),
-                        "attendanceStatus": combineAttendanceStatus
-                    });
-                });
-                await fetchUpdateAttendance(checkedStudentData);
-            });
-
-            /*$("#attendance-status-select").on("change", function() {
-                if($(this).change) {
-                    console.log("출결 상태 변경으로 클릭");
-                    const row = $(this).closest("tr");
-                    console.log(row);
-
-                    const selectedAttendanceStatus = row.find('.attendance-status select').val();
-                    const originAttendanceStatus = row.find('.attendance-status-origin').val();
-
-                    if (selectedAttendanceStatus != originAttendanceStatus) {
-                        $(".attendance-status-select").css("border", "1px solid blue");
-                    }
-                }
-            });*/
-
-
             // 선택한 학생의 출결 처리
             $('.board-checkbox input[type="checkbox"]').on('change', function() {
                 if (this.checked) {
@@ -453,19 +381,40 @@
                     };
 
                     objList.push(obj);
-
-                    $("#update-btn").click(async function() {
-                        await fetchUpdateAttendance(objList);
-                    });
                 }
             });
         }
     });
 
+    // '수정' 버튼 클릭시 선택한 수강생+출결 상태로 수정 요청
+    $("#update-btn").click(async function() {
+        await fetchUpdateAttendance(objList);
+    });
+
+    // 선택 내용 일괄 출결 처리
+    $("#combine-update-btn").click(async function() {
+        const checkedStudentData = [];
+        const selectedRadio = $("input[name=attendanceStatus]:checked");
+        if(!selectedRadio.length) {
+            alert("처리할 출결 상태를 체크해주세요!");
+            return;
+        }
+        const combineAttendanceStatus = selectedRadio.val();
+        $('input[type="checkbox"][name="checkbox"]:checked:not(#check-all)').each(function(index, checkboxElement) {
+            const studentCourseSeq = $(this).closest('tr').find('.student-course-seq').text();
+            const studentRow = $(this).closest('tr');
+            checkedStudentData.push({
+                "studentCourseSeq": studentCourseSeq,
+                "attendanceDate": getAttendanceDate(),
+                "attendanceStatus": combineAttendanceStatus
+            });
+        });
+        await fetchUpdateAttendance(checkedStudentData);
+    });
+
+
     // 선택한 학생의 출결 상태 저장(수정)
     async function fetchUpdateAttendance(objList) {
-        console.log(">> fetchUpdateAttendance")
-        console.log(objList);
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
