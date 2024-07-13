@@ -141,6 +141,10 @@
     }
     // 입력한 HRD-Net ID의 등록 여부 결과 팝업 화면에 보여주기
     async function noticeCheckingIdResult(param) {
+        console.log(param);
+        console.log(param.result);
+        console.log(typeof param.result);
+        console.log(param.result == "true");
         if(param.result == "true") {
             $("#existed-student").css("display", "flex");
             // 팝업창 닫기(취소)
