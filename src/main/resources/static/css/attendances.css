@@ -149,6 +149,9 @@ select {
     height: 660px;
     padding: 5% 10%;
     box-sizing: border-box;
+    p {
+        margin: 0;
+    }
 }
 .modal-container hr {
     margin: 10px 0;
@@ -201,6 +204,7 @@ select {
         height: 41px;
         width: 100%;
         margin: 0;
+        font-size: 15px;
     }
 }
 .list-wrapper {
@@ -532,6 +536,9 @@ select {
         height: 23px;
     }
 }
+.modifiedAttendance {
+    border: 2px solid rgb(0, 141, 206);  /* 임시 컬러: kosta 로고 파란색 rgb 코드 */
+}
 .update-btn-div.attendance-add {
     padding-right: 10%;
 }
@@ -540,4 +547,8 @@ select {
 }
 .page-information.attendance-add {
     margin-top: 15px;
+}
+
+#add-attendance-modal::backdrop {
+    background-color: rgba(0,0,0,0.5);
 }

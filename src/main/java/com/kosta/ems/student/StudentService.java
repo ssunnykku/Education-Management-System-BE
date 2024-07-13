@@ -10,6 +10,7 @@ import com.kosta.ems.attendance.StudentAttendanceListDTO;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ public interface StudentService {
     int getStudentInfoListCnt(int isActive, String name, int courseNumber);
     List<StudentInfoDTO> getStudentInfoList(int isActive, String name, int courseNumber, int page, int size);
     // *0710_수강생 정보 조회 (end)
+    List<ArrayList> getStudentInfoList2(int isActive, String name, int courseNumber, int page, int size);
 
     // *0710_수강생 id로 수강내역 조회
     List<StudentCourseHistoryDTO> getStudentCourseHistory(String studentId);

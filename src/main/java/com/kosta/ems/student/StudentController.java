@@ -56,10 +56,6 @@ public class StudentController {
 		PageResponseDTO pageInfo = PageResponseDTO.builder().totalCount(totalCount).totalPage(totalPage).currentPage(currentPage).prevPage(prevPage).nextPage(nextPage).build();
 		result.put("pageInfo", pageInfo);
 
-		log.info("☄️result.amount " + totalCount);
-		log.info("☄️result.studentList " + studentService.getStudentsByNameOrCourseNumberList(name, courseNumber, page, size).toString());
-		log.info("☄️result.pageInfo " + pageInfo.toString());
-
 		return result;
 	}
 	// *0710 선택 수강생의 수강내역 조회
@@ -155,8 +151,6 @@ public class StudentController {
 	@PutMapping()
 	public UpdateDeleteResultDTO updateSelectedStudentInfo(@RequestBody UpdateSelectedStudentInfoDTO request) {
 		UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
-		log.info("🧰 수강생 정보 수정: ");
-		log.info("🧰 requestDTO: " + request.toString());
 		try {
 			studentService.updateSelectedStudentInfo(request.getName(), request.getAddress(), request.getBank(), request.getAccount(), request.getPhoneNumber(), request.getEmail(), request.getStudentId(), request.getIsActive());
 		} catch (NoSuchDataException e) {
