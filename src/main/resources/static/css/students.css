@@ -68,6 +68,61 @@ article {
   }
 }
 
+.chk-result-popup {
+  display: none;
+  justify-content: center;
+  position: absolute;
+  top: 40%;
+  left: 37%;
+  width: 400px;
+  height: 180px;
+  border: 2px solid #b8b8b8;
+  border-radius: 10px;
+  z-index: 99;
+  background-color: #fff;
+}
+.popup-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  padding: 5%;
+  gap: 20px;
+  margin-top: 10px;
+}
+.popup-btn-wrapper {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+.popup-description-wrapper {
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  p {
+    margin: 0;
+  }
+}
+.popup-btn-wrapper {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+  button {
+    height: 34px;
+    width: 50px;
+    color: #000;
+    border-radius: 8px;
+    background-color: rgba(244, 244, 244, 1);
+  }
+  button:nth-child(2) {
+    width: fit-content;
+    padding: 0 13px;
+    color: #fff;
+    background-color: rgb(64, 64, 64);
+  }
+}
+
+
   .student-items-item > input {
     width: 100%;
     height: 50px;
