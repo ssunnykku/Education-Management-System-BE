@@ -237,7 +237,6 @@
         $(".board-table tr").on("click", async function() {
             const tmpStudentId = $(this).find(".fetch-student-id").val();
             const studentId = tmpStudentId.substring(0, tmpStudentId.length-1);
-            console.log(studentId);
             // *0710_선택한 수강생의 상세정보(수강내역 포함) 가져오기
             await fetchStudentCourseHistory(studentId);
             $("#modal-student-id").val(studentId);
@@ -417,15 +416,10 @@
         let firstPage = (currentBlock * pageSize) - pageSize + 1;
         let lastPage = totalPage <= currentBlock * pageSize ? totalPage : currentBlock * pageSize;
 
-        if(lastPage != 1) {
             for (let i = firstPage; i <= lastPage; i++) {
                 let num = i;
                 $("#page-number").append(`<li><a class="page-link" onclick="fetchStudentList(${num})">${num}</a></li>`);
             }
-        } else {
-            $("#next").css("display", "none");
-            $("#prev").css("display", "none");
-        }
     }
 
     $("#next").click(() => {

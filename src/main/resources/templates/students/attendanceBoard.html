@@ -181,14 +181,9 @@
         let firstPage = (currentBlock * pageSize) - pageSize + 1;
         let lastPage = totalPage <= currentBlock * pageSize ? totalPage : currentBlock * pageSize;
 
-        if(lastPage != 1) {
-            for (let i = firstPage; i <= lastPage; i++) {
-                let num = i;
-                $("#page-number").append(`<li><a class="page-link" onclick="fetchStudentList(${num})">${num}</a></li>`);
-            }
-        } else {
-            $("#next").css("display", "none");
-            $("#prev").css("display", "none");
+        for (let i = firstPage; i <= lastPage; i++) {
+            let num = i;
+            $("#page-number").append(`<li><a class="page-link" onclick="fetchStudentList(${num})">${num}</a></li>`);
         }
     }
 

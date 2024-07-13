@@ -89,5 +89,9 @@ public class StudentServiceTest {
 	void removeSelectedStudent() {
 		studentService.removeSelectedStudent("8b48e083-2fa8-11ef-b0b2-0206f94be675");
 	}
-	
+
+	@Test
+	void getStudentInfoList2() {
+		studentService.getStudentInfoList2(1, "", 0, 1, 10);
+	}
 }

@@ -1,4 +1,5 @@
 package com.kosta.ems.student;
+import com.kosta.ems.attendance.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -6,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 // import org.springframework.data.domain.Page;
 
 
-
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,6 +22,7 @@ import java.util.Map;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentMapper studentMapper;
+    private final AttendanceService attendanceService;
 
     @Override
     public Map<String, Collection> getStudentByName(String name) {
@@ -50,6 +52,51 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<StudentInfoDTO> getStudentInfoList(int isActive, String name, int courseNumber, int page, int size) {
         return studentMapper.selectStudentInfoList(isActive, name, courseNumber, ((page*size)-size), size);
+    }
+    @Override
+    public List<ArrayList> getStudentInfoList2(int isActive, String name, int courseNumber, int page, int size) {
+        /* 수료 여부 항목
+        미수료(교육과정 기간이 지났지만 출석률이 80% 미만), 수료 예정(교육과정 기간 중+출석률 80% 미만),
+        수료 대상(교육과정 기간 중+출석률 80% 이상), 수료(교육과정 기간 이후+출석률 80% 이상) */
+
+        // 수료 여부를 보여주기 위해 'AttendnaceService'의 'getAttendanceIntegratedList' _ attendanceRatioFormatted 데이터 필요
+        // 'StudentService'의 'selectStudentCourseHistory'도 필요 (n차 수강생인 경우, 가장 최근에 수강하는 교육과정의 수료여부를 보여줄 것임)
+        List<ArrayList> item = new ArrayList<>();  // [[studentInfoList, attendanceRatio], []]
+        List<StudentInfoDTO> studentInfoList = studentMapper.selectStudentInfoList(isActive, name, courseNumber, ((page*size)-size), size);
+        List<ArrayList> attendanceRatioList = attendanceService.getAttendanceIntegratedList(name, courseNumber, "가산", page, size);
+
+        int loopSize = studentInfoList.size() > attendanceRatioList.size() ? attendanceRatioList.size() : studentInfoList.size();
+        for(int i=0; i<loopSize; i++) {
+            // if(studentInfoList.get(i).getHrdNetId().equals(attendanceRatioList.get(i).get(0)))
+            ArrayList tmp = new ArrayList<>(2);
+            log.info(">>>>>>>>> attendanceRatioList.get(i).get(1): " + attendanceRatioList.get(i).get(1));
+            log.info(">>>>>>>>> attendanceRatioList.get(i).get(0): " + attendanceRatioList.get(i).get(0));
+            log.info(">>>>> studentInfoList.get(i): " + studentInfoList.get(i));
+            log.info(">>>>> studentInfoList.get(i): " + studentInfoList.get(i).getHrdNetId());
+            String dataString = attendanceRatioList.get(i).get(0).toString();
+
+            String[] dataPairs = dataString.split(", ");
+            for (String pair : dataPairs) {
+                String[] keyValue = pair.split("=");
+
+                if (keyValue[0].equals("hrdNetId")) {
+                    String hrdNetId = keyValue[1];
+                    if(hrdNetId.equals(studentInfoList.get(i).getHrdNetId())) {
+                        tmp.add(studentInfoList.get(i));
+                        String ratio = attendanceRatioList.get(i).get(1).toString();
+                        tmp.add(ratio);
+                    }
+                } else {
+                    continue;
+                }
+            }
+            item.add(tmp);
+        }
+        log.info(">>> item: " + item);
+
+
+
+        return item;
     }
     // *0710_수강생 정보 조회 (end)
 
