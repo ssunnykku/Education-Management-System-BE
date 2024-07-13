@@ -131,9 +131,11 @@ public class AttendanceController {
 			log.info("🚀 request 확인");
 			log.info(">> request.length: " + request.size());
 			log.info(">> request: " + request.toString());
-			for(int i=0; i<request.size(); i++) {
+			/*for(int i=0; i<request.size(); i++) {
 				attendanceService.updateStudentAttendance(request.get(i).getAttendanceStatus(), request.get(i).getAttendanceDate(), request.get(i).getStudentCourseSeq());
-			}
+			}*/
+			attendanceService.updateStudentAttendance(request);
+			dto.setCode(ResCode.SUCCESS.value());
 		} catch (NoSuchDataException e) {
 			dto.setCode(ResCode.FAIL.value());
 			dto.setMessage("Fail: updateStudentAttendance");

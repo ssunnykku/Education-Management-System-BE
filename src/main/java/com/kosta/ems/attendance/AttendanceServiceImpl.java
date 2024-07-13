@@ -170,7 +170,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     
     
     // [출결] - 선택한 수강생의 출석 상태 수정
-    @Override
+    /*@Override
     public void updateStudentAttendance(String attendanceStatus, String attendanceDate, int studentCourseSeq) {
         int year = Integer.parseInt(attendanceDate.split("-")[0]);
         int month = Integer.parseInt(attendanceDate.split("-")[1]);
@@ -204,6 +204,43 @@ public class AttendanceServiceImpl implements AttendanceService {
 
         UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus(status).attendanceDate(LocalDate.of(year, month, day)).studentCourseSeq(studentCourseSeq).build();
         attendanceMapper.updateStudentAttendance(dto);
+    }*/
+    @Override
+    public void updateStudentAttendance(List<RequestStudentAttendanceDTO> dto) {
+        for(int i=0; i<dto.size(); i++) {
+            int year = Integer.parseInt(dto.get(i).getAttendanceDate().split("-")[0]);
+            int month = Integer.parseInt(dto.get(i).getAttendanceDate().split("-")[1]);
+            int day = Integer.parseInt(dto.get(i).getAttendanceDate().split("-")[2]);
+            String status = null;
+
+            switch(dto.get(i).getAttendanceStatus()) {
+                case "lateness":
+                case "지각":
+                    status = "지각";
+                    break;
+                case "goOut":
+                case "외출":
+                    status = "외출";
+                    break;
+                case "absence":
+                case "결석":
+                    status = "결석";
+                    break;
+                case "earlyLeave":
+                case "조퇴":
+                    status = "조퇴";
+                    break;
+                case "acknowledge": case "출석 인정":
+                    status = "출석 인정";
+                    break;
+                default:
+                    status = "출석";
+                    break;
+            }
+
+            UpdateStudentAttendanceStatusDTO tmpDTO = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus(status).attendanceDate(LocalDate.of(year, month, day)).studentCourseSeq(dto.get(i).getStudentCourseSeq()).build();
+            attendanceMapper.updateStudentAttendance(tmpDTO);
+        }
     }
 
     // [출결 입력]

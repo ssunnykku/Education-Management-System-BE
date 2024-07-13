@@ -99,9 +99,12 @@ class AttendanceServiceImplTest {
 
     
     // [출결] - 선택한 수강생의 출석 상태 수정
- 	// @Test
+ 	@Test
      void updateStudentAttendance() {
-         attendanceService.updateStudentAttendance("지각", "2024-06-21", 3);
+        List<RequestStudentAttendanceDTO> list = new ArrayList<>();
+        RequestStudentAttendanceDTO dto = RequestStudentAttendanceDTO.builder().attendanceDate("2024-06-23").studentId("3").name("양용용").attendanceStatus("외출").courseNumber(123).academyLocation("가산").studentCourseSeq(23).build();
+        list.add(dto);
+        attendanceService.updateStudentAttendance(list);
      }
 
     // [출결 입력]
