@@ -19,7 +19,7 @@
         WHERE employee_number = #{employeeNumber}
     </select>
     <select id="findByManagerId" resultType="com.kosta.ems.manager.ManagerDTO">
-        select name, position, academy_location
+        select name, position, academy_location as academyLocation
         from managers
         where manager_id = #{managerId}
     </select>
