@@ -18,14 +18,18 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @Slf4j
 public class ManagerMapperTest {
-	@Autowired
-	ManagerMapper mapper;
+    @Autowired
+    ManagerMapper mapper;
 
-	@Test
-	public void userDetails() {
-	    System.out.println();
-	    assertThat(mapper.findByEmployeeNumber("EMP0001").getManagerId()).isEqualTo("bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5");
-	}
-	
+    @Test
+    public void userDetails() {
+        assertThat(mapper.findByEmployeeNumber("EMP0001").getManagerId()).isEqualTo("3ddf8303-3eaf-11ef-bd30-0206f94be675");
+    }
 
+    @Test
+    void findByManagerId() {
+        ManagerDTO user = mapper.findByManagerId("3ddf8303-3eaf-11ef-bd30-0206f94be675");
+        log.info("{}", user);
+        assertThat(user.getName()).isEqualTo("손유철");
+    }
 }
