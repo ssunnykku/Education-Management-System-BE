@@ -296,10 +296,27 @@
     width: 20%;
 }
 
-#attendance-table {
+#course-table-wrapper {
     width: 100%;
     padding: 0;
-    border-bottom: 1px solid #5c5c5c;
+
+    height: 400px;
+    overflow-y: scroll;
+
+    ::-webkit-scrollbar {
+        width: 10px;
+        background-color: black;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #2f3542;
+        border-radius: 10px;
+        background-clip: padding-box;
+        border: 2px solid transparent;
+    }
+}
+
+#attendance-table {
 
     th, td {
         vertical-align: middle;
