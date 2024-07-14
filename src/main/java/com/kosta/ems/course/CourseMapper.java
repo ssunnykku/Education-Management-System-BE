@@ -3,6 +3,7 @@ package com.kosta.ems.course;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Mapper
@@ -24,4 +25,6 @@ public interface CourseMapper {
     boolean inactivateCourse(int courseSeq);
 
     CourseDTO getCourseByCourseNumber(int courseNumber);
+
+    List<CourseDTO> getCurrentCourseList(LocalDate currentDate, String academyLocation);
 }
