@@ -114,6 +114,12 @@
     let selectedValue = null;
     let totalAmount = 0;
 
+    // 출석 입력일은 input 범위는 '오늘'이 max _미래에 대한 출석 입력을 미리 하는 것 제한
+    let now_utc = Date.now()
+    let timeOff = new Date().getTimezoneOffset()*60000;
+    let today = new Date(now_utc-timeOff).toISOString().split("T")[0];
+    $(".input-date").attr("max", today);
+
     $(document).ready(async function() {
         $(".input-date").val(new Date().toISOString().substring(0,10));
         await fetchAttendanceList(1);
@@ -241,8 +247,6 @@
             initialAttendanceData[data[i].hrdNetId] = data[i].attendanceStatus;
         }
 
-        console.log(initialAttendanceData);
-
         // 출결상태 변경에 따른 select Border 처리
         $("select[name='attendance-status-select']").change(function() {
             const hrdNetId = $(this).closest("tr").find("td:nth-child(3)").text();
@@ -306,7 +310,6 @@
     async function fetchAttendanceList(param) {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        console.log(getAttendanceDate());
 
         const raw = JSON.stringify({
             "name": getStudentName(),
@@ -362,7 +365,7 @@
             await fetchAttendanceList(page);
             checkAll(); // <th>의 체크박스 클릭 -> 모든 <tr>의 체크박스 선택 처리
 
-            // 선택한 학생의 출결 처리
+            // 선택한 학생의 출결 처리 - 경우1_'출결 상태' 먼저 바꾸고 체크박스 선택하는 경우
             $('.board-checkbox input[type="checkbox"]').on('change', function() {
                 if (this.checked) {
                     const row = $(this).closest('tr');
@@ -382,6 +385,26 @@
 
                     objList.push(obj);
                 }
+            });
+
+            // 선택한 학생의 출결 처리 - 경우2_'체크박스' 먼저 선택하고 출결 상태 변경하는 경우
+            $("select[name='attendance-status-select']").change(function() {
+                const row = $(this).closest('tr');
+                const studentCourseSeq = row.find('.student-course-seq').text();
+                const courseNumber = row.find('.course-number').text();
+                const hrdNetId = row.find('.hrd-net-id').text();
+                const studentName = row.find('.student-name').text();
+                const academyLocation = row.find('.academy-location').text();
+                const selectedAttendanceStatus = row.find('.attendance-status select').val();
+                const originAttendanceStatus = row.find('.attendance-status-origin').val();
+
+                const obj = {
+                    "attendanceStatus": selectedAttendanceStatus,
+                    "attendanceDate": getAttendanceDate(),
+                    "studentCourseSeq": parseInt(studentCourseSeq, 10)
+                };
+
+                objList.push(obj);
             });
         }
     });
