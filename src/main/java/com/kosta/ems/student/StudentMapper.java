@@ -24,6 +24,7 @@ public interface StudentMapper {
 
     // *0710_수강생 정보 조회
     int selectStudentInfoListCnt(int isActive, String name, int courseNumber);
+
     List<StudentInfoDTO> selectStudentInfoList(int isActive, String name, int courseNumber, int page, int size);
     // *0710_수강생 정보 조회 (end)
 
@@ -45,6 +46,7 @@ public interface StudentMapper {
 
     // 수강생 정보 수정
     StudentBasicInfoDTO selectRegisteredStudentInfo(String studentId);
+
     int updateSelectedStudentInfo(UpdateSelectedStudentInfoDTO dto);
 
     // 수강생 삭제 (isActive 업데이트)
@@ -57,4 +59,5 @@ public interface StudentMapper {
 
     List<StudentCourseInfoDTO> selectStudentListBycourseSeq(int courseSeq);
 
+    StudentDTO getLoginInfo(String hrdNetId);
 }
