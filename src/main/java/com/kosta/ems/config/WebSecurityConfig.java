@@ -2,6 +2,7 @@ package com.kosta.ems.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kosta.ems.config.jwt.StudentDetailService;
+import com.kosta.ems.config.jwt.TokenAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +30,8 @@ public class WebSecurityConfig {
 
     @Value("${security.level}")
     private String SECURITY_LEVEL;
+    @Value("${jwt.secret}")
+    private String SECURITY_KEY;
 
     // 2. 리소스 접근 빈 설정
     @Bean
@@ -74,6 +77,8 @@ public class WebSecurityConfig {
                         .invalidateHttpSession(true).deleteCookies("JSESSIONID"))
 
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
+//                .addFilterBefore(new TokenAuthenticationFilter(userService, SECURITY_KEY), UsernamePasswordAuthenticationFilter.class);
+
 
         // JWT 기반 인증 설정
 //                      .logoutSuccessUrl("/ems/login")  http.securityMatcher("/api/**")
