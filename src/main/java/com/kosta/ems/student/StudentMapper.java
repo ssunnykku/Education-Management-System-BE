@@ -60,4 +60,9 @@ public interface StudentMapper {
     List<StudentCourseInfoDTO> selectStudentListBycourseSeq(int courseSeq);
 
     StudentDTO getLoginInfo(String hrdNetId);
+
+    String studentLogin(String hrdNetId, String password);
+
+    void setRefreshToken(String hrdNetId, String refreshToken);
+
 }

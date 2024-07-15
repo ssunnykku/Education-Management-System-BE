@@ -15,6 +15,7 @@ class UserServiceTest {
 
     @Test
     void login() {
-        log.info("{}", userService.login("syc1234", "1234"));
+        log.info("토큰 {} ", userService.login("solsol5390", "1234"));
+
     }
 }

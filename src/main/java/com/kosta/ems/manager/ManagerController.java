@@ -21,22 +21,23 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class ManagerController {
-	private final ManagerService managerService;
-	
-	//Controller처럼 작동함
-	@PostMapping("/login")
-	public Map login(@RequestBody Map<String, String> loginRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		Map<String, String> map = managerService.login(loginRequest.get("employeeNumber"), loginRequest.get("password"));
-		if(Objects.isNull(map)) {
-			return Map.of("result", false);
-		}
-		HttpSession session = request.getSession();
-		session.setAttribute("managerId", map.get("managerId"));
-		session.setAttribute("academyLocation", map.get("academyLocation"));
-		log.info("managerId: " + map.get("managerId").toString());
-		log.info("managerId: " + map.get("academyLocation").toString());
-//		response.sendRedirect("/ui/notifications");
-		return Map.of("result", true);
-	}
+    private final ManagerService managerService;
+
+    //Controller처럼 작동함
+    @PostMapping("/login")
+    public Map login(@RequestBody Map<String, String> loginRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        Map<String, String> map = managerService.login(loginRequest.get("employeeNumber"), loginRequest.get("password"));
+        if (Objects.isNull(map)) {
+            return Map.of("result", false);
+        }
+        HttpSession session = request.getSession();
+        session.setAttribute("managerId", map.get("managerId"));
+        session.setAttribute("academyLocation", map.get("academyLocation"));
+        log.info("managerId: " + map.get("managerId").toString());
+        log.info("managerId: " + map.get("academyLocation").toString());
+
+        return Map.of("result", true);
+    }
 }
 

@@ -48,6 +48,7 @@ class StudentMapperTest {
     public void selectStudentInfoListCnt() {
         log.info(Integer.toString(studentMapper.selectStudentInfoListCnt(1, "", 0)));
     }
+
     @Test
     public void selectStudentInfoList() {
         log.info(studentMapper.selectStudentInfoList(1, "", 0, 0, 10).toString());
@@ -112,5 +113,5 @@ class StudentMapperTest {
         }
 
     }
-
+    
 }
