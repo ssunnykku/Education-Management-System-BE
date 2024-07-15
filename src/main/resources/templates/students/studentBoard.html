@@ -179,7 +179,7 @@
         if($("#input-course-number").val() == "") {
             return 0;
         }
-        return parseInt($(".courseId-filter").val());
+        return parseInt($("#input-course-number").val());
     }
     function getStudentName() {
         return $(".student-name-filter").val();
@@ -384,6 +384,8 @@
             "courseNumber": getCourseNumber(),
             "isActive": getIsActive()
         });
+        console.log("fetchStudentList - raw::");
+        console.log(raw);
 
         const requestOptions = {
             method: "POST",

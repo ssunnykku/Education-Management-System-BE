@@ -40,9 +40,13 @@ public interface StudentService {
     RegisteredStudentInfoDTO getRegisteredStudentBasicInfo(String hrdNetId);
     List<CourseInfoDTO> getOnGoingCourseList(String academyLocation);
     // 신규 수강생 등록
-    void setStudentWithCourse(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber);
-    void setStudentBasicInfo(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber);
-    void setStudentCourseSeqInfo(String hrdNetId, String courseNumber);
+    // *0715_안쓰기로 결정된 개념
+    // void setStudentWithCourse(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber);
+    // *0715_안쓰기로 결정된 개념
+    // void setStudentBasicInfo(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber);
+
+    // 수강생 교육과정 수강신청(등록)
+    void setStudentCourseSeqInfo(String hrdNetId, String courseNumber, String managerId);
 
     // 수강생 정보 수정
     StudentBasicInfoDTO getRegisteredStudentInfo(String studentId);

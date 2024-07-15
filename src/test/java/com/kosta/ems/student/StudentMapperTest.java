@@ -100,19 +100,27 @@ class StudentMapperTest {
         log.info(studentMapper.selectRegisteredStudentBasicInfo("youyou33").toString());
     }
 
-    // @Test
+
+    // *0715 테스트 코드 검토 완료
+    @Test
+    @DisplayName("수강생 등록 - 진행 중+접수 가능 교육과정 목록 조회 테스트")
     public void selectOnGoingCourseList() {
-        log.info(studentMapper.selectOnGoingCourseList("가산").toString());
+        log.info("교육장 - '가산': " + studentMapper.selectOnGoingCourseList("가산").toString());
+        log.info("교육장 - '강남': " + studentMapper.selectOnGoingCourseList("강남").toString());
+
+        log.info("교육장 - '갤럭시': " + studentMapper.selectOnGoingCourseList("갤럭시").toString());
     }
 
-    // @Test
+    // *0715_안 쓰기로 결정된 개념
+    /*// @Test
     public void addStudentBasicInfo() {
         studentMapper.addStudentBasicInfo(new AddStudentBasicInfoDTO("test0001", "테스터양씨", LocalDate.of(1995, 02, 17), "서울시 용산구 이촌동 동부이촌2길, 대림아파트 101동 901호", "우리", "10029387655086", "01028768976", "test0001@naver.com", 'M', "d893c3ad-2f8f-11ef-b0b2-0206f94be675", 277));
-    }
+    }*/
 
-    // @Test
+    // 수강생 교육과정 수강신청(등록)
+    @Test
     void addStudentCourseSeqInfo() {
-        AddStudentBasicInfoDTO dto = AddStudentBasicInfoDTO.builder().hrdNetId("qwer1234").courseNumber(289).build();
+        AddStudentBasicInfoDTO dto = AddStudentBasicInfoDTO.builder().hrdNetId("hellonuri7").courseNumber(289).managerId("3ddf8577-3eaf-11ef-bd30-0206f94be675").build();
         studentMapper.addStudentCourseSeqInfo(dto);
     }
 
