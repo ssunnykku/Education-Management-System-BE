@@ -165,6 +165,16 @@ td{
     display: flex;
     flex-direction: row;
     align-items: center;
+    gap:10px;
+}
+.email-btn{
+	font-weight: 600;
+    color: rgb(64, 64, 64);
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    width: 80px;
+    height: 40px;
+        box-shadow: 0px 0px 5px #888;
 }
 
 .btn-wrapper {
@@ -200,7 +210,6 @@ td{
     background-color: rgb(64, 64, 64);
     border-radius: 8px;
     position: relative;
-    right: 55px;
     top: 40%;
     flex-direction: row;
     transform: translateY(-50%);
