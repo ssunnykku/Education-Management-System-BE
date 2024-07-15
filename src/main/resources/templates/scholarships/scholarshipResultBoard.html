@@ -13,8 +13,7 @@
 <div th:insert="~{common/header :: header}"></div>
 <div th:insert="~{common/title :: title ('정산 결과 조회')}"></div>
 <section id="scholoarshipResult-contents">
-    <article>
-        <div class="scholarshipResult-search-form-wrapper">
+    <article class="scholarshipResult-search-form-wrapper">
             <input type="date" id="settlement-date"/>
             <select
                     name="scholarshipResult-courseId-filter"
@@ -24,14 +23,13 @@
             </select>
             <input placeholder="수강생을 입력하세요" class="search-input"/>
             <button type="button" class="filter-search-btn">검색</button>
-        </div>
     </article>
     <article class="scholarship-page-information">
         <div class="scholarship-cnt-pages">
             <span>총 2건</span>
         </div>
     </article>
-    <article>
+    <article id="scholarshipResultBoard-table-wrapper">
         <div class="scholarshipResultBoard-table">
             <div
                     class="scholarshipResultBoard-row"
