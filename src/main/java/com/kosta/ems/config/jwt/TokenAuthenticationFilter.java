@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -41,7 +40,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         String token = authorization.split(" ")[1];
 
         // Token Expired 되었는지 여부
-        if (JwtUtil.isExpired(token, secretKey)) {
+        if (JwtProvider.isExpired(token, secretKey)) {
             logger.error("Token 이 만료되었습니다.");
             filterChain.doFilter(request, response);
             return;

@@ -15,6 +15,6 @@ class UserServiceTest {
 
     @Test
     void login() {
-        log.info(userService.login("syc1234", "1234"));
+        log.info("{}", userService.login("syc1234", "1234"));
     }
 }

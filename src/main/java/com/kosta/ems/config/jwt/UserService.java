@@ -8,12 +8,14 @@ public class UserService {
 
     @Value("${jwt.secret}")
     private String SECRET_KEY;
+    @Value("${jwt.refresh.expire}")
+    private int REFRESH_EXPIRE;
     @Value("${jwt.access.expire}")
-    private String EXPIRE;
+    private int ACCESS_EXPIRE;
 
-    public String login(String hrdNetId, String password) {
+    public TokenInfo login(String hrdNetId, String password) {
 
-        return JwtUtil.createJwt(hrdNetId, SECRET_KEY, EXPIRE);
+        return JwtProvider.createJwt(hrdNetId, SECRET_KEY, REFRESH_EXPIRE, ACCESS_EXPIRE);
     }
 
 
