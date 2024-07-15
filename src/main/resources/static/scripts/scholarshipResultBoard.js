@@ -36,7 +36,7 @@ function getScholarshipResultData(data) {
                                 <span>${dataList[i].scholarshipAmount}</span>
                             </div>
                             <div class="scholarshipResultBoard-settlement-date">
-                                <span>${dataList[i].scholarshipDate}</span>
+                                <span>${dataList[i].settlementDate}</span>
                             </div>
                         </div>`
 

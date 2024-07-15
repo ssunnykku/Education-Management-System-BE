@@ -170,8 +170,8 @@ class BenefitMapperTest {
 
     //@Test
     void targetWithoutPagenation() {
-        log.info("결과 {} ", benefitMapper.selectBenefitTarget("가산", LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-02"), "277", "", null, null));
-        assertThat(benefitMapper.selectBenefitTarget("가산", LocalDate.parse("2024-03-03"), LocalDate.parse("2024-04-02"), "277", "", null, null).size()).isEqualTo(5);
+        log.info("결과 {} ", benefitMapper.selectBenefitTarget("가산", LocalDate.parse("2024-05-03"), LocalDate.parse("2024-06-02"), "277", "", null, null));
+        assertThat(benefitMapper.selectBenefitTarget("가산", LocalDate.parse("2024-05-03"), LocalDate.parse("2024-06-02"), "277", "", null, null).size()).isEqualTo(8);
 
     }
 
