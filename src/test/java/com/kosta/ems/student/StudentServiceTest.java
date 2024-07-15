@@ -3,6 +3,7 @@ package com.kosta.ems.student;
 import java.util.Collection;
 import java.util.List;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,18 +29,48 @@ public class StudentServiceTest {
 	void getStudentsByNameOrCourseNumber() {
 		log.info(studentService.getStudentsByNameOrCourseNumberList("", 0, 1, 10).toString());
 	}
-	// *0710_수강생 정보 조회
+	// *0710_수강생 정보 조회 // *0715 테스트 코드 검토 완료
 	@Test
+	@DisplayName("수강생 목록 조회 Cnt 테스트")
 	void getStudentInfoListCnt() {
-		log.info(Integer.toString(studentService.getStudentInfoListCnt(0, "", 0)));
-		log.info(Integer.toString(studentService.getStudentInfoListCnt(1, "", 0)));
+		log.info("활성화된 '가산'지점의 전체 수강생 조회 cnt: " + Integer.toString(studentService.getStudentInfoListCnt(1, "", 0, "가산")));
+		log.info("비활성화된 '가산'지점의 전체 수강생 조회 cnt: " + Integer.toString(studentService.getStudentInfoListCnt(0, "", 0, "가산")));
+		log.info("활성화된 '가산'지점의 특정 기수 수강생 조회 cnt: " + Integer.toString(studentService.getStudentInfoListCnt(1, "", 284, "가산")));
+		log.info("비활성화된 '가산'지점의 특정 기수 수강생 조회 cnt: " + Integer.toString(studentService.getStudentInfoListCnt(0, "", 284, "가산")));
+		log.info("활성화된 '가산'지점의 특정 수강생 조회 cnt: " + Integer.toString(studentService.getStudentInfoListCnt(1, "선재", 0, "가산")));
+		log.info("비활성화된 '가산'지점의 특정 수강생 조회 cnt: " + Integer.toString(studentService.getStudentInfoListCnt(0, "선재", 0, "가산")));
+
+		log.info("DB에 없는 데이터 조회 cnt 테스트 코드 모음");
+		log.info(Integer.toString(studentService.getStudentInfoListCnt(1, "미니언", 0, "가산")));
+		log.info(Integer.toString(studentService.getStudentInfoListCnt(0, "미니언", 0, "가산")));
+		log.info(Integer.toString(studentService.getStudentInfoListCnt(1, "", -100, "가산")));
+		log.info(Integer.toString(studentService.getStudentInfoListCnt(0, "", -100, "가산")));
+		log.info(Integer.toString(studentService.getStudentInfoListCnt(1, "임솔", 0, "갤럭시")));
+		log.info(Integer.toString(studentService.getStudentInfoListCnt(0, "임솔", 0, "갤럭시")));
+		log.info(Integer.toString(studentService.getStudentInfoListCnt(1, "", 277, "갤럭시")));
+		log.info(Integer.toString(studentService.getStudentInfoListCnt(0, "", 277, "갤럭시")));
 	}
 	@Test
+	@DisplayName("수강생 목록 조회 테스트")
 	void getStudentInfoList() {
-		log.info(studentService.getStudentInfoList(0, "", 0, 1, 10).toString());
-		log.info(studentService.getStudentInfoList(1, "", 0, 1, 10).toString());
+		log.info("활성화된 '가산'지점의 전체 수강생 조회: " + studentService.getStudentInfoList(1, "", 0, "가산", 1, 10).toString());
+		log.info("비활성화된 '가산'지점의 전체 수강생 조회: " + studentService.getStudentInfoList(0, "", 0, "가산", 1, 10).toString());
+		log.info("활성화된 '가산'지점의 특정 기수 수강생 조회: " + studentService.getStudentInfoList(1, "", 284, "가산", 1, 10).toString());
+		log.info("비활성화된 '가산'지점의 특정 기수 수강생 조회: " + studentService.getStudentInfoList(0, "", 284, "가산", 1, 10).toString());
+		log.info("활성화된 '가산'지점의 특정 수강생 조회: " + studentService.getStudentInfoList(1, "선재", 0, "가산", 1, 10).toString());
+		log.info("비활성화된 '가산'지점의 특정 수강생 조회: " + studentService.getStudentInfoList(0, "선재", 0, "가산", 1, 10).toString());
+
+		log.info("DB에 없는 데이터 조회 테스트 코드 모음");
+		log.info(studentService.getStudentInfoList(1, "미니언", 0, "가산", 1, 10).toString());
+		log.info(studentService.getStudentInfoList(0, "미니언", 0, "가산", 1, 10).toString());
+		log.info(studentService.getStudentInfoList(1, "", -100, "가산", 1, 10).toString());
+		log.info(studentService.getStudentInfoList(0, "", -100, "가산", 1, 10).toString());
+		log.info(studentService.getStudentInfoList(1, "임솔", 0, "갤럭시", 1, 10).toString());
+		log.info(studentService.getStudentInfoList(0, "임솔", 0, "갤럭시", 1, 10).toString());
+		log.info(studentService.getStudentInfoList(1, "", 277, "갤럭시", 1, 10).toString());
+		log.info(studentService.getStudentInfoList(0, "", 277, "갤럭시", 1, 10).toString());
 	}
-	// *0710_수강생 정보 조회 (end)
+	// *0710_수강생 정보 조회  // *0715 테스트 코드 검토 완료 (end)
 
 	// *0710_선택한 수강생 id로 수강내역 데이터 가져오기
 	@Test
@@ -92,6 +123,6 @@ public class StudentServiceTest {
 
 	@Test
 	void getStudentInfoList2() {
-		studentService.getStudentInfoList2(1, "", 0, 1, 10);
+		studentService.getStudentInfoList2(1, "", 0, "가산",1, 10);
 	}
 }

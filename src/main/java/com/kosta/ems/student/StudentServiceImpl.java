@@ -46,15 +46,15 @@ public class StudentServiceImpl implements StudentService {
 
     // *0710_수강생 정보 조회
     @Override
-    public int getStudentInfoListCnt(int isActive, String name, int courseNumber) {
-        return studentMapper.selectStudentInfoListCnt(isActive, name, courseNumber);
+    public int getStudentInfoListCnt(int isActive, String name, int courseNumber, String academyLocation) {
+        return studentMapper.selectStudentInfoListCnt(isActive, name, courseNumber, academyLocation);
     }
     @Override
-    public List<StudentInfoDTO> getStudentInfoList(int isActive, String name, int courseNumber, int page, int size) {
-        return studentMapper.selectStudentInfoList(isActive, name, courseNumber, ((page*size)-size), size);
+    public List<StudentInfoDTO> getStudentInfoList(int isActive, String name, int courseNumber, String academyLocation, int page, int size) {
+        return studentMapper.selectStudentInfoList(isActive, name, courseNumber, academyLocation, ((page*size)-size), size);
     }
     @Override
-    public List<ArrayList> getStudentInfoList2(int isActive, String name, int courseNumber, int page, int size) {
+    public List<ArrayList> getStudentInfoList2(int isActive, String name, int courseNumber, String academyLocation, int page, int size) {
         /* 수료 여부 항목
         미수료(교육과정 기간이 지났지만 출석률이 80% 미만), 수료 예정(교육과정 기간 중+출석률 80% 미만),
         수료 대상(교육과정 기간 중+출석률 80% 이상), 수료(교육과정 기간 이후+출석률 80% 이상) */
@@ -62,7 +62,7 @@ public class StudentServiceImpl implements StudentService {
         // 수료 여부를 보여주기 위해 'AttendnaceService'의 'getAttendanceIntegratedList' _ attendanceRatioFormatted 데이터 필요
         // 'StudentService'의 'selectStudentCourseHistory'도 필요 (n차 수강생인 경우, 가장 최근에 수강하는 교육과정의 수료여부를 보여줄 것임)
         List<ArrayList> item = new ArrayList<>();  // [[studentInfoList, attendanceRatio], []]
-        List<StudentInfoDTO> studentInfoList = studentMapper.selectStudentInfoList(isActive, name, courseNumber, ((page*size)-size), size);
+        List<StudentInfoDTO> studentInfoList = studentMapper.selectStudentInfoList(isActive, name, courseNumber, academyLocation, ((page*size)-size), size);
         List<ArrayList> attendanceRatioList = attendanceService.getAttendanceIntegratedList(name, courseNumber, "가산", page, size);
 
         int loopSize = studentInfoList.size() > attendanceRatioList.size() ? attendanceRatioList.size() : studentInfoList.size();
