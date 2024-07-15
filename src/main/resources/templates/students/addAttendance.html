@@ -129,14 +129,14 @@
 
     function getCourseNumber() {
         if($("#input-course-number").val() == "") {
-            return -1;
+            return 0;
         }
-        return parseInt($(".courseId-filter").val());
+        return parseInt($("#input-course-number").val());
     }
 
     function getStudentName() {
         if($(".student-name-filter").val() == "") {
-            return "none";
+            return "";
         }
         return $(".student-name-filter").val();
     }

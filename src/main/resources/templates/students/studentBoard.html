@@ -39,7 +39,7 @@
                 <th class="course-number">기수</th>
                 <th class="student-name">이름</th>
                 <th class="student-phonenumber">전화번호</th>
-                <th class="student-completion-status">수료 여부</th>
+                <th class="student-completion-status">출석률</th>
             </tr>
         </table>
     </article>
@@ -212,22 +212,23 @@
 
     // -- 검색 결과 목록 화면에 연결
     async function getSearchedStudentList(data) {
-        let result = `<tr><th class="hrd-net-id">HRD-Net ID</th><th class="course-number">기수</th><th class="student-name">이름</th><th class="student-phonenumber">전화번호</th><th class="student-completion-status">수료 여부</th></tr>`;
+        let result = `<tr><th class="hrd-net-id">HRD-Net ID</th><th class="course-number">기수</th><th class="student-name">이름</th><th class="student-phonenumber">전화번호</th><th class="student-completion-status">출석률</th></tr>`;
+
         for(let i=0; i<data.length; i++) {
             result += `<tr class="board-table-row">
-                    <td class="hrd-net-id">${data[i].hrdNetId}<input type="hidden" name="student-id" class="fetch-student-id" value=${data[i].studentId}/></td>
-                    <td class="course-number">${data[i].courseNumber}</td>
-                    <td class="student-name">${data[i].name}</td>
-                    <td class="student-phonenumber">${data[i].phoneNumber}</td>
+                    <td class="hrd-net-id">${data[i][0].hrdNetId}<input type="hidden" name="student-id" class="fetch-student-id" value=${data[i][0].studentId}/></td>
+                    <td class="course-number">${data[i][0].courseNumber}</td>
+                    <td class="student-name">${data[i][0].name}</td>
+                    <td class="student-phonenumber">${data[i][0].phoneNumber}</td>
                     <td class="student-completion-status">
-                        <span>수료예정</span>
-                        <input type="hidden" class="student-email" value="${data[i].email}" />
-                        <input type="date" class="student-birth" style="display: none" value="${data[i].birth}" />
-                        <input type="hidden" class="student-gender" value="${data[i].gender}" />
-                        <input type="hidden" class="student-address" value="${data[i].address}" />
-                        <input type="hidden" class="student-bank" value="${data[i].bank}" />
-                        <input type="hidden" class="student-account" value="${data[i].account}" />
-                        <input type="hidden" class="student-isActive" value="${data[i].isActive}" />
+                        <span>${data[i][1]}</span>
+                        <input type="hidden" class="student-email" value="${data[i][0].email}" />
+                        <input type="date" class="student-birth" style="display: none" value="${data[i][0].birth}" />
+                        <input type="hidden" class="student-gender" value="${data[i][0].gender}" />
+                        <input type="hidden" class="student-address" value="${data[i][0].address}" />
+                        <input type="hidden" class="student-bank" value="${data[i][0].bank}" />
+                        <input type="hidden" class="student-account" value="${data[i][0].account}" />
+                        <input type="hidden" class="student-isActive" value="${data[i][0].isActive}" />
                     </td>
                 </tr>`;
         }

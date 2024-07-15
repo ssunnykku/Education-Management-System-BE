@@ -17,4 +17,5 @@ public class UpdateStudentAttendanceStatusDTO {
 	private String attendanceStatus;
 	private LocalDate attendanceDate;
 	private int studentCourseSeq;
+	private String managerId;
 }
