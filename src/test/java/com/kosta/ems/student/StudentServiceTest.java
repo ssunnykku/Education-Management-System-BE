@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 @Slf4j
 @SpringBootTest
 @Transactional
@@ -86,27 +88,41 @@ public class StudentServiceTest {
 	}
 
 	// -- 등록된 id인 경우, 기존 수강생 데이터 가져오기
-	// @Test
+	// *0715 테스트 코드 검토 완료
+	@Test
+	@DisplayName("기존 수강생 데이터 가져오기")
 	void getRegisteredStudentBasicInfo() {
-		log.info(studentService.getRegisteredStudentBasicInfo("youyou33").toString());
+		log.info("기존 등록 수강생O: " + studentService.getRegisteredStudentBasicInfo("moving99bong").toString());
+
+		String unregisteredHrdNetId = "없는아이디";
+		RegisteredStudentInfoDTO unregisteredStudentInfo = studentService.getRegisteredStudentBasicInfo(unregisteredHrdNetId);
+		assertNull(unregisteredStudentInfo, "없는 아이디 학생 정보 확인");
+		log.info("기존 등록 수강생X: 정상 실행됨");
 	}
 
 	// -- 현재 날짜 기준 진행 중 + 최대 정원까지 수강 접수 안 된 접수 가능한 교육과정 목록 가져오기
-	// @Test
+	// *0715 테스트 코드 검토 완료
+	@Test
+	@DisplayName("수강생 등록 - 진행 중+접수 가능 교육과정 목록 조회 테스트")
 	void getOnGoingCourseList() {
-		log.info(studentService.getOnGoingCourseList("가산").toString());
+		log.info("교육장 - '가산': " + studentService.getOnGoingCourseList("가산").toString());
+		log.info("교육장 - '강남': " + studentService.getOnGoingCourseList("강남").toString());
+
+		log.info("교육장 - '갤럭시': " + studentService.getOnGoingCourseList("갤럭시").toString());
 	}
 	
 	// -- students 테이블에 수강생 데이터 등록
+	/*  *0715_안쓰기로 결정됨
 	// @Test
 	void addStudentBasicInfo() {
 		studentService.setStudentBasicInfo("qwer1234", "김보리", "1996-06-30", "서울시 용산구 이촌동 동부이촌2길, 대림아파트 101동 901호", "우리", "10029387655086", "01028768976", "qwer1234@naver.com", "M", "d893c3ad-2f8f-11ef-b0b2-0206f94be675", "277");
 	}
+	 */
 
 	// -- students_courses 테이블에 수강생 데이터 등록
 	// @Test
 	void addStudentCourseSeqInfo() {
-		studentService.setStudentCourseSeqInfo("yyj1234", "284");
+		studentService.setStudentCourseSeqInfo("yyj1234", "284", "3ddf8577-3eaf-11ef-bd30-0206f94be675");
 	}
 	
 	// 수강생 정보 수정

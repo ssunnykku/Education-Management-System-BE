@@ -1,5 +1,9 @@
 @import "reset.css";
 
+footer {
+  height: 0;
+}
+
 
 /**************** addStudentModal *******************/
 article {
@@ -55,7 +59,7 @@ article {
 
 .id-chk-wrapper {
   input {
-    width: 72%;
+    width: 64%;
   }
   button {
     height: 48px;

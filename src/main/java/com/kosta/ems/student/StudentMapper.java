@@ -38,9 +38,12 @@ public interface StudentMapper {
     // 현재 진행 중+등록 가능한 교육과정 목록
     List<CourseInfoDTO> selectOnGoingCourseList(String academyLocation);
 
+    // *0715_안 쓰는 개념으로 결정됨
     // void addStudentBasicInfo(AddStudentBasicInfoDTO dto);
-    int addStudentBasicInfo(AddStudentBasicInfoDTO dto);
+    // int addStudentBasicInfo(AddStudentBasicInfoDTO dto);
+    // *0715_안 쓰는 개념으로 결정됨 (end)
 
+    // 수강생 교육과정 수강신청(등록)
     int addStudentCourseSeqInfo(AddStudentBasicInfoDTO dto);
 
     // 수강생 정보 수정

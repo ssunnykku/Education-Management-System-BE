@@ -135,6 +135,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     // * 수강생 등록
+    /*  *0715_안 쓰는 개념으로 결정됨
     // ** 신규 수강생 등록    
     @Override
     public void setStudentWithCourse(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber) {
@@ -166,12 +167,13 @@ public class StudentServiceImpl implements StudentService {
         AddStudentBasicInfoDTO dto = AddStudentBasicInfoDTO.builder().hrdNetId(hrdNetId).name(name).birth(LocalDate.of(year, month, day)).address(address).bank(bank).account(account).phoneNumber(phoneNumber).email(email).gender(g).managerId(managerId).courseNumber(Integer.parseInt(courseNumber)).build();
         studentMapper.addStudentBasicInfo(dto);
     }
+    */
 
     // * 수강생 등록
     // ** students_courses 테이블에 수강생 데이터 등록
     @Override
-    public void setStudentCourseSeqInfo(String hrdNetId, String courseNumber) {
-        AddStudentBasicInfoDTO dto = AddStudentBasicInfoDTO.builder().hrdNetId(hrdNetId).courseNumber(Integer.parseInt(courseNumber)).build();
+    public void setStudentCourseSeqInfo(String hrdNetId, String courseNumber, String managerId) {
+        AddStudentBasicInfoDTO dto = AddStudentBasicInfoDTO.builder().hrdNetId(hrdNetId).courseNumber(Integer.parseInt(courseNumber)).managerId(managerId).build();
         studentMapper.addStudentCourseSeqInfo(dto);
     }
 
