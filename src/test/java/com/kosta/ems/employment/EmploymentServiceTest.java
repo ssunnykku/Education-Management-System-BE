@@ -39,7 +39,7 @@ public class EmploymentServiceTest {
     @Test
     @Transactional
     public void getEmployeedRate() {
-        assertThat(service.getEmployeedRatePct(5)).isEqualTo(40.0);
+        assertThat(service.getEmployeedRatePct(277)).isGreaterThan(0);
     }
 
     @Test

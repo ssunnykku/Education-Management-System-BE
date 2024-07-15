@@ -47,7 +47,7 @@ public class StudentPointMapperTest {
 	@Test
 	@Transactional
 	public void insertStudentPoint() {
-		int result = mapper.insertStudentPoint(2, "bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5", 19);
+		int result = mapper.insertStudentPoint(2, "3ddf8303-3eaf-11ef-bd30-0206f94be675", 19);
 		assertThat(result).isEqualTo(1);
 	}
 
