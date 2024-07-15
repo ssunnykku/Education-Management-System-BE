@@ -46,7 +46,8 @@ public class StudentController {
 
 		int totalCount = studentService.getStudentInfoListCnt(isActive, name, courseNumber, academyLocation);
 		result.put("amount", totalCount);
-		result.put("studentList", studentService.getStudentInfoList(isActive, name, courseNumber, academyLocation, page, size));
+		// result.put("studentList", studentService.getStudentInfoList(isActive, name, courseNumber, academyLocation, page, size));
+		result.put("studentList", studentService.getStudentInfoList2(isActive, name, courseNumber, academyLocation, page, size));
 
 		// 페이징 response
 		int totalPage = (totalCount/size) + 1;

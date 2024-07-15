@@ -19,7 +19,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Transactional
 public class AttendanceServiceImpl implements AttendanceService {
-
     private final AttendanceMapper attendanceMapper;
 
     @Override
@@ -33,54 +32,16 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     // [출결] - 수강생 출석 조회 목록 조회
-    // 경우1 _ 기수+수강생명 입력
-    // -- 데이터 개수 가져오기 (for 페이지네이션)
-    @Override
-    public int getAttendanceIntegratedListFilterAllAmount(String name, int courseNumber) {
-        return attendanceMapper.selectAttendanceIntegratedListFilterAllAmount(name, courseNumber).size();
-    }
-    // -- 데이터 결과 목록 가져오기
-    @Override
-    public List<StudentAttendanceListDTO> getAttendanceIntegratedListFilterAll(String name, int courseNumber, int page, int size) {
-        return attendanceMapper.selectAttendanceIntegratedListFilterAll(name, courseNumber, ((page*size)-size), size);
-    }
-    // 경우2_ 기수 또는 수강생명 입력
-    // -- 데이터 개수 가져오기 (for 페이지네이션)
-    @Override
-    public int getAttendanceIntegratedListFilterAmount(String name, int courseNumber) {
-        return attendanceMapper.selectAttendanceIntegratedListFilterAmount(name, courseNumber).size();
-    }
-    // -- 데이터 결과 목록 가져오기
-    @Override
-    public List<StudentAttendanceListDTO> getAttendanceIntegratedListFilter(String name, int courseNumber, int page, int size) {
-        return attendanceMapper.selectAttendanceIntegratedListFilter(name, courseNumber, ((page*size)-size), size);
-    }
-    // 경우3_ 기수, 수강생명 미입력 (전체 데이터)
-    // -- 데이터 개수 가져오기 (for 페이지네이션)
-    @Override
-    public int getAttendanceIntegratedListNoFilterAmount(String name, int courseNumber) {
-        return attendanceMapper.selectAttendanceIntegratedListNoFilterAmount(name, courseNumber).size();
-    }
-    // -- 데이터 결과 목록 가져오기
-    @Override
-    public List<StudentAttendanceListDTO> getAttendanceIntegratedListNoFilter(String name, int courseNumber, int page, int size) {
-        return attendanceMapper.selectAttendanceIntegratedListNoFilter(name,courseNumber,((page*size)-size),size);
-    }
     // 2차 - 경우 1~3을 하나의 쿼리문으로 해결하기
     @Override
     public int getAttendanceIntegratedListAmount(String name, int courseNumber, String academyLocation) {
-        List<StudentAttendanceListDTO> attendanceList = attendanceMapper.selectAttendanceIntegratedListAmount(name, courseNumber, "가산");
+        List<StudentAttendanceListDTO> attendanceList = attendanceMapper.selectAttendanceIntegratedListAmount(name, courseNumber, academyLocation);
         return attendanceList.size();
     }
-    /*@Override
-    public List<StudentAttendanceListDTO> getAttendanceIntegratedList(String name, int courseNumber, String academyLocation, int page, int size) {
-        return attendanceMapper.selectAttendanceIntegratedList(name, courseNumber, "가산", ((page*size)-size), size);
-    }*/
-
     @Override
     public List<ArrayList> getAttendanceIntegratedList(String name, int courseNumber, String academyLocation, int page, int size) {
         List<ArrayList> item = new ArrayList<>();
-        List<StudentAttendanceListDTO> attendanceList = attendanceMapper.selectAttendanceIntegratedList(name, courseNumber, "가산", ((page*size)-size), size);
+        List<StudentAttendanceListDTO> attendanceList = attendanceMapper.selectAttendanceIntegratedList(name, courseNumber, academyLocation, ((page*size)-size), size);
 
         for(int i=0; i<attendanceList.size(); i++) {
             ArrayList tmp = new ArrayList<>(2);
@@ -105,8 +66,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         return item;
     }
 
-
-
+    /*
     // [출결] - 특정일의 수강생 출석 상태 목록 조회 (for 출결 입력/수정)
     // 경우1 _ 기수+수강생명 입력
     // 검색 결과 개수 가져오기 (for 페이지네이션)
@@ -167,44 +127,31 @@ public class AttendanceServiceImpl implements AttendanceService {
     	
     	return attendanceMapper.selectDateAndLocationList(LocalDate.of(year, month, day), academyLocation, name, courseNumber, ((page*size)-size), size);
     }
-    
-    
-    // [출결] - 선택한 수강생의 출석 상태 수정
-    /*@Override
-    public void updateStudentAttendance(String attendanceStatus, String attendanceDate, int studentCourseSeq) {
-        int year = Integer.parseInt(attendanceDate.split("-")[0]);
+     */
+
+    // *0715 출결 입력/수정 페이지 검색 결과 데이터 목록 (경우1~3 하나로)
+    @Override
+    public int getAttendanceStatusListAmount(String attendanceDate, String academyLocation, String name, int courseNumber){
+        int year = Integer.parseInt(attendanceDate.split("-")[0] );
         int month = Integer.parseInt(attendanceDate.split("-")[1]);
         int day = Integer.parseInt(attendanceDate.split("-")[2]);
-        String status = null;
 
-        switch(attendanceStatus) {
-            case "lateness":
-                case "지각":
-                status = "지각";
-                break;
-            case "goOut":
-                case "외출":
-                status = "외출";
-                break;
-            case "absence":
-                case "결석":
-                status = "결석";
-                break;
-            case "earlyLeave":
-                case "조퇴":
-                status = "조퇴";
-                break;
-            case "acknowledge": case "출석 인정":
-                status = "출석 인정";
-                break;
-            default:
-                status = "출석";
-                break;
-        }
+        return attendanceMapper.selectAttendanceStatusListAmount(LocalDate.of(year, month, day), academyLocation, name, courseNumber);
+    }
+    @Override
+    public List<AttendanceListBySearchFilterDTO> getAttendanceStatusList(String attendanceDate, String academyLocation, String name, int courseNumber, int page, int size){
+        List<AttendanceListBySearchFilterDTO> result = new ArrayList<>();
+        int year = Integer.parseInt(attendanceDate.split("-")[0] );
+        int month = Integer.parseInt(attendanceDate.split("-")[1]);
+        int day = Integer.parseInt(attendanceDate.split("-")[2]);
 
-        UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus(status).attendanceDate(LocalDate.of(year, month, day)).studentCourseSeq(studentCourseSeq).build();
-        attendanceMapper.updateStudentAttendance(dto);
-    }*/
+        List<AttendanceListBySearchFilterDTO> attendanceList = attendanceMapper.selectAttendanceStatusList(LocalDate.of(year, month, day), academyLocation, name, courseNumber, (page*size)-size, size);
+
+        return attendanceList;
+    }
+
+
+    // [출결] - 선택한 수강생의 출석 상태 수정
     @Override
     public void updateStudentAttendance(List<RequestStudentAttendanceDTO> dto) {
         for(int i=0; i<dto.size(); i++) {
@@ -255,7 +202,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
     // 2. 목록의 학생 중 선택한 학생의 출결 상태 등록하기
     @Override
-    public void setAttendanceStatus(String attendanceStatus, String attendanceDate, int studentCourseSeq) {
+    public void setAttendanceStatus(String attendanceStatus, String attendanceDate, int studentCourseSeq, String managerId) {
         int year = Integer.parseInt(attendanceDate.split("-")[0]);
         int month = Integer.parseInt(attendanceDate.split("-")[1]);
         int day = Integer.parseInt(attendanceDate.split("-")[2]);
@@ -286,7 +233,7 @@ public class AttendanceServiceImpl implements AttendanceService {
                 break;
         }
 
-        UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus(status).attendanceDate(LocalDate.of(year, month, day)).studentCourseSeq(studentCourseSeq).build();
+        UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus(status).attendanceDate(LocalDate.of(year, month, day)).studentCourseSeq(studentCourseSeq).managerId(managerId).build();
         attendanceMapper.insertAttendanceStatus(dto);
     }
 }

@@ -44,7 +44,7 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.findByStudentNameOrCourseNumberList(name, courseNumber, ((page*size)-size), size);
     }
 
-    // *0710_수강생 정보 조회
+    // *0710_수강생 정보 조회  // * 0715
     @Override
     public int getStudentInfoListCnt(int isActive, String name, int courseNumber, String academyLocation) {
         return studentMapper.selectStudentInfoListCnt(isActive, name, courseNumber, academyLocation);
@@ -63,42 +63,53 @@ public class StudentServiceImpl implements StudentService {
         // 'StudentService'의 'selectStudentCourseHistory'도 필요 (n차 수강생인 경우, 가장 최근에 수강하는 교육과정의 수료여부를 보여줄 것임)
         List<ArrayList> item = new ArrayList<>();  // [[studentInfoList, attendanceRatio], []]
         List<StudentInfoDTO> studentInfoList = studentMapper.selectStudentInfoList(isActive, name, courseNumber, academyLocation, ((page*size)-size), size);
-        List<ArrayList> attendanceRatioList = attendanceService.getAttendanceIntegratedList(name, courseNumber, "가산", page, size);
+        List<ArrayList> attendanceRatioList = attendanceService.getAttendanceIntegratedList(name, courseNumber, "가산", 1, 1000);
+        log.info("🌕 studentInfoList: " + studentInfoList.toString());
+        log.info("🌕 attendanceRatioList: " + attendanceRatioList.toString());
 
-        int loopSize = studentInfoList.size() > attendanceRatioList.size() ? attendanceRatioList.size() : studentInfoList.size();
-        for(int i=0; i<loopSize; i++) {
-            // if(studentInfoList.get(i).getHrdNetId().equals(attendanceRatioList.get(i).get(0)))
+        for(int i=0; i<studentInfoList.size(); i++) {
             ArrayList tmp = new ArrayList<>(2);
-            log.info(">>>>>>>>> attendanceRatioList.get(i).get(1): " + attendanceRatioList.get(i).get(1));
-            log.info(">>>>>>>>> attendanceRatioList.get(i).get(0): " + attendanceRatioList.get(i).get(0));
             log.info(">>>>> studentInfoList.get(i): " + studentInfoList.get(i));
-            log.info(">>>>> studentInfoList.get(i): " + studentInfoList.get(i).getHrdNetId());
-            String dataString = attendanceRatioList.get(i).get(0).toString();
+            tmp.add(0, studentInfoList.get(i));
 
-            String[] dataPairs = dataString.split(", ");
-            for (String pair : dataPairs) {
-                String[] keyValue = pair.split("=");
+            for(int j=0; j<attendanceRatioList.size(); j++) {
+                log.info(">>>>>>>>> attendanceRatioList.get(j).get(0): " + attendanceRatioList.get(j).get(0));
+                log.info(">>>>>>>>> attendanceRatioList.get(j).get(1): " + attendanceRatioList.get(j).get(1));
+                String dataString = attendanceRatioList.get(j).get(0).toString();
+                log.info("🔥 dataString: " + dataString);
 
-                if (keyValue[0].equals("hrdNetId")) {
-                    String hrdNetId = keyValue[1];
-                    if(hrdNetId.equals(studentInfoList.get(i).getHrdNetId())) {
-                        tmp.add(studentInfoList.get(i));
-                        String ratio = attendanceRatioList.get(i).get(1).toString();
-                        tmp.add(ratio);
+                String[] dataPairs = dataString.split(", ");
+                log.info("🔥 dataPairs: " + dataPairs);
+
+                for (String pair : dataPairs) {
+                    log.info("🔥 pair: " + pair);
+                    String[] keyValue = pair.split("=");
+                    log.info("🔥 keyValue: " + keyValue.toString());
+
+                    if (keyValue[0].equals("hrdNetId")) {
+                        String hrdNetId = keyValue[1];
+                        if(hrdNetId.equals(studentInfoList.get(i).getHrdNetId())) {
+                            String ratio = attendanceRatioList.get(j).get(1).toString();
+                            System.out.println("ratio 길이: " + ratio.length());
+                            if(ratio.length()==0 || ratio.isEmpty()) {
+                                ratio = "0";
+                            }
+                            log.info("🔥🔥 ratio: "+ratio);
+                            tmp.add(1, ratio);
+                        }
+                    } else {
+                        continue;
                     }
-                } else {
-                    continue;
                 }
             }
             item.add(tmp);
+            log.info("ITEM: " + item.toString());
         }
         log.info(">>> item: " + item);
 
-
-
         return item;
     }
-    // *0710_수강생 정보 조회 (end)
+    // *0710_수강생 정보 조회 // *0715 (end)
 
     // *0710_수강생 id로 수강내역 조회
     @Override
