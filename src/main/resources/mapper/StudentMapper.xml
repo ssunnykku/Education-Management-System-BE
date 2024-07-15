@@ -61,7 +61,8 @@
                           LEFT JOIN students s ON sc.student_id=s.student_id
                  WHERE s.name LIKE CONCAT('%', #{name},'%')
                    AND (IF(#{courseNumber}, 0, '기수')='기수' OR c.course_number=#{courseNumber})
-                   AND (IF(#{isActive}, 1, 0)=s.is_active)]]>
+                   AND (IF(#{isActive}, 1, 0)=s.is_active)
+                   AND c.academy_location=#{academyLocation}]]>
     </select>
     <!--0710_수강생 이름 또는 기수로 수강생의 기본 정보 select-->
     <select id="selectStudentInfoList" resultType="com.kosta.ems.student.StudentInfoDTO">
@@ -88,6 +89,7 @@
                  WHERE s.name LIKE CONCAT('%', #{name},'%')
                    AND (IF(#{courseNumber}, 0, '기수')='기수' OR c.course_number=#{courseNumber})
                    AND (IF(#{isActive}, 1, 0)=s.is_active)
+                   AND c.academy_location = #{academyLocation}
                  ORDER BY c.course_number DESC, s.name ASC
                      LIMIT #{page}, #{size}]]>
     </select>
@@ -105,7 +107,7 @@
         from students_courses sc
                  JOIN students s ON sc.student_id=s.student_id
                  LEFT JOIN courses c ON c.course_seq=sc.course_seq
-        WHERE s.student_id=#{studentId}
+        WHERE s.student_id=#{studentId} AND c.academy_location = #{academyLocation}
         ORDER BY c.course_seq DESC
     </select>
     <!--입력 hrdNetId인지 확인-->

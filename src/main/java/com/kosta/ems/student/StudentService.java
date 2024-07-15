@@ -27,10 +27,10 @@ public interface StudentService {
     List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumberList(String name, int courseNumber, int page, int size);
 
     // *0710_수강생 정보 조회
-    int getStudentInfoListCnt(int isActive, String name, int courseNumber);
-    List<StudentInfoDTO> getStudentInfoList(int isActive, String name, int courseNumber, int page, int size);
+    int getStudentInfoListCnt(int isActive, String name, int courseNumber, String academyLocation);
+    List<StudentInfoDTO> getStudentInfoList(int isActive, String name, int courseNumber, String academyLocation, int page, int size);
     // *0710_수강생 정보 조회 (end)
-    List<ArrayList> getStudentInfoList2(int isActive, String name, int courseNumber, int page, int size);
+    List<ArrayList> getStudentInfoList2(int isActive, String name, int courseNumber, String academyLocation, int page, int size);
 
     // *0710_수강생 id로 수강내역 조회
     List<StudentCourseHistoryDTO> getStudentCourseHistory(String studentId);
