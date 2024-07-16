@@ -48,8 +48,9 @@ public class JwtTokenProvider {
 
         String accessToken = Jwts.builder()
                 .claim("id", hrdNetId)
+                .setSubject(hrdNetId)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(now.getTime() + Duration.ofMillis(ACCESS_EXPIRE).toMillis()))
+                .setExpiration(new Date(now.getTime() + Duration.ofMinutes(ACCESS_EXPIRE).toMillis()))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
 
@@ -62,14 +63,28 @@ public class JwtTokenProvider {
 
 
     public boolean isValid(String token) {
+
         try {
-            return Jwts.parser()
+//            log.info("만료? {}", Jwts.parser()
+//                    .setSigningKey(SECRET_KEY)
+//                    .build()
+//                    .parseClaimsJws(token)
+//                    .getBody()
+//                    .getExpiration());
+//            log.info("검증 결과 {} ", Jwts.parser()
+//                    .setSigningKey(SECRET_KEY)
+//                    .build()
+//                    .parseClaimsJws(token)
+//                    .getBody()
+//                    .getExpiration()
+//                    .before(new Date()));
+
+            Jwts.parser()
                     .setSigningKey(SECRET_KEY)
                     .build()
-                    .parseClaimsJws(token)
-                    .getBody()
-                    .getExpiration()
-                    .before(new Date());
+                    .parseClaimsJws(token);
+            log.info("결과? ");
+            return true;
         } catch (Exception e) {
             return false;
         }
@@ -77,23 +92,27 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String accessToken) {
         Claims claims = parseClaims(accessToken);
+        Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("STUDENT"));
 
-        if (claims.get("auth") == null) {
+
+        log.info("claims {} :", claims);
+
+        if (claims.get("id") == null) {
             // 권한 정보 없는 토큰
+            log.error("토큰 권한 없음");
             throw new IllegalArgumentException();
 //            throw new InvalidTokenException(INVALID_TOKEN.getMessage());
         }
 
-        // Claim에서 권한 정보를 추출한다.
-        Collection<? extends GrantedAuthority> authorities = Arrays
-                .stream(claims.get("auth").toString().split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        log.info("claim 권한 정보: {}", authorities);
+        log.info("claims.getSubject() {} ", claims.getSubject());
 
         // Claim에 저장된 사용자 아이디를 통해 UserDetails 객체를 생성
         UserDetails principal = new User(claims.getSubject(), "", authorities);
 
-        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+        log.info("userDetails: {} ", principal);
+
+        return new UsernamePasswordAuthenticationToken(principal, accessToken, authorities);
     }
 
     private Claims parseClaims(String accessToken) {
@@ -124,13 +143,6 @@ public class JwtTokenProvider {
 
         return bearerToken;
     }
-
-
-//    public Long getUserId(String token) {
-//        Claims claims = getClaims(token);
-//        return claims.get("id", Long.class);
-//    }
-
 
 }
 

@@ -1,5 +1,6 @@
 package com.kosta.ems.config.jwt;
 
+import com.kosta.ems.student.StudentDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ class UserServiceTest {
 
     @Test
     void login() {
-        log.info("토큰 {} ", userService.login("solsol5390", "1234"));
 
     }
 }

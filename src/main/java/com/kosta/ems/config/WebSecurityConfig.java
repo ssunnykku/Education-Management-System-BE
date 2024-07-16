@@ -25,7 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @RequiredArgsConstructor
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 @Slf4j
 public class WebSecurityConfig {
     private int count;
@@ -53,24 +53,26 @@ public class WebSecurityConfig {
 
         http.csrf(csrf -> csrf.disable());
 
-        http.authorizeHttpRequests(authorize -> {
-            authorize.requestMatchers("/ems/login", "/api/students/login").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/**").authenticated()
-                    .requestMatchers("/api/**").authenticated()
-                    .anyRequest().authenticated();
-        });
+        http.httpBasic(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorize -> {
+                    authorize.requestMatchers("/ems/login", "/api/students/login").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/**").authenticated()
+                            .requestMatchers("/api/**").authenticated()
+                            .anyRequest().authenticated();
+                })
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                .addFilterBefore(new TokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         http.formLogin(formLogin -> formLogin
                         .loginPage("/ems/login")
                         .defaultSuccessUrl("/ems/courses", true)
-                        .failureUrl("/ems/login"))
-////                        .usernameParameter("employeeNumber"))
+                        .failureUrl("/ems/login")
+                        .usernameParameter("employeeNumber"))
                 .logout(logout -> logout
                         .logoutUrl("/manager/logout").logoutSuccessUrl("/ems/login")
-                        .invalidateHttpSession(true).deleteCookies("JSESSIONID"))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-                .addFilterBefore(new TokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
-
+                        .invalidateHttpSession(true).deleteCookies("JSESSIONID"));
 
         return http.build();
     }
@@ -99,28 +101,11 @@ public class WebSecurityConfig {
         return authBuilder.build();
 
     }
-//    public AuthenticationManager authenticationManager(HttpSecurity http, PlainEncoder passwordEncoder,
-//                                                       UserDetailService userDetailService) throws Exception {
-//
-//        log.info("{}", http);
-//        log.info("authBuilder {} ", http.getSharedObject(AuthenticationManagerBuilder.class));
-//
-//        return http.getSharedObject(AuthenticationManagerBuilder.class)
-//                .userDetailsService(userService)
-//                .passwordEncoder(passwordEncoder)
-//                .and()
-//                .build();
-//    }
 
     // 1비밀번호 암호화를 위해
     @Bean
     public PlainEncoder plainEncoder() {
         return new PlainEncoder();
     }
-
-//    @Bean
-//    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-
+    
 }
