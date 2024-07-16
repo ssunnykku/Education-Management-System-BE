@@ -141,7 +141,17 @@ public class CourseMapperTest {
 		int seq = mapper.searchCourseList(3000, "가산", 0, 10, false).get(0).getCourseSeq();
 		assertThat(mapper.inactivateCourse(seq)).isTrue();
 	}
-	
-	
+	@Test
+	@Transactional
+	public void getCourseByEndYear() {
+	    List<Integer> course= mapper.getCourseNumberListByYear(2024);
+	    assertThat(course.size()).isEqualTo(11);
+	}
+	@Test
+	@Transactional
+	public void getCourseNumberYearList() {
+		List<Integer> course =mapper.getCourseNumberYearList();
+		assertThat(course.size()).isEqualTo(2);
+	}
 
 }

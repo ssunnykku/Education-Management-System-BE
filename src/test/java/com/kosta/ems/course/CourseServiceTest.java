@@ -82,6 +82,15 @@ public class CourseServiceTest {
 		assertThat(service.deleteCourse(5, "가산")).isTrue();
 		assertThat(service.deleteCourse(1, "가산")).isFalse();
 	}
-	
+	@Test
+	@Transactional
+	public void getCourseNumberByYear() {
+		assertThat(service.getCourseNumberByYear(2024).size()).isEqualTo(1);
+	}
+	@Test
+	@Transactional
+	public void getCourseNumberYearList() {
+		assertThat(service.getCourseNumberYearList().size()).isEqualTo(2);
+	}
 	
 }
