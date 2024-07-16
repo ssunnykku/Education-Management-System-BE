@@ -24,4 +24,8 @@ public interface CourseMapper {
     boolean inactivateCourse(int courseSeq);
 
     CourseDTO getCourseByCourseNumber(int courseNumber);
+    
+    List<Integer> getCourseNumberListByYear(@Param("courseEndYear") int courseEndYear);
+    
+    List<Integer> getCourseNumberYearList();
 }

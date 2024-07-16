@@ -15,4 +15,6 @@ public interface CourseService {
     boolean addCourse(CourseDTO course);
     boolean editCourse(CourseDTO course);
     boolean deleteCourse(int courseSeq, String academyLocationOfManager);
+    List<Integer> getCourseNumberByYear(int courseEndYear);
+    List<Integer> getCourseNumberYearList();
 }
