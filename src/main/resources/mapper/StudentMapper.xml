@@ -266,5 +266,23 @@
         where hrd_net_id = #{hrdNetId}
     </update>
 
+    <select id="getRefreshToken" resultType="java.lang.String">
+        select refresh_token
+        from students
+        where hrd_net_id = #{hrdNetId}
+    </select>
+
+    <select id="findByToken" resultType="java.lang.String">
+        select hrd_net_id as hrdNetId
+        from students
+        where refresh_token = #{refreshToken}
+    </select>
+
+    <update id="removeToken">
+        update students
+        set refresh_token = null
+        where hrd_net_id = #{hrdNetId};
+    </update>
+
 
 </mapper>

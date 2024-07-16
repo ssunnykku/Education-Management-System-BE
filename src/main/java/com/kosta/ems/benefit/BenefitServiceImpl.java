@@ -119,9 +119,7 @@ public class BenefitServiceImpl implements BenefitService {
         List<BenefitTargetInfoDTO> studentInfo = (ArrayList<BenefitTargetInfoDTO>) benefitMapper.resultList(dto.getAcademyLocation(), dto.getName(), dto.getCourseNumber(), dto.getBenefitSettlementDate(), limit, offset);
         List<BenefitTargetInfoDTO> benefitAmount = (ArrayList<BenefitTargetInfoDTO>) benefitMapper.getBefitAmount(dto.getBenefitSettlementDate());
         List<BenefitTargetInfoDTO> result = new ArrayList<BenefitTargetInfoDTO>();
-
-//                  .totalAmount()
-
+        
         for (BenefitTargetInfoDTO data : studentInfo) {
             BenefitTargetInfoDTO newData = null;
             newData = BenefitTargetInfoDTO.builder()

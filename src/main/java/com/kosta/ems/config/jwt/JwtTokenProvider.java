@@ -1,9 +1,6 @@
 package com.kosta.ems.config.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,23 +33,32 @@ public class JwtTokenProvider {
 
     private final static String TOKEN_PREFIX = "Bearer ";
 
-
-    public TokenInfo createJwt(String hrdNetId) {
+    public String createAccessToken(String hrdNetId) {
         Date now = new Date();
 
-        String refreshToken = Jwts.builder()
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(now.getTime() + Duration.ofDays(REFRESH_EXPIRE).toMillis()))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-                .compact();
-
-        String accessToken = Jwts.builder()
+        return Jwts.builder()
                 .claim("id", hrdNetId)
                 .setSubject(hrdNetId)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(now.getTime() + Duration.ofMinutes(ACCESS_EXPIRE).toMillis()))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
+    }
+
+
+    public String createRefreshToken(String hrdNetId) {
+        Date now = new Date();
+        return Jwts.builder()
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(now.getTime() + Duration.ofDays(REFRESH_EXPIRE).toMillis()))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
+    }
+
+    public TokenInfo createJwt(String hrdNetId) {
+
+        String refreshToken = createRefreshToken(hrdNetId);
+        String accessToken = createAccessToken(hrdNetId);
 
         return TokenInfo.builder()
                 .grantType("Bearer")
@@ -62,38 +68,24 @@ public class JwtTokenProvider {
     }
 
 
-    public boolean isValid(String token) {
+    public boolean isValid(String token) throws InvalidTokenException {
 
         try {
-//            log.info("만료? {}", Jwts.parser()
-//                    .setSigningKey(SECRET_KEY)
-//                    .build()
-//                    .parseClaimsJws(token)
-//                    .getBody()
-//                    .getExpiration());
-//            log.info("검증 결과 {} ", Jwts.parser()
-//                    .setSigningKey(SECRET_KEY)
-//                    .build()
-//                    .parseClaimsJws(token)
-//                    .getBody()
-//                    .getExpiration()
-//                    .before(new Date()));
-
             Jwts.parser()
                     .setSigningKey(SECRET_KEY)
                     .build()
                     .parseClaimsJws(token);
-            log.info("결과? ");
-            return true;
-        } catch (Exception e) {
-            return false;
+
+        } catch (ExpiredJwtException e) {
+            log.error(e.getMessage());
+            throw new ExpiredTokenException(ExceptionMessage.EXPIRED_TOKEN.getMessage());
         }
+        return true;
     }
 
     public Authentication getAuthentication(String accessToken) {
         Claims claims = parseClaims(accessToken);
         Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("STUDENT"));
-
 
         log.info("claims {} :", claims);
 
@@ -113,6 +105,14 @@ public class JwtTokenProvider {
         log.info("userDetails: {} ", principal);
 
         return new UsernamePasswordAuthenticationToken(principal, accessToken, authorities);
+    }
+
+    public String getHrdNetId(HttpServletRequest request) {
+
+        String accessToken = getAccessToken(request);
+        Claims claims = parseClaims(accessToken);
+
+        return claims.getSubject();
     }
 
     private Claims parseClaims(String accessToken) {

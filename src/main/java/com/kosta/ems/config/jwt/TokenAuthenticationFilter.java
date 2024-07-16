@@ -25,27 +25,34 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        try {
+            String token = jwtTokenProvider.getAccessToken((HttpServletRequest) request);
 
-        String token = jwtTokenProvider.getAccessToken((HttpServletRequest) request);
+            log.info("authorization = " + token);
 
-        log.info("authorization = " + token);
+//            if (token == null) {
+//                throw new AccessDeniedException("권한이 없습니다.");
+//            }
 
-        if (token == null) {
-            throw new AccessDeniedException("권한이 없습니다.");
+            // 유효성 검사
+            if (token != null && jwtTokenProvider.isValid(token)) {
+                // Token이 유효할 경우, Authentication 객체를 생성하여 SecurityContext에 저장한다.
+                Authentication authentication = jwtTokenProvider.getAuthentication(token);
+
+                log.info("유효성 검사 통과 {} ", authentication);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+
+            log.info("res {} ", response);
+
+            filterChain.doFilter(request, response);
+
+        } catch (AccessDeniedException e) {
+            log.error(e.getMessage());
+
+
         }
 
-        // 유효성 검사
-        if (token != null && jwtTokenProvider.isValid(token)) {
-            // Token이 유효할 경우, Authentication 객체를 생성하여 SecurityContext에 저장한다.
-            Authentication authentication = jwtTokenProvider.getAuthentication(token);
-
-            log.info("유효성 검사 통과 {} ", authentication);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
-
-        log.info("res {} ", response);
-
-        filterChain.doFilter(request, response);
 
     }
 }

@@ -1,6 +1,5 @@
 package com.kosta.ems.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kosta.ems.config.jwt.JwtTokenProvider;
 import com.kosta.ems.config.jwt.StudentDetailService;
 import com.kosta.ems.config.jwt.TokenAuthenticationFilter;
@@ -19,13 +18,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 @Slf4j
 public class WebSecurityConfig {
     private int count;
@@ -57,7 +55,7 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers("/ems/login", "/api/students/login").permitAll()
+                    authorize.requestMatchers("/ems/login", "/api/students/login", "/api/token").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/**").authenticated()
                             .requestMatchers("/api/**").authenticated()
                             .anyRequest().authenticated();
@@ -107,5 +105,5 @@ public class WebSecurityConfig {
     public PlainEncoder plainEncoder() {
         return new PlainEncoder();
     }
-    
+
 }

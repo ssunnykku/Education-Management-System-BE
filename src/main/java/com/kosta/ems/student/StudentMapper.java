@@ -65,4 +65,10 @@ public interface StudentMapper {
 
     void setRefreshToken(String hrdNetId, String refreshToken);
 
+    String getRefreshToken(String hrdNetId);
+
+    String findByToken(String refreshToken);
+
+    void removeToken(String hrdNetId);
+
 }
