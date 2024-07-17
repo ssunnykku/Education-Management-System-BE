@@ -27,6 +27,9 @@
         </div>
         <div class="employment-btn-wrapper">
         <button type="button" id="export-to-excel" class="btn-setting">엑셀 추출</button>
+        <button type="button" class="email-btn">
+  		<a href="#" class="email" target="_blank">이메일</a>
+		</button>
         </div>
     </article>
     <section id="employment-contents">
@@ -35,6 +38,9 @@
     <table class="employmentBoard-table">
       <thead>
         <tr>
+         <th>
+            <input type="checkbox" name="" id="title-checkbox" />
+          </th>
           <th><span>hrd-net-id</span></th>
           <th><span>기수</span></th>
           <th><span>이름</span></th>
@@ -70,6 +76,27 @@
 </section>
 <footer></footer>
 <script>
+
+$(document).ready(function() {
+  const emailLink = $('.email');
+  const checkboxes = $('.checkbox');
+
+  $(".email").click(function(event) {
+    const selectedEmails = [];
+    $(".checkbox").each(function() {
+      if ($(this).prop('checked')) {
+        selectedEmails.push($(this).data('email'));
+      }
+    });
+
+    if (selectedEmails.length > 0) {
+      emailLink.attr('href', `mailto:${selectedEmails.join(',')}`);
+    } else {
+      alert('선택된 수강생이 없습니다.');
+    }
+  });
+});
+
 async function getSettlementList(data) {
   let tableBody = "";
 if (!data || data.length === 0) {
@@ -79,6 +106,7 @@ if (!data || data.length === 0) {
 	const employmentStatusText = data[i].employeed ? "취업" : "미취업";
 	const companyText = data[i].company || "";
     tableBody += `<tr>
+    <td><input type="checkbox" name=${data[i].sCSeq} class="checkbox"  data-email="${data[i].email}" value=${data[i].sCSeq}></td>
       <td><span class="employmentBoard-hrd-net-id">${data[i].hrdNetId}</span></td>
       <td><span class="employmentBoard-course-number">${data[i].courseNumber}</span></td>
       <td><span class="employmentBoard-name">${data[i].name}</span></td>

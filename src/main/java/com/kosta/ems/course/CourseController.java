@@ -63,6 +63,15 @@ public class CourseController {
 		return Map.of("result", courseService.getCourseTypeList());
 	}
 	
+	@GetMapping("course-list-by-year")
+	public Map getCourseNumberByYear(@RequestParam int courseEndYear) {
+		return Map.of("result", courseService.getCourseNumberByYear(courseEndYear));
+	}
+	
+	@GetMapping("course-year-list")
+	public Map getCourseNumberYearList() {
+		return Map.of("result",courseService.getCourseNumberYearList());
+	}
 	
 	@PostMapping("/course")
 	public Map<String, Boolean> addCourse(@RequestBody @Valid AddCourseRequest cRequest, BindingResult bindingResult){

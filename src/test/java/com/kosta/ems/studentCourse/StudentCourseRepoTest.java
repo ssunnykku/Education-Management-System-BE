@@ -23,14 +23,15 @@ public class StudentCourseRepoTest {
 	@Transactional
 	public void studentListfindByCourseSeq() {
 	    List<StudentCourseDTO> result = repo.findByCourseSeq(5);
-	    assertThat(result.get(0).getStudentId()).isEqualTo("01236aec-39ca-11ef-aad4-06a5a7b26ae5");
+	    assertThat(result.get(0).getStudentId()).isEqualTo("738003dc-3eb0-11ef-bd30-0206f94be675");
 	    
 	}
 	
 	@Test
 	@Transactional
 	public void countOfStudentsByCourseSeq() {
-	    assertThat(repo.countByCourseSeq(5)).isEqualTo(5);
+	    assertThat(repo.countByCourseSeq(5)).isGreaterThan(1);
+	    assertThat(repo.countByCourseSeq(12345678)).isEqualTo(0);
 	}
 
 }

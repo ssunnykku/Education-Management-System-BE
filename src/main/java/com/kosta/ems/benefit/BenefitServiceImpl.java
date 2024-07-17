@@ -119,13 +119,13 @@ public class BenefitServiceImpl implements BenefitService {
         List<BenefitTargetInfoDTO> studentInfo = (ArrayList<BenefitTargetInfoDTO>) benefitMapper.resultList(dto.getAcademyLocation(), dto.getName(), dto.getCourseNumber(), dto.getBenefitSettlementDate(), limit, offset);
         List<BenefitTargetInfoDTO> benefitAmount = (ArrayList<BenefitTargetInfoDTO>) benefitMapper.getBefitAmount(dto.getBenefitSettlementDate());
         List<BenefitTargetInfoDTO> result = new ArrayList<BenefitTargetInfoDTO>();
-        
+
         for (BenefitTargetInfoDTO data : studentInfo) {
             BenefitTargetInfoDTO newData = null;
             newData = BenefitTargetInfoDTO.builder()
                     .courseSeq(data.getCourseSeq())
                     .studentId(data.getStudentId())
-                    .courseNumber(data.getStudentId())
+                    .courseNumber(data.getCourseNumber())
                     .hrdNetId(data.getHrdNetId())
                     .name(data.getName())
                     .bank(data.getBank())
@@ -135,6 +135,7 @@ public class BenefitServiceImpl implements BenefitService {
                     .settlementDurationStartDate(data.getSettlementDurationStartDate())
                     .settlementDurationEndDate(data.getSettlementDurationEndDate())
                     .benefitsCategoriesSeq(data.getBenefitsCategoriesSeq())
+                    .benefitSettlementDate(data.getBenefitSettlementDate())
                     .build();
 
             for (BenefitTargetInfoDTO category : benefitAmount) {

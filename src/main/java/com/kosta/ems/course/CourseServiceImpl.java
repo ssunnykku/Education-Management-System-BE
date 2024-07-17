@@ -70,5 +70,13 @@ public class CourseServiceImpl implements CourseService {
 	public List<String> getCourseTypeList() {
 		return courseMapper.getCourseTypeList();
 	}
-
+	
+	@Override
+	public List<Integer> getCourseNumberByYear(int courseEndYear){
+		return courseMapper.getCourseNumberListByYear(courseEndYear);
+	}
+	@Override
+	public List<Integer> getCourseNumberYearList(){
+		return courseMapper.getCourseNumberYearList();
+	}
 }
