@@ -56,13 +56,16 @@ $(".employment-year-filter").on("change", async function () {
     const courseEmploymentRate = employmentData.result;
     const studentDataResponse = await fetch(`/courses/students-number?courseNumber=${courseNumber}`);
     const studentData = await studentDataResponse.json();
-     
+    const employedStudentDataResponse = await fetch(`/employments/count-employeed?courseNumber=${courseNumber}`);
+    const employedStudentData = await employedStudentDataResponse.json(); 
 	totalStudents= studentData.result
-	unemployedStudents = 20;
+	employedStudents = employedStudentData.result
+	unemployedStudents = totalStudents-employedStudents;
 
     // Update tooltip content using the fetched totalStudents
     chart.data.datasets[0].tooltipData.push({
       totalStudents: totalStudents,
+      employedStudents : employedStudents,
       unemployedStudents: unemployedStudents,
 
     });
@@ -137,6 +140,7 @@ fontStyle : 'bold'
         const courseNumber = data.labels[tooltipItem.index];
         const employmentData = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
         const totalStudents = data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].totalStudents;
+        const employedStudents = data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].employedStudents;
         const unemployedStudents = data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].unemployedStudents;
 	  var employmentRate = (employmentData).toFixed(1); 
 
@@ -144,7 +148,7 @@ fontStyle : 'bold'
         var tooltipBody = `
           ${courseNumber}기
           총 학생: ${totalStudents}명
-          취업: 20명  // Replace with actual employed student logic
+          취업: ${employedStudents}명
           미취업: ${unemployedStudents}명
           취업률: ${employmentRate}%`;
 
