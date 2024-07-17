@@ -135,7 +135,12 @@ fontStyle : 'bold'
 }]
 },
  tooltips: {
+  backgroundColor: '#F3F5F9',
+   bodyFontColor : '#000000',
+   bodySpacing : 6,
+   bodyAlign : 'center',
     callbacks: {
+    title : () => null,	
       label: function(tooltipItem, data) {
         const courseNumber = data.labels[tooltipItem.index];
         const employmentData = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
@@ -144,14 +149,14 @@ fontStyle : 'bold'
         const unemployedStudents = data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].unemployedStudents;
 	  var employmentRate = (employmentData).toFixed(1); 
 
-        // Customize tooltip content using the fetched data
-        var tooltipBody = `
-          ${courseNumber}기
-          총 학생: ${totalStudents}명
-          취업: ${employedStudents}명
-          미취업: ${unemployedStudents}명
-          취업률: ${employmentRate}%`;
-
+		  const tooltipBody = [
+        ` ${courseNumber}기`,
+        ` 총 학생: ${totalStudents}명`,
+        ` 취업: ${employedStudents}명`,
+        ` 미취업: ${unemployedStudents}명`,
+        ` 취업률: ${employmentRate}%`
+      ];
+			
         return tooltipBody;
       }
     }
