@@ -1,18 +1,16 @@
 package com.kosta.ems.config.jwt;
 
-import com.kosta.ems.student.StudentDTO;
+import com.kosta.ems.studentLogin.exception.ExceptionMessage;
+import com.kosta.ems.studentLogin.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.logging.ErrorManager;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j

@@ -1,4 +1,4 @@
-package com.kosta.ems.config.jwt;
+package com.kosta.ems.studentLogin.exception;
 
 public enum ExceptionMessage {
     AUTHENTICATION_FAILED("인증 실패"),

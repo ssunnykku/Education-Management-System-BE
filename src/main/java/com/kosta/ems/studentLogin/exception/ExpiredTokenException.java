@@ -1,4 +1,4 @@
-package com.kosta.ems.config.jwt;
+package com.kosta.ems.studentLogin.exception;
 
 public class ExpiredTokenException extends RuntimeException {
     public ExpiredTokenException() {

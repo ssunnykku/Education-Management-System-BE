@@ -56,19 +56,5 @@ public interface StudentMapper {
 
     // scq로 수강생 기본 정보 가져오기
     GetStudentInfoByScqDTO selectStudentInfoByScq(int studentCourseSeq);
-
-    List<StudentCourseInfoDTO> selectStudentListBycourseSeq(int courseSeq);
-
-    StudentDTO getLoginInfo(String hrdNetId);
-
-    String studentLogin(String hrdNetId, String password);
-
-    void setRefreshToken(String hrdNetId, String refreshToken);
-
-    String getRefreshToken(String hrdNetId);
-
-    String findByToken(String refreshToken);
-
-    void removeToken(String hrdNetId);
-
+    
 }

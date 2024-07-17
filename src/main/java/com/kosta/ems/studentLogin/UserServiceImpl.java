@@ -1,37 +1,37 @@
-package com.kosta.ems.config.jwt;
+package com.kosta.ems.studentLogin;
 
+import com.kosta.ems.config.jwt.JwtTokenProvider;
+import com.kosta.ems.config.jwt.TokenInfo;
 import com.kosta.ems.student.StudentDTO;
 import com.kosta.ems.student.StudentMapper;
-import io.jsonwebtoken.Claims;
+import com.kosta.ems.studentLogin.exception.ExceptionMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserService {
+public class UserServiceImpl implements UserService {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final UserMapper studentLoginMapper;
     private final StudentMapper studentMapper;
 
+    @Override
     @Transactional
     public TokenInfo login(StudentDTO studentDTO) {
         try {
             TokenInfo token = jwtTokenProvider.createJwt(studentDTO.getHrdNetId());
 
-            // 3. Mapper 로그인 처리
-            studentMapper.studentLogin(studentDTO.getHrdNetId(), studentDTO.getPassword());
+            // Mapper 로그인 처리
+            studentLoginMapper.studentLogin(studentDTO.getHrdNetId(), studentDTO.getPassword());
 
-            // 4. refreshToken 저장
-            studentMapper.setRefreshToken(studentDTO.getHrdNetId(), token.getRefreshToken());
+            // refreshToken 저장
+            studentLoginMapper.setRefreshToken(studentDTO.getHrdNetId(), token.getRefreshToken());
 
             log.info("token = {} ", token);
 
@@ -44,9 +44,10 @@ public class UserService {
 
     }
 
+    @Override
     public TokenInfo isRefreshTokenValid(String refreshToken) {
 
-        String hrdNetId = studentMapper.findByToken(refreshToken);
+        String hrdNetId = studentLoginMapper.findByToken(refreshToken);
 
         if (hrdNetId != null && jwtTokenProvider.isValid(refreshToken)) {
 
@@ -60,7 +61,7 @@ public class UserService {
             log.info("1 {} ", newRefreshToken);
 
             //   DB 업데이트하기
-            studentMapper.setRefreshToken(hrdNetId, newRefreshToken);
+            studentLoginMapper.setRefreshToken(hrdNetId, newRefreshToken);
             log.info("2 {} ", newRefreshToken);
 
             return TokenInfo.builder().accessToken(jwtTokenProvider.createAccessToken(hrdNetId)).refreshToken(newRefreshToken).build();
@@ -70,20 +71,21 @@ public class UserService {
         }
     }
 
+    @Override
     public void logout(String hrdNetId, String loginUser) {
         log.info(hrdNetId);
         log.info(loginUser);
+
         // access token hrdNetId
         if (!hrdNetId.equals(loginUser)) {
             log.info("여기");
             throw new IllegalArgumentException(ExceptionMessage.AUTHENTICATION_FAILED.getMessage());
         }
 
-        studentMapper.removeToken(hrdNetId);
+        studentLoginMapper.removeToken(hrdNetId);
         if (studentMapper.selectRegisteredStudentBasicInfo(hrdNetId) == null) {
             throw new IllegalArgumentException(ExceptionMessage.ILLEGAL_ARGUMENT.getMessage());
         }
     }
-
 
 }

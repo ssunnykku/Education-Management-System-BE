@@ -1,5 +1,7 @@
-package com.kosta.ems.config.jwt;
+package com.kosta.ems.studentLogin;
 
+import com.kosta.ems.config.jwt.JwtTokenProvider;
+import com.kosta.ems.config.jwt.TokenInfo;
 import com.kosta.ems.student.StudentDTO;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -50,7 +52,7 @@ public class UserController {
             String loginUser = jwtTokenProvider.getHrdNetId(request);
 
             userService.logout(hrdNetId, loginUser);
-            
+
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("result", true));
 
         } catch (IllegalArgumentException e) {

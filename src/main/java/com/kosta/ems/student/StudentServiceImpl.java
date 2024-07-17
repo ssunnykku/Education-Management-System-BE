@@ -146,10 +146,5 @@ public class StudentServiceImpl implements StudentService {
     public void removeSelectedStudent(String studentId) {
         studentMapper.deleteSelectedStudent(studentId);
     }
-
-    @Override
-    public void studentLogin(String hrdNetId, String password) {
-        studentMapper.studentLogin(hrdNetId, password);
-    }
-
+    
 }

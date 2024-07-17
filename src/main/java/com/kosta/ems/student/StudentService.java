@@ -55,7 +55,5 @@ public interface StudentService {
 
     // 수강생 삭제(isActive 값 수정)
     void removeSelectedStudent(String studentId);
-
-    void studentLogin(String hrdNetId, String password);
-
+    
 }

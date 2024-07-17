@@ -1,4 +1,4 @@
-package com.kosta.ems.config.jwt;
+package com.kosta.ems.studentLogin.exception;
 
 public class InvalidTokenException extends RuntimeException {
     public InvalidTokenException() {

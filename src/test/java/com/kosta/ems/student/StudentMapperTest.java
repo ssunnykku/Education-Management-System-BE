@@ -102,20 +102,5 @@ class StudentMapperTest {
     void selectStudentInfoByScq() {
         log.info(studentMapper.selectStudentInfoByScq(66).toString());
     }
-
-    @Test
-    void selectStudentListByCourseSeqTest() {
-
-        List<StudentCourseInfoDTO> list = studentMapper.selectStudentListBycourseSeq(19);
-
-        for (int i = 0; i < list.size(); i++) {
-            assertThat(list.get(i).getCourseNumber()).isEqualTo(277);
-        }
-
-    }
-
-    @Test
-    void getRefreshToken() {
-    }
     
 }
