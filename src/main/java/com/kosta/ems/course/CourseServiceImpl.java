@@ -86,7 +86,6 @@ public class CourseServiceImpl implements CourseService {
 	public List<Integer> getCourseNumberYearList(){
 		return courseMapper.getCourseNumberYearList();
 	}
-<<<<<<< HEAD
 	@Override
 	public Integer getStudentsNumberBySeq(int courseSeq) {
 		Integer result=courseMapper.getStudentsNumberBySeq(courseSeq);
@@ -99,11 +98,9 @@ public class CourseServiceImpl implements CourseService {
 	public Integer getSeqByCourseNumber(int courseNumber) {
 		return courseMapper.getSeqByCourseNumber(courseNumber);
 	}
-=======
 
     @Override
     public CourseDTO getCourseByCourseNumber(int CourseNumber) {
         return courseMapper.getCourseByCourseNumber(CourseNumber);
     }
->>>>>>> 1ada73d (feat: 특정 과정에 속한 학생 수 count api (#107))
 }
