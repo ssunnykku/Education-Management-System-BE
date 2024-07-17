@@ -3,6 +3,7 @@ package com.kosta.ems.employment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.IntPredicate;
 
 import org.springframework.stereotype.Service;
 
@@ -88,6 +89,19 @@ public class EmploymentService {
             return false;
         }
         return true;
+    }
+
+    public int countEmployeedByCourseNumber(int courseNumber) {
+        List<EmploymentInfoResponse> result = new ArrayList<>();
+        int courseSeq = courseMapper.getCourseByCourseNumber(courseNumber).getCourseSeq();
+        result = getEmploymentInfoByCourseSeq(courseSeq);
+        int numEmployeed = 0;
+        int numTotal = result.size();
+        for (EmploymentInfoResponse info : result) {
+            if(info.isEmployeed())
+                numEmployeed++;
+        }
+        return numEmployeed;
     }
     
 }
