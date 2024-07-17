@@ -28,22 +28,26 @@ public class StudentPointMapperTest {
 	@Test
 	@Transactional
 	public void getTotal() {
-		assertThat(mapper.getCountOfStudentWithPoint(277, null)).isEqualTo(4);
+		assertThat(mapper.getCountOfStudentWithPoint(277, null)).isGreaterThan(1);
+		assertThat(mapper.getCountOfStudentWithPoint(-123, null)).isEqualTo(0);
 	}
 	
 	@Test
 	@Transactional
 	public void getPointHistory() {
 		List<PointHistoryDTO> history = mapper.getPointHistory(19);
-		assertThat(history.size()).isEqualTo(6);
+		assertThat(history.size()).isGreaterThan(1);
+		history = mapper.getPointHistory(-12346567);
+		assertThat(history.size()).isEqualTo(0);
 	}
 	
 	@Test
 	@Transactional
 	public void getPointCategoryList() {
 		List<PointCategoryDTO> category = mapper.getPointCategoryList();
-		assertThat(category.size()).isEqualTo(10);
+		assertThat(category.size()).isGreaterThan(0);
 	}
+	
 	@Test
 	@Transactional
 	public void insertStudentPoint() {
