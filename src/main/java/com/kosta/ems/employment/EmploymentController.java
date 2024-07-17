@@ -52,6 +52,11 @@ public class EmploymentController {
         return Map.of("result", service.getEmployeedRatePct(courseNumber));
     }
     
+    @GetMapping("/count-employeed")
+    public Map getCountEmployeedByCourseNumber(@RequestParam int courseNumber) {
+        return Map.of("result", service.countEmployeedByCourseNumber(courseNumber));
+    }
+    
     @PutMapping("/student")
     public Map editEmployeedStatus(@RequestBody EditEmployeedStatusRequest request) {
         ManagerDTO loginUser = getLoginUser();
