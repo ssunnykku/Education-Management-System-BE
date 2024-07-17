@@ -17,4 +17,6 @@ public interface CourseService {
     boolean deleteCourse(int courseSeq, String academyLocationOfManager);
     List<Integer> getCourseNumberByYear(int courseEndYear);
     List<Integer> getCourseNumberYearList();
+    Integer getStudentsNumberBySeq(int courseSeq);
+    Integer getSeqByCourseNumber(int courseNumber);
 }

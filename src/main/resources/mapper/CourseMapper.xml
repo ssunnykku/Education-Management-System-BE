@@ -70,4 +70,15 @@
 	GROUP BY DATE_FORMAT(course_end_date, '%Y')
 	ORDER BY courseEndYear
 	</select>
+	<select id="getStudentsNumberBySeq" resultType="int">		
+	SELECT COUNT(student_id) As studentNum
+	FROM students_courses
+	WHERE course_seq= ${courseSeq}
+	GROUP BY course_seq
+	</select>
+	<select id="getSeqByCourseNumber" resultType="int">
+	SELECT course_seq
+	FROM courses
+	WHERE course_number=#{courseNumber}
+	</select>
 </mapper>
