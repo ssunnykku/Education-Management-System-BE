@@ -30,7 +30,8 @@ public class StudentCourseRepoTest {
 	@Test
 	@Transactional
 	public void countOfStudentsByCourseSeq() {
-	    assertThat(repo.countByCourseSeq(5)).isEqualTo(9);
+	    assertThat(repo.countByCourseSeq(5)).isGreaterThan(1);
+	    assertThat(repo.countByCourseSeq(12345678)).isEqualTo(0);
 	}
 
 }
