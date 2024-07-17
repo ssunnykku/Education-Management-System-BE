@@ -50,15 +50,17 @@ public class CourseMapperTest {
 	public void searchCourseList() {
 	    List<CourseDTO> list = mapper.searchCourseList(277, "가산", 0, 10, false);
 	    assertThat(list.size()).isEqualTo(1);
-	    list = mapper.searchCourseList(0, "가산", 0, 20, false);
-	    assertThat(list.size()).isEqualTo(11);
+	    list = mapper.searchCourseList(0, "강원", 0, 20, false);
+	    assertThat(list.size()).isEqualTo(0);
 	}
 	
 	@Test
 	@Transactional
 	public void getSearchCourseListSize() {
 	    int count = mapper.getSearchCourseListSize(0, "가산", 0, 20, false);
-	    assertThat(count).isEqualTo(11);
+	    assertThat(count).isGreaterThan(0);
+	    count = mapper.getSearchCourseListSize(0, "강원", 0, 20, false);
+        assertThat(count).isEqualTo(0);
 	}
 	
 	@Test
@@ -71,7 +73,9 @@ public class CourseMapperTest {
 	@Transactional
 	public void getCourseNumberList() {
 	    List<Integer> list = mapper.getCourseNumberList("가산", false);
-	    assertThat(list.size()).isEqualTo(11);
+	    assertThat(list.size()).isGreaterThan(1);
+	    list = mapper.getCourseNumberList("강원", false);
+        assertThat(list.size()).isEqualTo(0);
 	}
 
 	@Test

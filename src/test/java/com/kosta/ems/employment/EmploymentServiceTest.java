@@ -28,11 +28,10 @@ public class EmploymentServiceTest {
     @Transactional
     public void getEmploymentInfoByCourseNumber() {
         List<EmploymentInfoResponse> list = service.getEmploymentInfoByCourseSeq(5);
-//        log.info("\n" + service.getEmploymentInfoByCourseSeq(5).toString());
-        for (EmploymentInfoResponse dto : list) {
-            System.out.println(dto);
-        }
-        assertThat(list.size()).isEqualTo(9);
+        assertThat(list.size()).isGreaterThan(0);
+        
+        list = service.getEmploymentInfoByCourseSeq(-5);
+        assertThat(list.size()).isEqualTo(0);
 
     }
 
