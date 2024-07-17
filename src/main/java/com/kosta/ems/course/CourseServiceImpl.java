@@ -80,6 +80,19 @@ public class CourseServiceImpl implements CourseService {
 		return courseMapper.getCourseNumberYearList();
 	}
 
+	@Override
+	public Integer getStudentsNumberBySeq(int courseSeq) {
+		Integer result=courseMapper.getStudentsNumberBySeq(courseSeq);
+		if(result== null) {
+			result =0;
+		}
+		return result;
+	}
+	@Override
+	public Integer getSeqByCourseNumber(int courseNumber) {
+		return courseMapper.getSeqByCourseNumber(courseNumber);
+	}
+
     @Override
     public CourseDTO getCourseByCourseNumber(int CourseNumber) {
         return courseMapper.getCourseByCourseNumber(CourseNumber);

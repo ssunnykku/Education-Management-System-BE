@@ -157,5 +157,14 @@ public class CourseMapperTest {
 		List<Integer> course =mapper.getCourseNumberYearList();
 		assertThat(course.size()).isEqualTo(2);
 	}
-
+	@Test
+	@Transactional
+	public void getStudentsNumberBySeq() {
+		assertThat(mapper.getStudentsNumberBySeq(5)).isEqualTo(8);
+	}
+	@Test
+	@Transactional
+	public void getSeqByCourseNumber() {
+		assertThat(mapper.getSeqByCourseNumber(277)).isEqualTo(20);
+	}
 }

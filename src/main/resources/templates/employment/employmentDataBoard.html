@@ -6,6 +6,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
             integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js"></script>
+    
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -33,89 +34,132 @@
 </section>
 <footer></footer>
 <script>
-	$(".employment-year-filter").on("change", async function () {
-  const courseEndYear = $(this).val(); 
+$(".employment-year-filter").on("change", async function () {
+  const courseEndYear = $(this).val();
 
   const response = await fetch("/courses/course-list-by-year?courseEndYear=" + courseEndYear, {
-    method: "GET" 
+    method: "GET"
   });
   const data = await response.json();
 
-  // Data processing for X-axis labels (assuming data.result is an array of years)
-  const courseNumberLabels = data.result.map(courseNumber => courseNumber.toString()); // Convert numbers to strings
-
-  // Update chart labels for X-axis
+  const courseNumberLabels = data.result.map(courseNumber => courseNumber.toString());
   chart.data.labels = courseNumberLabels;
 
-  // Initialize empty arrays to store X-axis and Y-axis data
   const courseNumbers = [];
   const courseData = [];
+  const studentDataPromises = []; // Array to store student data promises
 
-  // Loop through each courseNumber to fetch and process additional data
   for (const courseNumber of data.result) {
-    // Asynchronous fetch for employment rate
-    const employmentDataResponse = await fetch(`/employments/avg-rate?courseNumber=${courseNumber}`);
+    // Fetch student data for the current courseNumber
+   const employmentDataResponse = await fetch(`/employments/avg-rate?courseNumber=${courseNumber}`);
     const employmentData = await employmentDataResponse.json();
+    const courseEmploymentRate = employmentData.result;
+    const studentDataResponse = await fetch(`/courses/students-number?courseNumber=${courseNumber}`);
+    const studentData = await studentDataResponse.json();
+    const employedStudentDataResponse = await fetch(`/employments/count-employeed?courseNumber=${courseNumber}`);
+    const employedStudentData = await employedStudentDataResponse.json(); 
+	totalStudents= studentData.result
+	employedStudents = employedStudentData.result
+	unemployedStudents = totalStudents-employedStudents;
 
-    // Assuming 'employmentData' contains the employment rate (e.g., 'result')
-    const courseEmploymentRate = employmentData.result; // Modify based on your data structure
+    // Update tooltip content using the fetched totalStudents
+    chart.data.datasets[0].tooltipData.push({
+      totalStudents: totalStudents,
+      employedStudents : employedStudents,
+      unemployedStudents: unemployedStudents,
 
-    // Add courseNumber and employment rate to the respective arrays
+    });
+
     courseNumbers.push(courseNumber);
     courseData.push(courseEmploymentRate);
   }
 
-  // Update chart datasets (X-axis and Y-axis data)
   chart.data.labels = courseNumbers;
   chart.data.datasets[0].data = courseData;
-
-  // Update chart (optional for some Chart.js versions)
   chart.update();
 });
 
-
-    var ctx = document.getElementById('employment-graph').getContext('2d');
-    var chart = new Chart(ctx, {
-      // 생성하려는 차트 유형
-      type: 'bar',
-
-      // 데이터셋 데이터
-      data: {
-        labels: [], // 초기 X축 레이블 (빈 배열)
-        datasets: [{
-          label: '기수별 취업률',
-          backgroundColor: ['5C7CFA'],
-          data: [] // 초기 데이터 (빈 배열)
-        }]
-      },
-
-  // Configuration options go here
-  options: {
-    legend: {
-      labels: {
-        fontColor: '000000',
-        fontSize: 15
-      }
-    },
-    scales: {
-      xAxes: [{
-        ticks: {
-          fontColor: '000000',
-          fontSize: '15'
-        }
-      }],
-      
-      yAxes: [{
-  ticks: {
-    beginAtZero: true,
-    max: 100,
-    fontColor: '000000',
-    fontSize: '15'
+var ctx = document.getElementById('employment-graph').getContext('2d');
+var chart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: [],
+    datasets: [{
+      label: '기수별 취업률',
+      backgroundColor: '#5C7CFA',
+      data: [],
+      tooltipData: [] // Array to store additional tooltip data
+    }]
   },
-  gridLines: {
-    display: false
-  }
+options: {
+legend: {
+labels: {
+fontColor: '#000000',
+fontSize: 15
+}
+},
+scales: {
+xAxes: [{
+ticks: {
+fontColor: '#000000',
+fontSize: 15
+},
+gridLines: {
+display: true // Always show Y-axis grid lines
+},
+scaleLabel: { // Add X-axis title
+display: true,
+labelString: '기수', // Set the X-axis title text
+fontColor: '#000000',
+fontStyle : 'bold',
+fontSize: 16,
+}
+}],
+yAxes: [{
+ticks: {
+beginAtZero: true,
+max: 100,
+fontColor: '#000000',
+fontSize: 15
+},
+gridLines: {
+display: true // Always show Y-axis grid lines
+},
+scaleLabel: { // Add Y-axis title
+display: true,
+labelString: '취업률(%)', // Set the Y-axis title text
+fontColor: '#000000',
+fontSize: 16,
+fontStyle : 'bold'
+}
 }]
+},
+ tooltips: {
+  backgroundColor: '#F3F5F9',
+   bodyFontColor : '#000000',
+   bodySpacing : 6,
+   bodyAlign : 'center',
+    callbacks: {
+    title : () => null,	
+      label: function(tooltipItem, data) {
+        const courseNumber = data.labels[tooltipItem.index];
+        const employmentData = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+        const totalStudents = data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].totalStudents;
+        const employedStudents = data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].employedStudents;
+        const unemployedStudents = data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].unemployedStudents;
+	  var employmentRate = (employmentData).toFixed(1); 
+
+		  const tooltipBody = [
+        ` ${courseNumber}기`,
+        ` 총 학생: ${totalStudents}명`,
+        ` 취업: ${employedStudents}명`,
+        ` 미취업: ${unemployedStudents}명`,
+        ` 취업률: ${employmentRate}%`
+      ];
+			
+        return tooltipBody;
+      }
+    }
     }
   }
 });
