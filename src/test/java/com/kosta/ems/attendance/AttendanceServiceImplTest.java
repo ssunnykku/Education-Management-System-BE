@@ -108,17 +108,17 @@ class AttendanceServiceImplTest {
 
 
     // ** 출결 수정 - 선택한 수강생의 출석 상태 수정
- 	@Test
+    @Test
     @DisplayName("출결 수정 - 선택한 수강생의 출석 상태 수정")
     @Transactional
-     void updateStudentAttendance() {
+    void updateStudentAttendance() {
         List<RequestStudentAttendanceDTO> list = new ArrayList<>();
         RequestStudentAttendanceDTO dto = RequestStudentAttendanceDTO.builder().attendanceDate("2024-07-01").studentId("30d25263-41d5-11ef-bd30-0206f94be675").name("류선재").attendanceStatus("외출").courseNumber(284).academyLocation("가산").studentCourseSeq(30).build();
         RequestStudentAttendanceDTO dto2 = RequestStudentAttendanceDTO.builder().attendanceDate("2024-07-01").studentId("0022bb27-41d9-11ef-bd30-0206f94be675").name("임솔").attendanceStatus("출석").courseNumber(284).academyLocation("가산").studentCourseSeq(31).build();
         list.add(dto);
         list.add(dto2);
         attendanceService.updateStudentAttendance(list);
-     }
+    }
     // ** 출결 수정 - 선택한 수강생의 출석 상태 수정 (end)
 
 

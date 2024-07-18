@@ -141,7 +141,7 @@
         };
 
         await fetch("/attendances/student-list?page="+param, requestOptions)
-                .then((res) => res.json())
+            .then((res) => res.json())
             .then(async(data) => {
                 console.log("출결 조회 Data");
                 console.log(data);

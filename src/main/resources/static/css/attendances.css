@@ -133,6 +133,19 @@ select {
     background: rgba(244, 244, 244, 1);
 }
 
+.acknowledgeModal {
+    margin: auto;
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    .modal-contents-wrapper {
+        /*display: flex;*/
+    }
+}
+.modal-btn-wrapper {
+    display: flex;
+    gap: 20px;
+}
+
 /* 수강생 출결 입력(등록) 모달 */
 .addAttendanceModal {
     margin: auto;
