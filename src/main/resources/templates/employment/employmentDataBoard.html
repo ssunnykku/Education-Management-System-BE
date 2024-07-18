@@ -60,17 +60,25 @@
                 const totalStudent = studentData.result;
                 const employedStudentDataResponse = await fetch(`/employments/count-employeed?courseNumber=${courseNumber}`);
                 const employedStudentData = await employedStudentDataResponse.json();
-                const employedStudent= employedStudentData.result;
+                const employedStudent = employedStudentData.result;
                 totalStudents = studentData.result
                 employedStudents = employedStudentData.result
                 unemployedStudents = totalStudents - employedStudents;
-				employmentRate = employmentData.result;
+                employmentRate = employmentData.result;
                 // Update tooltip content using the fetched totalStudents
                 chart.data.datasets[0].tooltipData.push({
                     totalStudents: totalStudents,
                     employedStudents: employedStudents,
                     unemployedStudents: unemployedStudents,
-                    employmentRate : employmentRate
+                    employmentRate: employmentRate
+
+                });
+                
+                 chart.data.datasets[1].tooltipData.push({
+                    totalStudents: totalStudents,
+                    employedStudents: employedStudents,
+                    unemployedStudents: unemployedStudents,
+                    employmentRate: employmentRate
 
                 });
 
@@ -80,7 +88,7 @@
             }
 
             chart.data.labels = courseNumbers;
-             //총 학생 수 
+            //총 학생 수 
             chart.data.datasets[0].data = totalStudentData;
             chart.data.datasets[1].data = courseData;
 
@@ -94,29 +102,25 @@
                 labels: [],
                 datasets: [{
                     label: '전체 학생 수',
-                    backgroundColor: '#5C7CFA',
+                    backgroundColor: '#9DC658',
                     data: [],
-                    tooltipData: [] ,// Array to store additional tooltip data
-                    yAxisID: 'y-axis-1' 
+                    tooltipData: [],// Array to store additional tooltip data
+                    tooltips: {
+                        enabled: false // 첫 번째 데이터셋 툴팁 비활성화
+                    }
                 },
                 {
                     type: 'bar',
                     data: [],
-               		 label: '취업 학생 수' ,
+                    label: '취업 학생 수',
                     fill: false,
+                    tooltipData: [],
                     backgroundColor: '#F19027',
-                     yAxisID: 'y-axis-2',
-                     tooltipData: [] 
+                    tooltips: {
+                        enabled: true // 두 번째 데이터셋 툴팁 활성화
+                    }
                 },
-                {
-                    type: 'line',
-                    data: [],
-               		 label: '취업률' ,
-                    fill: false,
-                    backgroundColor: '#F19027',
-                     yAxisID: 'y-axis-2',
-                     tooltipData: [] 
-                }
+               
                 ]
             },
             options: {
@@ -156,26 +160,7 @@
                         },
                         scaleLabel: {
                             display: true,
-                            labelString: '총 학생 수', // Set the Y-axis title text
-                            fontColor: '#000000',
-                            fontSize: 16,
-                            fontStyle: 'bold'
-                        }
-                    }, {
-                        id: 'y-axis-2',
-                        position: 'right',
-                        ticks: {
-                            beginAtZero: true,
-                            max: 30,
-                            fontColor: '#000000',
-                            fontSize: 15
-                        },
-                        gridLines: {
-                            display: false
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: '취업한 학생 수', // Set the Y-axis title text
+                            labelString: '학생 수', // Set the Y-axis title text
                             fontColor: '#000000',
                             fontSize: 16,
                             fontStyle: 'bold'
