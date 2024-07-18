@@ -16,8 +16,12 @@
     <article class="student-filter-btn-wrapper">
         <div class="filter-btn-wrapper">
             <div class="search-form-wrapper">
+                <select id="is-active-filter" class="courseId-filter is-active">
+                    <option value="1">활성화된 수강생</option>
+                    <option value="0">비활성화된 수강생</option>
+                </select>
                 <input placeholder="기수" id="input-course-number" class="courseId-filter" name="courseNumber"/>
-                <input placeholder="수강생을 입력하세요" id="input-name" class="search-input" name="name"/>
+                <input placeholder="수강생을 입력하세요" id="input-name" class="student-name-filter" name="name"/>
                 <button type="button" class="filter-search-btn">검색</button>
             </div>
             <div class="student-btn-wrapper">
@@ -35,12 +39,12 @@
                 <th class="course-number">기수</th>
                 <th class="student-name">이름</th>
                 <th class="student-phonenumber">전화번호</th>
-                <th class="student-completion-status">수료 여부</th>
+                <th class="student-completion-status">출석률</th>
             </tr>
         </table>
     </article>
     <article class="page-information">
-        <ul id="pagination" style="margin-top: 35px;">
+        <ul id="pagination">
             <li>
                 <a class="page-link" id="prev"><img src="../../assets/navigate_prev_white_24dp%201.svg" alt="이전"/></a>
             </li>
@@ -94,6 +98,8 @@
                 <label>계좌: </label><br/>
                 <input type="text" id="modal-student-account" disabled/>
             </div>
+        </div>
+        <div class="student-detail-wrapper">
             <div id="student-course-wrapper" class="detail-info-item">
                 <p>교육과정 이수내역</p>
                 <table class="modal-table">
@@ -106,10 +112,14 @@
                     </tr>
                 </table>
             </div>
+            <div class="detail-info-item">
+                <input type="radio" id="activation" name="isActive" /><label>활성화</label>
+                <input type="radio" id="deactivation" name="isActive"/><label>비활성화</label>
+            </div>
         </div>
         <div class="student-detail-wrapper">
             <button id="update-btn" class="btn">수정</button>
-            <button id="delete-btn" class="btn">삭제</button>
+            <!--<button id="delete-btn" class="btn">삭제</button>-->
             <button id="update-set-btn" class="btn">수정</button>
         </div>
     </div>
@@ -127,6 +137,20 @@
 
             // 클릭이 모달 콘텐츠 영역 외부인지 확인
             if (!modal.is(event.target) && !modalContainer.is(event.target) && modalContainer.has(event.target).length === 0) {
+                // 수정 상태에서 모달 외부 영역 클릭 대비
+                $("#update-set-btn").css("display", "none");
+                $("#update-btn").css("display", "flex");
+                $("#delete-btn").css("display", "flex");
+
+                $("#modal-student-name").attr("disabled", true);
+                $("#modal-student-bank").attr("disabled", true);
+                $("#modal-student-account").attr("disabled", true);
+                $("#modal-student-address").attr("disabled", true);
+                $("#modal-student-phone-number").attr("disabled", true);
+                $("#modal-student-email").attr("disabled", true);
+                $("input[name='isActive']").attr("disabled", true);
+
+
                 modal.css('display', 'none'); // 모달 숨기기
                 $(".modal-backdrop").css("display", "none");
             }
@@ -155,19 +179,27 @@
         if($("#input-course-number").val() == "") {
             return 0;
         }
-        return parseInt($(".courseId-filter").val());
+        return parseInt($("#input-course-number").val());
     }
     function getStudentName() {
-        return $(".search-input").val();
+        return $(".student-name-filter").val();
     }
     function getStudentId() {
         return $("input[name='student-radio']:checked").val();
+    }
+    function getIsActive() {
+        console.log("active 상태");
+        console.log($("#is-active-filter").val());
+        let isActive = $("#is-active-filter").val() == 1 ? 1 : 0;
+        return isActive;
     }
 
     // 수강생 검색 결과 데이터 가져오기
 
     // -- 검색 결과 '총 **건' 화면에 연결
     async function getAmountStudentList(data) {
+        console.log("총 ** 건 - data");
+        console.log(data);
         totalPage = Math.ceil(data/10);   // 페이징 확인을 위해 임시로 '2'해둔 것. 10으로 바꿔야함.
         console.log("totalPage: " + totalPage);
         let result = '';
@@ -180,21 +212,23 @@
 
     // -- 검색 결과 목록 화면에 연결
     async function getSearchedStudentList(data) {
-        let result = `<tr><th class="hrd-net-id">HRD-Net ID</th><th class="course-number">기수</th><th class="student-name">이름</th><th class="student-phonenumber">전화번호</th><th class="student-completion-status">수료 여부</th></tr>`;
+        let result = `<tr><th class="hrd-net-id">HRD-Net ID</th><th class="course-number">기수</th><th class="student-name">이름</th><th class="student-phonenumber">전화번호</th><th class="student-completion-status">출석률</th></tr>`;
+
         for(let i=0; i<data.length; i++) {
             result += `<tr class="board-table-row">
-                    <td class="hrd-net-id">${data[i].hrdNetId}<input type="hidden" name="student-id" class="fetch-student-id" value=${data[i].studentId}/></td>
-                    <td class="course-number">${data[i].courseNumber}</td>
-                    <td class="student-name">${data[i].name}</td>
-                    <td class="student-phonenumber">${data[i].phoneNumber}</td>
+                    <td class="hrd-net-id">${data[i][0].hrdNetId}<input type="hidden" name="student-id" class="fetch-student-id" value=${data[i][0].studentId}/></td>
+                    <td class="course-number">${data[i][0].courseNumber}</td>
+                    <td class="student-name">${data[i][0].name}</td>
+                    <td class="student-phonenumber">${data[i][0].phoneNumber}</td>
                     <td class="student-completion-status">
-                        <span>수료예정</span>
-                        <input type="hidden" class="student-email" value="${data[i].email}" />
-                        <input type="date" class="student-birth" style="display: none" value="${data[i].birth}" />
-                        <input type="hidden" class="student-gender" value="${data[i].gender}" />
-                        <input type="hidden" class="student-address" value="${data[i].address}" />
-                        <input type="hidden" class="student-bank" value="${data[i].bank}" />
-                        <input type="hidden" class="student-account" value="${data[i].account}" />
+                        <span>${data[i][1]}</span>
+                        <input type="hidden" class="student-email" value="${data[i][0].email}" />
+                        <input type="date" class="student-birth" style="display: none" value="${data[i][0].birth}" />
+                        <input type="hidden" class="student-gender" value="${data[i][0].gender}" />
+                        <input type="hidden" class="student-address" value="${data[i][0].address}" />
+                        <input type="hidden" class="student-bank" value="${data[i][0].bank}" />
+                        <input type="hidden" class="student-account" value="${data[i][0].account}" />
+                        <input type="hidden" class="student-isActive" value="${data[i][0].isActive}" />
                     </td>
                 </tr>`;
         }
@@ -204,12 +238,9 @@
         $(".board-table tr").on("click", async function() {
             const tmpStudentId = $(this).find(".fetch-student-id").val();
             const studentId = tmpStudentId.substring(0, tmpStudentId.length-1);
-            console.log(studentId);
             // *0710_선택한 수강생의 상세정보(수강내역 포함) 가져오기
             await fetchStudentCourseHistory(studentId);
             $("#modal-student-id").val(studentId);
-            console.log("모달의 studentId");
-            console.log($("#modal-student-id").val());
             $("#modal-student-name").val($(this).find(".student-name").text());
             $("#modal-student-birth").val($(this).find(".student-birth").val());
             $("#modal-student-hrd-net-id").val($(this).find(".hrd-net-id").text());
@@ -220,6 +251,12 @@
             $("#modal-student-address").val($(this).find(".student-address").val());
             $("#modal-student-bank").val($(this).find(".student-bank").val());
             $("#modal-student-account").val($(this).find(".student-account").val());
+            if($(this).find(".student-isActive").val() == 1) {
+                $("#activation").attr("checked", true);
+            } else {
+                $("#deactivation").attr("checked", true);
+            }
+            // $("input[name='isActive']").val($(this).find(".student-isActive").val());
 
             $(".modal-backdrop").css("display", "flex");
             $("#student-detail-modal").css("display", "flex");
@@ -245,10 +282,6 @@
         await fetch("/students/student-course-history", requestOptions)
             .then((res) => res.json())
             .then(async(data) => {
-                // console.log(data);
-                // console.log(data.studentCourseHistory);
-                // console.log(data.studentCourseHistory.length);
-                console.log(data.studentCourseHistory[0]);
                 await getStudentCourseHistory(data.studentCourseHistory);
             })
             .catch((error) => console.error(error));
@@ -256,7 +289,6 @@
 
     // *0710_가져온 수강내역 데이터를 모달에 연결
     async function getStudentCourseHistory(data) {
-        console.log("모달에 수강내역 넣기");
         let result = `<tr><th>과정 구분</th><th>기수</th><th>과정명</th><th>강사명</th><th>교육기간</th></tr>`;
         for(let i=0; i<data.length; i++) {
             result += `<tr class="board-table-row">
@@ -283,15 +315,17 @@
         $("#modal-student-address").attr("disabled", false);
         $("#modal-student-phone-number").attr("disabled", false);
         $("#modal-student-email").attr("disabled", false);
-
-        /*await fetchUpdateStudentInfo()
-            .then(async(response) => {
-                console.log(response);
-                alert("수강생 정보 수정이 정상처리되었습니다.");
-            })
-            */
+        $("input[name='isActive']").attr("disabled", false);
     });
     $("#update-set-btn").click(async function() {
+        let isActiveStatus = null;
+
+        if($("#activation").attr("checked", true)) {
+            isActiveStatus = 1;
+        } else if($("#deactivation").attr("checked", true)) {
+            isActiveStatus = 0;
+        }
+
         const raw = JSON.stringify({
             "name": $("#modal-student-name").val(),
             "address": $("#modal-student-address").val(),
@@ -299,13 +333,11 @@
             "account": $("#modal-student-account").val(),
             "phoneNumber": $("#modal-student-phone-number").val(),
             "email": $("#modal-student-email").val(),
-            "studentId": $("#modal-student-id").val()
+            "studentId": $("#modal-student-id").val(),
+            "isActive": isActiveStatus
         });
-        console.log("업데이트할 정보");
-        console.log(raw);
         await fetchUpdateStudentInfo(raw)
-            .then(async(response) => {
-                console.log(response);
+            .then(async (response) => {
                 alert("수강생 정보 수정이 정상처리되었습니다.");
                 location.reload();  // 화면 새로고침
             })
@@ -350,8 +382,11 @@
 
         const raw = JSON.stringify({
             "name": getStudentName(),
-            "courseNumber": getCourseNumber()
+            "courseNumber": getCourseNumber(),
+            "isActive": getIsActive()
         });
+        console.log("fetchStudentList - raw::");
+        console.log(raw);
 
         const requestOptions = {
             method: "POST",
@@ -378,29 +413,16 @@
         await fetchStudentList(page);
     });
 
-    // 선택한 학생의 수강생 정보 수정 페이지로 이동
-    $("#edit-btn").click(function() {
-        const tmp = $("input[name='student-radio']:checked").val();
-        const selectedId = tmp.substring(0, tmp.length-1);
-        sessionStorage.setItem("selected", selectedId);
-        window.location.href = "/ems/students/update/"+selectedId;
-    });
-
     // 페이지네이션
     function updatePagination(param) {
         $("#page-number").html("");
         let firstPage = (currentBlock * pageSize) - pageSize + 1;
         let lastPage = totalPage <= currentBlock * pageSize ? totalPage : currentBlock * pageSize;
 
-        if(lastPage != 1) {
             for (let i = firstPage; i <= lastPage; i++) {
                 let num = i;
                 $("#page-number").append(`<li><a class="page-link" onclick="fetchStudentList(${num})">${num}</a></li>`);
             }
-        } else {
-            $("#next").css("display", "none");
-            $("#prev").css("display", "none");
-        }
     }
 
     $("#next").click(() => {

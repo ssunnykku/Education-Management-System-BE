@@ -8,7 +8,8 @@
     <title>Document</title>
     <link rel="stylesheet" href="../../css/format.css"/>
     <link rel="stylesheet" href="../../css/students.css"/>
-    <link rel="stylesheet" href="../../css/scholarships.css" />
+    <link rel="stylesheet" href="../../css/attendances.css"/>
+    <!--<link rel="stylesheet" href="../../css/scholarships.css" />-->
     <style>
         .page-link {
             width: 10px;
@@ -21,63 +22,42 @@
 <section id="attendance-contents">
     <article class="attendance-search-btn-wrapper">
         <div class="attendance-search-form-wrapper">
-            <div id="search-form">
-                <input placeholder="기수" id="input-course-number" class="courseId-filter" name="courseNumber"/>
-                <input placeholder="수강생을 입력하세요" id="input-name" class="search-input" name="name"/>
-                <button type="button" class="filter-search-btn">검색</button>
-            </div>
+            <input placeholder="기수" id="input-course-number" class="courseId-filter" name="courseNumber"/>
+            <input placeholder="수강생을 입력하세요" id="input-name" class="student-name-filter" name="name"/>
+            <button type="button" class="filter-search-btn">검색</button>
         </div>
     </article>
-    <section id="content-section">
+    <article id="content-section">
         <article id="attendance-content-article" style="padding-left: 70px; margin-left: 0;">
             <div class="student-cnt-pages" style="margin-left: 0"></div>
         </article>
-        <article>
-            <div class="board-table">
-                <div class="board-row" id="board-title-row">
-                    <div class="attendance-courseId">
-                        <span>기수</span>
-                    </div>
-                    <div class="attendance-name">
-                        <span>이름</span>
-                    </div>
-                    <div class="attendance-birth">
-                        <span>생년월일</span>
-                    </div>
-                    <div class="attendance-duration">
-                        <span>과정 기간(일)</span>
-                    </div>
-                    <div class="attendance-cnt">
-                        <span>출석(일)</span>
-                    </div>
-                    <div class="attendance-cnt-late">
-                        <span>지각</span>
-                    </div>
-                    <div class="attendance-cnt-early-leave">
-                        <span>조퇴</span>
-                    </div>
-                    <div class="attendance-cnt-go-out">
-                        <span>외출</span>
-                    </div>
-                    <div class="attendance-cnt-absence">
-                        <span>결석(일)</span>
-                    </div>
-                    <div class="attendance-total">
-                        <span>출석 인정일</span>
-                    </div>
-                </div>
-                <div id="attendance-row-wrapper"></div>
-            </div>
+        <article id="content-article">
+            <table class="board-table refer-attendance-status">   <!--div class="board-row" id="board-title-row" 였던것-->
+                <tr>
+                    <th class="course-number">기수</th>
+                    <th class="course-name">교육과정명</th>
+                    <th class="student-name">수강생 이름</th>
+                    <th class="hrd-net-id">HRD-Net ID</th>
+                    <th class="attendance-duration">교육일수</th>
+                    <th class="attendance-cnt">출석</th>
+                    <th class="attendance-cnt-late">지각</th>
+                    <th class="attendance-cnt-early-leave">조퇴</th>
+                    <th class="attendance-cnt-go-out">외출</th>
+                    <th class="attendance-cnt-absence">결석</th>
+                    <th class="attendance-cnt-acknowledge">출석 인정</th>
+                    <th class="attendance-ratio">출석률</th>
+                </tr>
+            </table>
         </article>
-    </section>
+    </article>
     <article class="page-information">
-        <ul id="pagination" style="margin-top: 35px;">
+        <ul id="pagination">
             <li>
-                <a class="page-link" id="prev">이전</a>
+                <a class="page-link" id="prev"><img src="../../assets/navigate_prev_white_24dp%201.svg" alt="이전"/></a>
             </li>
             <li id="page-number" class="page-item" style="display: flex; gap: 20px"></li>
             <li class="page-item">
-                <a id="next" class="page-link">다음</a>
+                <a id="next" class="page-link"><img src="../../assets/navigate_next_white_24dp%201.svg" alt="다음"/></a>
             </li>
         </ul>
     </article>
@@ -85,11 +65,16 @@
 
 <footer></footer>
 <script>
+    $(document).ready(async function() {
+        await fetchStudentAttendanceList(1);
+    });
+
     let totalPage = 0;
     let currentPage = 1;
     let currentBlock = 1;
     const pageSize = 10;
-    const page = new URL(location.href).search.split("=")[0];
+    // const page = new URL(location.href).search.split("=")[0];
+    const page = 1;
 
     function getCourseNumber() {
         if($("#input-course-number").val() == "") {
@@ -98,60 +83,45 @@
         return parseInt($(".courseId-filter").val());
     }
     function getStudentName() {
-        return $(".search-input").val();
+        return $(".student-name-filter").val();
     }
 
     // 검색한 출결 데이터 목록 가져오기
     async function getAttendanceList(data) {
-        let result = '';
-        for(let i= 0; i < data.length; i++) {
+        console.log("getAttendanceList - data");
+        console.log(data);
+        let result = `<tr><th className="course-number">기수</th><th className="course-name">교육과정명</th><th className="student-name">수강생 이름</th><th className="hrd-net-id">HRD-Net ID</th><th className="attendance-duration">교육일수</th><th class="attendance-cnt">출석</th><th class="attendance-cnt-late">지각</th><th class="attendance-cnt-early-leave">조퇴</th><th class="attendance-cnt-go-out">외출</th><th class="attendance-cnt-absence">결석</th><th class="attendance-cnt-">출석 인정</th><th class="attendance-ratio">출석률</th></tr>`;
+        for (let i = 0; i < data.length; i++) {
             result +=
-                `<div class="board-row">
-                        <div class="attendance-courseId">
-                            <span class="span-course-number">${data[i].courseNumber}</span>
-                        </div>
-                        <div class="attendance-name">
-                            <span clss="span-student-ame">${data[i].name}</span>
-                        </div>
-                        <div class="attendance-hrdNetId">
-                            <span class="span-hrd-net-id">${data[i].hrdNetId}</span>
-                        </div>
-                        <div class="attendance-duration">
-                            <span class="span-attendance-duration">${data[i].totalTrainingDays}</span>
-                        </div>
-                        <div class="attendance-cnt">
-                            <span class="span-attendance-cnt">${data[i].sumAttendance}</span>
-                        </div>
-                        <div class="attendance-cnt-late">
-                            <span class="span-attendance-cnt-late">${data[i].sumLateness}</span>
-                        </div>
-                        <div class="attendance-cnt-early-leave">
-                            <span class="span-attendance-cnt-early-leave">${data[i].sumEarlyLeave}</span>
-                        </div>
-                        <div class="attendance-cnt-go-out">
-                            <span class="span-attendance-cnt-go-out">${data[i].sumGoOut}</span>
-                        </div>
-                        <div class="attendance-cnt-absence">
-                            <span class="span-attendance-cnt-absence">${data[i].sumAbsence}</span>
-                        </div>
-                        <div class="attendance-cnt-acknowledge">
-                            <span class="span-attendance-cnt-acknowledge">${data[i].sumAcknowledge}</span>
-                        </div>
-                    </div>`;
+                `<tr class="board-table-row">
+                    <td class="course-number">${data[i][0].courseNumber}</td>
+                    <td class="course-name">자바클라우드개발자 교육과정1</td>
+                    <td class="student-name">${data[i][0].name}</td>
+                    <td class="hrd-net-id">${data[i][0].hrdNetId}</td>
+                    <td class="attendance-duration">${data[i][0].totalTrainingDays}</td>
+                    <td class="attendance-cnt">${data[i][0].sumAttendance}</td>
+                    <td class="attendance-cnt-late">${data[i][0].sumLateness}</td>
+                    <td class="attendance-cnt-early-leave">${data[i][0].sumEarlyLeave}</td>
+                    <td class="attendance-cnt-go-out">${data[i][0].sumGoOut}</td>
+                    <td class="attendance-cnt-absence">${data[i][0].sumAbsence}</td>
+                    <td class="attendance-cnt-acknowledge">${data[i][0].sumAcknowledge}</td>
+                    <td class="attendance-ratio">${data[i][1]}</td>
+                </tr>`;
         }
-        $("#attendance-row-wrapper").html("");
-        $("#attendance-row-wrapper").append(result);
+        $(".board-table.refer-attendance-status").html("");
+        $(".board-table.refer-attendance-status").append(result);
     };
+
     // 검색한 출결 데이터 목록 개수 가져오기
     async function getAmountAttendanceList(data) {
-        totalPage = Math.ceil(data/10);
+        totalPage = Math.ceil(data / 10);
 
         let result = '';
         result += `<span class="span-attendance-list-amount">총 ${data}건</span>`;
         $(".student-cnt-pages").html("");
         $(".student-cnt-pages").append(result);
 
-        await updatePagination();
+        await updatePagination(totalPage);
     };
 
     async function fetchStudentAttendanceList(param) {
@@ -173,6 +143,10 @@
         await fetch("/attendances/student-list?page="+param, requestOptions)
                 .then((res) => res.json())
             .then(async(data) => {
+                console.log("출결 조회 Data");
+                console.log(data);
+                console.log(data.attendanceList);
+                console.log(data.attendanceList[0]);
                 let attendanceList = data.attendanceList;
 
                 let amount = data.amount;
@@ -202,14 +176,14 @@
     });
 
     // 페이지네이션
-    function updatePagination() {
+    function updatePagination(param) {
         $("#page-number").html("");
         let firstPage = (currentBlock * pageSize) - pageSize + 1;
         let lastPage = totalPage <= currentBlock * pageSize ? totalPage : currentBlock * pageSize;
 
-        for(let i = firstPage; i<= lastPage; i++) {
+        for (let i = firstPage; i <= lastPage; i++) {
             let num = i;
-            $("#page-number").append(`<a class="page-link" onclick="fetchStudentAttendanceList(${num})">${num}</a>`);
+            $("#page-number").append(`<li><a class="page-link" onclick="fetchStudentAttendanceList(${num})">${num}</a></li>`);
         }
     }
 

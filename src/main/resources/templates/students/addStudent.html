@@ -25,7 +25,7 @@
                 <h4>HRD-Net ID *</h4>
                 <div class="id-chk-wrapper">
                     <input type="text" id="hrd_net_id"/>
-                    <button class="btn add-student-modal">ID 중복체크</button>
+                    <button class="btn add-student-modal">ID 등록 여부 확인</button>
                 </div>
             </div>
             <div class="student-items">
@@ -86,11 +86,10 @@
 <div id="freshman-student" class="chk-result-popup">
     <div class="popup-content-wrapper">
         <div class="popup-description-wrapper">
-            <p>등록된 HRD-Net ID의 수강생이 없습니다.<br/>입력하신 HRD-Net ID로 신규 수강생으로 등록하시겠습니까?</p>
+            <p>등록된 HRD-Net ID의 수강생이 없습니다.<br/>먼저 수강생 회원가입 후, 수강신청 진행해주시기 바랍니다.</p>
         </div>
         <div class="popup-btn-wrapper">
-            <button class="freshman cancel-btn">취소</button>
-            <button class="freshman set-btn">수강생 등록 이어하기</button>
+            <button class="freshman cancel-btn">확인</button>
         </div>
     </div>
 </div>
@@ -141,6 +140,10 @@
     }
     // 입력한 HRD-Net ID의 등록 여부 결과 팝업 화면에 보여주기
     async function noticeCheckingIdResult(param) {
+        console.log(param);
+        console.log(param.result);
+        console.log(typeof param.result);
+        console.log(param.result == "true");
         if(param.result == "true") {
             $("#existed-student").css("display", "flex");
             // 팝업창 닫기(취소)
@@ -159,9 +162,7 @@
             // 팝업창 닫기(취소)
             $(".freshman.cancel-btn").click(function() {
                 $("#freshman-student").css("display", "none");
-            });
-            $(".freshman.set-btn").click(function() {
-                $("#freshman-student").css("display", "none");
+                window.location.href="/ems/students";
             });
         }
     }
@@ -308,9 +309,16 @@
        console.log(getCourseNumber());
        console.log(getHrdNetId());
        if(sessionStorage.getItem("isRegisteredStudent") == "true") {
-           await fetchRegisterCourse();
-           sessionStorage.clear();
-       } else if(sessionStorage.getItem("isRegisteredStudent") == "false") {
+           await fetchRegisterCourse()
+               .then(async (response) => {
+                   alert("수강과정 등록이 정상처리되었습니다.");
+                    window.location.href="/ems/students";
+               }).catch((error) => {
+                   console.error("Error fetchRegisterCourse: 수강생 교육과정 등록 실패", error);
+               }).finally(() => {
+                   sessionStorage.clear();
+               });
+       }/* else if(sessionStorage.getItem("isRegisteredStudent") == "false") {
            await fetchSetStudent()
                .then(async (response) => {
                    await fetchRegisterCourse();
@@ -323,7 +331,7 @@
                .finally(() => {
                    sessionStorage.clear();
                });
-       }
+       }*/
     });
 
 </script>
