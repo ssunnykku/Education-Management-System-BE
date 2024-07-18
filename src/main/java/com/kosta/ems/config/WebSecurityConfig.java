@@ -61,8 +61,8 @@ public class WebSecurityConfig {
                             .requestMatchers("/api/**").authenticated()
                             .anyRequest().authenticated();
                 })
-                
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .addFilterBefore(new TokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         http.formLogin(formLogin -> formLogin
