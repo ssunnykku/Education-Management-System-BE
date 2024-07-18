@@ -1,17 +1,30 @@
 package com.kosta.ems.attendance;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.Upload;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import java.util.UUID;
 
 
 @Log4j2
@@ -75,7 +88,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     	int year = Integer.parseInt(attendanceDate.split("-")[0] );
     	int month = Integer.parseInt(attendanceDate.split("-")[1]);
     	int day = Integer.parseInt(attendanceDate.split("-")[2]);
-    	
+
     	return attendanceMapper.selectCourseNumberAndStudentNameListAmount(LocalDate.of(year, month, day), academyLocation, name, courseNumber);
     }
     // 검색 결과 데이터 목록 가져오기
@@ -84,10 +97,10 @@ public class AttendanceServiceImpl implements AttendanceService {
     	int year = Integer.parseInt(attendanceDate.split("-")[0] );
     	int month = Integer.parseInt(attendanceDate.split("-")[1]);
     	int day = Integer.parseInt(attendanceDate.split("-")[2]);
-    	
+
     	return attendanceMapper.selectCourseNumberAndStudentNameList(LocalDate.of(year, month, day), academyLocation, name, courseNumber, ((page*size)-size), size);
     }
-    
+
     // 경우2 _ 기수 또는 수강생명 입력
     // 검색 결과 개수 가져오기 (for 페이지네이션)
     @Override
@@ -95,7 +108,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     	int year = Integer.parseInt(attendanceDate.split("-")[0] );
     	int month = Integer.parseInt(attendanceDate.split("-")[1]);
     	int day = Integer.parseInt(attendanceDate.split("-")[2]);
-    	
+
     	return attendanceMapper.selectCourseNumberOrStudentNameListAmount(LocalDate.of(year, month, day), academyLocation, name, courseNumber);
     }
     // 검색 결과 데이터 목록 가져오기
@@ -104,18 +117,18 @@ public class AttendanceServiceImpl implements AttendanceService {
     	int year = Integer.parseInt(attendanceDate.split("-")[0] );
     	int month = Integer.parseInt(attendanceDate.split("-")[1]);
     	int day = Integer.parseInt(attendanceDate.split("-")[2]);
-    	
+
     	return attendanceMapper.selectCourseNumberOrStudentNameList(LocalDate.of(year, month, day), academyLocation, name, courseNumber, ((page*size)-size), size);
     }
-    
+
     // 경우3 _ 기수+수강생명 미입력
     // 검색 결과 개수 가져오기 (for 페이지네이션)
-    @Override 
+    @Override
     public int getDateAndLocationListAmount(String attendanceDate, String academyLocation, String name, int courseNumber) {
     	int year = Integer.parseInt(attendanceDate.split("-")[0] );
     	int month = Integer.parseInt(attendanceDate.split("-")[1]);
     	int day = Integer.parseInt(attendanceDate.split("-")[2]);
-    	
+
     	return attendanceMapper.selectDateAndLocationListAmount(LocalDate.of(year, month, day), academyLocation, name, courseNumber);
     }
     // 검색 결과 데이터 목록 가져오기
@@ -124,7 +137,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     	int year = Integer.parseInt(attendanceDate.split("-")[0] );
     	int month = Integer.parseInt(attendanceDate.split("-")[1]);
     	int day = Integer.parseInt(attendanceDate.split("-")[2]);
-    	
+
     	return attendanceMapper.selectDateAndLocationList(LocalDate.of(year, month, day), academyLocation, name, courseNumber, ((page*size)-size), size);
     }
      */
@@ -151,7 +164,8 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
 
-    // [출결] - 선택한 수강생의 출석 상태 수정
+    // [출결]
+    // 선택한 수강생의 출석 상태 수정
     @Override
     public void updateStudentAttendance(List<RequestStudentAttendanceDTO> dto) {
         for(int i=0; i<dto.size(); i++) {
@@ -189,6 +203,51 @@ public class AttendanceServiceImpl implements AttendanceService {
             attendanceMapper.updateStudentAttendance(tmpDTO);
         }
     }
+    // --[출석 인정]
+    // --출석 인정 항목 리스트 가져오기
+    @Override
+    public List<AttendanceAcknowledgeDTO> getAcknowledgeCategoryList(int isActive) {
+        List<AttendanceAcknowledgeDTO> categoryList = attendanceMapper.selectAcknowledgeCategoryList(isActive);
+        return categoryList;
+    }
+    // --출석 인정항목*인정일수 적용하여 출결 상태 반영 (update + insert)
+    @Override
+    public int reflectAcknowledgeAttendanceStatus(RequestAcknowledgeDTO dto) {
+        String attendanceStatus = dto.getAttendanceStatus();
+        String evidentialDocument = dto.getEvidentialDocuments();
+        int acknowledgeSeq = dto.getAcknowledgeSeq();
+        String endDateStr = dto.getEndDate();
+        String startDateStr = dto.getStartDate();
+        int studentCourseSeq = dto.getStudentCourseSeq();
+
+        LocalDate startDate = LocalDate.parse(startDateStr);
+        LocalDate endDate = LocalDate.parse(endDateStr);
+
+        int daysBetween = Period.between(startDate, endDate).getDays();
+
+        // 에러 방지 임시 코드
+        String managerId = "1";
+
+        if(daysBetween == 0) {
+            // 출석 인정일수가 '1'일인 경우는 startDate를 attendanceDate에 할당하여 출결 상태 Update
+            attendanceMapper.updateAttendanceAcknowledgeStatus(attendanceStatus, evidentialDocument, acknowledgeSeq, startDate, studentCourseSeq);
+        } else if(daysBetween >= 1) {
+            // 출석 인정일수가 '2'일 이상인 경우는 startDate 날짜는 updateAttendanceAcknowledgeStatus,
+            // endDate - startDate에서 startDate를 제외하고 endDate까지의 날짜는 insertAttendanceAcknowledgeStatus
+            // 예: startDate_2024-07-01, endDate_2024-07-04인 경우, 2024-07-01 날짜로 updateAttendanceAcknowledgeStatus 실행, 2024-07-02, 2024-07-03, 2024-07-4 날짜로 insertAttendanceAcknowledgeStatus 실행
+
+            for(int i=0; i<=daysBetween; i++) {
+                LocalDate tmpDate = startDate.plusDays(i);
+                if(tmpDate == startDate) {
+                    attendanceMapper.updateAttendanceAcknowledgeStatus(attendanceStatus, evidentialDocument, acknowledgeSeq, startDate, studentCourseSeq);
+                } else {
+                    attendanceMapper.insertAttendanceAcknowledgeStatus(tmpDate, studentCourseSeq, attendanceStatus, managerId, evidentialDocument, acknowledgeSeq);
+                }
+            }
+        }
+        return 0;
+    }
+
 
     // [출결 입력]
     // 1. 특정일의 출결 상태가 등록되지 않은 수강생 목록 가져오기

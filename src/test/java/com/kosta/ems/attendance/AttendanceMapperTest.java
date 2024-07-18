@@ -114,15 +114,37 @@ class AttendanceMapperTest {
         log.info("날짜+특정 강의장의 전체 출결 상태: " + attendanceMapper.selectAttendanceStatusList(LocalDate.of(2024,7,15), "가산", "", 0, 0, 10).toString());
         log.info("날짜+특정 학생의 출결 상태: " + attendanceMapper.selectAttendanceStatusList(LocalDate.of(2024,7,15), "가산", "선재", 0, 0, 10).toString());
     }
-    
-    
-    // [출결] - 선택한 수강생의 출석 상태 수정
+
+
+    // [출결 수정]
+    // 선택한 수강생의 출석 상태 수정
     @Test
     @DisplayName("출결 수정 - 선택한 수강생의 출석 상태 수정")
     @Transactional
     void updateStudentAttendance() {
         UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus("조퇴").attendanceDate(LocalDate.of(2024,6,20)).studentCourseSeq(34).build();
-    	attendanceMapper.updateStudentAttendance(dto);
+        attendanceMapper.updateStudentAttendance(dto);
+    }
+    // --[출석 인정]
+    // --출석 인정 항목 리스트 가져오기
+    @Test
+    @DisplayName("출결 수정 - 출석인정 항목 리스트 가져오기")
+    void selectAcknowledgeCategoryList() {
+        log.info("활성화된 출석인정 항목 리스트: " + attendanceMapper.selectAcknowledgeCategoryList(1).toString());
+        log.info("비활성화된 출석인정 항목 리스트: " + attendanceMapper.selectAcknowledgeCategoryList(0).toString());
+    }
+    @Test
+    @DisplayName("출결 수정 - 출석인정 항목*인정일수 적용하여 출결 상태 반영_update")
+    @Transactional
+    void updateAttendanceAcknowledgeStatus() {
+        attendanceMapper.updateAttendanceAcknowledgeStatus("출석 인정", "dalifu@hafdf.pdf", 4, LocalDate.of(2024,7,15), 21);
+    }
+
+    @Test
+    @DisplayName("출결 수정 - 출석인정 항목*인정일수 적용하여 출결 상태 반영_insert")
+    @Transactional
+    void insertAttendanceAcknowledgeStatus() {
+        attendanceMapper.insertAttendanceAcknowledgeStatus(LocalDate.of(2024,7,17), 21, "출석 인정", "3ddf8577-3eaf-11ef-bd30-0206f94be675","dalifu@hafdf.pdf", 4);
     }
 
     // [출결 등록]
