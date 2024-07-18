@@ -39,10 +39,6 @@
         where student_id = s.student_id
           and course_seq = sc.course_seq
           and pc.is_active = true) >= 50
-          AND (select settlement_date
-        from view_students_course_scholarship_settlement
-        where student_id = s.student_id
-          and course_seq = sc.course_seq) is null
         ORDER BY c.course_number desc, name
         limit #{limit} offset #{offset}
     </select>
@@ -64,10 +60,6 @@
         where student_id = s.student_id
           and course_seq = sc.course_seq
           and pc.is_active = true) >= 50
-          AND (select settlement_date
-        from view_students_course_scholarship_settlement
-        where student_id = s.student_id
-          and course_seq = sc.course_seq) is null
     </select>
 
     <insert id="insertScholarshipSettlement">
