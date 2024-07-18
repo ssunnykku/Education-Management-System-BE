@@ -19,4 +19,5 @@ public class RequestStudentAttendanceDTO {
 	private int courseNumber;
 	private String academyLocation;
 	private int studentCourseSeq;
+	// private String acknowledgeDocument;  // 증빙서류 파일 string
 }
