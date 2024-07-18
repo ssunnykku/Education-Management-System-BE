@@ -8,172 +8,336 @@
     <title>Document</title>
     <link rel="stylesheet" href="../../css/format.css"/>
     <link rel="stylesheet" href="../../css/students.css"/>
+    <!--<link rel="stylesheet" href="../../css/scholarships.css" />-->
+    <link rel="stylesheet" href="../../css/attendances.css" />
 </head>
 <body id="content-wrapper">
 <div th:insert="~{common/header :: header}"></div>
-<section id="title-wrapper">
-    <h2 id="title">수강생 등록</h2>
-</section>
-<section id="content-section">
-    <article>
-        <div id="addStudent-wrapper">
-            <div class="student-item">
-                <h4>이름 *</h4>
-                <input type="text" id="user_name"/>
+<div th:insert="~{common/title :: title ('출결 입력')}"></div>
+<section id="attendance-contents" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+    <article class="attendance-search-btn-wrapper">
+        <div class="attendance-search-form-wrapper" style="width: auto;">
+            <div id="search-form">
+                <input type="date" required class="input-date" name="attendanceDate" />
+                <input placeholder="기수" id="input-course-number" class="courseId-filter" name="courseNumber"/>
+                <input placeholder="수강생을 입력하세요" id="input-name" class="student-name-filter" name="name"/>
+                <button type="button" class="filter-search-btn">검색</button>
             </div>
-            <div class="student-item">
-                <h4>HRD-Net ID *</h4>
-                <div class="id-chk-wrapper">
-                    <input type="text" id="hrd_net_id"/>
-                    <button class="btn add-student-modal">ID 등록 여부 확인</button>
-                </div>
-            </div>
-            <div class="student-items">
-                <div class="student-items-item">
-                    <h4>생년월일 *</h4>
-                    <input type="text" id="birth"/>
-                </div>
-                <div class="student-items-item">
-                    <h4>성별 *</h4>
-                    <div class="gender">
-                        <div>
-                            <input type="radio" id="select" name="gender" value="M"/>
-                            <label for="select">남성</label>
-                        </div>
-                        <div>
-                            <input type="radio" id="select2" name="gender" value="F"/>
-                            <label for="select2">여성</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="student-items">
-                <div class="student-items-item">
-                    <h4>기수 *</h4>
-                    <select name="course_number" id="course_number">
-                    </select>
-                </div>
-                <div class="student-items-item">
-                    <h4>지역 *</h4>
-                    <input type="text" id="province"/>
-                </div>
-            </div>
-            <div class="student-items-bank">
-                <div class="student-items-item">
-                    <h4>은행</h4>
-                    <input type="text" id="bank"/>
-                </div>
-                <div class="student-items-item">
-                    <h4>계좌번호</h4>
-                    <input type="text" id="account"/>
-                </div>
-            </div>
-            <div class="student-item">
-                <h4>전화번호 *</h4>
-                <input type="text" id="phone_number"/>
-            </div>
-            <div class="student-item">
-                <h4>이메일 *</h4>
-                <input type="text" id="email"/>
-            </div>
-            <button id="enroll-btn" class="btn-setting">등록</button>
         </div>
+    </article>
+    <section id="content-section" class="attendance-add">
+        <article id="attendance-content-article" class="attendance-add">
+            <div class="attendance-status-wrapper attendance-add">
+                <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="출석">출석</label>
+                <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="결석">결석</label>
+                <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="지각">지각</label>
+                <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="외출">외출</label>
+                <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="조퇴">조퇴</label>
+                <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="출석 인정">출석 인정</label>
+                <button id="combine-update-btn" class="btn">선택 내용 출결 처리</button>
+            </div>
+
+            <div class="student-cnt-pages attendance-add">
+            </div>
+        </article>
+        <article id="attendance-add-table-article">
+            <table class="board-table set-attendance"></table>
+        </article>
+        <div class="update-btn-div attendance-add">
+            <button id="set-btn" class="btn" popovertarget="add-attendance-modal">입력</button>
+            <button id="update-btn" class="btn">수정</button>
+        </div>
+    </section>
+    <article class="page-information attendance-add">
+        <ul id="pagination" class="attendance-add">
+            <li>
+                <a class="page-link" id="prev"><img src="../../assets/navigate_prev_white_24dp%201.svg" alt="이전"/></a>
+            </li>
+            <li id="page-number" class="page-item" style="display: flex; gap: 20px"></li>
+            <li class="page-item">
+                <a id="next" class="page-link"><img src="../../assets/navigate_next_white_24dp%201.svg" alt="다음"/></a>
+            </li>
+        </ul>
     </article>
 </section>
 <footer></footer>
 
-<!-- HRD-Net Id 중복체크 결과 팝업 - 신규 가입 -->
-<div id="freshman-student" class="chk-result-popup">
-    <div class="popup-content-wrapper">
-        <div class="popup-description-wrapper">
-            <p>등록된 HRD-Net ID의 수강생이 없습니다.<br/>먼저 수강생 회원가입 후, 수강신청 진행해주시기 바랍니다.</p>
+<div id="acknowledge-setting-modal" class="acknowledgeModal" popover>
+    <div class="modal-container">
+        <div class="modal-contents-wrapper">
+            <!--<input type="hidden" value="29"/>--> <!--임시_ scq: 29 -- 김희석 -->
+            <p>출석 인정 항목</p>
+            <p>출석 인정 일수</p>
+            <p>출석인정일 기간 설정 (시작일 ~ 종료일)</p>
+            <form action="/attendances/upload" method="post" enctype="multipart/form-data">
+                <input type="file" name="evidentialDocument" multiple="false"/>
+                <button>업로드</button>
+            </form>
         </div>
-        <div class="popup-btn-wrapper">
-            <button class="freshman cancel-btn">확인</button>
+
+        <div class="modal-btn-wrapper">
+            <button id="setting-btn">설정</button>
+            <button class="cancel-btn btn" popovertarget="acknowledge-setting-modal" popovertargetaction="hide">취소</button>
         </div>
     </div>
 </div>
 
-<!-- HRD-Net Id 중복체크 결과 팝업 - 기존 가입 -> 신규 과정 등록 의사 여부 -->
-<div id="existed-student" class="chk-result-popup">
-    <div class="popup-content-wrapper">
-        <div class="popup-description-wrapper">
-            <p>해당 HRD-Net ID의 수강생 등록 이력이 있습니다.<br/>입력하신 HRD-Net ID로 신규 수강신청하시겠습니까?</p>
+<div id="add-attendance-modal" class="addAttendanceModal" popover>
+    <div class="modal-container">
+        <div class="add-attendance-wrapper">
+            <div class="modal-section">
+                <p>* 입력할 출결 날짜</p>
+                <hr/>
+                <input type="date" required class="input-date modal" name="attendanceDate"/>
+            </div>
+            <div class="modal-section">
+                <p>* 입력할 출결 상태</p>
+                <hr/>
+                <div class="attendance-status-wrapper">
+                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatusModal" value="출석">출석</label>
+                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatusModal" value="결석">결석</label>
+                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatusModal" value="지각">지각</label>
+                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatusModal" value="외출">외출</label>
+                    <label><input type="radio" class="attendance-status-btn" name="attendanceStatusModal" value="조퇴">조퇴</label>
+                    <!--<label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="출석 인정">출석 인정</label>-->
+                </div>
+            </div>
         </div>
-        <div class="popup-btn-wrapper">
-            <button class="existed cancel-btn">취소</button>
-            <button class="existed set-btn">해당 수강생으로 수강신청하기</button>
+        <div class="add-attendance-wrapper">
+            <p>* 출결 입력할 수강생 정보</p>
+            <hr/>
+            <div class="list-wrapper">
+                <div class="list-header">
+                    <input type="checkbox" id="modal-check-all" class="modal-checkbox"/>
+                    <p class="course-number">기수</p>
+                    <p class="hrd-net-id">HRD-Net ID</p>
+                    <p class="name">이름</p>
+                </div>
+                <div class="list-contents">
+                </div>
+            </div>
+        </div>
+        <div class="add-attendance-wrapper">
+            <button id="set-attendance-btn" class="btn">입력</button>
+            <button id="cancel-btn" class="btn" popovertarget="add-attendance-modal" popovertargetaction="hide">취소</button>
         </div>
     </div>
 </div>
+
 
 <script>
-    function getHrdNetId() {
-        return $("#hrd_net_id").val();
-    }
+    let totalPage = 0;
+    let currentPage = 1;
+    let currentBlock = 1;
+    const pageSize = 10;
+    const page = 1;
+    const objList = [];
+    let selectedValue = null;
+    let totalAmount = 0;
+
+    // 출석 입력일은 input 범위는 '오늘'이 max _미래에 대한 출석 입력을 미리 하는 것 제한
+    let now_utc = Date.now()
+    let timeOff = new Date().getTimezoneOffset()*60000;
+    let today = new Date(now_utc-timeOff).toISOString().split("T")[0];
+    $(".input-date").attr("max", today);
+
+    $(document).ready(async function() {
+        $(".input-date").val(new Date().toISOString().substring(0,10));
+        await fetchAttendanceList(1);
+
+        $('body').css('overflow', 'hidden'); // 스크롤 방지
+    });
+
     function getCourseNumber() {
-        return $("#course_number").val();
-    }
-    function getInputName() {
-        return $("#user_name").val();
-    }
-    function getBirth() {
-        return $("#birth").val();
-    }
-    function getGender() {
-        return $("input[name='gender']:checked").val();
-    }
-    function getAddress() {
-        return $("#province").val();
-    }
-    function getBank() {
-        return $("#bank").val();
-    }
-    function getAccount() {
-        return $("#account").val();
-    }
-    function getPhoneNumber() {
-        return $("#phone_number").val();
-    }
-    function getEmail() {
-        return $("#email").val();
-    }
-    // 입력한 HRD-Net ID의 등록 여부 결과 팝업 화면에 보여주기
-    async function noticeCheckingIdResult(param) {
-        console.log(param);
-        console.log(param.result);
-        console.log(typeof param.result);
-        console.log(param.result == "true");
-        if(param.result == "true") {
-            $("#existed-student").css("display", "flex");
-            // 팝업창 닫기(취소)
-            $(".existed.cancel-btn").click(function() {
-                $("#existed-student").css("display", "none");
-            });
-            // 등록된 id의 수강생 기본 정보 불러오기
-            $(".existed.set-btn").click(async function() {
-                await getRegisteredStudentBasicInfo(param.data);
-                $("#existed-student").css("display", "none");
-                await fetchOnGoingCourseList();
-            })
-        } else if(param.result == "false") {
-            $("#freshman-student").css("display", "flex");
-            await fetchOnGoingCourseList();
-            // 팝업창 닫기(취소)
-            $(".freshman.cancel-btn").click(function() {
-                $("#freshman-student").css("display", "none");
-                window.location.href="/ems/students";
-            });
+        if($("#input-course-number").val() == "") {
+            return 0;
         }
+        return parseInt($("#input-course-number").val());
     }
 
-    // 입력한 HRD-Net ID의 등록 여부 확인
-    async function checkIdRegistered() {
+    function getStudentName() {
+        if($(".student-name-filter").val() == "") {
+            return "";
+        }
+        return $(".student-name-filter").val();
+    }
+
+    function getAttendanceDate() {
+        return $(".input-date").val();
+    }
+
+    // <th>의 체크박스 클릭 -> 모든 <tr>의 체크박스 선택 처리
+    function checkAll() {
+        $("#check-all").click(function() {
+            if($("#check-all").is(":checked")) {
+                $("input[class='check-box']").prop("checked", true);
+            } else {
+                $("input[class='check-box']").prop("checked", false);
+            }
+        });
+
+        $("input[class='check-box']").click(function() {
+            let total = $("input[class='check-box']").length;
+            let checked = $("input[class='check-box']:checked").length;
+
+            if(total != checked) {
+                $("#check-all").prop("checked", false);
+            } else {
+                $("#check-all").prop("checked", true);
+            }
+        });
+    };
+
+    // 검색한 출결 상태 목록 데이터 화면에 보여주기
+    async function getAttendanceList(data) {
+        let result = `<tr>
+                    <th class="set-attendance"><input type="checkbox" id="check-all"/></th>
+                    <th class="set-attendance">기수</th>
+                    <th class="set-attendance">HRD-Net ID</th>
+                    <th class="set-attendance">이름</th>
+                    <th class="set-attendance">강의장</th>
+                    <th class="set-attendance">출결 상태</th>
+                    <th class="set-attendance">증빙 서류</th>
+                </tr>`;
+        if(totalAmount === 0) {
+            result += `<tr style="height: 400px; line-height: 25px;"><td colspan="7">아직 해당 날짜에 등록된 출결 정보가 없습니다.<br/>출결 입력해주세요.</td></tr>`;
+        } else {
+            for(let i=0; i<data.length; i++) {
+                let attendanceCheck = "";
+                let latenessCheck = "";
+                let absenceCheck = "";
+                let earlyLeaveCheck = "";
+                let goOutCheck = "";
+                let acknowledgeCheck = "";
+                let defaultCheck = "";
+
+                switch(data[i].attendanceStatus) {
+                    case "출석":
+                        attendanceCheck = "selected";
+                        break;
+                    case "지각":
+                        latenessCheck = "selected";
+                        break;
+                    case "결석":
+                        absenceCheck = "selected";
+                        break;
+                    case "조퇴":
+                        earlyLeaveCheck = "selected";
+                        break;
+                    case "외출":
+                        goOutCheck = "selected";
+                        break;
+                    case "출석 인정":
+                        acknowledgeCheck = "selected";
+                        break;
+                }
+
+                // const fileUploadInputHTML = data[i].attendanceStatus === "출석 인정" ? `<form ><label class="input-file-label" for="file-upload-btn">파일 첨부</label><input type="file" id="file-upload-btn" enabled /></form>` : `<input type="text" id="file-upload-btn" readonly/>`;
+                const fileUploadInputHTML = data[i].attendanceStatus === "출석 인정" ? `<button class="acknowledge-modal-popover" popovertarget="acknowledge-setting-modal">인정 내용 등록</button>` : `<button style="display: none;" class="acknowledge-modal-popover">인정 내용 등록</button>`;
+
+                result += `<tr class="board-table-row set-attendance">
+                        <td class="set-attendance board-checkbox"><input type="checkbox" name="checkbox" class="check-box"/><span class="student-course-seq" style="display:none;">${data[i].studentCourseSeq}</span></td>
+                        <td class="set-attendance course-number">${data[i].courseNumber}</td>
+                        <td class="set-attendance hrd-net-id">${data[i].hrdNetId}</td>
+                        <td class="set-attendance student-name">${data[i].name}</td>
+                        <td class="set-attendance academy-location">${data[i].academyLocation}</td>
+                        <td class="set-attendance attendance-status">
+                            <select name="attendance-status-select" id="attendance-status-select">
+                                <option value="attendance" ${attendanceCheck}>출석</option>
+                                <option value="lateness" ${latenessCheck}>지각</option>
+                                <option value="absence" ${absenceCheck}>결석</option>
+                                <option value="earlyLeave" ${earlyLeaveCheck}>조퇴</option>
+                                <option value="goOut" ${goOutCheck}>외출</option>
+                                <option value="acknowledge" ${acknowledgeCheck}>출석 인정</option>
+                            </select>
+                            <span class="attendance-status-origin" style="display: none;">${data[i].attendanceStatus}</span>
+                        </td>
+                        <td class="set-attendance evidentiary-documents">
+                            <div class="file-input-wrapper">
+                                ${fileUploadInputHTML}
+                            </div>
+                        </td>
+                    </tr>`;
+            }
+        }
+
+        $(".board-table").html("");
+        $(".board-table").append(result);
+
+        const initialAttendanceData = {};
+        for (let i = 0; i < data.length; i++) {
+            initialAttendanceData[data[i].hrdNetId] = data[i].attendanceStatus;
+        }
+
+        // 출결상태 변경에 따른 select Border 처리
+        $("select[name='attendance-status-select']").change(function() {
+            const hrdNetId = $(this).closest("tr").find("td:nth-child(3)").text();
+            let newAttendanceStatus = $(this).val();
+
+            switch(newAttendanceStatus) {
+                case "attendance":
+                    newAttendanceStatus = "출석";
+                    break;
+                case "lateness":
+                    newAttendanceStatus = "지각";
+                    break;
+                case "absence":
+                    newAttendanceStatus = "결석";
+                    break;
+                case "earlyLeave":
+                    newAttendanceStatus = "조퇴";
+                    break;
+                case "goOut":
+                    newAttendanceStatus = "외출";
+                    break;
+                case "acknowledge":
+                    newAttendanceStatus = "출석 인정";
+                    break;
+            }
+
+            if (newAttendanceStatus != initialAttendanceData[hrdNetId]) {
+                $(this).closest("tr").find("td:nth-child(6)").find("select").addClass("modifiedAttendance"); // Add border class
+            } else if(newAttendanceStatus == initialAttendanceData[hrdNetId]) {
+                $(this).closest("tr").find("td:nth-child(6)").find("select").removeClass("modifiedAttendance");
+            }
+
+            // 출결 상태 '출석 인정'일 때만 증빙서류 input disabled 해제하기
+            if (newAttendanceStatus === "출석 인정") {
+                // $(this).closest("tr").find(".file-input-wrapper").html('<label class="input-file-label" for="file-upload-btn">파일 첨부</label><input type="file" id="file-upload-btn" />');
+                $(this).closest("tr").find(".file-input-wrapper").html('<button class="acknowledge-modal-popover" popovertarget="acknowledge-setting-modal">인정 내용 등록</button>');
+            } else {
+                $(this).closest("tr").find(".file-input-wrapper").html('<button class="acknowledge-modal-popover" style="display: none;">인정 내용 등록</button>');
+            }
+
+        });
+    };
+
+    // 검색한 출결 상태 목록 데이터 전체 개수 가져오기
+    async function getAmountAttendanceList(data) {
+        totalPage = Math.ceil(data/10);
+        totalAmount = data;
+        if(totalAmount === 0) {
+            totalPage = 1;
+        }
+        console.log("totalPage: " + totalPage);
+
+        let result = '';
+        result += `<span class="span-attendance-list-amount">총 ${data}건</span>`;
+        $(".student-cnt-pages").html("");
+        $(".student-cnt-pages").append(result);
+
+        await updatePagination(totalPage);
+    }
+
+    // 검색한 출결 상태 목록 데이터 가져오기
+    async function fetchAttendanceList(param) {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
         const raw = JSON.stringify({
-            "hrdNetId": getHrdNetId(),
+            "name": getStudentName(),
+            "courseNumber": getCourseNumber(),
+            "attendanceDate": getAttendanceDate()
         });
 
         const requestOptions = {
@@ -183,39 +347,245 @@
             redirect: "follow"
         };
 
-        await fetch("/students/valid-id", requestOptions)
+        await fetch("/attendances/search-list?page="+param, requestOptions)
             .then((res) => res.json())
             .then(async(data) => {
-                console.log(data);
-                sessionStorage.setItem("isRegisteredStudent", data.result);   // 수강생 등록시, 기존 등록생의 교육과정 수강정보만 추가 or 신규 수강생+교욱과정 등록 추가 구분을 위한 데이터
-                await noticeCheckingIdResult(data);
+                let attendanceList = data.attendanceList;
+                let amount = data.amount;
+                // totalPage = data.pageInfo.totalPage;
+
+                await getAmountAttendanceList(amount);
+                await getAttendanceList(attendanceList);
+
             })
             .catch((error) => console.error(error));
-    }
-    $(".btn.add-student-modal").click(async function() {
-        await checkIdRegistered();
+    };
+
+    $(".filter-search-btn").click(async function() {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "name": getStudentName(),
+            "courseNumber": getCourseNumber(),
+            "attendanceDate": getAttendanceDate()
+        });
+
+        const updateDTO = null;
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        if(getAttendanceDate() == "") {
+            alert("날짜는 필수 검색 조건입니다!");
+        } else {
+            await fetchAttendanceList(page);
+            checkAll(); // <th>의 체크박스 클릭 -> 모든 <tr>의 체크박스 선택 처리
+
+            // 선택한 학생의 출결 처리 - 경우1_'출결 상태' 먼저 바꾸고 체크박스 선택하는 경우
+            $('.board-checkbox input[type="checkbox"]').on('change', function() {
+                if (this.checked) {
+                    const row = $(this).closest('tr');
+                    const studentCourseSeq = row.find('.student-course-seq').text();
+                    const courseNumber = row.find('.course-number').text();
+                    const hrdNetId = row.find('.hrd-net-id').text();
+                    const studentName = row.find('.student-name').text();
+                    const academyLocation = row.find('.academy-location').text();
+                    const selectedAttendanceStatus = row.find('.attendance-status select').val();
+                    const originAttendanceStatus = row.find('.attendance-status-origin').val();
+
+                    const obj = {
+                        "attendanceStatus": selectedAttendanceStatus,
+                        "attendanceDate": getAttendanceDate(),
+                        "studentCourseSeq": parseInt(studentCourseSeq, 10)
+                    };
+
+                    objList.push(obj);
+                }
+            });
+
+            // 선택한 학생의 출결 처리 - 경우2_'체크박스' 먼저 선택하고 출결 상태 변경하는 경우
+            $("select[name='attendance-status-select']").change(function() {
+                const row = $(this).closest('tr');
+                const studentCourseSeq = row.find('.student-course-seq').text();
+                const courseNumber = row.find('.course-number').text();
+                const hrdNetId = row.find('.hrd-net-id').text();
+                const studentName = row.find('.student-name').text();
+                const academyLocation = row.find('.academy-location').text();
+                const selectedAttendanceStatus = row.find('.attendance-status select').val();
+                const originAttendanceStatus = row.find('.attendance-status-origin').val();
+
+                if(selectedAttendanceStatus == "출석 인정") {
+                    const obj = {
+                        "attendanceStatus": selectedAttendanceStatus,
+                        "attendanceDate": getAttendanceDate(),
+                        "studentCourseSeq": parseInt(studentCourseSeq, 10)
+                    };
+
+                } else {
+                    const obj = {
+                        "attendanceStatus": selectedAttendanceStatus,
+                        "attendanceDate": getAttendanceDate(),
+                        "studentCourseSeq": parseInt(studentCourseSeq, 10)
+                    };
+                }
+
+                /*const obj = {
+                    "attendanceStatus": selectedAttendanceStatus,
+                    "attendanceDate": getAttendanceDate(),
+                    "studentCourseSeq": parseInt(studentCourseSeq, 10)
+                };*/
+
+                objList.push(obj);
+            });
+        }
     });
 
-    // HRD-Net ID가 등록되어있는 수강생의 기본 정보 화면에 보여주기
-    async function getRegisteredStudentBasicInfo(data) {
-        $("#user_name").val(data.name).prop('readonly', true);
-        $("#birth").val(data.birth).prop('readonly', true);
-        $("#province").val(data.address);
-        $("#bank").val(data.bank);
-        $("#account").val(data.account);
-        $("#phone_number").val(data.phoneNumber);
-        $("#email").val(data.email);
-        if (data.gender == 'M') {
-            $('input[name="gender"][value="M"]').prop('checked', true).prop('disabled', true);
-        } else if (data.gender == 'F') {
-            $('input[name="gender"][value="F"]').prop('checked', true).prop('disabled', true);
+    // '수정' 버튼 클릭시 선택한 수강생+출결 상태로 수정 요청
+    $("#update-btn").click(async function() {
+        await fetchUpdateAttendance(objList);
+    });
+
+    // 선택 내용 일괄 출결 처리
+    $("#combine-update-btn").click(async function() {
+        const checkedStudentData = [];
+        const selectedRadio = $("input[name=attendanceStatus]:checked");
+        if(!selectedRadio.length) {
+            alert("처리할 출결 상태를 체크해주세요!");
+            return;
+        }
+        const combineAttendanceStatus = selectedRadio.val();
+        $('input[type="checkbox"][name="checkbox"]:checked:not(#check-all)').each(function(index, checkboxElement) {
+            const studentCourseSeq = $(this).closest('tr').find('.student-course-seq').text();
+            const studentRow = $(this).closest('tr');
+            checkedStudentData.push({
+                "studentCourseSeq": studentCourseSeq,
+                "attendanceDate": getAttendanceDate(),
+                "attendanceStatus": combineAttendanceStatus
+            });
+        });
+        await fetchUpdateAttendance(checkedStudentData);
+    });
+
+
+    // 선택한 학생의 출결 상태 저장(수정)
+    async function fetchUpdateAttendance(objList) {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const requestOptions = {
+            method: "PUT",
+            headers: myHeaders,
+            body: JSON.stringify(objList),
+            redirect: "follow"
+        };
+
+        await fetch("/attendances/attendance-status", requestOptions)
+            .then((res) => res.json())
+            .then(async(data) => {
+                console.log(data.code);
+                if(data.code === 0) {
+                    alert("정상적으로 출결 등록/수정되었습니다.");
+                    location.reload();  // 화면 새로고침
+                } else {
+                    alert("출결 등록/수정 실패");
+                }
+                console.log(data.message);
+            })
+            .catch((error) => console.error(error));
+    };
+
+
+
+    // 페이지네이션
+    function updatePagination(param) {
+        $("#page-number").html("");
+        let firstPage = (currentBlock * pageSize) - pageSize + 1;
+        let lastPage = totalPage <= currentBlock * pageSize ? totalPage : currentBlock * pageSize;
+
+        for (let i = firstPage; i <= lastPage; i++) {
+            let num = i;
+            $("#page-number").append(`<li><a class="page-link" onclick="fetchAttendanceList(${num})">${num}</a></li>`);
         }
     }
 
-    // 수강생 등록 가능한 현재 진행 중 교육과정 목록 데이터 가져오기
-    async function fetchOnGoingCourseList() {
+    $("#next").click(() => {
+        if(currentBlock * pageSize < totalPage) {
+            currentBlock ++;
+            currentPage = (currentBlock * pageSize) - pageSize + 1;
+            updatePagination();
+        }
+    });
+
+    $("#prev").click(() => {
+        if(currentBlock > 1) {
+            currentBlock --;
+            currentPage = (currentBlock * pageSize) - pageSize + 1;
+            updatePagination();
+        }
+    });
+
+    // 수강생 출결 입력(등록) 모달
+    // 모달의 '입력' 버튼 클릭하면 모달 내에서 작업한 내용으로 출결상태 입력(등록)하는 메서드
+    async function fetchAddAttendance(objList) {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: JSON.stringify(objList),
+            redirect: "follow"
+        };
+
+        await fetch("/attendances/attendance-status", requestOptions)
+            .then((res) => res.json())
+            .then(async(data) => {
+                console.log(data);
+                if(data.code === 0) {
+                    alert("정상적으로 출결 등록/수정되었습니다.");
+                    location.reload();
+                } else {
+                    alert("출결 등록/수정 실패");
+                }
+                console.log(data.message);
+            })
+            .catch((error) => console.error(error));
+    }
+
+    // -- 출결 입력(등록)할 날짜 가져오기
+    function getAttendanceDateOnModal() {
+        return $(".input-date.modal").val();
+    }
+
+    // -- 출결 일괄 입력(등록)할 출결 상태 가져오기
+    function getAttendanceStatusOnModal() {
+        return $("input[name=attendanceStatusModal]").val()
+    }
+
+    // -- 입력할 날짜에 따라 출결 미입력 상태인 수강생 데이터 모달에 띄우기
+    async function getNoAttendanceStudentList(data) {
+        let result = '';
+        for(let i=0; i<data.length; i++) {
+            result += `<div class="list-content">
+                            <input type="checkbox" class="modal-student-checkbox" name="checkbox" value=${data[i].studentCourseSeq}/>
+                            <p class="course-number">${data[i].courseNumber}</p>
+                            <p class="hrd-net-id">${data[i].hrdNetId}</p>
+                            <p class="name">${data[i].name}</p>
+                        </div>`;
+        }
+        $(".list-contents").html("");
+        $(".list-contents").append(result);
+    }
+
+    // -- 입력할 날짜에 따라 출결 미입력 상태인 수강생 데이터 가져오기
+    async function fetchNoAttendanceStudentList(param) {
+        // 매개변수 param은 검색할 attendanceDate
+        const myHeaders = new Headers();
 
         const requestOptions = {
             method: "GET",
@@ -223,118 +593,79 @@
             redirect: "follow"
         };
 
-        await fetch("/students/on-going-courses", requestOptions)
+        await fetch("/attendances/no-attendance-list?attendanceDate="+getAttendanceDateOnModal(), requestOptions)
             .then((res) => res.json())
             .then(async(data) => {
-                console.log(data);
-                console.log(data.courseList);
-
-                updateOnGoingCourseList(data.courseList);
+                let noAttendanceList = data.studentList;
+                await getNoAttendanceStudentList(noAttendanceList);
             })
             .catch((error) => console.error(error));
+
     }
 
-    // 수강생 등록 가능한 현재 진행 중 교육과정 목록 select box 의 데이터로 화면에 보여주기
-    async function updateOnGoingCourseList(data) {
-        let result = `<option>기수를 선택하세요.</option>`;
-        for (let i = 0; i < data.length; i++) {
-            result += `<option value=${data[i].courseNumber}>${data[i].courseNumber}기 - ${data[i].courseName}</option>`;
-        }
-        $("#course_number").html("");
-        $("#course_number").append(result);
-    }
-
-    // 입력한 정보로 수강생 등록하기
-    async function fetchSetStudent() {
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-
-        const raw = ({
-            "name": getInputName(),
-            "hrdNetId": getHrdNetId(),
-            "birth": getBirth(),
-            "gender": getGender(),
-            "courseNumber": getCourseNumber(),
-            "address": getAddress(),
-            "bank": getBank(),
-            "account": getAccount(),
-            "phoneNumber": getPhoneNumber(),
-            "email": getEmail()
+    // -- 출결 미입력 상태 수강생 목록 전체 체크
+    function checkAllOnModal() {
+        $("#modal-check-all").click(function() {
+            if($("#modal-check-all").is(":checked")) {
+                $("input[class='modal-student-checkbox']").prop("checked", true);
+            } else {
+                $("input[class='modal-student-checkbox']").prop("checked", false);
+            }
         });
 
-        const requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: JSON.stringify(raw),
-            redirect: "follow"
-        };
+        $("input[class='modal-student-checkbox']").click(function() {
+            let total = $("input[class='modal-student-checkbox']").length;
+            let checked = $("input[class='modal-student-checkbox']:checked").length;
 
-        await fetch("/students", requestOptions)
-            .then((res) => res.json())
-            .then(async(data) => {
-                console.log(data);
-                return 0;
-            })
-            .catch((error) => console.error(error));
-    }
-
-    // 입력한 정보로 수강생_교육과정 수강내역 등록하기
-    async function fetchRegisterCourse() {
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-
-        const raw = ({
-            "courseNumber": getCourseNumber(),
-            "hrdNetId": getHrdNetId()
+            if(total != checked) {
+                $("#modal-check-all").prop("checked", false);
+            } else {
+                $("#modal-check-all").prop("checked", true);
+            }
         });
-        console.log(raw);
-        console.log(JSON.stringify(raw));
+    };
 
-        const requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: JSON.stringify(raw),
-            redirect: "follow"
-        };
-
-        await fetch("/students/new-course", requestOptions)
-            .then((res) => res.json())
-            .then(async(data) => {
-                console.log("fetchRegisterCourse() 메서드 success");
-                console.log(data);
-            })
-            .catch((error) => console.error(error));
-    }
-    $("#enroll-btn").click(async function() {
-        console.log(getCourseNumber());
-        console.log(getHrdNetId());
-        if(sessionStorage.getItem("isRegisteredStudent") == "true") {
-            await fetchRegisterCourse()
-                .then(async (response) => {
-                    alert("수강과정 등록이 정상처리되었습니다.");
-                    window.location.href="/ems/students";
-                }).catch((error) => {
-                    console.error("Error fetchRegisterCourse: 수강생 교육과정 등록 실패", error);
-                }).finally(() => {
-                    sessionStorage.clear();
-                });
-        }/* else if(sessionStorage.getItem("isRegisteredStudent") == "false") {
-           await fetchSetStudent()
-               .then(async (response) => {
-                   await fetchRegisterCourse();
-                   alert("수강생 등록이 정상처리되었습니다.");
-                   window.location.href="/ems/students";
-               })
-               .catch((error) => {
-                   console.error("Error fetchSetStudent: 수강생 계정 생성 실패", error);
-               })
-               .finally(() => {
-                   sessionStorage.clear();
-               });
-       }*/
+    $(".input-date.modal").on("change", async function() {
+        await fetchNoAttendanceStudentList(getAttendanceDateOnModal());
+        checkAllOnModal();
     });
 
-</script>
+    // -- 선택한 출결 상태로 수강생 출결 일괄 입력(등록)
+    $("#set-attendance-btn").click(async function() {
+        const checkedStudentData = [];
+        const selectedRadio = $("input[name=attendanceStatusModal]:checked");
+        if(!selectedRadio.length) {
+            alert("등록할 수강생 출결 상태를 체크해주세요!");
+            return;
+        }
+        const combineAttendanceStatus = selectedRadio.val();
+        $('input[type="checkbox"][class="modal-student-checkbox"]:checked:not(#modal-check-all)').each(function(index, checkboxElement) {
+            const studentCourseSeq = parseInt($(this).val());
 
+            const studentRow = $(this).closest('div');
+            checkedStudentData.push({
+                "studentCourseSeq": studentCourseSeq,
+                "attendanceDate": getAttendanceDateOnModal(),
+                "attendanceStatus": combineAttendanceStatus
+            });
+        });
+        await fetchAddAttendance(checkedStudentData);
+    });
+
+    // 출석인정 파일 업로드
+    /*$('#acknowledge-setting-modal #setting-btn').on('click', function() {
+        $('#acknowledge-setting-modal form').submit(function(e) {
+            e.preventDefault();
+        });
+        // console.log("파일 업로드!");
+
+        const form = $('#acknowledge-setting-modal form');
+        console.log("form");
+        console.log(form);
+        const formData = new FormData(form[0]);
+        console.log("formData");
+        console.log(formData);
+    });*/
+</script>
 </body>
 </html>
