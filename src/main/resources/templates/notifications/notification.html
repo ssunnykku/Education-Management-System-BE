@@ -16,6 +16,7 @@
   </section>
   <section id="notificationPost-section">
     <article class="notificationPost-contents">
+    <button id="menu-btn">목록</button>
     <div class="notification-title">
       <div id="notification-row" class="underline">
         <div class="notificationPost-title">
@@ -29,18 +30,18 @@
           <span>작성자 :</span>
           <span class="notification-writer">
         </div>
-        <div class="notificationPost-content">
-          <p>
-          </p>
+        <pre class="notificationPost-content">
+  
+        </pre>
+      </div>
+       <div id="setNotification-btn-wrapper">
+            <button id="enroll-btn" class="setNotification-btn-setting">
+                수정
+            </button>
+            <button id="delete-btn" class="setNotification-btn-setting">
+                삭제
+            </button>
         </div>
-      </div>
-      <div id="notificationPost-btn-wrapper">
-
-        <button id="back-btn" class="btn-setting">목록</button>
-             <button id="btn-edit" class="is-writer" >수정</button>
-            <button id="delete-btn" class="is-writer" >삭제</button>
-
-      </div>
     </article>
   </section>
   <footer></footer>
@@ -72,10 +73,10 @@
     document.querySelector('.notification-writer').textContent=name;
           console.log(sameWriter);
     if(sameWriter!==true){
-            $('.is-writer').css('display', 'none');
+            $('.setNotification-btn-setting').css('display', 'none');
           }
     else{
-            $('.is-writer').css('display', 'block');
+            $('.setNotification-btn-setting').css('display', 'block');
           }
         })
         .catch(error => {
@@ -84,7 +85,7 @@
     });
 
 
-	$("#back-btn").on("click", function(){
+	$("#menu-btn").on("click", function(){
       location.href = "/ems/notifications";
     })
 
@@ -111,7 +112,7 @@
         .catch((error) => console.error(error))
     })
     //수정 버튼 누르면
- 	$("#btn-edit").on("click", function(){
+ 	$("#enroll-btn").on("click", function(){
 		location.href = "/ems/notification/update?notificationSeq="+notificationSeq
     })
   </script>

@@ -11,8 +11,13 @@ public interface CourseService {
     List<CourseDTO> searchCourseList(int courseNumber, String academyLocation, int page, int pageSize, boolean excludeExpired);
     Integer getSearchCourseListSize( int courseNumber, String academyLocation, int page, int pageSize, boolean excludeExpired);
     List<String> getCourseTypeList();
+    CourseDTO getCourseByCourseNumber(int CourseNumber);
     
     boolean addCourse(CourseDTO course);
     boolean editCourse(CourseDTO course);
     boolean deleteCourse(int courseSeq, String academyLocationOfManager);
+    List<Integer> getCourseNumberByYear(int courseEndYear);
+    List<Integer> getCourseNumberYearList();
+    Integer getStudentsNumberBySeq(int courseSeq);
+    Integer getSeqByCourseNumber(int courseNumber);
 }

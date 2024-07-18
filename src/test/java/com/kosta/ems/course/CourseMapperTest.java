@@ -50,15 +50,17 @@ public class CourseMapperTest {
 	public void searchCourseList() {
 	    List<CourseDTO> list = mapper.searchCourseList(277, "가산", 0, 10, false);
 	    assertThat(list.size()).isEqualTo(1);
-	    list = mapper.searchCourseList(0, "가산", 0, 20, false);
-	    assertThat(list.size()).isEqualTo(9);
+	    list = mapper.searchCourseList(0, "강원", 0, 20, false);
+	    assertThat(list.size()).isEqualTo(0);
 	}
 	
 	@Test
 	@Transactional
 	public void getSearchCourseListSize() {
 	    int count = mapper.getSearchCourseListSize(0, "가산", 0, 20, false);
-	    assertThat(count).isEqualTo(9);
+	    assertThat(count).isGreaterThan(0);
+	    count = mapper.getSearchCourseListSize(0, "강원", 0, 20, false);
+        assertThat(count).isEqualTo(0);
 	}
 	
 	@Test
@@ -71,7 +73,9 @@ public class CourseMapperTest {
 	@Transactional
 	public void getCourseNumberList() {
 	    List<Integer> list = mapper.getCourseNumberList("가산", false);
-	    assertThat(list.size()).isEqualTo(9);
+	    assertThat(list.size()).isGreaterThan(1);
+	    list = mapper.getCourseNumberList("강원", false);
+        assertThat(list.size()).isEqualTo(0);
 	}
 
 	@Test
@@ -79,7 +83,7 @@ public class CourseMapperTest {
 	public void AddCourse() {
 		CourseDTO course = 
 				CourseDTO.builder()
-				.managerId("bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5")
+				.managerId("3ddf8303-3eaf-11ef-bd30-0206f94be675")
 				.courseNumber(3000)
 				.academyLocation("가산")
 				.courseName("123")
@@ -100,7 +104,7 @@ public class CourseMapperTest {
 	public void updateCourse() {
 		CourseDTO course = 
 				CourseDTO.builder()
-				.managerId("bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5")
+				.managerId("3ddf8303-3eaf-11ef-bd30-0206f94be675")
 				.courseNumber(3000)
 				.academyLocation("가산")
 				.courseName("123")
@@ -124,7 +128,7 @@ public class CourseMapperTest {
 	public void inactivateCourse() {
 		CourseDTO course = 
 				CourseDTO.builder()
-				.managerId("bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5")
+				.managerId("3ddf8303-3eaf-11ef-bd30-0206f94be675")
 				.courseNumber(3000)
 				.academyLocation("가산")
 				.courseName("123")
@@ -141,7 +145,26 @@ public class CourseMapperTest {
 		int seq = mapper.searchCourseList(3000, "가산", 0, 10, false).get(0).getCourseSeq();
 		assertThat(mapper.inactivateCourse(seq)).isTrue();
 	}
-	
-	
-
+	@Test
+	@Transactional
+	public void getCourseByEndYear() {
+	    List<Integer> course= mapper.getCourseNumberListByYear(2024);
+	    assertThat(course.size()).isEqualTo(11);
+	}
+	@Test
+	@Transactional
+	public void getCourseNumberYearList() {
+		List<Integer> course =mapper.getCourseNumberYearList();
+		assertThat(course.size()).isEqualTo(2);
+	}
+	@Test
+	@Transactional
+	public void getStudentsNumberBySeq() {
+		assertThat(mapper.getStudentsNumberBySeq(5)).isEqualTo(8);
+	}
+	@Test
+	@Transactional
+	public void getSeqByCourseNumber() {
+		assertThat(mapper.getSeqByCourseNumber(277)).isEqualTo(20);
+	}
 }

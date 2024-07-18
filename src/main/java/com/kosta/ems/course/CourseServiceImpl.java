@@ -54,11 +54,11 @@ public class CourseServiceImpl implements CourseService {
 	@Override
 	public boolean deleteCourse(int courseSeq, String academyLocationOfManager) {
 		// 삭제권한 체크목적
-		CourseDTO course = getCourse(courseSeq, academyLocationOfManager);
-		if(course == null) {
-			return false;
+		CourseDTO course = courseMapper.getCourse(courseSeq);
+		if(course.getAcademyLocation().equals(academyLocationOfManager)) {
+		    return courseMapper.inactivateCourse(courseSeq);
 		}
-		return courseMapper.inactivateCourse(courseSeq);
+		return false;
 	}
 
 	@Override
@@ -70,5 +70,31 @@ public class CourseServiceImpl implements CourseService {
 	public List<String> getCourseTypeList() {
 		return courseMapper.getCourseTypeList();
 	}
+	
+	@Override
+	public List<Integer> getCourseNumberByYear(int courseEndYear){
+		return courseMapper.getCourseNumberListByYear(courseEndYear);
+	}
+	@Override
+	public List<Integer> getCourseNumberYearList(){
+		return courseMapper.getCourseNumberYearList();
+	}
 
+	@Override
+	public Integer getStudentsNumberBySeq(int courseSeq) {
+		Integer result=courseMapper.getStudentsNumberBySeq(courseSeq);
+		if(result== null) {
+			result =0;
+		}
+		return result;
+	}
+	@Override
+	public Integer getSeqByCourseNumber(int courseNumber) {
+		return courseMapper.getSeqByCourseNumber(courseNumber);
+	}
+
+    @Override
+    public CourseDTO getCourseByCourseNumber(int CourseNumber) {
+        return courseMapper.getCourseByCourseNumber(CourseNumber);
+    }
 }

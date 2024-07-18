@@ -36,7 +36,8 @@ public class CourseController {
 	
 	@GetMapping("/course")
 	public Map<String, CourseDTO> getCourse(@RequestParam int courseSeq) {
-		return Map.of("result", courseService.getCourse(courseSeq, getAcademyOfLoginUser()));
+	    ManagerDTO loginUser = getLoginUser();
+		return Map.of("result", courseService.getCourse(courseSeq, loginUser.getAcademyLocation()));
 	}
 	
 	@GetMapping("/course-list")
@@ -47,19 +48,30 @@ public class CourseController {
 			@RequestParam(value = "excludeExpired", defaultValue = "true") boolean excludeExpired, 
 			HttpServletRequest request) 
 	{
-		String academyLocation = getAcademyOfLoginUser();
+	    ManagerDTO loginUser = getLoginUser();
+		String academyLocation = loginUser.getAcademyLocation();
 		return Map.of("result", courseService.searchCourseList(courseNumber, academyLocation, page, pageSize, excludeExpired));
 	}
 	
 	@GetMapping("/course-number-list")
 	public Map getCourseNumberList(@RequestParam(value="excludeExpired", defaultValue = "true") boolean excludeExpired, HttpServletRequest request) {
-		return Map.of("result", courseService.getCourseNumberList(getAcademyOfLoginUser(), excludeExpired));
+	    ManagerDTO loginUser = getLoginUser();
+		return Map.of("result", courseService.getCourseNumberList(loginUser.getAcademyLocation(), excludeExpired));
 	}
 	@GetMapping("/course-type-list")
 	public Map getCourseTypeList() {
 		return Map.of("result", courseService.getCourseTypeList());
 	}
 	
+	@GetMapping("/course-list-by-year")
+	public Map getCourseNumberByYear(@RequestParam int courseEndYear) {
+		return Map.of("result", courseService.getCourseNumberByYear(courseEndYear));
+	}
+	
+	@GetMapping("/course-year-list")
+	public Map getCourseNumberYearList() {
+		return Map.of("result",courseService.getCourseNumberYearList());
+	}
 	
 	@PostMapping("/course")
 	public Map<String, Boolean> addCourse(@RequestBody @Valid AddCourseRequest cRequest, BindingResult bindingResult){
@@ -76,32 +88,24 @@ public class CourseController {
 	
 	@PutMapping("/course")
 	public Map<String, Boolean> editCourse(@RequestBody CourseDTO course){
-		course.setManagerId(getManagerIdOfLoginUser());
-		course.setAcademyLocation(getAcademyOfLoginUser());
+	    ManagerDTO loginUser = getLoginUser();
+		course.setManagerId(loginUser.getManagerId());
+		course.setAcademyLocation(loginUser.getAcademyLocation());
 		boolean result = courseService.editCourse(course);
 		return Map.of("result", result);
 	}
 	
 	@PatchMapping("/course/{courseSeq}")
 	public Map<String, Boolean> deleteCourse(@PathVariable("courseSeq") int courseSeq){
-		boolean result = courseService.deleteCourse(courseSeq, getAcademyOfLoginUser());
+	    ManagerDTO loginUser = getLoginUser();
+		boolean result = courseService.deleteCourse(courseSeq, loginUser.getAcademyLocation());
 		return Map.of("result", result);
 	}
-
-	private String getAcademyOfLoginUser() {
-        if(SECURITY_LEVEL.equals("OFF")) {
-            return("가산");
-        }
-        ManagerDTO loginUser = getLoginUser();
-        return loginUser.getAcademyLocation();
-	}
 	
-	private String getManagerIdOfLoginUser() {
-	    if(SECURITY_LEVEL.equals("OFF")) {
-	        return("bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5");
-	    }
-	    ManagerDTO loginUser = getLoginUser();
-		return loginUser.getManagerId();
+	@GetMapping("/students-number")
+	public Map getStudentsNumberBySeq(@RequestParam int courseNumber) {
+		int courseSeq=courseService.getSeqByCourseNumber(courseNumber);
+		return Map.of("result", courseService.getStudentsNumberBySeq(courseSeq));
 	}
 	
     private ManagerDTO getLoginUser() {

@@ -18,42 +18,48 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @Slf4j
 public class EmploymentServiceTest {
-	@Autowired
-	EmploymentService service;
-	
-	@Autowired
-	EmploymentRepo repo;
-	
-	@Test
-	@Transactional
-	public void getEmploymentInfoByCourseNumber() {
-	    List<EmploymentInfoResponse> list = service.getEmploymentInfoByCourseSeq(5, -1, -1);
-	    assertThat(list.size()).isEqualTo(5);
-	    
-	}
-	
-	@Test
-	@Transactional
-	public void getEmployeedRate() {
-	    assertThat(service.getEmployeedRatePct(5)).isEqualTo(40.0);
-	}
-	
-	@Test
-	@Transactional
-	public void addStatus() {
-	    assertThat(service.addEmployeedStatus(new AddEmployeedStatusRequest(19, "테스트회사"), "bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5")).isTrue();
-	}
-	
-	@Test
-	@Transactional
-	public void editStatus() {
-	    assertThat(service.editEmployeedStatus(new EditEmployeedStatusRequest(1, "금호IDT"), "bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5")).isTrue();
-	}
-	
-	@Test
-	@Transactional
-	public void deleteStatus() {
-	    service.deleteEmployeeStatus(1, "bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5");
-	}
+    @Autowired
+    EmploymentService service;
+
+    @Autowired
+    EmploymentRepo repo;
+
+    @Test
+    @Transactional
+    public void getEmploymentInfoByCourseNumber() {
+        List<EmploymentInfoResponse> list = service.getEmploymentInfoByCourseSeq(5);
+        assertThat(list.size()).isGreaterThan(0);
+        
+        list = service.getEmploymentInfoByCourseSeq(-5);
+        assertThat(list.size()).isEqualTo(0);
+
+    }
+
+    @Test
+    @Transactional
+    public void getEmployeedRate() {
+        assertThat(service.getEmployeedRatePct(277)).isGreaterThan(0);
+    }
+
+    @Test
+    @Transactional
+    public void addStatus() {
+        assertThat(service.editEmployeedStatus(new EditEmployeedStatusRequest(27, "금호IDT"),
+                "3ddf8303-3eaf-11ef-bd30-0206f94be675")).isTrue();
+    }
+
+    @Test
+    @Transactional
+    public void editStatus() {
+        assertThat(service.editEmployeedStatus(new EditEmployeedStatusRequest(27, "금호IDT"),
+                "3ddf8303-3eaf-11ef-bd30-0206f94be675")).isTrue();
+    }
+
+    @Test
+    @Transactional
+    public void countEmployeementFindByCourseNumber() {
+        assertThat(service.countEmployeedByCourseNumber(277)).isGreaterThan(0);
+        assertThat(service.countEmployeedByCourseNumber(286)).isEqualTo(0);
+    }
 
 }

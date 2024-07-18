@@ -6,36 +6,16 @@ let currentBlock = 1;
 
 let totalPages = 0;
 
-async function getSettlementList(data) {
-    let tableBody = "";
-  
-    for (let i = 0; i < data.length; i++) {
-      tableBody += `<tr>
-        <td><input type="checkbox" name=${data[i].courseNumber} class="checkbox" value=${data[i].studentCourseSeq}></td>
-        <td><span class="employmentBoard-courseId">${data[i].courseNumber}</span></td>
-        <td><span class="employmentBoard-course-name">${data[i].courseName}</span></td>
-        <td><span class="employmentBoard-hrd-net-id">${data[i].hrdNetId}</span></td>
-        <td><span class="employmentBoard-name">${data[i].name}</span></td>
-        <td><span class="employmentBoard-bank">${data[i].bank}</span></td>
-        <td><span class="employmentBoard-account">${data[i].account}</span></td>
-        <td><span class="employmentBoard-point">${data[i].totalPoint}</span></td>
-        <td><span class="employmentBoard-total-amount">${data[i].employmentAmount}</span></td>
-      </tr>`;
-    }
-  
-    $("#employment-table-contents").html("");
-    $("#employment-table-contents").append(`<table><tbody>${tableBody}</tbody></table>`);
-  }
 
 function searchInput() {
     return $(".search-input").val();
 }
 
-function courseNumber() {
+/*function courseNumber() {
     // console.log($(".employment-courseId-filter option:selected").text());
     return $(".employment-courseId-filter option:selected").text();
 }
-
+*/
 /*$(".board-filter-search-btn").click(async function () {
 =======
 $(".board-filter-search-btn").click(async function () {
@@ -158,6 +138,24 @@ fetch("/courses/course-number-list?excludeExpired=false", {
 
     })
     .catch((error) => console.error(error));
+
+/*courseData filter 목록*/
+
+fetch("/courses/course-year-list", {
+    method: "GET",
+})
+    .then((res) => res.json())
+    .then((data) => {
+        const courseList = data.result;
+        let result = '';
+        for (const resultElement of courseList) {
+            result += `<option value=${resultElement}>${resultElement}</option>`;
+        }
+        $(".employment-year-filter").append(result);
+
+    })
+    .catch((error) => console.error(error));
+
 
 /*pagenation*/
 

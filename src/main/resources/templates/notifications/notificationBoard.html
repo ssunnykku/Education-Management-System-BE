@@ -23,13 +23,15 @@
           <input placeholder="검색어를 입력하세요" id="search-input" class="search-input" />
           <button type="button" class="board-filter-search-btn">검색</button>
         </div>
+        <div class="enroll-btn-wrapper">
         <button id="notification-enroll-btn" class="btn-setting">글 등록</button>
+      </div>
       </div>
     </article>
     <article >
       <div id="notification-table">
         <div class="notification-row" id="notification-title-row">
-          <div class="notificationBoard-title">
+          <div class="notificationBoard-title" >
             <span>제목</span>
           </div>
           <div class="notificationBoard-enroll-date">
@@ -103,25 +105,32 @@
 
 
     async function getSettlementList(data) {
-      let result = '';
-      for (let i = 0; i < data.length; i++) {
-        result += `<div class="notification-row">
-      <div class="notificationBoard-title" id="notificationBoard-title">
-    <a href="/ems/notification?notificationSeq=${data[i].notificationSeq}">${data[i].title}</a> 
-      </div>
-      <div class="notificationBoard-enroll-date">
-        <span>${data[i].formattedNotificationDate}</span>
-      </div>
-      <div class="notificationBoard-writer">
-        <span>${data[i].name}</span>
-      </div>
-      <div class="notification-view-count">
-      <span>${data[i].viewCount}</span>
-    </div>
-    </div>`;
-      }
-      let keyword = document.querySelector('#search-input').value;
+  let result = '';
 
+  // Check if data is empty or undefined
+  if (!data || data.length === 0) {
+    result = '<div class="no-data-message">데이터가 없습니다</div>';
+  } else {
+    // Process data as usual to create the notification table content
+    for (let i = 0; i < data.length; i++) {
+      result += `
+        <div class="notification-row">
+          <div class="notificationBoard-title" id="title-content">
+            <a href="/ems/notification?notificationSeq=${data[i].notificationSeq}">${data[i].title}</a>
+          </div>
+          <div class="notificationBoard-enroll-date">
+            <span>${data[i].formattedNotificationDate}</span>
+          </div>
+          <div class="notificationBoard-writer">
+            <span>${data[i].name}</span>
+          </div>
+          <div class="notification-view-count">
+            <span>${data[i].viewCount}</span>
+          </div>
+        </div>
+      `;
+    }
+  }
       $("#notification-table-contents").html("");
       $("#notification-table-contents").append(result);
     }
@@ -172,12 +181,18 @@
       fetchNotificationBoard(1); // 초기 페이지가 1이라고 가정
 
       // 페이지 클릭 이벤트 처리
-      $("#page_number").on("click", ".page-link", event => {
-        let pageNumber = event.target.textContent;
-        clickedPageNumber = pageNumber;
-        fetchNotificationBoard(pageNumber);
+       $("#page_number").on("click", ".page-link", event => {
+    event.preventDefault(); // 기본 링크 동작 방지
+
+    let pageNumber = parseInt(event.target.textContent); // 클릭된 페이지 번호 추출
+    clickedPageNumber = pageNumber; // clickedPageNumber 변수 업데이트
+
+    fetchNotificationBoard(pageNumber) // 페이지 데이터 fetch
+      .then(() => {
+        updatePagination(pageNumber); // 페이지네이션 업데이트
       });
-    });
+  });
+});
     //pagenation
 
     // next 및 before 버튼에 이벤트 리스너 추가
@@ -199,21 +214,24 @@
       }
     });
 
+function updatePagination() {
+  $("#page_number").html("");
 
-    function updatePagination() {
-      $("#page_number").html("");
+  let firstPage = (currentBlock * pageSize) - pageSize + 1;
+  let lastPage = totalPages <= currentBlock * pageSize ? totalPages : currentBlock * pageSize;
+  let result = "";
 
-      let firstPage = (currentBlock * pageSize) - pageSize + 1;
-      let lastPage = totalPages <= currentBlock * pageSize ? totalPages : currentBlock * pageSize;
-      let result = "";
-      for (let i = firstPage; i <= lastPage; i++) {
-        let num = i;
-        result += `<li>
-                    <a class="page-link">${num}</a>
-                    </li>`;
-      }
-      $("#page_number").append(result);
-    }
+  for (let i = firstPage; i <= lastPage; i++) {
+    let num = i;
+    let fontWeight = (num === clickedPageNumber) ? 'bold' : 'normal'; // 현재 페이지 번호일 때만 font-weight: bold 적용
+
+    result += `<li>
+                <a class="page-link" style="font-weight: ${fontWeight}">${num}</a>
+                </li>`;
+  }
+
+  $("#page_number").append(result);
+}
     async function fetchNotificationBoard(pageNumber) {
       
       const response = await fetch(`/notifications?page=${pageNumber}`);

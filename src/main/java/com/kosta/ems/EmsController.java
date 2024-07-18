@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.kosta.ems.attendance.AttendanceService;
-import com.kosta.ems.student.PageResponseDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -16,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -28,8 +26,6 @@ import com.kosta.ems.notification.NotificationService;
 import com.kosta.ems.studentPoint.StudentPointService;
 import com.kosta.ems.studentPoint.dto.StudentCourseWithPointDTO;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/ems")
 @RequiredArgsConstructor
 @Slf4j
-public class EmpController {
+public class EmsController {
     @Value("${security.level}")
     private String SECURITY_LEVEL;
 
@@ -188,17 +184,23 @@ public class EmpController {
     }
 
     @GetMapping("/students/set")
-    public String addStudent() { return "students/addStudent"; }
+    public String addStudent() {
+        return "students/addStudent";
+    }
 
     @GetMapping("/students")
     public String studentBoard() {
         return "students/studentBoard";
     }
-    
+
     @GetMapping("/employments")
     public String employmentBoard() {
-    	return "employment/employmentBoard";
+        return "employment/employmentBoard";
     }
-
+    
+    @GetMapping("employments/data")
+    public String employmentDataBoard() {
+    	return "employment/employmentDataBoard";
+    }
 
 }

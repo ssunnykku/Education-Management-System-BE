@@ -1,4 +1,5 @@
 package com.kosta.ems.student;
+
 import com.kosta.ems.attendance.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -41,7 +42,7 @@ public class StudentServiceImpl implements StudentService {
     // 수강생 정보 검색 결과 데이터 불러오기
     @Override
     public List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumberList(String name, int courseNumber, int page, int size) {
-        return studentMapper.findByStudentNameOrCourseNumberList(name, courseNumber, ((page*size)-size), size);
+        return studentMapper.findByStudentNameOrCourseNumberList(name, courseNumber, ((page * size) - size), size);
     }
 
     // *0710_수강생 정보 조회  // * 0715
@@ -53,6 +54,7 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentInfoDTO> getStudentInfoList(int isActive, String name, int courseNumber, String academyLocation, int page, int size) {
         return studentMapper.selectStudentInfoList(isActive, name, courseNumber, academyLocation, ((page*size)-size), size);
     }
+
     @Override
     public List<ArrayList> getStudentInfoList2(int isActive, String name, int courseNumber, String academyLocation, int page, int size) {
         /* 수료 여부 항목
@@ -122,7 +124,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public boolean findByHrdNetId(String hrdNetId) {
         int count = studentMapper.findByHrdNetId(hrdNetId);
-        if(count == 0) {
+        if (count == 0) {
             // 수강생 신규 등록 진행
             return false;
         } else {
@@ -145,40 +147,6 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.selectOnGoingCourseList(academyLocation);
     }
 
-    // * 수강생 등록
-    /*  *0715_안 쓰는 개념으로 결정됨
-    // ** 신규 수강생 등록    
-    @Override
-    public void setStudentWithCourse(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber) {
-        int year = Integer.parseInt(birth.split("-")[0]);
-        int month = Integer.parseInt(birth.split("-")[1]);
-        int day = Integer.parseInt(birth.split("-")[2]);
-        char g = gender.toCharArray()[0];
-
-        AddStudentBasicInfoDTO dto = AddStudentBasicInfoDTO.builder().hrdNetId(hrdNetId).name(name).birth(LocalDate.of(year, month, day)).address(address).bank(bank).account(account).phoneNumber(phoneNumber).email(email).gender(g).managerId(managerId).courseNumber(Integer.parseInt(courseNumber)).build();
-
-        int result1 = studentMapper.addStudentBasicInfo(dto);
-        if(result1 == 0) {
-            throw new NoSuchDataException("Fail:: Add new student");
-        }
-
-        int result2 = studentMapper.addStudentCourseSeqInfo(dto);
-        if(result2 == 0) {
-            throw new NoSuchDataException("Fail:: Add student_course");
-        }
-    }
-
-    // ** students 테이블에 수강생 데이터 등록
-    @Override
-    public void setStudentBasicInfo(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber) {
-        int year = Integer.parseInt(birth.split("-")[0]);
-        int month = Integer.parseInt(birth.split("-")[1]);
-        int day = Integer.parseInt(birth.split("-")[2]);
-        char g = gender.toCharArray()[0];
-        AddStudentBasicInfoDTO dto = AddStudentBasicInfoDTO.builder().hrdNetId(hrdNetId).name(name).birth(LocalDate.of(year, month, day)).address(address).bank(bank).account(account).phoneNumber(phoneNumber).email(email).gender(g).managerId(managerId).courseNumber(Integer.parseInt(courseNumber)).build();
-        studentMapper.addStudentBasicInfo(dto);
-    }
-    */
 
     // * 수강생 등록
     // ** students_courses 테이블에 수강생 데이터 등록
@@ -193,6 +161,7 @@ public class StudentServiceImpl implements StudentService {
     public StudentBasicInfoDTO getRegisteredStudentInfo(String studentId) {
         return studentMapper.selectRegisteredStudentInfo(studentId);
     }
+
     @Override
     public void updateSelectedStudentInfo(String name, String address, String bank, String account, String phoneNumber, String email, String studentId, int isActiveStatus) {
         boolean tmp = true;
@@ -208,5 +177,5 @@ public class StudentServiceImpl implements StudentService {
     public void removeSelectedStudent(String studentId) {
         studentMapper.deleteSelectedStudent(studentId);
     }
-
+    
 }

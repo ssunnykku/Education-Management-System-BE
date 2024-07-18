@@ -9,51 +9,47 @@
 }
 
 
-
 /*************button ***************/
 #notification-btn-wrapper {
     padding-right: 50px;
-    margin: 10px 0 5px 0;
+    margin-left:32%;
     display: flex;
-    flex-direction: row;
-    justify-content: end;
-    gap: 10px;
-    display: flex;
-    width: auto;
-    height: 50px;
-    align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-top: 20px;
 }
 
 .board-filter-search-btn {
     font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 144%;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 144%;
 
-  width: 100px;
-  height: 40px;
+    width: 100px;
+    height: 40px;
 
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 16px;
-  gap: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 16px;
+    gap: 10px;
 
-  line-height: 1.5em;
-  border-radius: 8px;
+    line-height: 1.5em;
+    border-radius: 8px;
 
-  /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15); */
+    /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15); */
 
-  box-shadow: 0px 0px 2px #888;
-  line-height: 1.5em;
+    box-shadow: 0px 0px 2px #888;
+    line-height: 1.5em;
 
-  background: rgba(244, 244, 244, 1);
-  color: #000000;
+    background: rgba(244, 244, 244, 1);
+    color: #000000;
 
-  flex: none;
-  order: 0;
-  flex-grow: 1;
+    flex: none;
+    order: 0;
+    flex-grow: 1;
 }
 
 
@@ -62,15 +58,15 @@
     background-color: rgb(64, 64, 64);
     border-radius: 8px;
     position: relative;
-   right: 10px;
-   margin-left: 240px;
-  top: 40%; 
-  display: flex;
-  flex-direction: row;
-  transform: translateY(-50%);
-	width: 80px;
-	height: 40px;
-  box-shadow: 0px 0px 5px #888;
+    right: 10px;
+    margin-left: 240px;
+    top: 40%;
+    display: flex;
+    flex-direction: row;
+    transform: translateY(-50%);
+    width: 80px;
+    height: 40px;
+    box-shadow: 0px 0px 5px #888;
 
 }
 
@@ -83,42 +79,35 @@
 
 /*********** table ***************/
 .notification-contents {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding-left: 36%;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
 }
 
 #notification-btn-article {
     /* height: 50px; */
-    width: 100%;
-}
-
-
-.search-form-wrapper {
-    display: flex;
-    width: 450px;
-    align-items: center;
 }
 
 
 .notification-row {
-   display: flex;
-  flex-direction: row;
-  height: 60px;
-  width: 100%;
-  align-items: center;
-  text-align: center;
-  justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    height: 45px;
+    width: 80%;
+    align-items: center;
+    text-align: center;
+    justify-content: space-between;
+    border-bottom: 0.5px solid lightgray;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 144%;
 
-  font-style: normal;
-  font-weight: 300;
-  font-size: 15px;
-  line-height: 144%;
-
-  color: #1d1d1d;
+    color: #1d1d1d;
 }
+
 .search-input {
     width: 300px;
     height: 41px;
@@ -141,46 +130,55 @@
     color: #000000;
     text-align: center;
 }
+
 #notification-table {
-  width: 90%;
-  margin: 0 auto;
-  padding: 0 100px 0 100px;
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px 100px 10px 100px;
+    margin-left: 250px;
+
 }
+
+
+.notificationBoard-title {
+    width: 40%;
+}
+
+#title-content {
+    font-weight: 400;
+    text-align: left;
+    padding-left: 36px;
+}
+
 
 #notification-title-row {
     font-style: normal !important;
-    font-weight: 500 !important;
     font-size: 15px;
     line-height: 144% !important;
     text-align: center;
     color: #1d1d1d;
     box-sizing: border-box;
-    width: 100%;
-    height: 60px;
-    background: #ffffff;
+    background: #eee;
+    width: 80%;
+    height: 45px;
     border-bottom: 1px solid #f3f5f9;
-    border-radius: 10px 10px 0px 0px;
-}
-
-#notificationBoard-title.notificationBoard-title {
-  font-weight: 600;
-}
-
-
-.notificationBoard-title {
-    width: 300px;
+    font-weight: 600;
+    border-top: 1px solid #5c5c5c;
 }
 
 .notificationBoard-enroll-date {
-    width: 100px;
+    width: 15%
 }
 
 .notificationBoard-writer {
-    width: 100px;
+    width: 10%;
 }
-.notificaitionBoard-view-count {
-	width: 100px;
+
+.notification-view-count {
+    width: 11%;
+    padding-right: 36px;
 }
+
 /************page*********/
 #notificationBoard-pagenation-section {
     height: 35px;
@@ -262,13 +260,15 @@ footer {
     flex-direction: column;
     line-height: 1.5;
 }
-.notification-title{
-	  float: left;
+
+.notification-title {
+    float: left;
 }
-.notificationPost-title  {
-    font-size: 25px;
+
+.notificationPost-title {
+    font-size: 20px;
     font-weight: 500;
-     text-align: left;
+    text-align: left;
 }
 
 .notificationPost-contents {
@@ -277,47 +277,17 @@ footer {
     display: flex;
     flex-direction: column;
     padding: 30px 0 30px 0;
-    gap: 30px;
+    gap: 20px;
 }
 
 .underline {
     background: #ffffff;
-    border-bottom: 1px solid #f3f5f9;
+    border-bottom: 0.5px solid lightgray;
     border-radius: 10px 10px 0px 0px;
     justify-content: space-around;
     padding-bottom: 20px;
 }
 
-.notification-row {
-     display: flex;
-  flex-direction: row;
-  height: 60px;
-  width: 100%;
-  align-items: center;
-  text-align: center;
-  justify-content: space-between;
-
-  font-style: normal;
-  font-weight: 300;
-  font-size: 15px;
-  line-height: 144%;
-
-  color: #1d1d1d;
-}
-#notification-title-row {
-  font-style: normal !important;
-  font-weight: 500 !important;
-  font-size: 15px;
-  line-height: 144% !important;
-  text-align: center;
-  color: #1d1d1d;
-  box-sizing: border-box;
-  width: 100%;
-  height: 60px;
-  background: #ffffff;
-  border-bottom: 1px solid #f3f5f9;
-  border-radius: 10px 10px 0px 0px;
-}
 
 #notificationPost-enroll-date > span {
     font-size: 15px;
@@ -330,18 +300,20 @@ footer {
 }
 
 #notification-contents {
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     row-gap: 40px;
     line-height: 1.8;
+    min-height: 350px;
 }
 
 .notificationPost-content {
     width: 100%;
     font-size: 16px;
     font-weight: 500;
+    white-space: normal;
 }
 
 #notificationPost-btn-wrapper {
@@ -371,56 +343,60 @@ footer {
     box-shadow: 0px 0px 3px #888;
     line-height: 1.5em;
 }
+
 .is-writer {
-  display: block; /* Initially show both buttons */
-  
+    display: block; /* Initially show both buttons */
+
 }
 
 .is-writer:not([data-same-button="true"]) {
-  display: none; /* Hide buttons with data-show-button attribute set to false */
+    display: none; /* Hide buttons with data-show-button attribute set to false */
 }
-#btn-edit{
-	font-weight: 600;
+
+#btn-edit {
+    font-weight: 600;
     color: rgb(64, 64, 64);
     background-color: rgb(255, 255, 255);
     border-radius: 8px;
 }
+
 #enroll-btn {
     color: #ffffff;
     background-color: rgb(64, 64, 64);
     border-radius: 8px;
 }
+
 /* 기본 버튼 스타일 */
 .button {
-  display: inline-block;
-  padding: 10px 15px;
-  margin: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  cursor: pointer;
-  text-decoration: none;
-  font-family: sans-serif;
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: sans-serif;
 }
 
 /* 모든 버튼에 대한 마우스 오버 효과 */
 .button:hover {
-  background-color: #eee;
+    background-color: #eee;
 }
 
 /* 개별 버튼 스타일 */
 #notificationPost-btn-wrapper#back-btn {
-  background-color: #007bff;
-  color: #fff;
+    background-color: #007bff;
+    color: #fff;
 }
 
-#notificationPost-btn-wrapper >div #btn-edit {
-  background-color: #28a745;
-  color: #fff;
+#notificationPost-btn-wrapper > div #btn-edit {
+    background-color: #28a745;
+    color: #fff;
 }
 
-#notificationPost-btn-wrapper >div #delete-btn {
-  background-color: #dc3545;
-  color: #fff;
+#notificationPost-btn-wrapper > div #delete-btn {
+    background-color: #dc3545;
+    color: #fff;
 }
 
 #edit-btn, #delete-btn, #cancel-btn {
@@ -453,11 +429,11 @@ footer {
     height: 40px;
     width: 100%;
     margin-bottom: 20px;
-  /*   padding: 0 45px; */
-  	flex-direction: row;
+    /*   padding: 0 45px; */
+    flex-direction: row;
     justify-content: center;
     gap: 14px;
-   
+
 }
 
 .setNotification-title-wrapper > h3 {
@@ -465,21 +441,23 @@ footer {
     text-align: center;
     transform: translateY(30%);
     font-size: 16px;
-    font-weight:500;
+    font-weight: 500;
     margin-right: 0px;
 }
 
 .setNotification-title-input-wrapper {
     width: 90%;
 }
-.setNotification-title-input-wrapper >h3{
-	  width: 10%;
+
+.setNotification-title-input-wrapper > h3 {
+    width: 10%;
     text-align: center;
     transform: translateY(70%);
     font-size: 16px;
-    font-weight:500;
+    font-weight: 500;
     margin-right: 0px;
 }
+
 .setNotification-title-input-wrapper > input {
     width: 100%;
     height: 100%;
@@ -493,38 +471,42 @@ footer {
 
 .setNotification-input-wrapper {
     height: 600px;
-  /*   padding: 0 45px; */
-  	display: flex;
-  	flex-direction: row;
+    /*   padding: 0 45px; */
+    display: flex;
+    flex-direction: row;
     justify-content: center;
     gap: 14px;
-   
+
     width: 100%;
-  	
-}
-#title-item{
-	width: 50px;
-	text-align: center;
-}
-#content-item {
-	width: 50px;
-	text-align: center;
+
 }
 
-#content-textarea-wrapper{
-	width: 810px;
+#title-item {
+    width: 50px;
+    text-align: center;
 }
-#title-input{
-/* 	 font-size: 15px;
-    border: none;
-    outline: none;
-    resize: none;
-    width: 100%;
-    height: 100%;
-    background: #ffffff;
-    border: 1px solid #cfcfcf;
-    border-radius: 10px; */
+
+#content-item {
+    width: 50px;
+    text-align: center;
 }
+
+#content-textarea-wrapper {
+    width: 810px;
+}
+
+#title-input {
+    /* 	 font-size: 15px;
+        border: none;
+        outline: none;
+        resize: none;
+        width: 100%;
+        height: 100%;
+        background: #ffffff;
+        border: 1px solid #cfcfcf;
+        border-radius: 10px; */
+}
+
 #content-input {
     font-size: 15px;
     border: none;
@@ -535,9 +517,41 @@ footer {
     background: #ffffff;
     border: 1px solid #cfcfcf;
     border-radius: 10px;
-     padding: 20px
+    padding: 20px
 }
-
+#menu-btn {
+  background-image: url("../assets/arrow_left.svg");
+  background-repeat: no-repeat;
+  background-size: 12px;
+  background-position: left 10px top 7px; /* 이미지 위치 조절 */
+  height: 30px;
+  width: 150px;
+  margin: 0;
+  display: flex; /* 버튼을 Flexbox 레이아웃으로 설정 */
+  align-items: center; /* 버튼 안쪽 요소들을 수직 중앙 정렬 */
+  justify-content: space-between; /* 버튼 안쪽 요소들을 좌우 양쪽 끝에 정렬하고, 중간에 여백 발생 */
+  padding: 0 30px; /* 버튼 안쪽 여백 설정 */
+  font-size: 16px;
+}
+.enroll-btn-wrapper{
+	display: flex;
+  flex-direction: row;
+  gap: 10px;
+margin-left:450px;
+  margin-top: 20px;
+}
+.search-form-wrapper{
+	display: flex;
+	flex-direction: row;
+	gap: 8px;
+    margin-left: 200px;
+}
+.no-data-message{
+	font-size: 16px;
+	text-align: center;
+	color: red;
+	padding: 30px;
+}
 /*  setNotification button */
 #setNotification-btn-wrapper {
     width: 900px;
@@ -602,24 +616,26 @@ footer {
     border-radius: 8px;
 }
 
-ul#pagination{
-  display: inline-flex;
-  justify-content: center;
-  width: 100%;
-  font-size: 1.3rem;
+ul#pagination {
+    display: inline-flex;
+    justify-content: center;
+    width: 100%;
+    font-size: 1.3rem;
+        margin-top:20px;
 
-  li{
-    display: inline;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-  }
+    li {
+        display: inline;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
 
-  .activePage{
-    text-decoration: underline;
-    font-weight: bold;
-  }
+    .activePage {
+        text-decoration: underline;
+        font-weight: bold;
+    }
 
-  .inactivePage a{
-    cursor:default;
-  }
+    .inactivePage a {
+        cursor: default;
+    }
 }
+

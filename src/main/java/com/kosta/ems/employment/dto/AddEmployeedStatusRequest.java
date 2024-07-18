@@ -11,6 +11,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class AddEmployeedStatusRequest {
     private int sCSeq;
-    
     private String company;
 }
