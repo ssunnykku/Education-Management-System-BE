@@ -51,6 +51,7 @@ public class WebSecurityConfig {
 
         http.csrf(csrf -> csrf.disable());
 
+
         http.httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
@@ -60,7 +61,8 @@ public class WebSecurityConfig {
                             .requestMatchers("/api/**").authenticated()
                             .anyRequest().authenticated();
                 })
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new TokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         http.formLogin(formLogin -> formLogin

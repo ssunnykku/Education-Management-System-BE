@@ -42,6 +42,9 @@ public class UserController {
         Cookie refreshTokenCookie = new Cookie(REFRESH_TOKEN, result.getRefreshToken());
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setPath("/");
+//        refreshTokenCookie.setSameSite(true);
+//        refreshTokenCookie.setSecure(true);
+
 
         response.addCookie(refreshTokenCookie);
 
@@ -114,6 +117,12 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
         }
     }
+
+//    public void checkRefreshToken(HttpServletRequest request, HttpServletResponse response) {
+//        // refreshToken 가져와
+//
+//    }
+
 }
 
 
