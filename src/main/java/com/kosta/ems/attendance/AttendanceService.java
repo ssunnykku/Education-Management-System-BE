@@ -53,7 +53,7 @@ public interface AttendanceService {
     // --출석 인정 항목 리스트 가져오기
     List<AttendanceAcknowledgeDTO> getAcknowledgeCategoryList(int isActive);
     // --출석 인정항목*인정일수 적용하여 출결 상태 반영 (update + insert)
-    int reflectAcknowledgeAttendanceStatus(RequestAcknowledgeDTO dto);
+    void reflectAcknowledgeAttendanceStatus(RequestAcknowledgeDTO dto);
 
     // [출결 입력]
     // 1. 특정일의 출결 상태가 등록되지 않은 수강생 목록 가져오기

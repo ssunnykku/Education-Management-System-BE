@@ -212,7 +212,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
     // --출석 인정항목*인정일수 적용하여 출결 상태 반영 (update + insert)
     @Override
-    public int reflectAcknowledgeAttendanceStatus(RequestAcknowledgeDTO dto) {
+    public void reflectAcknowledgeAttendanceStatus(RequestAcknowledgeDTO dto) {
         String attendanceStatus = dto.getAttendanceStatus();
         String evidentialDocument = dto.getEvidentialDocuments();
         int acknowledgeSeq = dto.getAcknowledgeSeq();
@@ -225,8 +225,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
         int daysBetween = Period.between(startDate, endDate).getDays();
 
-        // 에러 방지 임시 코드
-        String managerId = "1";
+        String managerId = "3ddf8577-3eaf-11ef-bd30-0206f94be675";  // 임시: 가산 매니저 양유진
 
         if(daysBetween == 0) {
             // 출석 인정일수가 '1'일인 경우는 startDate를 attendanceDate에 할당하여 출결 상태 Update
@@ -245,7 +244,6 @@ public class AttendanceServiceImpl implements AttendanceService {
                 }
             }
         }
-        return 0;
     }
 
 
