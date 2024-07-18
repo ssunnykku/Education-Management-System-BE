@@ -48,7 +48,6 @@ public interface StudentMapper {
 
     // 수강생 정보 수정
     StudentBasicInfoDTO selectRegisteredStudentInfo(String studentId);
-
     int updateSelectedStudentInfo(UpdateSelectedStudentInfoDTO dto);
 
     // 수강생 삭제 (isActive 업데이트)
@@ -58,5 +57,7 @@ public interface StudentMapper {
 
     // scq로 수강생 기본 정보 가져오기
     GetStudentInfoByScqDTO selectStudentInfoByScq(int studentCourseSeq);
-    
+
+    List<StudentCourseInfoDTO> selectStudentListBycourseSeq(int courseSeq);
+
 }

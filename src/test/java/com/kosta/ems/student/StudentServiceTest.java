@@ -25,7 +25,7 @@ public class StudentServiceTest {
 	void getStudentsByNameOrCourseNumberAmount() {
 		log.info(Integer.toString(studentService.getStudentsByNameOrCourseNumberAmount("진", 277)));
 	}
-	
+
 	// -- 검색 결과 데이터 목록 가져오기
 	@Test
 	void getStudentsByNameOrCourseNumber() {
@@ -110,27 +110,20 @@ public class StudentServiceTest {
 
 		log.info("교육장 - '갤럭시': " + studentService.getOnGoingCourseList("갤럭시").toString());
 	}
-	
-	// -- students 테이블에 수강생 데이터 등록
-	/*  *0715_안쓰기로 결정됨
-	// @Test
-	void addStudentBasicInfo() {
-		studentService.setStudentBasicInfo("qwer1234", "김보리", "1996-06-30", "서울시 용산구 이촌동 동부이촌2길, 대림아파트 101동 901호", "우리", "10029387655086", "01028768976", "qwer1234@naver.com", "M", "d893c3ad-2f8f-11ef-b0b2-0206f94be675", "277");
-	}
-	 */
+
 
 	// -- students_courses 테이블에 수강생 데이터 등록
 	// @Test
 	void addStudentCourseSeqInfo() {
 		studentService.setStudentCourseSeqInfo("yyj1234", "284", "3ddf8577-3eaf-11ef-bd30-0206f94be675");
 	}
-	
+
 	// 수강생 정보 수정
 	// @Test
 	void updateSelectedStudentInfo() {
 		studentService.updateSelectedStudentInfo("박기영","부산광역시 사상구 사상중앙로12길", "부산", "110583195038", "01059341921", "syc1234@gmail.com", "78b21862-32bf-11ef-b0b2-0206f94be675", 1);
 	}
-	
+
 	// 수강생 삭제
 	// @Test
 	void removeSelectedStudent() {

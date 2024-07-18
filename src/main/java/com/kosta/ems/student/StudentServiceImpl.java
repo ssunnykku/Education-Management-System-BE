@@ -1,12 +1,9 @@
 package com.kosta.ems.student;
-
 import com.kosta.ems.attendance.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-// import org.springframework.data.domain.Page;
-
 
 import java.lang.reflect.Array;
 import java.time.LocalDate;
@@ -42,7 +39,7 @@ public class StudentServiceImpl implements StudentService {
     // 수강생 정보 검색 결과 데이터 불러오기
     @Override
     public List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumberList(String name, int courseNumber, int page, int size) {
-        return studentMapper.findByStudentNameOrCourseNumberList(name, courseNumber, ((page * size) - size), size);
+        return studentMapper.findByStudentNameOrCourseNumberList(name, courseNumber, ((page*size)-size), size);
     }
 
     // *0710_수강생 정보 조회  // * 0715
@@ -54,7 +51,6 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentInfoDTO> getStudentInfoList(int isActive, String name, int courseNumber, String academyLocation, int page, int size) {
         return studentMapper.selectStudentInfoList(isActive, name, courseNumber, academyLocation, ((page*size)-size), size);
     }
-
     @Override
     public List<ArrayList> getStudentInfoList2(int isActive, String name, int courseNumber, String academyLocation, int page, int size) {
         /* 수료 여부 항목
@@ -124,7 +120,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public boolean findByHrdNetId(String hrdNetId) {
         int count = studentMapper.findByHrdNetId(hrdNetId);
-        if (count == 0) {
+        if(count == 0) {
             // 수강생 신규 등록 진행
             return false;
         } else {
@@ -147,7 +143,6 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.selectOnGoingCourseList(academyLocation);
     }
 
-
     // * 수강생 등록
     // ** students_courses 테이블에 수강생 데이터 등록
     @Override
@@ -161,7 +156,6 @@ public class StudentServiceImpl implements StudentService {
     public StudentBasicInfoDTO getRegisteredStudentInfo(String studentId) {
         return studentMapper.selectRegisteredStudentInfo(studentId);
     }
-
     @Override
     public void updateSelectedStudentInfo(String name, String address, String bank, String account, String phoneNumber, String email, String studentId, int isActiveStatus) {
         boolean tmp = true;
@@ -177,5 +171,5 @@ public class StudentServiceImpl implements StudentService {
     public void removeSelectedStudent(String studentId) {
         studentMapper.deleteSelectedStudent(studentId);
     }
-    
+
 }
