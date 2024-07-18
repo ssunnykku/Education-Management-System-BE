@@ -106,7 +106,7 @@
     background-color: #ffffff;
     z-index: 50;
     position: absolute;
-    box-shadow:  0 2px 2px #E7E9F2, 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 2px #E7E9F2, 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .nav-li-dropdown {
