@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
+            integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/format.css"/>
+    <link rel="stylesheet" href="../../css/scholarships.css"/>
+</head>
+<body id="content-wrapper">
+<div th:insert="~{common/header :: header}"></div>
+<div th:insert="~{common/title :: title ('정산 결과 조회')}"></div>
+<section id="scholoarshipResult-contents">
+    <article class="scholarshipResult-search-form-wrapper">
+            <input type="date" id="settlement-date"/>
+            <select
+                    name="scholarshipResult-courseId-filter"
+                    class="scholarshipResult-courseId-filter"
+            >
+                <option value="none">기수</option>
+            </select>
+            <input placeholder="수강생을 입력하세요" class="search-input"/>
+            <button type="button" class="filter-search-btn">검색</button>
+    </article>
+    <article class="scholarship-page-information">
+        <div class="scholarship-cnt-pages">
+            <span>총 2건</span>
+        </div>
+    </article>
+    <article id="scholarshipResultBoard-table-wrapper">
+        <div class="scholarshipResultBoard-table">
+            <div
+                    class="scholarshipResultBoard-row"
+                    id="scholarshipResultBoard-title-row">
+
+                <div class="scholarshipResultBoard-checkbox">
+                    <input type="checkbox" name=""/>
+                </div>
+                <div class="scholarshipResultBoard-courseId">
+                    <span>기수</span>
+                </div>
+                <div class="scholarshipResultBoard-hrd-net-id">
+                    <span>hrd-net-id</span>
+                </div>
+                <div class="scholarshipResultBoard-name">
+                    <span>이름</span>
+                </div>
+                <div class="scholarshipResultBoard-bank"><span>은행</span></div>
+                <div class="scholarshipResultBoard-account">
+                    <span>계좌번호</span>
+                </div>
+                <div class="scholarshipResultBoard-total-amount">
+                    <span>금액(원)</span>
+                </div>
+                <div class="scholarshipResultBoard-settlement-date">
+                    <span>정산일</span>
+                </div>
+            </div>
+            <div style="display: contents" id=scholarship-result-table-contents></div>
+        </div>
+    </article>
+    <article class="scholarship-page-information">
+        <ul id="pagination">
+            <li>
+                <a class="page-link" id="before">
+                    이전
+                </a>
+            </li>
+            <!--// 이게 페이지 번호-->
+            <li class="page-item" id="page_number">
+            </li>
+            <li class="page-item">
+                <a class="page-link" id="next">
+                    다음
+                </a>
+            </li>
+        </ul>
+        </div>
+    </article>
+</section>
+<footer></footer>
+<script type="text/javascript" th:src="@{/scripts/scholarshipResultBoard.js}"></script>
+</body>
+</html>

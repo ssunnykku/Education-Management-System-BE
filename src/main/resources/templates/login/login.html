@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
+        integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/login.css" />
+    <title>login</title>
+</head>
+
+<body>
+
+    <div class="login-wrapper">
+        <h2>관리자 로그인</h2>
+        <form action="/ems/login" method="POST" id="login-form">
+            <div>
+                <h4>Manager ID</h4>
+                <input type="text" id="manager_id" name="employeeNumber" />
+            </div>
+            <div>
+                <h4>Password</h4>
+                <input type="password" id="password" name="password" />
+            </div>
+            <button type="submit" id="loginBtn">Login</button>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        function getEmployeeNumber(){
+            return $("#manager_id").val();
+        }
+        function getPassword(){
+            return $("#password").val();
+        }
+    </script>
+</body>
+
+</html>

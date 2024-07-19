@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kosta.ems.notification.NotificationMapper">
+
+<select id="selectAll" resultType="com.kosta.ems.notification.NotificationDTO">
+	SELECT n.notification_seq AS notificationSeq,m.manager_id As managerId, n.title,n.description,n.created_at AS notificationDate,m.NAME AS name,n.is_active AS isActive,n.view_count AS viewCount 
+ 	FROM notifications n 
+ 	LEFT JOIN managers m ON n.manager_id = m.manager_id 
+ 	WHERE n.is_active=true AND m.academy_location=(SELECT academy_location 
+ 	FROM managers 
+ 	WHERE manager_id = #{managerId}) ORDER BY n.notification_seq desc
+ 	limit #{limit} offset #{offset} 
+	</select>
+	
+	<select id="selectByKeyword" resultType="com.kosta.ems.notification.NotificationDTO">
+	SELECT n.notification_seq AS notificationSeq,m.manager_id As managerId, n.title,n.description,n.created_at AS notificationDate,m.NAME,n.is_active AS isActive,n.view_count AS viewCount
+		FROM notifications n 
+		LEFT JOIN managers m ON n.manager_id = m.manager_id 
+		WHERE n.is_active=true AND m.academy_location=(SELECT academy_location 
+		FROM managers 
+		WHERE manager_id = #{managerId}) AND (title LIKE '%${keyword}%' OR DESCRIPTION LIKE '%${keyword}%') ORDER By n.notification_seq desc limit #{limit} offset #{offset}
+
+	</select>
+
+		<insert id="insertNotification" parameterType="com.kosta.ems.notification.NotificationDTO">
+	INSERT INTO notifications (manager_id, title, description)
+	VALUES (#{managerId}, #{title}, #{description})
+	</insert>
+
+	<update id="inActivateNotificaiotn" parameterType="java.lang.Integer">
+	UPDATE notifications set is_active=false WHERE notification_seq=#{notificationSeq}
+	</update>
+
+	<update id="updateNotification" parameterType="com.kosta.ems.notification.NotificationDTO">
+	UPDATE notifications set title=#{title},description=#{description} WHERE notification_seq=#{notificationSeq}
+	</update>
+
+	<select id="selectDescription" resultType="com.kosta.ems.notification.NotificationDTO">
+	SELECT n.notification_seq As notificationSeq,m.manager_id As managerId, n.title,n.description,n.created_at AS notificationDate,m.NAME AS name,n.view_count AS viewCount 
+ 	FROM notifications n 
+ 	LEFT JOIN managers m ON n.manager_id = m.manager_id 
+ 	WHERE n.notification_seq=#{notificationSeq}
+	</select>
+
+	<select id="getTotalCount" resultType="Integer">
+		SELECT COUNT(notification_seq)   
+		FROM notifications n 
+		LEFT JOIN managers m ON n.manager_id = m.manager_id 
+		WHERE n.is_active=true AND m.academy_location=(SELECT academy_location 
+		FROM managers 
+		WHERE manager_id = #{managerId}) AND (title LIKE '%${keyword}%' OR DESCRIPTION LIKE '%${keyword}%')
+	</select>
+
+	<update id="updateViewCount" parameterType="Integer">
+	update notifications SET view_count=view_count+1 where notification_seq=#{notificationSeq}
+	</update>
+</mapper>

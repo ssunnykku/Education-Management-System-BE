@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
+            integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/format.css"/>
+    <link rel="stylesheet" href="../../css/notifications.css"/>
+</head>
+<body id="content-wrapper">
+<div th:insert="~{common/header :: header}"></div>
+<section id="title-wrapper">
+    <h2 id="title">공지사항</h2>
+</section>
+<section id="notificationPost-section">
+    <article class="notificationPost-contents">
+        <div id="notification-row" class="underline">
+            <div class="notificationPost-no">
+                <span>NO.80</span>
+            </div>
+            <div class="notificationPost-title">
+                <span>2024년 KOSTA 신년회 개최 안내</span>
+            </div>
+            <div class="notificationPost-enroll-date">
+                <span>2024.01.03</span>
+            </div>
+        </div>
+        <div id="notification-contents">
+            <div class="writer">
+                <span>작성자</span>
+                <span>: 홍길동</span>
+            </div>
+            <div class="notificationPost-content">
+                <p>
+                    1. 행사 개요<br/><br/>
+
+                    - 일시: 2024/01/30 11:00<br/>
+                    - 장소: 국립심포니오케스트라 (서울 서초구 남부순환로 2406(서초동
+                    700))<br/>
+                    - 참석 대상: KOSTA 직원 및 가족<br/>
+                    - 참가비: 무료<br/>
+                    - 복장: 자유복장<br/><br/>
+
+                    2. 행사 내용<br/><br/>
+
+                    - 저녁 식사: 뷔페 식사<br/>
+                    - 여가 활동: 노래방, 게임, 복권 추첨 등<br/>
+                    - 기타: 사진 촬영, 자유로운 대화 등<br/><br/>
+
+                    3. 기타<br/><br/>
+
+                    - 참석 여부: 2024/01/10 17:00까지 김선희 담당에게 답변
+                    부탁드립니다.<br/>
+                    - 가족 동반: 참석 여부와 함께 동반 인원을 알려주시면
+                    감사하겠습니다.<br/>
+                    - 자동차 이용 시 주차: [주차장 위치]에 주차 가능합니다.<br/>
+                    - 문의: 김선희, 010-9999-2222<br/><br/>
+
+                    4. 신년회 참석을 통해 동료들과의 친목을 도모하고,<br/>
+                    지난 한 해의 노고를 격려하며, 새해의 발전을 기원합니다.<br/><br/>
+
+                    5. 많은 참여 부탁드립니다!<br/><br/>
+
+                    KOSTA 경영진
+                </p>
+            </div>
+        </div>
+        <div id="notificationPost-btn-wrapper">
+            <button id="enroll-btn" class="btn-setting">등록</button>
+            <button id="edit-btn" class="btn-setting">취소</button>
+        </div>
+    </article>
+</section>
+<footer></footer>
+</body>
+</html>

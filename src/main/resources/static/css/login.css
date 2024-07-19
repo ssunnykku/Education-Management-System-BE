@@ -1,0 +1,72 @@
+@import "reset.css";
+
+body {
+  font-size: 14px;
+  font-family: "Pretendard";
+}
+
+.login-wrapper {
+  width: 450px;
+  height: 500px;
+  padding: 35px;
+  box-sizing: border-box;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.login-wrapper > h2 {
+  color: rgba(45, 98, 234, 1);
+  margin-bottom: 50px;
+
+  font-size: 20px;
+  font-weight: bold;
+}
+
+h4 {
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+#login-form > div {
+  margin: 15px 0;
+}
+
+#login-form > div > input,
+button {
+  width: 100%;
+  height: 50px;
+  padding: 0 50px;
+  box-sizing: border-box;
+  margin-bottom: 0px;
+  border-radius: 6px;
+  border-color: C9D3DB;
+  border: solid #c9d3db;
+}
+
+#manager_id {
+  background-image: url("../assets/icon-login_id.svg");
+  background-repeat: no-repeat;
+  background-size: 28px;
+  background-position: left;
+  background-position-x: 5%;
+}
+
+#password {
+  background-image: url("../assets/icon-login_password.svg");
+  background-repeat: no-repeat;
+  background-size: 19px;
+  background-position: left;
+  background-position-x: 6.1%;
+}
+
+#login-form > button {
+  height: 50px;
+  border-style: none;
+  color: #fff;
+  font-size: 16px;
+  background-color: rgba(45, 98, 234, 1);
+  margin-top: 30px;
+}

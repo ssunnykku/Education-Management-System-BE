@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>과정 삭제</title>
+    <link rel="stylesheet" href="../../css/courses.css" />
+  </head>
+  <body>
+    <div id="removeCourseModal" class="course-modal" popover>
+      <div class="removecourse-wrapper">
+        <div class="removecourse-info">
+          <h1 class="upperline title">삭제 확인</h1>
+          <h1>선택하신 과정을 삭제하겠습니까?</h1>
+        </div>
+        <div id="btn-wrapper">
+          <button id="enroll-btn-format" class="btn-setting-format" onclick="removeCourse()">삭제</button>
+          <button id="edit-btn" class="btn-setting" popovertarget="removeCourseModal"
+            popovertargetaction="hide">취소</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

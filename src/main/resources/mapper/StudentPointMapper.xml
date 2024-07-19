@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kosta.ems.studentPoint.StudentPointMapper">
+	<select id="getStudentListWithPoint"
+		resultType="com.kosta.ems.studentPoint.dto.StudentCourseWithPointDTO">
+		SELECT 
+			sc.student_course_seq AS studentCourseSeq
+			, c.course_name       AS courseName
+			, s.hrd_net_id        AS hrdNetId
+			, c.course_number     AS courseNumber
+			, c.course_start_date AS courseStartDate
+			, c.course_end_date   AS courseEndDate
+			, s.name              AS name
+			, sum(pc.point)       AS totalPoint
+		FROM courses c, students s, students_points sp, point_categories pc, students_courses sc
+		WHERE
+		(sc.student_id=s.student_id AND sc.course_seq=c.course_seq AND sc.student_course_seq=sp.student_course_seq AND sp.point_seq=pc.point_seq)
+		AND s.is_active = true AND (#{name} IS NULL OR #{name} = '' OR s.name LIKE CONCAT('%', #{name}, '%'))
+		AND c.is_active = true AND (IF(#{courseNumber}, 0,'전체') = '전체' or c.course_number = #{courseNumber})
+		GROUP BY sc.student_course_seq
+		ORDER BY c.course_number, sc.student_course_seq
+		LIMIT #{offset}, #{pageSize}
+	</select>
+	<select id="getCountOfStudentWithPoint"
+		resultType="int">
+SELECT 
+			count(distinct sp.student_course_seq) AS total
+		FROM courses c, students s, students_points sp, students_courses sc
+		WHERE
+		(sc.student_id=s.student_id AND sc.course_seq=c.course_seq AND sc.student_course_seq=sp.student_course_seq)
+		AND s.is_active = true AND (#{name} IS NULL OR #{name} = '' OR s.name LIKE CONCAT('%', #{name}, '%'))
+		AND c.is_active = true AND (IF(#{courseNumber}, 0,'전체') = '전체' or c.course_number = #{courseNumber})
+	</select>
+	<select id="getPointHistory"
+		resultType="com.kosta.ems.studentPoint.dto.PointHistoryDTO">
+		SELECT sp.save_point_date AS saveDate, pc.category AS categoryName, pc.point AS point
+		FROM students_points sp, point_categories pc
+		WHERE pc.point_seq=sp.point_seq
+		AND sp.student_course_seq= #{studentCourseSeq}
+		ORDER BY sp.save_point_date DESC;
+	</select>
+		<select id="getPointCategoryList"
+		resultType="com.kosta.ems.studentPoint.dto.PointCategoryDTO">
+SELECT point_seq pointSeq, category, point
+FROM point_categories
+WHERE is_active = true
+ORDER BY point_seq;
+	</select>
+	<insert id="insertStudentPoint">
+INSERT INTO students_points (point_seq, manager_id, student_course_seq)
+VALUES(
+        #{pointSeq}, #{managerId}, #{studentCourseSeq}
+)
+	</insert>
+</mapper>

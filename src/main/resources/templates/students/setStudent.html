@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
+            integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="../../../css/format.css"/>
+    <link rel="stylesheet" href="../../../css/students.css"/>
+</head>
+<body id="content-wrapper">
+<div th:insert="~{common/header :: header}"></div>
+<section id="title-wrapper">
+    <h2 id="title">수강생 정보 수정</h2>
+</section>
+<section id="content-section">
+    <article>
+        <div id="addStudent-wrapper">
+            <div class="student-item hidden" style="display: none;">
+                <p th:id="student-id" th:text="${dto.getStudentId()}" style="display: none;"></p>
+                <p th:id="student-course-seq" th:value="${dto.getStudentCourseSeq()}" style="display: none;"></p>
+            </div>
+            <div class="student-item">
+                <h4>이름 *</h4>
+                <input type="text" th:id="user_name" th:value="${dto.getName()}" />
+            </div>
+            <div class="student-item">
+                <h4>HRD-Net ID *</h4>
+                <p th:id="hrd_net_id" th:text="${dto.getHrdNetId()}" th:value="${dto.getHrdNetId()}"></p>
+            </div>
+            <div class="student-items">
+                <div class="student-items-item">
+                    <h4>생년월일 *</h4>
+                    <input type="text" th:id="birth" th:value="${dto.getBirth()}" readonly />
+                </div>
+                <div class="student-items-item">
+                    <h4>성별 *</h4>
+                    <div class="gender">
+                        <div>
+                            <input type="radio" th:id="select" name="gender" th:checked="${dto.getGender()} == 'M'" th:value="M" disabled/>
+                            <label th:for="select">남성</label>
+                        </div>
+                        <div>
+                            <input
+                                    type="radio"
+                                    th:id="select2"
+                                    name="gender"
+                                    th:checked="${dto.getGender()} == 'F'"
+                                    th:value="F"
+                                    disabled
+                            />
+                            <label th:for="select2">여성</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="student-items">
+                <div class="student-items-item">
+                    <h4>기수 *</h4>
+                    <span th:id="origin-course-number" th:text="${dto.getCourseNumber()}" hidden></span>
+                    <select name="course_number" id="course_number">
+                        <option id="course-number" hidden th:value="${dto.getCourseNumber()}"></option>
+                    </select>
+                </div>
+                <div class="student-items-item">
+                    <h4>지역 *</h4>
+                    <input type="text" th:id="province" th:value="${dto.getAddress()}" />
+                </div>
+            </div>
+            <div class="student-items-bank">
+                <div class="student-items-item">
+                    <h4>은행</h4>
+                    <input type="text" th:id="bank" th:value="${dto.getBank()}"/>
+                </div>
+                <div class="student-items-item">
+                    <h4>계좌번호</h4>
+                    <input type="text" th:id="account" th:value="${dto.getAccount()}"/>
+                </div>
+            </div>
+            <div class="student-item">
+                <h4>전화번호 *</h4>
+                <input type="text" th:id="phone_number" th:value="${dto.getPhoneNumber()}"/>
+            </div>
+            <div class="student-item">
+                <h4>이메일 *</h4>
+                <input type="text" th:id="email" th:value="${dto.getEmail()}"/>
+            </div>
+            <button id="edit-btn" class="btn-setting">수정</button>
+        </div>
+    </article>
+</section>
+<footer></footer>
+<script>
+    $(document).ready(async function() {
+        await fetchOnGoingCourseList();
+    });
+
+    function getStudentName() {
+        return $("#user_name").val();
+    }
+
+    function getHrdNetId() {
+        return $("#hrd_net_id").text();
+    }
+    function getBirth() {
+        return $("#birth").val();
+    }
+    function getGender() {
+        return $("input[name='gender']:checked").val();
+    }
+    function getAddress() {
+        return $("#province").val();
+    }
+    function getBank() {
+        return $("#bank").val();
+    }
+    function getAccount() {
+        return $("#account").val();
+    }
+    function getPhoneNumber() {
+        return $("#phone_number").val();
+    }
+    function getEmail() {
+        return $("#email").val();
+    }
+    function getCourseNumber() {
+        return $("#course_number").val();
+    }
+    function getStudentId() {
+        return $("#student-id").text();
+    }
+
+    // 수강생 등록 가능한 현재 진행 중 교육과정 목록 데이터 가져오기
+    async function fetchOnGoingCourseList() {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+
+        await fetch("/students/on-going-courses", requestOptions)
+            .then((res) => res.json())
+            .then(async(data) => {
+                console.log(data);
+                console.log(data.courseList);
+
+                updateOnGoingCourseList(data.courseList);
+            })
+            .catch((error) => console.error(error));
+    }
+    // 현재 진행 중인 교육과정 목록 화면에 보여주기
+    // thymeleaf로 가져온 수강생 기수 데이터
+    const courseNumberVal = $("#course-number").val();
+
+    // 교육과정 변경/신규 등록시 기수 변경을 위함
+    function handleCourseNumberChange() {
+        $("#course_number").on("change", function () {
+            const selectedCourseNumber = $(this).val();
+
+            $("#course_number option").each(function () {
+                $(this).prop("selected", $(this).val() === selectedCourseNumber);
+            });
+
+            return selectedCourseNumber;
+        });
+    }
+
+    async function updateOnGoingCourseList(data) {
+        let result = "";
+        for (let i = 0; i < data.length; i++) {
+            const selected = data[i].courseNumber.toString() === courseNumberVal ? 'selected' : '';
+            result += `<option value=${data[i].courseNumber} ${selected}>${data[i].courseNumber}기 - ${data[i].courseName}</option>`;
+        }
+        $("#course_number").html("");
+        $("#course_number").append(result);
+    }
+
+    // '수정' 버튼 클릭 -> 현재 화면의 값으로 수강생 데이터 업데이트 동작
+    // 수강생의 개인 정보 업데이트
+    async function fetchUpdateStudentInfo() {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "name": getStudentName(),
+            "hrdNetId": getHrdNetId(),
+            "address": getAddress(),
+            "birth": getBirth(),
+            "gender": getGender(),
+            "bank": getBank(),
+            "account": getAccount(),
+            "email": getEmail(),
+            "phoneNumber": getPhoneNumber(),
+            "courseNumber": handleCourseNumberChange(),
+            "studentId": getStudentId()
+        });
+
+        console.log(raw);
+
+        const requestOptions = {
+            method: "PUT",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        await fetch("/students", requestOptions)
+            .then((res) => res.json)
+            .then(async (data) => console.log(data))
+            .catch((error) => console.error(error));
+    }
+
+
+    // 수강생 교육과정 업데이트
+    async function fetchRegisterCourse(params) {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = ({
+            "courseNumber": params,
+            "hrdNetId": getHrdNetId()
+        });
+        console.log(raw);
+        console.log(JSON.stringify(raw));
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: JSON.stringify(raw),
+            redirect: "follow"
+        };
+
+        await fetch("/students/new-course", requestOptions)
+            .then((res) => res.json())
+            .then(async(data) => {
+                console.log("fetchRegisterCourse() 메서드 success");
+                console.log(data);
+            })
+            .catch((error) => console.error(error));
+    }
+
+    $("#edit-btn").click(async function() {
+        await fetchUpdateStudentInfo()
+            .then(async(response) => {
+                if($("#origin-course-number").text() == handleCourseNumberChange()) {
+                    alert("수강생 정보 수정이 정상처리되었습니다.");
+                    window.location.href="/ems/students";
+                } else if($("#origin-course-number").text() != handleCourseNumberChange()) {
+                    await fetchRegisterCourse($("#course_number").val());
+                    alert("수강생 정보 수정이 정상처리되었습니다.");
+                    window.location.href="/ems/students";
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetchSetStudent: 수강생 정보 수정 실패", error);
+            })
+
+    });
+</script>
+</body>
+</html>
