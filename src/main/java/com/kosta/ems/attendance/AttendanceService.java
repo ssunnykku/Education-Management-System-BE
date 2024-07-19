@@ -1,5 +1,7 @@
 package com.kosta.ems.attendance;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -60,4 +62,8 @@ public interface AttendanceService {
     List<AttendanceListBySearchFilterDTO> getNoAttendanceStatusStudentList(String attendanceDate, String academyLocation);
     // 2. 목록의 학생 중 선택한 학생의 출결 상태 등록하기
     void setAttendanceStatus(String attendanceStatus, String attendanceDate, int studentCourseSeq, String managerId);
+
+    // 업로드한 출석인정 증빙서류 확인(파일 다운로드)
+    /*boolean downloadFile(String fileKey, String downloadFileName, HttpServletResponse response);
+    String getEncodedFilename(String displayFileName);*/
 }

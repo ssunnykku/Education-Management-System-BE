@@ -11,9 +11,11 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.kosta.ems.manager.ManagerDTO;
 import com.kosta.ems.manager.ManagerService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +46,7 @@ public class AttendanceController {
     @Value("OFF")
     private String SECURITY_LEVEL;
 
-    // [출결] - 수강생 출석 조회 목록 조회 __POSTMAN 테스트 완료 __예외 처리 고려 필요!
+    // [출결] - 수강생 출석 조회 목록 조회
     @PostMapping("/student-list")
     @ResponseBody
     public Map<String, Object> getStudentAttendanceList(@RequestParam(name="page", required=false, defaultValue="1") int page, @RequestBody RequestStudentAttendanceDTO dto) {
@@ -81,7 +83,7 @@ public class AttendanceController {
         return result;
     }
 
-    // [출결] - 출결 검색(조건: 날짜, 기수, 수강생명) 데이터 목록 가져오기 -- POSTMAN 테스트 완료
+    // [출결] - 출결 검색(조건: 날짜, 기수, 수강생명) 데이터 목록 가져오기
     @PostMapping("/search-list")
     public Map<String, Object> getFilteredAttendanceList(@RequestParam(name="page", required = false, defaultValue = "1") int page, @RequestBody RequestStudentAttendanceDTO dto) {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -144,7 +146,7 @@ public class AttendanceController {
     @GetMapping("/no-attendance-list")
     public Map<String, Object> getNoAttendanceStatusList(@RequestParam(name="attendanceDate") String attendanceDate) {
         Map<String, Object> result = new HashMap<String, Object>();
-        String academyLocation = getAcademyOfLoginUser();  // [메모] 관리자 로그인 시, 로그인한 관리자의 교육장을 조회하여 매개변수에 넣고, 그걸 여기에 넣어야할 것 같음.
+        String academyLocation = getAcademyOfLoginUser();
 
         result.put("studentList", attendanceService.getNoAttendanceStatusStudentList(attendanceDate, academyLocation));
 
@@ -183,6 +185,15 @@ public class AttendanceController {
         return result;
     }
 
+    // [출석인정 및 증빙서류 설정 모달]
+    // 출석인정 항목 데이터 가져오기
+    @GetMapping("/acknowledge-category")
+    public Map<String, Object> getAcknowledgeCategoryList() {
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("data", attendanceService.getAcknowledgeCategoryList(1));
+        return result;
+    }
+
     // 출결 증빙 서류 파일 S3 업로드
     @ResponseBody
     @PostMapping("/upload")
@@ -197,7 +208,7 @@ public class AttendanceController {
         log.info("🎃 bucketKey: " + bucketKey);
         log.info("🎃 document.getInputStream(): " + evidentialDocument.getInputStream());
         log.info("🎃 ObjectMetadata - contentType: " + objectMetadata.getContentType());
-        // 커밋용 주석
+
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, bucketKey, evidentialDocument.getInputStream(), objectMetadata);
         log.info("🎃 putObjectRequest: " + putObjectRequest);
         log.info("🎃🎃 bucketName: " + putObjectRequest.getBucketName());
@@ -209,6 +220,46 @@ public class AttendanceController {
         return amazonS3Client.getUrl(bucketName, bucketKey).toString().substring(6);
     }
 
+    // 출석인정 항목*인정일수 적용하여 출결 상태 반영
+    @PostMapping("/reflect-acknowledge-documents")
+    public Map<String, Object> reflectAcknowledgeAttendanceStatus(@RequestBody RequestAcknowledgeDTO request) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
+
+        try {
+            log.info("🚀 request 확인");
+            log.info(">> request: " + request.toString());
+            attendanceService.reflectAcknowledgeAttendanceStatus(request);
+
+            dto.setCode(ResCode.SUCCESS.value());
+            dto.setMessage("Success: setStudentAttendance");
+            result.put("code", dto.getCode());
+            result.put("message", dto.getMessage());
+        } catch (NoSuchDataException e) {
+            dto.setCode(ResCode.FAIL.value());
+            dto.setMessage("Fail: setStudentAttendance");
+            result.put("code", dto.getCode());
+            result.put("message", dto.getMessage());
+        } catch (Exception e) {
+            log.error("[AttendanceController setStudentAttendance]", e);
+            dto.setCode(ResCode.FAIL.value());
+            dto.setMessage("Fail: setStudentAttendance");
+            result.put("code", dto.getCode());
+            result.put("message", dto.getMessage());
+        }
+        return result;
+    }
+
+    // 업로드한 증빙서류 파일 확인을 위해 다운로드도 있으면 좋을 것 같긴한데...
+    /*@GetMapping("/download/{fileKey}")
+    public ResponseEntity<Void> downloadFile(@PathVariable String fileKey, String downloadFileName, HttpServletResponse response) {
+        boolean success = s3FileDownloadService.downloadFile(fileKey, downloadFileName, response);
+        if (success) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }*/
 
     private String getAcademyOfLoginUser() {
         if(SECURITY_LEVEL.equals("OFF")) {
