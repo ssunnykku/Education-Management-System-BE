@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface StudentCourseRepo extends JpaRepository<StudentCourseDTO, Integer>{
     List<StudentCourseDTO> findByCourseSeq(int courseSeq);
+    List<StudentCourseDTO> findByStudentId(String StudentId);
     
     int countByCourseSeq(int courseSeq);
 		

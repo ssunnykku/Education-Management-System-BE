@@ -33,14 +33,15 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/ems")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class JwtController {
 	private final ApiService service;
     @Value("${security.level}")
     private String SECURITY_LEVEL;
 	
-    private List<TakenCourseResponse> getAllTakenCourses(){
+    @GetMapping("/course-list")
+    public List<TakenCourseResponse> getAllTakenCourses(){
         StudentInfoDTO loginUser = getLoginUser();
         List<TakenCourseResponse> result = null;
         
