@@ -202,7 +202,11 @@ public class EmsController {
     public String main() {
         return "main";
     }
-    
+
+    @GetMapping("/employments/data")
+    public String employment() {
+        return "employment/employmentDataBoard";
+    }
 
 
 }
