@@ -29,7 +29,7 @@
                  LEFT JOIN courses c on c.course_seq = sc.course_seq
                  LEFT JOIN students_points sp on sp.student_course_seq = sc.student_course_seq
                  LEFT JOIN point_categories pc on sp.point_seq = pc.point_seq
-        WHERE c.academy_location = #{academyLocation}
+        WHERE (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
           AND s.name LIKE CONCAT('%', #{name}, '%')
           AND s.is_active = true
           AND c.is_active = true

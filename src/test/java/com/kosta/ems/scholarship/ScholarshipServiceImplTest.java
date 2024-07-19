@@ -26,10 +26,11 @@ class ScholarshipServiceImplTest {
         log.info(String.valueOf(scholarshipService.getScholarshipTargetList(dto, 1, 10).size()));
     }
 
-    //@Test
+    @Test
     @Transactional
     void setScholarshipSettlementTest() {
-        scholarshipService.setScholarshipSettlement(22, "3ddf8681-3eaf-11ef-bd30-0206f94be675");
+        scholarshipService.setScholarshipSettlement(28, "3ddf8681-3eaf-11ef-bd30-0206f94be675");
+        assertThat(scholarshipService.getScholarshipResultList(ScholarshipTargetListReqDTO.builder().academyLocation("가산").courseNumber(282).name("").settlementDate(LocalDate.parse("2024-07-19")).build(), 1, 10)).isNotNull();
     }
 
     @Test
