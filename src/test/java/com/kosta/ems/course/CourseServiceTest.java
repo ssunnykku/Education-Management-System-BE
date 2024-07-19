@@ -55,7 +55,7 @@ public class CourseServiceTest {
 	@Test
 	@Transactional
 	public void editCourse() {
-		CourseDTO course =
+		CourseDTO course = 
 				CourseDTO.builder()
 				.managerId("3ddf8303-3eaf-11ef-bd30-0206f94be675")
 				.courseNumber(3000)
@@ -88,4 +88,15 @@ public class CourseServiceTest {
     void getCurrentCourseList() {
         assertThat(service.getCurrentCourseList(LocalDate.parse("2024-07-14"), "가산")).isNotNull();
     }
+	@Test
+	@Transactional
+	public void getCourseNumberByYear() {
+		assertThat(service.getCourseNumberByYear(2024).size()).isEqualTo(1);
+	}
+	@Test
+	@Transactional
+	public void getCourseNumberYearList() {
+		assertThat(service.getCourseNumberYearList().size()).isEqualTo(2);
+	}
+
 }

@@ -24,4 +24,6 @@ public interface CourseService {
     boolean deleteCourse(int courseSeq, String academyLocationOfManager);
 
     List<CourseDTO> getCurrentCourseList(LocalDate currentDate, String academyLocation);
+    List<Integer> getCourseNumberByYear(int courseEndYear);
+    List<Integer> getCourseNumberYearList();
 }

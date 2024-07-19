@@ -68,14 +68,22 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<String> getCourseTypeList() {
-        return courseMapper.getCourseTypeList();
-    }
-
-    @Override
     public List<CourseDTO> getCurrentCourseList(LocalDate currentDate, String academyLocation) {
         return courseMapper.getCurrentCourseList(currentDate, academyLocation);
     }
 
 
+	@Override
+	public List<String> getCourseTypeList() {
+		return courseMapper.getCourseTypeList();
+	}
+
+	@Override
+	public List<Integer> getCourseNumberByYear(int courseEndYear){
+		return courseMapper.getCourseNumberListByYear(courseEndYear);
+	}
+	@Override
+	public List<Integer> getCourseNumberYearList(){
+		return courseMapper.getCourseNumberYearList();
+	}
 }

@@ -139,6 +139,24 @@ fetch("/courses/course-number-list?excludeExpired=false", {
     })
     .catch((error) => console.error(error));
 
+/*courseData filter 목록*/
+
+fetch("/courses/course-year-list", {
+    method: "GET",
+})
+    .then((res) => res.json())
+    .then((data) => {
+        const courseList = data.result;
+        let result = '';
+        for (const resultElement of courseList) {
+            result += `<option value=${resultElement}>${resultElement}</option>`;
+        }
+        $(".employment-year-filter").append(result);
+
+    })
+    .catch((error) => console.error(error));
+
+
 /*pagenation*/
 
 $("#next").click(() => {

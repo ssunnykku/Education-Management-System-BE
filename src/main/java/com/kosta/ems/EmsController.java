@@ -204,4 +204,9 @@ public class EmsController {
     }
 
 
+    @GetMapping("employments/data")
+    public String employmentDataBoard() {
+    	return "employment/employmentDataBoard";
+    }
+
 }

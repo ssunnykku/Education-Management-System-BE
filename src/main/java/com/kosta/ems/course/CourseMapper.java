@@ -27,4 +27,8 @@ public interface CourseMapper {
     CourseDTO getCourseByCourseNumber(int courseNumber);
 
     List<CourseDTO> getCurrentCourseList(LocalDate currentDate, String academyLocation);
+
+    List<Integer> getCourseNumberListByYear(@Param("courseEndYear") int courseEndYear);
+
+    List<Integer> getCourseNumberYearList();
 }
