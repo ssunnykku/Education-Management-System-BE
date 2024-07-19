@@ -21,10 +21,11 @@ public class ManagerMapperTest {
 	@Autowired
 	ManagerMapper mapper;
 
-    @Test
-    public void userDetails() {
-        assertThat(mapper.findByEmployeeNumber("EMP0001").getManagerId()).isEqualTo("3ddf8303-3eaf-11ef-bd30-0206f94be675");
-    }
+	@Test
+	public void userDetails() {
+	    assertThat(mapper.findByEmployeeNumber("EMP0001").getManagerId()).isEqualTo("3ddf8303-3eaf-11ef-bd30-0206f94be675");
+	}
+	
 
     @Test
     void findByManagerId() {

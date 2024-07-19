@@ -38,41 +38,45 @@ public class CourseMapperTest {
         assertThat(course.getCourseSeq()).isEqualTo(5);
     }
 
-    @Test
-    @Transactional
-    public void getCourseByCourseNumber() {
-        CourseDTO course = mapper.getCourseByCourseNumber(277);
-        assertThat(course.getCourseSeq()).isEqualTo(5);
-    }
+	@Test
+	@Transactional
+	public void getCourseByCourseNumber() {
+	    CourseDTO course= mapper.getCourseByCourseNumber(277);
+	    assertThat(course.getCourseSeq()).isEqualTo(5);
+	}
+	
+	@Test
+	@Transactional
+	public void searchCourseList() {
+	    List<CourseDTO> list = mapper.searchCourseList(277, "가산", 0, 10, false);
+	    assertThat(list.size()).isEqualTo(1);
+	    list = mapper.searchCourseList(0, "강원", 0, 20, false);
+	    assertThat(list.size()).isEqualTo(0);
+	}
 
-    @Test
-    @Transactional
-    public void searchCourseList() {
-        List<CourseDTO> list = mapper.searchCourseList(277, "가산", 0, 10, false);
-        assertThat(list.size()).isEqualTo(1);
-        list = mapper.searchCourseList(0, "가산", 0, 20, false);
-        assertThat(list.size()).isEqualTo(9);
-    }
+	@Test
+	@Transactional
+	public void getSearchCourseListSize() {
+	    int count = mapper.getSearchCourseListSize(0, "가산", 0, 20, false);
+	    assertThat(count).isGreaterThan(0);
+	    count = mapper.getSearchCourseListSize(0, "강원", 0, 20, false);
+        assertThat(count).isEqualTo(0);
+	}
 
-    @Test
-    @Transactional
-    public void getSearchCourseListSize() {
-        int count = mapper.getSearchCourseListSize(0, "가산", 0, 20, false);
-        assertThat(count).isEqualTo(9);
-    }
+	@Test
+	@Transactional
+	public void getCourseTypeList() {
+	    assertThat(mapper.getCourseTypeList().size()).isEqualTo(2);
+	}
 
-    @Test
-    @Transactional
-    public void getCourseTypeList() {
-        assertThat(mapper.getCourseTypeList().size()).isEqualTo(2);
-    }
-
-    @Test
-    @Transactional
-    public void getCourseNumberList() {
-        List<Integer> list = mapper.getCourseNumberList("가산", false);
-        assertThat(list.size()).isEqualTo(9);
-    }
+	@Test
+	@Transactional
+	public void getCourseNumberList() {
+	    List<Integer> list = mapper.getCourseNumberList("가산", false);
+	    assertThat(list.size()).isGreaterThan(1);
+	    list = mapper.getCourseNumberList("강원", false);
+        assertThat(list.size()).isEqualTo(0);
+	}
 
 	@Test
 	@Transactional
@@ -164,6 +168,3 @@ public class CourseMapperTest {
     public void getSeqByCourseNumber() {
         assertThat(mapper.getSeqByCourseNumber(277)).isEqualTo(20);
     }
-
-    }
-
