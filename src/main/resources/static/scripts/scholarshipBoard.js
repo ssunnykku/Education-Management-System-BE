@@ -106,8 +106,9 @@ function updatePagination() {
     $("#page_number").append(result);
 }
 
+fetchScholarshipBoard(1)
 
-async function fetchScholarshipBoard(param) {
+async function fetchScholarshipBoard(page) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -123,7 +124,7 @@ async function fetchScholarshipBoard(param) {
         redirect: "follow"
     };
 
-    await fetch("/scholarships?page=" + param, requestOptions)
+    await fetch("/scholarships?page=" + page, requestOptions)
         .then((res) => res.json())
         .then(async (data) => {
             const dataList = data.result;
