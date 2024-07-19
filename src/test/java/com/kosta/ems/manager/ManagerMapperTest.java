@@ -18,8 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @Slf4j
 public class ManagerMapperTest {
-	@Autowired
-	ManagerMapper mapper;
+    @Autowired
+    ManagerMapper mapper;
 
 	@Test
 	public void userDetails() {
