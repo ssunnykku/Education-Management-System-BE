@@ -33,12 +33,6 @@ public interface CourseMapper {
     List<Integer> getCourseNumberYearList();
 
     Integer getStudentsNumberBySeq(@Param("courseSeq") int courseSeq);
-    
-    List<Integer> getCourseNumberListByYear(@Param("courseEndYear") int courseEndYear);
-    
-    List<Integer> getCourseNumberYearList();
-    
-    Integer getStudentsNumberBySeq(@Param("courseSeq") int courseSeq);
-    
+
     Integer getSeqByCourseNumber(@Param("courseNumber") int courseNumber);
 }
