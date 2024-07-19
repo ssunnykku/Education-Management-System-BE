@@ -197,7 +197,8 @@ public class AttendanceController {
     // 출결 증빙 서류 파일 S3 업로드
     @ResponseBody
     @PostMapping("/upload")
-    public String attendanceFileUpload(MultipartFile evidentialDocument) throws IOException {
+    public Map<String, Object> attendanceFileUpload(MultipartFile evidentialDocument) throws IOException {
+        Map<String, Object> result = new HashMap<String, Object>();
         String orgFileName = evidentialDocument.getOriginalFilename();
         String bucketKey = tempPath + orgFileName;
         ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -216,8 +217,11 @@ public class AttendanceController {
 
         amazonS3Client.putObject(putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead));
         log.info("출석인정 서류 파일 업로드 완료!!");
+        log.info(amazonS3Client.getUrl(bucketName, bucketKey).toString().substring(6));
+        String fileURL = "http:"+amazonS3Client.getUrl(bucketName, bucketKey).toString().substring(6);
 
-        return amazonS3Client.getUrl(bucketName, bucketKey).toString().substring(6);
+        result.put("data", fileURL);
+        return result;
     }
 
     // 출석인정 항목*인정일수 적용하여 출결 상태 반영

@@ -161,6 +161,7 @@ select {
             width: 100%;
             select {
                 width: 100%;
+                height: 41px;
                 background-position: 95%;
             }
         }
@@ -615,9 +616,14 @@ select {
     display: none;
     position: absolute;
     top: 27.5%;
-    left: 33%;
+    left: 35%;
+    font-size: 16px;
     z-index: 999;
     background-color: #fff;
+
+    .input-date {
+        width: 150px;
+    }
 
     .modal-container {
         width: 450px;
@@ -626,34 +632,40 @@ select {
 
     .modal-btn-wrapper {
         .btn {
-            width: 65px;
+            width: 100px;
             height: 33px;
         }
         .acknowledge-modal.cancel-btn.btn {
+            width: 100px;
             color: #000;
             background-color: rgba(244, 244, 244, 1);
         }
     }
 
-    form {
+    .days-input-wrapper {
+        span {
+            margin: 0 19px;
+        }
+    }
+
+    .file-form {
         display: flex;
         justify-content: space-between;
-    }
+        width: 100%;
 
-    form > label {
-        width: 70%;
-    }
+        label {
+            width: 70%;
+        }
 
-    form > input[type='submit'] {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 27%;
-        height: 30px;
-        /*border: 2px solid rgb(0, 141, 206);*/
-        border-radius: 10px;
+        #file-submit-btn {
+            width: 27%;
+            height: 30px;
+            color: #000;
+            border-radius: 10px;
+            box-shadow: 0px 0px 2px #888;
+            background-color: rgba(244, 244, 244, 1);
+        }
     }
-
     .input-file-btn {
         display: flex;
         justify-content: center;
@@ -662,6 +674,7 @@ select {
         height: 30px;
         border-radius: 10px;
         border: 1px solid rgb(77, 77,77);
+        font-size: 16px;
 
         cursor: pointer;
         background-color: #fff;
