@@ -18,7 +18,7 @@
 
 <body id="content-wrapper">
     <div th:insert="~{common/header :: header}"></div>
-    <div th:insert="~{common/title :: title ('KOSTA 취업률 그래프')}"></div>
+    <div th:insert="~{common/title :: title ('취업 현황')}"></div>
     <section id="employment-contents">
         <article id="employment-search-btn-wrapper">
             <div class="search-form-wrapper">
@@ -171,7 +171,8 @@
                     backgroundColor: '#F3F5F9',
                     bodyFontColor: '#000000',
                     bodySpacing: 6,
-                    bodyAlign: 'center',
+                    bodyFontSize : 15,
+                    bodyAlign: 'left',
                     callbacks: {
                         title: () => null,
                         label: function (tooltipItem, data) {
@@ -183,7 +184,6 @@
                             const employmentRate = data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].employmentRate.toFixed(1);
 
                             const tooltipBody = [
-                                ` ${courseNumber}기`,
                                 ` 총 학생: ${totalStudents}명`,
                                 ` 취업: ${employedStudents}명`,
                                 ` 미취업: ${unemployedStudents}명`,
