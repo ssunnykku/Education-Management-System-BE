@@ -99,4 +99,14 @@ public class CourseServiceTest {
 		assertThat(service.getCourseNumberYearList().size()).isEqualTo(2);
 	}
 
+	@Test
+	@Transactional
+	public void getStudentsNumberBySeq() {
+		assertThat(service.getStudentsNumberBySeq(5)).isEqualTo(10);
+	}
+	@Test
+	@Transactional
+	public void getSeqByCourseNumber() {
+		assertThat(service.getSeqByCourseNumber(277)).isEqualTo(10);
+	}
 }

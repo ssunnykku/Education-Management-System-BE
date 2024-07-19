@@ -54,7 +54,7 @@ public class CourseController {
 		String academyLocation = loginUser.getAcademyLocation();
 		return Map.of("result", courseService.searchCourseList(courseNumber, academyLocation, page, pageSize, excludeExpired));
 	}
-
+	
 	@GetMapping("/course-number-list")
 	public Map getCourseNumberList(@RequestParam(value="excludeExpired", defaultValue = "true") boolean excludeExpired, HttpServletRequest request) {
 	    ManagerDTO loginUser = getLoginUser();
@@ -102,6 +102,13 @@ public class CourseController {
 	    ManagerDTO loginUser = getLoginUser();
 		boolean result = courseService.deleteCourse(courseSeq, loginUser.getAcademyLocation());
 		return Map.of("result", result);
+	}
+
+
+	@GetMapping("/students-number")
+	public Map getStudentsNumberBySeq(@RequestParam int courseNumber) {
+		int courseSeq=courseService.getSeqByCourseNumber(courseNumber);
+		return Map.of("result", courseService.getStudentsNumberBySeq(courseSeq));
 	}
 
     private ManagerDTO getLoginUser() {
