@@ -1,7 +1,15 @@
 package com.kosta.ems.student;
 
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.kosta.ems.attendance.StudentAttendanceListDTO;
+
+import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -19,9 +27,9 @@ public interface StudentService {
     List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumberList(String name, int courseNumber, int page, int size);
 
     // *0710_수강생 정보 조회
-    int getStudentInfoListCnt(int isActive, String name, int courseNumber);
+    int getStudentInfoListCnt(int isActive, String name, int courseNumber, String academyLocation);
 
-    List<StudentInfoDTO> getStudentInfoList(int isActive, String name, int courseNumber, int page, int size);
+    List<StudentInfoDTO> getStudentInfoList(int isActive, String name, int courseNumber, String academyLocation, int page, int size);
 
     // *0710_수강생 정보 조회 (end)
     List<ArrayList> getStudentInfoList2(int isActive, String name, int courseNumber, String academyLocation, int page, int size);
@@ -31,7 +39,9 @@ public interface StudentService {
 
     // 수강생 등록
     boolean findByHrdNetId(String hrdNetId);
+
     RegisteredStudentInfoDTO getRegisteredStudentBasicInfo(String hrdNetId);
+
     List<CourseInfoDTO> getOnGoingCourseList(String academyLocation);
 
     // 수강생 교육과정 수강신청(등록)
