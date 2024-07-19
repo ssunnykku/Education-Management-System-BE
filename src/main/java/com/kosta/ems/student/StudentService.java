@@ -28,7 +28,9 @@ public interface StudentService {
 
     // *0710_수강생 정보 조회
     int getStudentInfoListCnt(int isActive, String name, int courseNumber, String academyLocation);
+
     List<StudentInfoDTO> getStudentInfoList(int isActive, String name, int courseNumber, String academyLocation, int page, int size);
+
     // *0710_수강생 정보 조회 (end)
     List<ArrayList> getStudentInfoList2(int isActive, String name, int courseNumber, String academyLocation, int page, int size);
 
@@ -37,7 +39,9 @@ public interface StudentService {
 
     // 수강생 등록
     boolean findByHrdNetId(String hrdNetId);
+
     RegisteredStudentInfoDTO getRegisteredStudentBasicInfo(String hrdNetId);
+
     List<CourseInfoDTO> getOnGoingCourseList(String academyLocation);
 
     // 수강생 교육과정 수강신청(등록)

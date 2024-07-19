@@ -21,14 +21,15 @@ class ScholarshipMapperTest {
 
     @Test
     public void selectScholarshipTargetList() {
-        List<ScholarshipTargetDTO> data = (ArrayList<ScholarshipTargetDTO>) scholarshipMapper.selectScholarshipTargetList("강남", "손", "277", 10, 0);
+
+        List<ScholarshipTargetDTO> data = (ArrayList<ScholarshipTargetDTO>) scholarshipMapper.selectScholarshipTargetList("", "손", "277", 10, 0);
         log.info(data.toString());
 //        assertThat(data).size().isEqualTo(1);
     }
 
     @Test
     public void selectScholarshipTargetList2() {
-        List<ScholarshipTargetDTO> data = (ArrayList<ScholarshipTargetDTO>) scholarshipMapper.selectScholarshipTargetList("강남", "손유철", "", 10, 0);
+        List<ScholarshipTargetDTO> data = (ArrayList<ScholarshipTargetDTO>) scholarshipMapper.selectScholarshipTargetList("", "", "", 10, 0);
         log.info(data.toString());
 //        assertThat(data).size().isEqualTo(1);
     }
@@ -36,12 +37,13 @@ class ScholarshipMapperTest {
     @Test
     @Transactional
     public void insertScholarshipSettlementTest() {
-        scholarshipMapper.insertScholarshipSettlement(20, "3ddf8577-3eaf-11ef-bd30-0206f94be675");
+        scholarshipMapper.insertScholarshipSettlement(28, "3ddf8577-3eaf-11ef-bd30-0206f94be675");
+        log.info(scholarshipMapper.selectScholarshipResultList("282", "가산", "", LocalDate.parse("2024-07-19"), 10, 0).toString());
     }
 
     @Test
     public void selectScholarshipSettlementResultListTest() {
-        log.info(scholarshipMapper.selectScholarshipResultList("277", "가산", "손", LocalDate.parse("2024-06-21"), 10, 0).toString());
+        log.info(scholarshipMapper.selectScholarshipResultList("", "가산", "손", LocalDate.parse("2024-06-21"), 10, 0).toString());
     }
 
     @Test

@@ -17,7 +17,7 @@ function searchInput() {
 }
 */
 /*$(".board-filter-search-btn").click(async function () {
-=======
+
 $(".board-filter-search-btn").click(async function () {
     $("#page_number").html("");
     const myHeaders = new Headers();
@@ -54,7 +54,7 @@ $(".board-filter-search-btn").click(async function () {
             updatePagination();
         })
         .catch((error) => console.error(error));
-<<<<<<< HEAD
+
 });*/
 
 
@@ -141,7 +141,9 @@ fetch("/courses/course-number-list?excludeExpired=false", {
 
 /*courseData filter 목록*/
 
-fetch("/courses/course-year-list", {
+
+/*fetch("/courses/course-year-list", {
+
     method: "GET",
 })
     .then((res) => res.json())
@@ -155,6 +157,30 @@ fetch("/courses/course-year-list", {
 
     })
     .catch((error) => console.error(error));
+
+
+
+*/
+ fetch("/courses/course-year-list", {
+            method: "GET",
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            const courseList = data.result;
+            let result = '';
+            for (const resultElement of courseList) {
+                result += `<option value=${resultElement}>${resultElement}</option>`;
+            }
+            $(".employment-year-filter").append(result);
+
+            // Set the default value to the most recent year
+            if (courseList.length > 0) {
+                const mostRecentYear = Math.max(...courseList);
+                $(".employment-year-filter").val(mostRecentYear);
+                $(".employment-year-filter").trigger("change"); // Trigger change event
+            }
+        })
+        .catch((error) => console.error(error));
 
 
 /*pagenation*/

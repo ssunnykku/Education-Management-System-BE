@@ -12,8 +12,10 @@ body {
 	display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 100%;
-  padding-left: 200px;
+  /* width: 100%; */
+  width: 80%;
+  /* padding-left: 200px; */
+  margin: auto auto;
 }
 /******* addCourseModal / setCourseModal.html ********/
 .course-modal {
@@ -23,8 +25,8 @@ body {
 #course-wrapper {
     display: flex;
     flex-direction: column;
-    width: 600px;
-    height: 700px;
+    width: 500px;
+    height: 600px;
     margin: 5px 0px;
     padding: 40px;
     box-sizing: border-box;
@@ -51,6 +53,7 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     margin: 5px 0;
 }
 
@@ -196,7 +199,6 @@ select {
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    padding-left: 7%;
     margin-top: 20px;
 }
 
@@ -204,7 +206,6 @@ select {
      display: flex;
   flex-direction: row;
   gap: 10px;
-  padding-left: 180%;
 
 }
 .courseBoard-table {
@@ -248,11 +249,6 @@ select {
 
 /********************** table ***********************/
 
-#courseBoard-table {
-    width: 85%;
-    padding: 0 100px 0 100px;
-}
-
 .courseBoard-row {
     display: flex;
     flex-direction: row;
@@ -289,9 +285,8 @@ select {
 }
 
 .search-form-wrapper {
-    display: flex;
+    display: contents;
     flex-direction: row;
-    width: 330px;
     justify-content: space-between;
 
     form {
@@ -396,7 +391,6 @@ select {
   font-style: normal;
   font-weight: 500;
   line-height: 100%;
-  padding-left: 8%;
   color: #999999;
 }
 
@@ -423,3 +417,10 @@ ul#pagination {
 }
 
 
+#editCourseForm, #addCourseForm{
+    h1{
+        font-size: 25px;
+        margin-bottom: 40px;
+        font-weight: bold;
+    }
+}

@@ -51,6 +51,7 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentInfoDTO> getStudentInfoList(int isActive, String name, int courseNumber, String academyLocation, int page, int size) {
         return studentMapper.selectStudentInfoList(isActive, name, courseNumber, academyLocation, ((page*size)-size), size);
     }
+
     @Override
     public List<ArrayList> getStudentInfoList2(int isActive, String name, int courseNumber, String academyLocation, int page, int size) {
         /* 수료 여부 항목

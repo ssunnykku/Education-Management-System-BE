@@ -168,3 +168,4 @@ public class CourseMapperTest {
 		assertThat(mapper.getSeqByCourseNumber(277)).isEqualTo(20);
 	}
 }
+
