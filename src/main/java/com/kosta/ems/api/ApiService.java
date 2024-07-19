@@ -1,6 +1,7 @@
 package com.kosta.ems.api;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kosta.ems.api.dto.AttendanceHistoryResponse;
 import com.kosta.ems.api.dto.PointHistoryResponse;
@@ -16,6 +18,10 @@ import com.kosta.ems.api.dto.TakenCourseResponse;
 import com.kosta.ems.api.dto.UpdateStudentInfoRequest;
 import com.kosta.ems.attendance.AttendanceMapper;
 import com.kosta.ems.attendance.AttendanceStudentCourseDTO;
+import com.kosta.ems.attendance.AttendanceTimeDTO;
+import com.kosta.ems.attendance.AttendanceTimeId;
+import com.kosta.ems.attendance.AttendanceTimeRepo;
+import com.kosta.ems.attendance.UpdateStudentAttendanceStatusDTO;
 import com.kosta.ems.attendance.AttendanceStudentCourseDTO;
 import com.kosta.ems.course.CourseDTO;
 import com.kosta.ems.course.CourseMapper;
@@ -30,12 +36,16 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ApiService {
+    private static final LocalTime CLASS_END_TIME = LocalTime.of(17, 50);
+    private static final LocalTime CLASS_START_TIME = LocalTime.of(9, 10);
+    private static final String STUDENT_MANAGER_ID = "05bfe60d-45c0-11ef-bd30-0206f94be675";
     private static final int ATTENDANCE_ACK_RATE_PCT = 80;
     private final StudentCourseRepo sCRepo;
     private final CourseMapper courseMapper;
     private final AttendanceMapper attendanceMapper;
     private final StudentPointMapper studentPointMapper;
     private final StudentMapper studentMapper;
+    private final AttendanceTimeRepo attendanceTimeRepo;
     
     public List<TakenCourseResponse> getAllTakenCoursesByStudentId(String studentId) {
         List<TakenCourseResponse> result = new ArrayList<>();
@@ -95,17 +105,7 @@ public class ApiService {
             return null;
         }
         TakenCourseResponse course = courses.get(0);
-        return CourseDTO.builder()
-                .courseName(course.getCourseName())
-                .courseNumber(course.getCourseNumber())
-                .courseStartDate(course.getStartDate())
-                .courseEndDate(course.getEndDate())
-                .courseType(course.getCourseType())
-                .professorName(course.getProfessorName())
-                .trainingHoursOfDate(course.getTrainingHoursPerDay())
-                .totalTrainingDays(course.getTotalTrainingDays())
-                .subject(course.getSubject())
-                .build();
+        return courseMapper.getCourseByCourseNumber(course.getCourseNumber());
     }
 
     public List<PointHistoryResponse> getPointHistory(int courseSeq, String studentId) {
@@ -125,5 +125,89 @@ public class ApiService {
         //비밀번호 변경을 포함하지 않는 경우 새 비밀번호는 구 비밀번호와 동일하게 설정.
         String newPassword = (dto.getNewPassword() == null || dto.getNewPassword().isEmpty()) ? dto.getCurrentPassword() : dto.getNewPassword(); 
         return studentMapper.updateStudentContactInfo(studentId, dto.getCurrentPassword(), dto.getNewPassword(), dto.getPhoneNumber(), dto.getBank(), dto.getAccountNumber(), dto.getEmail());
+    }
+    
+    public AttendanceTimeDTO getAttendanceTimeStatus(String studentId) {
+        CourseDTO course = getCurrentCourse(studentId);
+        if(course == null) {
+            return null;
+        }
+        StudentCourseDTO sCDTO;
+        try {
+            sCDTO = sCRepo.findByStudentIdAndCourseSeq(studentId, course.getCourseSeq()).orElseThrow(() -> new RuntimeException("수강하는 과정이 없습니다."));
+        }catch (Exception e) {
+            return null;
+        }
+        AttendanceTimeId id = new AttendanceTimeId(LocalDate.now(), sCDTO.getSeq());
+        Optional<AttendanceTimeDTO> attendanceTimeDTO = attendanceTimeRepo.findById(id);
+        AttendanceTimeDTO result = attendanceTimeDTO.orElseGet(() -> new AttendanceTimeDTO(id, null, null));
+        return result;
+    }
+
+    public boolean addInTime(String studentId) {
+        try {
+            CourseDTO course = getCurrentCourse(studentId);
+            if(course == null) {
+                return false;
+            }
+            AttendanceTimeDTO status = getAttendanceTimeStatus(studentId);
+            if(status.getInTime() != null) {
+                return false;
+            }
+            
+            StudentCourseDTO sCDTO;
+            sCDTO = sCRepo.findByStudentIdAndCourseSeq(studentId, course.getCourseSeq()).orElseThrow(() -> new RuntimeException("수강하는 과정이 없습니다."));
+            AttendanceTimeId id = new AttendanceTimeId(LocalDate.now(), sCDTO.getSeq());
+            AttendanceTimeDTO inTime = new AttendanceTimeDTO(id, LocalTime.now(), null);
+            attendanceTimeRepo.save(inTime);
+            attendanceMapper.insertAttendanceStatus(UpdateStudentAttendanceStatusDTO.builder()
+                    .attendanceDate(LocalDate.now())
+                    .attendanceStatus("입실")
+                    .managerId(STUDENT_MANAGER_ID)
+                    .studentCourseSeq(sCDTO.getSeq())
+                    .build());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Transactional
+    public boolean addOutTime(String studentId) {
+        CourseDTO course = getCurrentCourse(studentId);
+        if(course == null) {
+            return false;
+        }
+        AttendanceTimeDTO status = getAttendanceTimeStatus(studentId);
+        if(status.getOutTime() != null || status.getInTime() == null) {
+            return false;
+        }
+        
+        StudentCourseDTO sCDTO;
+        try {
+            sCDTO = sCRepo.findByStudentIdAndCourseSeq(studentId, course.getCourseSeq()).orElseThrow(() -> new RuntimeException("수강하는 과정이 없습니다."));
+        }catch (Exception e) {
+            return false;
+        }
+        AttendanceTimeId id = new AttendanceTimeId(LocalDate.now(), sCDTO.getSeq());
+        Optional<AttendanceTimeDTO> oriTime = attendanceTimeRepo.findById(id);
+        AttendanceTimeDTO outTime = oriTime.orElseThrow(() -> new RuntimeException());
+        outTime.setOutTime(LocalTime.now());
+        
+        updateAttendanceBasedOnTime(sCDTO.getSeq(), outTime.getInTime(), outTime.getOutTime());
+        
+        return attendanceTimeRepo.save(outTime) != null;
+    }
+
+    private void updateAttendanceBasedOnTime(int studentCourseSeq, LocalTime inTime, LocalTime outTime) {
+        String status = "출석";
+        if      (inTime.isAfter(CLASS_END_TIME))
+            status = "결석";
+        else if (inTime.isAfter(CLASS_START_TIME)) 
+           status = "지각";
+        else if (outTime.isBefore(CLASS_END_TIME)) 
+           status = "조퇴"; 
+        
+        attendanceMapper.updateStudentAttendance(new UpdateStudentAttendanceStatusDTO(status, LocalDate.now(), studentCourseSeq, STUDENT_MANAGER_ID));
     }
 }

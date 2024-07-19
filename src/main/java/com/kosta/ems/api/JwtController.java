@@ -95,11 +95,29 @@ public class JwtController {
         return Map.of("result", service.getPointHistory(courseSeq, loginUser.getStudentId()));
     }
     
+    //마이페이지 정보 수정 모달
     @PutMapping("/student")
     public Map updateStudentInfo(@RequestBody UpdateStudentInfoRequest dto) {
         StudentInfoDTO loginUser = getLoginUser();
         return Map.of("result", service.updateStudentContactInfo(loginUser.getStudentId(), dto));
     }   
+    
+    //마이페이지 입실/
+    @GetMapping("/time")
+    public Map GetAttendanceTimeStatus() {
+        StudentInfoDTO loginUser = getLoginUser();
+        return Map.of("result", service.getAttendanceTimeStatus(loginUser.getStudentId()));
+    }
+    @PostMapping("/in-time")
+    public Map recordInTime() {
+        StudentInfoDTO loginUser = getLoginUser();
+        return Map.of("result", service.addInTime(loginUser.getStudentId()));
+    }
+    @PostMapping("/out-time")
+    public Map recordOutTime() {
+        StudentInfoDTO loginUser = getLoginUser();
+        return Map.of("result", service.addOutTime(loginUser.getStudentId()));
+    }
     
     private StudentInfoDTO getLoginUser() {
         StudentInfoDTO loginUser;
