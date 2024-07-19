@@ -712,11 +712,24 @@ body {
 }
 #student-detail-modal {
   display: none;
+  justify-content: center;
+  flex-wrap: wrap;
   position: absolute;
-  top: 13%;
+  top: 10%;
   left: 33%;
   z-index: 999;
   background-color: #fff;
+}
+#modal-header {
+  width:100%;
+  margin-bottom: 15px;
+  border-bottom: 1px solid lightgray;
+  p {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 24px;
+    font-weight: 600;
+  }
 }
 .addAttendanceModal {
   margin: auto;
@@ -728,12 +741,26 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 600px;
-  height: 700px;
+  width: 730px;
+  height: 800px;
   padding: 5%;
   box-sizing: border-box;
   border: 1px solid #5c5c5c;
   font-size: 16px;
+
+  /* 수강생 isActive option DIV */
+  .is-acitve-status-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    margin: 0;
+    margin-bottom: 20px;
+    margin-left: -40px;
+    input {
+      margin: 0;
+      width: 50px;
+    }
+  }
 }
 .student-detail-wrapper {
   width: 100%;
@@ -742,13 +769,14 @@ body {
   }
 }
 /* 수강생 상세보기 모달 grid */
-.student-detail-wrapper:first-child {
+.student-detail-wrapper:nth-child(3) {
   display: grid;
   grid-template-columns: repeat(2, 150px);
   grid-template-rows: repeat(4, 45px);
   grid-row-gap: 25px;
 }
 .detail-info-item input {
+  width: 300px;
   height: 32px;
   padding-left: 5px;
 }
@@ -759,7 +787,8 @@ body {
 .detail-info-item:nth-child(2) {
   grid-row: 1 / 2;
   grid-column: 2 / 3;
-  margin-left: 50px;
+  width: 100%;
+  margin-left: 190px;
 }
 .detail-info-item:nth-child(3) {
   grid-row: 2 / 3;
@@ -768,7 +797,8 @@ body {
 .detail-info-item:nth-child(4) {
   grid-row: 2 / 3;
   grid-column: 2 / 3;
-  margin-left: 50px;
+  width: 100%;
+  margin-left: 190px;
 }
 .detail-info-item:nth-child(5) {
   grid-row: 3 / 4;
@@ -777,13 +807,14 @@ body {
 .detail-info-item:nth-child(6) {
   grid-row: 3 / 4;
   grid-column: 2 / 3;
-  margin-left: 50px;
+  width: 100%;
+  margin-left: 190px;
 }
 .detail-info-item:nth-child(7) {
   grid-row: 4 / 5;
   grid-column: 1 / 3;
   input {
-    width: 100%;
+    width: 640px;
   }
 }
 .detail-info-item:nth-child(8){
@@ -793,67 +824,81 @@ body {
 .detail-info-item:nth-child(9){
   grid-row: 5 / 6;
   grid-column: 2 / 3;
-  margin-left: 50px;
+  width: 100%;
+  margin-left: 190px;
 }
 
 
 /* 모달 수강내역 Table */
-.student-detail-wrapper:nth-child(2) {
+.student-detail-wrapper:nth-child(4) {
   padding: 0;
   margin-bottom: 20px;
   p {
     margin-bottom: 10px;
     font-weight: 500;
   }
-  .detail-info-item:last-child {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 0;
-    margin-top: 20px;
-    input {
-      margin: 0;
-    }
-  }
 }
 .modal-table {
-  width: 100%;
+  width: 650px;
   padding: 0;
   border-bottom: 1px solid #5c5c5c;
-  th, td {
+  th, td, tbody {
     vertical-align: middle;
     text-align: center;
   }
-  tr:first-child {
+  /*thead > tr:first-child{*/
+  thead {
     height: 45px;
     background-color: #f9f9f9;
-  }
-  th{
-    font-weight: 600;
-    border-top: 1px solid #5c5c5c;
+    th{
+      font-weight: 600;
+      border-top: 1px solid #5c5c5c;
+    }
   }
   tr {
     border-bottom: 0.5px solid lightgray;
     height: 45px;
   }
+  tbody {
+    display: block;
+    max-height: 100px;
+    overflow-y: scroll;
+    border-bottom: 0.5px solid lightgray;
+  }
+
+  thead tr, tbody tr {
+    display: table;
+    width: 650px;
+  }
+
+  thead tr th {
+    width: 650px;
+  }
+
+  tbody tr td {
+    width: 650px;
+  }
+
 }
-.modal-table td:first-child,
-.modal-table th:first-child {
+tbody td:first-child,
+thead th:first-child {
   width: 20%;
 }
-.modal-table td:nth-child(2),
-.modal-table td:nth-child(4),
-.modal-table th:nth-child(2),
-.modal-table th:nth-child(4) {
+tbody td:nth-child(2),
+thead td:nth-child(2) {
+  width: 5%;
+}
+tbody td:nth-child(4),
+thead td:nth-child(4) {
   width: 10%;
 }
-.modal-table td:nth-child(3),
-.modal-table th:nth-child(3){
+thead td:nth-child(3),
+tbody td:nth-child(3) {
   width: 35%;
 }
-.modal-table td:last-child,
-.modal-table th:last-child {
-  width: 25%;
+thead td:last-child,
+tbody td:last-child {
+  width: 30%;
 }
 
 /* 수강생 정보 상세보기 btn wrapper */
