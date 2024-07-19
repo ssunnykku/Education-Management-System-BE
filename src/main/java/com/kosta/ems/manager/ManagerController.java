@@ -22,12 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 public class ManagerController {
     private final ManagerService managerService;
 
-    @Value("${security.level}")
-    private String SECURITY_LEVEL;
-
     //Controller처럼 작동함
     @PostMapping("/login")
     public Map login(@RequestBody Map<String, String> loginRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
         Map<String, String> map = managerService.login(loginRequest.get("employeeNumber"), loginRequest.get("password"));
         if (Objects.isNull(map)) {
             return Map.of("result", false);
@@ -39,24 +37,6 @@ public class ManagerController {
         log.info("managerId: " + map.get("academyLocation").toString());
 
         return Map.of("result", true);
-    }
-
-    @GetMapping
-    public Map currentUser() {
-        ManagerDTO loginUser = getLoginUser();
-        String managerId = loginUser.getManagerId();
-
-        return Map.of("result", managerService.fintByManagerId(managerId));
-    }
-
-    private ManagerDTO getLoginUser() {
-        ManagerDTO loginUser;
-        if (SECURITY_LEVEL.equals("OFF")) {
-            loginUser = managerService.findByEmployeeNumber("EMP0001");
-        } else {
-            loginUser = (ManagerDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        }
-        return loginUser;
     }
 }
 

@@ -17,18 +17,19 @@ import java.util.Map;
 
 @Service
 public interface StudentService {
-	
+
     Map<String, Collection> getStudentByName(String name);
-    
+
     // 수강생 검색 결과 총 개수
     int getStudentsByNameOrCourseNumberAmount(String name, int courseNumber);
-    
+
     // 수강생 검색 결과 목록
     List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumberList(String name, int courseNumber, int page, int size);
 
     // *0710_수강생 정보 조회
-    int getStudentInfoListCnt(int isActive, String name, int courseNumber, String academyLocation);
-    List<StudentInfoDTO> getStudentInfoList(int isActive, String name, int courseNumber, String academyLocation, int page, int size);
+    int getStudentInfoListCnt(int isActive, String name, int courseNumber);
+
+    List<StudentInfoDTO> getStudentInfoList(int isActive, String name, int courseNumber, int page, int size);
     // *0710_수강생 정보 조회 (end)
     List<ArrayList> getStudentInfoList2(int isActive, String name, int courseNumber, String academyLocation, int page, int size);
 
@@ -37,13 +38,10 @@ public interface StudentService {
 
     // 수강생 등록
     boolean findByHrdNetId(String hrdNetId);
+
     RegisteredStudentInfoDTO getRegisteredStudentBasicInfo(String hrdNetId);
+
     List<CourseInfoDTO> getOnGoingCourseList(String academyLocation);
-    // 신규 수강생 등록
-    // *0715_안쓰기로 결정된 개념
-    // void setStudentWithCourse(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber);
-    // *0715_안쓰기로 결정된 개념
-    // void setStudentBasicInfo(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber);
 
     // 수강생 교육과정 수강신청(등록)
     void setStudentCourseSeqInfo(String hrdNetId, String courseNumber, String managerId);
