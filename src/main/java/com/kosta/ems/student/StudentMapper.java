@@ -3,13 +3,6 @@ package com.kosta.ems.student;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import com.kosta.ems.attendance.StudentAttendanceListDTO;
-import com.kosta.ems.attendance.UpdateStudentAttendanceStatusDTO;
-
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,6 +17,7 @@ public interface StudentMapper {
 
     // *0710_수강생 정보 조회
     int selectStudentInfoListCnt(int isActive, String name, int courseNumber, String academyLocation);
+
     List<StudentInfoDTO> selectStudentInfoList(int isActive, String name, int courseNumber, String academyLocation, int page, int size);
     // *0710_수강생 정보 조회 (end)
 
@@ -38,16 +32,12 @@ public interface StudentMapper {
     // 현재 진행 중+등록 가능한 교육과정 목록
     List<CourseInfoDTO> selectOnGoingCourseList(String academyLocation);
 
-    // *0715_안 쓰는 개념으로 결정됨
-    // void addStudentBasicInfo(AddStudentBasicInfoDTO dto);
-    // int addStudentBasicInfo(AddStudentBasicInfoDTO dto);
-    // *0715_안 쓰는 개념으로 결정됨 (end)
-
     // 수강생 교육과정 수강신청(등록)
     int addStudentCourseSeqInfo(AddStudentBasicInfoDTO dto);
 
     // 수강생 정보 수정
     StudentBasicInfoDTO selectRegisteredStudentInfo(String studentId);
+
     int updateSelectedStudentInfo(UpdateSelectedStudentInfoDTO dto);
 
     // 수강생 삭제 (isActive 업데이트)

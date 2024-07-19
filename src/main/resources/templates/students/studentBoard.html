@@ -59,7 +59,7 @@
 
 
 <div id="student-detail-modal" class="studentDetailModal">
-    <input type="hidden" id="modal-student-id" />
+    <input type="hidden" id="modal-student-id"/>
     <div class="modal-container">
         <div class="student-detail-wrapper">
             <div class="detail-info-item">
@@ -113,6 +113,7 @@
                 </table>
             </div>
             <div class="detail-info-item">
+
                 <input type="radio" id="activation" name="isActive" /><label>활성화</label>
                 <input type="radio" id="deactivation" name="isActive"/><label>비활성화</label>
             </div>
@@ -127,11 +128,11 @@
 <div class="modal-backdrop"></div>
 
 <script>
-    $(document).ready(async function() {
+    $(document).ready(async function () {
         await fetchStudentList(1);
 
         // 모달 외부 클릭 시 모달 닫기 이벤트 처리기
-        $(document).on('click', function(event) {
+        $(document).on('click', function (event) {
             const modal = $("#student-detail-modal");
             const modalContainer = modal.find('.modal-container');
 
@@ -157,10 +158,10 @@
         });
 
         // 모달 열려 있을 때 문서 외부 클릭 이벤트 방지
-        $("#student-detail-modal").on('shown.bs.modal', function() {
-            $('body').css('overflow', 'hidden'); // 스크롤 방지
-        });
-        $('body').css('overflow', 'hidden'); // 스크롤 방지
+        // $("#student-detail-modal").on('shown.bs.modal', function() {
+        //     $('body').css('overflow', 'hidden'); // 스크롤 방지
+        // });
+        // $('body').css('overflow', 'hidden'); // 스크롤 방지
     });
 
     // 페이징 관련 멤버 데이터
@@ -171,22 +172,31 @@
     const page = 1;
 
     // '등록' 버튼 클릭하면 수강생 등록 페이지로 이동
-    $("#enroll-btn").click(function() {
-        window.location.href="/ems/students/set";
+    $("#enroll-btn").click(function () {
+        window.location.href = "/ems/students/set";
     });
 
     function getCourseNumber() {
-        if($("#input-course-number").val() == "") {
+        if ($("#input-course-number").val() == "") {
             return 0;
         }
         return parseInt($("#input-course-number").val());
     }
+
     function getStudentName() {
         return $(".student-name-filter").val();
     }
+
     function getStudentId() {
         return $("input[name='student-radio']:checked").val();
     }
+    function getIsActive() {
+        console.log("active 상태");
+        console.log($("#is-active-filter").val());
+        let isActive = $("#is-active-filter").val() == 1 ? 1 : 0;
+        return isActive;
+    }
+
     function getIsActive() {
         console.log("active 상태");
         console.log($("#is-active-filter").val());
@@ -200,7 +210,9 @@
     async function getAmountStudentList(data) {
         console.log("총 ** 건 - data");
         console.log(data);
+
         totalPage = Math.ceil(data/10);   // 페이징 확인을 위해 임시로 '2'해둔 것. 10으로 바꿔야함.
+
         console.log("totalPage: " + totalPage);
         let result = '';
         result += `<span class="span-attendance-list-amount">총 ${data}건</span>`;
@@ -215,6 +227,7 @@
         let result = `<tr><th class="hrd-net-id">HRD-Net ID</th><th class="course-number">기수</th><th class="student-name">이름</th><th class="student-phonenumber">전화번호</th><th class="student-completion-status">출석률</th></tr>`;
 
         for(let i=0; i<data.length; i++) {
+
             result += `<tr class="board-table-row">
                     <td class="hrd-net-id">${data[i][0].hrdNetId}<input type="hidden" name="student-id" class="fetch-student-id" value=${data[i][0].studentId}/></td>
                     <td class="course-number">${data[i][0].courseNumber}</td>
@@ -235,8 +248,9 @@
         $(".board-table").html("");
         $(".board-table").append(result);
 
-        $(".board-table tr").on("click", async function() {
+        $(".board-table tr").on("click", async function () {
             const tmpStudentId = $(this).find(".fetch-student-id").val();
+
             const studentId = tmpStudentId.substring(0, tmpStudentId.length-1);
             // *0710_선택한 수강생의 상세정보(수강내역 포함) 가져오기
             await fetchStudentCourseHistory(studentId);
@@ -251,7 +265,9 @@
             $("#modal-student-address").val($(this).find(".student-address").val());
             $("#modal-student-bank").val($(this).find(".student-bank").val());
             $("#modal-student-account").val($(this).find(".student-account").val());
+
             if($(this).find(".student-isActive").val() == 1) {
+
                 $("#activation").attr("checked", true);
             } else {
                 $("#deactivation").attr("checked", true);
@@ -281,7 +297,9 @@
 
         await fetch("/students/student-course-history", requestOptions)
             .then((res) => res.json())
+
             .then(async(data) => {
+
                 await getStudentCourseHistory(data.studentCourseHistory);
             })
             .catch((error) => console.error(error));
@@ -290,7 +308,7 @@
     // *0710_가져온 수강내역 데이터를 모달에 연결
     async function getStudentCourseHistory(data) {
         let result = `<tr><th>과정 구분</th><th>기수</th><th>과정명</th><th>강사명</th><th>교육기간</th></tr>`;
-        for(let i=0; i<data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             result += `<tr class="board-table-row">
                     <td class="course-type">${data[i].courseType}</td>
                     <td class="course-number">${data[i].courseNumber}</td>
@@ -304,7 +322,7 @@
     }
 
     // 상세정보 모달의 '수정'버튼 클릭 -> 수정 가능한 내용 input disabled 해제
-    $("#update-btn").click(function() {
+    $("#update-btn").click(function () {
         $("#update-set-btn").css("display", "flex");
         $("#update-btn").css("display", "none");
         $("#delete-btn").css("display", "none");
@@ -317,12 +335,14 @@
         $("#modal-student-email").attr("disabled", false);
         $("input[name='isActive']").attr("disabled", false);
     });
+
     $("#update-set-btn").click(async function() {
         let isActiveStatus = null;
 
         if($("#activation").attr("checked", true)) {
             isActiveStatus = 1;
         } else if($("#deactivation").attr("checked", true)) {
+
             isActiveStatus = 0;
         }
 
@@ -395,9 +415,9 @@
             redirect: "follow"
         };
 
-        await fetch("/students/student-list?page="+param, requestOptions)
+        await fetch("/students/student-list?page=" + param, requestOptions)
             .then((res) => res.json())
-            .then(async(data) => {
+            .then(async (data) => {
                 let studentList = data.studentList;
                 let amount = data.amount;
                 console.log(">> studentList");
@@ -409,7 +429,7 @@
             .catch((error) => console.error(error));
     };
 
-    $(".filter-search-btn").click(async function() {
+    $(".filter-search-btn").click(async function () {
         await fetchStudentList(page);
     });
 
@@ -426,16 +446,16 @@
     }
 
     $("#next").click(() => {
-        if(currentBlock * pageSize < totalPage) {
-            currentBlock ++;
+        if (currentBlock * pageSize < totalPage) {
+            currentBlock++;
             currentPage = (currentBlock * pageSize) - pageSize + 1;
             updatePagination();
         }
     });
 
     $("#prev").click(() => {
-        if(currentBlock > 1) {
-            currentBlock --;
+        if (currentBlock > 1) {
+            currentBlock--;
             currentPage = (currentBlock * pageSize) - pageSize + 1;
             updatePagination();
         }

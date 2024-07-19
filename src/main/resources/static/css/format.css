@@ -1,7 +1,6 @@
 @import "reset.css";
 
 /******************header ***************/
-@import "reset.css";
 
 #nav-title-wrapper {
     min-height: 100vh;
@@ -106,7 +105,8 @@
     background-color: #ffffff;
     z-index: 50;
     position: absolute;
-    box-shadow: 0 2px 2px #E7E9F2, 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 2px #E7E9F2;
+
 }
 
 .nav-li-dropdown {
@@ -142,13 +142,16 @@
 
 #header-btns {
     height: 100%;
-    width: 9%;
+    width: 17%;
     display: flex;
     space-between: center;
     align-items: center;
     flex-direction: row;
 
     padding-right: 10px;
+    gap: 10px;
+
+    font-size: 15px;
 }
 
 #header-btns > div:first-child {

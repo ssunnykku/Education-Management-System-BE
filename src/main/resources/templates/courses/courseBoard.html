@@ -17,8 +17,9 @@
   <section id="course-section">
     <article id="courseBoard-btns-container">
       <div class="search-form-wrapper">
-        <!-- form???? -->
+
         <form id="searchForm" action="/ems/courses">
+
           <select name="excludeExpired" class="data-filter" onChange="updateCourseNumber(event)">
             <option value="true" th:selected="${paging.excludeExpired} == 1">진행중</option>
             <option value="false" th:selected="${paging.excludeExpired} == 0">전체</option>

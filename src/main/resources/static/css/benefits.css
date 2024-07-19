@@ -165,6 +165,28 @@ section {
     background-position: 60px;
 }
 
+.benefit-search-input {
+    width: 300px;
+    height: 34px;
+
+    background: #ffffff;
+
+    border: 1px solid #cfcfcf;
+    border-radius: 10px;
+
+    z-index: 1;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 144%;
+
+    padding-left: 15px;
+
+    color: #000000;
+    text-align: center;
+}
+
 .search-input {
     width: 300px;
     height: 41px;

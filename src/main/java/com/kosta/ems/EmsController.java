@@ -197,10 +197,12 @@ public class EmsController {
     public String employmentBoard() {
         return "employment/employmentBoard";
     }
-    
-    @GetMapping("employments/data")
-    public String employmentDataBoard() {
-    	return "employment/employmentDataBoard";
+
+    @GetMapping
+    public String main() {
+        return "main";
     }
+    
+
 
 }

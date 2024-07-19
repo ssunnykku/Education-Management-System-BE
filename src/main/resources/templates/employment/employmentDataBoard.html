@@ -18,11 +18,14 @@
 
 <body id="content-wrapper">
     <div th:insert="~{common/header :: header}"></div>
+
     <div th:insert="~{common/title :: title ('취업 현황')}"></div>
+
     <section id="employment-contents">
         <article id="employment-search-btn-wrapper">
             <div class="search-form-wrapper">
                 <select name="employment-year-filter" class="employment-year-filter">
+
                 </select>
             </div>
         </article>
@@ -72,6 +75,7 @@
                     employmentRate: employmentRate
 
                 });
+
 
                 chart.data.datasets[1].tooltipData.push({
                     totalStudents: totalStudents,
@@ -131,8 +135,9 @@
                 },
                 scales: {
                     xAxes: [{
+
                         barThickness: 20,
-                        barThickness: 20,
+
                         ticks: {
                             fontColor: '#000000',
                             fontSize: 15
@@ -172,8 +177,10 @@
                     backgroundColor: '#F3F5F9',
                     bodyFontColor: '#000000',
                     bodySpacing: 6,
+
                     bodyFontSize: 15,
                     bodyAlign: 'left',
+
                     callbacks: {
                         title: () => null,
                         label: function (tooltipItem, data) {
@@ -185,6 +192,7 @@
                             const employmentRate = data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].employmentRate.toFixed(1);
 
                             const tooltipBody = [
+
                                 ` 총 학생: ${totalStudents}명`,
                                 ` 취업: ${employedStudents}명`,
                                 ` 미취업: ${unemployedStudents}명`,
@@ -201,3 +209,4 @@
 <script type="text/javascript" th:src="@{/scripts/employmentBoard.js}"></script>
 
 </html>
+

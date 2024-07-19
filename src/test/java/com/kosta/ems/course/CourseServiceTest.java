@@ -82,6 +82,8 @@ public class CourseServiceTest {
 		assertThat(service.deleteCourse(5, "가산")).isTrue();
 		assertThat(service.deleteCourse(1, "가산")).isFalse();
 	}
+
+
 	@Test
 	@Transactional
 	public void getCourseNumberByYear() {
@@ -92,6 +94,7 @@ public class CourseServiceTest {
 	public void getCourseNumberYearList() {
 		assertThat(service.getCourseNumberYearList().size()).isEqualTo(2);
 	}
+
 	@Test
 	@Transactional
 	public void getStudentsNumberBySeq() {

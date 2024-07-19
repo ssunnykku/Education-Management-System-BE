@@ -17,7 +17,7 @@ function searchInput() {
 }
 */
 /*$(".board-filter-search-btn").click(async function () {
-=======
+
 $(".board-filter-search-btn").click(async function () {
     $("#page_number").html("");
     const myHeaders = new Headers();
@@ -54,7 +54,7 @@ $(".board-filter-search-btn").click(async function () {
             updatePagination();
         })
         .catch((error) => console.error(error));
-<<<<<<< HEAD
+
 });*/
 
 
@@ -141,7 +141,9 @@ fetch("/courses/course-number-list?excludeExpired=false", {
 
 /*courseData filter 목록*/
 
+
 /*fetch("/courses/course-year-list", {
+
     method: "GET",
 })
     .then((res) => res.json())
@@ -155,6 +157,9 @@ fetch("/courses/course-number-list?excludeExpired=false", {
 
     })
     .catch((error) => console.error(error));
+
+
+
 */
  fetch("/courses/course-year-list", {
             method: "GET",
@@ -176,6 +181,7 @@ fetch("/courses/course-number-list?excludeExpired=false", {
             }
         })
         .catch((error) => console.error(error));
+
 
 /*pagenation*/
 

@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface ManagerService {
-	Map<String, String> login(String employeeNumber, String password);
-	
-	ManagerDTO findByEmployeeNumber(String employeeNumber);
+    Map<String, String> login(String employeeNumber, String password);
+
+    ManagerDTO findByEmployeeNumber(String employeeNumber);
+
+    ManagerDTO fintByManagerId(String managerId);
 }
