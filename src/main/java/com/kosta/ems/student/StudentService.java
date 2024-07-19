@@ -31,9 +31,7 @@ public interface StudentService {
 
     // 수강생 등록
     boolean findByHrdNetId(String hrdNetId);
-
     RegisteredStudentInfoDTO getRegisteredStudentBasicInfo(String hrdNetId);
-
     List<CourseInfoDTO> getOnGoingCourseList(String academyLocation);
 
     // 수강생 교육과정 수강신청(등록)

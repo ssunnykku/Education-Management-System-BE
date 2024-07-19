@@ -2,113 +2,113 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kosta.ems.student.StudentMapper">
     <select id="selectStudentByName" parameterType="string" resultType="com.kosta.ems.student.StudentCourseInfoDTO">
-        <![CDATA[
-        select s.student_id         as studentId,
-               hrd_net_id           as hrdNetID,
-               name,
-               birth,
-               address,
-               bank,
-               account,
-               phone_number         as phoneNumber,
-               email,
-               gender,
-               s.manager_id         as managerId,
-               s.is_active          as isActive,
-               c.student_course_seq as studentCourseSeq,
-               c.course_seq         as courseSeq
-        from students s
-                 left join students_courses c on s.student_id = c.student_id
-        where s.name = '%' + #{name} + '%'
-          and s.is_active = true
-        ]]>
+        <![CDATA[select s.student_id         as studentId,
+                        hrd_net_id           as hrdNetID,
+                        name,
+                        birth,
+                        address,
+                        bank,
+                        account,
+                        phone_number         as phoneNumber,
+                        email,
+                        gender,
+                        s.manager_id           as managerId,
+                        s.is_active            as isActive,
+                        c.student_course_seq as studentCourseSeq,
+                        c.course_seq         as courseSeq
+                 from students s
+                          left join students_courses c on s.student_id = c.student_id
+                 where s.name = '%' + #{name} + '%'
+                   and s.is_active = true]]>
     </select>
     <!-- 수강생 정보 -->
     <select id="findByStudentNumberOrCourseNumberAll" resultType="int">
-        <![CDATA[
-        SELECT COUNT(s.student_id) AS count
-        FROM students_courses sc
-                 JOIN courses c ON sc.course_seq = c.course_seq
-                 LEFT JOIN students s ON sc.student_id = s.student_id
-        WHERE s.is_active = 1
-          AND s.name LIKE CONCAT('%', #{name}, '%')
-          AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
-        ]]>
+        <![CDATA[SELECT COUNT(s.student_id) AS count
+                 FROM students_courses sc
+                     JOIN courses c ON sc.course_seq=c.course_seq
+                     LEFT JOIN students s ON sc.student_id=s.student_id
+                 WHERE s.is_active=1
+                   AND s.name LIKE CONCAT('%', #{name},'%')
+                   AND (IF(#{courseNumber}, 0, '기수')='기수' OR c.course_number=#{courseNumber})]]>
     </select>
     <select id="findByStudentNameOrCourseNumberList" resultType="com.kosta.ems.student.StudentBasicInfoDTO">
-        <![CDATA[
-        SELECT s.student_id          AS studentId,
-               sc.student_course_seq AS studentCourseSeq,
-               c.course_number       AS courseNumber,
-               s.hrd_net_id          AS hrdNetId,
-               s.name,
-               s.birth,
-               s.address,
-               s.bank,
-               s.account,
-               s.email,
-               s.phone_number        AS phoneNumber,
-               s.gender
-        FROM students_courses sc
-                 JOIN courses c ON sc.course_seq = c.course_seq
-                 LEFT JOIN students s ON sc.student_id = s.student_id
-        WHERE s.is_active = 1
-          AND s.name LIKE CONCAT('%', #{name}, '%')
-          AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
-        ORDER BY c.course_number DESC, s.name ASC
-        LIMIT #{page}, #{size}
-        ]]>
-    </select>
-    <!--0710_수강생 이름 또는 기수로 수강생의 기본 정보 select 전체 개수  *0715_확인 및 적용 완료-->
-    <select id="selectStudentInfoListCnt" resultType="int">
-        <![CDATA[
-        SELECT COUNT(DISTINCT s.student_id) as count
-        FROM students_courses sc
-                 JOIN courses c ON sc.course_seq = c.course_seq
-                 LEFT JOIN students s ON sc.student_id = s.student_id
-        WHERE s.is_active = #{isActive}
-          AND s.name LIKE CONCAT('%', #{name}, '%')
-          AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
-        ORDER BY c.course_number DESC, s.name ASC
-        ]]>
-    </select>
-    <!--0710_수강생 이름 또는 기수로 수강생의 기본 정보 select *0715_확인 밎 적용 완료-->
-    <select id="selectStudentInfoList" resultType="com.kosta.ems.student.StudentInfoDTO">
-        <![CDATA[
-        SELECT DISTINCT s.student_id    AS studentId,
-                        s.hrd_net_id    AS hrdNetId,
+        <![CDATA[SELECT s.student_id AS studentId,
+                        sc.student_course_seq AS studentCourseSeq,
                         c.course_number AS courseNumber,
+                        s.hrd_net_id AS hrdNetId,
                         s.name,
                         s.birth,
                         s.address,
                         s.bank,
                         s.account,
                         s.email,
-                        s.phone_number  AS phoneNumber,
-                        s.gender,
-                        s.is_active     AS isActive,
-                        s.manager_id    AS managerId
-        FROM students_courses sc
-                 JOIN courses c ON sc.course_seq = c.course_seq
-                 LEFT JOIN students s ON sc.student_id = s.student_id
-        WHERE s.is_active = #{isActive}
-          AND s.name LIKE CONCAT('%', #{name}, '%')
-          AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
-        ORDER BY c.course_number DESC, s.name ASC
-        LIMIT #{page}, #{size}
-        ]]>
+                        s.phone_number AS phoneNumber,
+                        s.gender
+                 FROM students_courses sc
+                          JOIN courses c ON sc.course_seq=c.course_seq
+                          LEFT JOIN students s ON sc.student_id=s.student_id
+                 WHERE s.is_active=1
+                   AND s.name LIKE CONCAT('%', #{name},'%')
+                   AND (IF(#{courseNumber}, 0, '기수')='기수' OR c.course_number=#{courseNumber})
+                 ORDER BY c.course_number DESC, s.name ASC
+                     LIMIT #{page}, #{size}]]>
+    </select>
+    <!--0710_수강생 이름 또는 기수로 수강생의 기본 정보 select 전체 개수  *0715_확인 및 적용 완료-->
+    <select id="selectStudentInfoListCnt" resultType="int">
+        <![CDATA[SELECT COUNT(DISTINCT s.student_id) as count
+                 FROM students_courses sc
+                     JOIN courses c ON sc.course_seq=c.course_seq
+                     LEFT JOIN students s ON sc.student_id=s.student_id
+                 WHERE s.name LIKE CONCAT('%', #{name},'%')
+                   AND (IF(#{courseNumber}, 0, '기수')='기수' OR c.course_number=#{courseNumber})
+                   AND (IF(#{isActive}, 1, 0)=s.is_active)
+                   AND c.academy_location=#{academyLocation}]]>
+    </select>
+    <!--0710_수강생 이름 또는 기수로 수강생의 기본 정보 select *0715_확인 밎 적용 완료-->
+    <select id="selectStudentInfoList" resultType="com.kosta.ems.student.StudentInfoDTO">
+        <![CDATA[SELECT DISTINCT s.student_id AS studentId,
+                                 s.hrd_net_id AS hrdNetId,
+                                 (SELECT c2.course_number
+                                  FROM students_courses sc2
+                                           JOIN courses c2 ON sc2.course_seq=c2.course_seq
+                                  WHERE sc2.student_id=s.student_id
+                                  ORDER BY sc2.course_seq DESC
+                                                 LIMIT 1) AS courseNumber,
+                                 s.name,
+                                 s.birth,
+                                 s.address,
+                                 s.bank,
+                                 s.account,
+                                 s.email,
+                                 s.phone_number AS phoneNumber,
+                                 s.gender,
+                                 CASE
+                                     WHEN #{isActive} = 0 THEN s.is_active
+                         WHEN #{isActive} = 1 THEN s.is_active
+                         ELSE s.is_active
+    END AS isActive,
+                                 s.manager_id AS managerId
+                 FROM students_courses sc
+                          JOIN courses c ON sc.course_seq=c.course_seq
+                          LEFT JOIN students s ON sc.student_id=s.student_id
+                 WHERE s.name LIKE CONCAT('%', #{name},'%')
+    AND (IF(#{courseNumber}, 0, '기수')='기수' OR c.course_number=#{courseNumber})
+    AND (IF(#{isActive}, 1, 0)=s.is_active)
+    AND c.academy_location = #{academyLocation}
+    ORDER BY c.course_number DESC, s.name ASC
+    LIMIT #{page}, #{size}]]>
     </select>
     <!--0710_studentId로 해당 수강생의 수강내역 select *0715_확인 완료-->
     <select id="selectStudentCourseHistory" resultType="com.kosta.ems.student.StudentCourseHistoryDTO">
-        select s.student_id          AS studentId,
+        select s.student_id AS studentId,
                sc.student_course_seq AS studentCourseSeq,
-               c.course_seq          AS courseSeq,
-               c.course_type         AS courseType,
-               c.course_number       AS courseNumber,
-               c.course_name         AS courseName,
-               c.professor_name      AS professorName,
-               c.course_start_date   AS courseStartDate,
-               c.course_end_date     AS courseEndDate
+               c.course_seq AS courseSeq,
+               c.course_type AS courseType,
+               c.course_number AS courseNumber,
+               c.course_name AS courseName,
+               c.professor_name AS professorName,
+               c.course_start_date AS courseStartDate,
+               c.course_end_date AS courseEndDate
         from students_courses sc
                  JOIN students s ON sc.student_id=s.student_id
                  LEFT JOIN courses c ON c.course_seq=sc.course_seq
@@ -138,22 +138,15 @@
     <!--오늘 날짜 기준 진행 중인 교육과정 목록 가져오기 *0715_확인 적용 완료-->
     <select id="selectOnGoingCourseList" resultType="com.kosta.ems.student.CourseInfoDTO">
         <![CDATA[
-        SELECT c.course_seq        AS courseSeq,
-               c.course_number     AS courseNumber,
-               c.course_name       AS courseName,
-               c.course_start_date AS courseStartDate,
-               c.course_end_date   AS courseEndDate,
-               c.course_type       AS courseType
+        SELECT c.course_seq AS courseSeq, c.course_number AS courseNumber, c.course_name AS courseName, c.course_start_date AS courseStartDate, c.course_end_date AS courseEndDate, c.course_type AS courseType
         FROM courses c
                  LEFT JOIN students_courses sc ON c.course_seq = sc.course_seq
                  LEFT JOIN students s ON sc.student_id = s.student_id
         WHERE c.is_active = 1
           AND (CURDATE() >= c.course_start_date AND CURDATE() < c.course_end_date)
-          AND (c.max_students > (SELECT COUNT(*)
-        FROM students_courses sc2
-        WHERE sc2.course_seq = c.course_seq)
+          AND (c.max_students > (SELECT COUNT(*) FROM students_courses sc2 WHERE sc2.course_seq = c.course_seq)
             OR c.max_students IS NULL)
-          AND (c.academy_location = #{academyLocation})
+          AND (c.academy_location=#{academyLocation})
         GROUP BY c.course_number, c.course_name
         ]]>
     </select>
@@ -167,8 +160,8 @@
     <insert id="addStudentCourseSeqInfo" parameterType="com.kosta.ems.student.AddStudentBasicInfoDTO">
         INSERT INTO students_courses (student_id, course_seq, manager_id)
         VALUES ((SELECT student_id
-        FROM students
-        WHERE hrd_net_id = #{hrdNetId}),
+                 FROM students
+                 WHERE hrd_net_id = #{hrdNetId}),
                 (SELECT course_seq
                  FROM courses
                  WHERE course_number = #{courseNumber}),
@@ -176,25 +169,21 @@
     </insert>
     <!--선택한 수강생 정보 수정-->
     <select id="selectRegisteredStudentInfo" resultType="com.kosta.ems.student.StudentBasicInfoDTO">
-        SELECT s.student_id    AS studentId,
+        SELECT s.student_id AS studentId,
                s.name,
-               s.hrd_net_id    AS hrdNetId,
+               s.hrd_net_id AS hrdNetId,
                s.birth,
                s.gender,
                c.course_number AS courseNumber,
                s.address,
                s.bank,
                s.account,
-               s.phone_number  AS phoneNumber,
+               s.phone_number AS phoneNumber,
                s.email
-        FROM students s,
-             courses c,
-             students_courses sc
-        WHERE s.student_id = sc.student_id
-          AND c.course_seq = sc.course_seq
-          AND s.student_id = #{studentId}
+        FROM students s, courses c, students_courses sc
+        WHERE s.student_id=sc.student_id AND c.course_seq=sc.course_seq AND s.student_id=#{studentId}
         ORDER BY sc.student_course_seq DESC
-        LIMIT 0, 1;
+            LIMIT 0, 1;
     </select>
     <update id="updateSelectedStudentInfo">
         UPDATE students
@@ -210,9 +199,10 @@
     <!--선택한 수강생 삭제(isActive -> F)-->
     <update id="deleteSelectedStudent">
         UPDATE students
-        SET is_active= false
+        SET is_active=false
         WHERE student_id = #{studentId};
     </update>
+
 
     <select id="selectAddressByStudentId">
         select address
@@ -231,12 +221,21 @@
                phone_number AS phoneNumber,
                email,
                gender,
-               s.manager_id AS managerId,
-               s.is_active  AS isActive
+               s.manager_id   AS managerId,
+               s.is_active    AS isActive
         FROM students s,
              students_courses sc
         WHERE sc.student_course_seq = #{scq}
           AND sc.student_id = s.student_id;
     </select>
 
+    <select id="selectStudentListBycourseSeq" parameterType="int">
+        select s.student_id    as studentId,
+               sc.course_seq   as courseSeq,
+               c.course_number as courseNumber
+        from students s
+                 inner join students_courses sc on s.student_id = sc.student_id
+                 inner join courses c on sc.course_seq = c.course_seq
+        where c.course_seq = #{courseSeq};
+    </select>
 </mapper>

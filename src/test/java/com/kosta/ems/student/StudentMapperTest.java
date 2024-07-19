@@ -64,7 +64,6 @@ class StudentMapperTest {
         log.info(Integer.toString(studentMapper.selectStudentInfoListCnt(1, "", 277, "갤럭시")));
         log.info(Integer.toString(studentMapper.selectStudentInfoListCnt(0, "", 277, "갤럭시")));
     }
-
     @Test
     @DisplayName("수강생 목록 조회 테스트")
     public void selectStudentInfoList() {
@@ -144,5 +143,16 @@ class StudentMapperTest {
     void selectStudentInfoByScq() {
         log.info(studentMapper.selectStudentInfoByScq(66).toString());
     }
-    
+
+    @Test
+    void selectStudentListByCourseSeqTest() {
+
+        List<StudentCourseInfoDTO> list = studentMapper.selectStudentListBycourseSeq(19);
+
+        for (int i = 0; i < list.size(); i++) {
+            assertThat(list.get(i).getCourseNumber()).isEqualTo(277);
+        }
+
+    }
+
 }
