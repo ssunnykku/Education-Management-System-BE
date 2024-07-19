@@ -17,6 +17,8 @@ public interface CourseService {
 
     List<String> getCourseTypeList();
 
+    CourseDTO getCourseByCourseNumber(int CourseNumber);
+
     boolean addCourse(CourseDTO course);
 
     boolean editCourse(CourseDTO course);
