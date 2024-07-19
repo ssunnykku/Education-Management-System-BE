@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kosta.ems.api.dto.AttendanceHistoryResponse;
 import com.kosta.ems.api.dto.TakenCourseResponse;
+import com.kosta.ems.course.CourseDTO;
 import com.kosta.ems.course.CourseService;
 import com.kosta.ems.course.dto.AddCourseRequest;
 import com.kosta.ems.manager.ManagerDTO;
@@ -52,17 +53,14 @@ public class JwtController {
     @GetMapping("/attendance-list")
     public Map getAttendanceByMonth(LocalDate date){
         StudentInfoDTO loginUser = getLoginUser();
-        List<AttendanceHistoryResponse> attendances = service.getAttendanceByMonth(date, loginUser.getStudentId());
         
         double monthAttendanceRate;
         
-        //비효율적이지만 기존 메소드 재활용하였다.
-        List<TakenCourseResponse> courses = service.getAllTakenCoursesByStudentId(loginUser.getStudentId());
-        
-        //최근 수강과정이 없거나 이미 지난 내역이라면(courses는 정렬되어있음) 빈 값 리턴
-        if(courses.isEmpty() || courses.get(0).getEndDate().isBefore(LocalDate.now())) {
+        CourseDTO currentCourse = service.getCurrentCourse(loginUser.getStudentId());
+        if(currentCourse == null) {
             return Map.of("result", "[]");
         }else {
+            List<AttendanceHistoryResponse> attendances = service.getAttendanceByMonth(date, loginUser.getStudentId());
             int fullDaysOfMonth = 0;
             int attendanceDays = 0;
             LocalDate temp = LocalDate.of(date.getYear(), date.getMonth(), 1);
@@ -76,9 +74,15 @@ public class JwtController {
                     attendanceDays++;
             }
             monthAttendanceRate = (100 * attendanceDays / fullDaysOfMonth);
+            return Map.of("result", attendances, "monthAttendanceRate", monthAttendanceRate);
         }
         
-        return Map.of("result", attendances, "monthAttendanceRate", monthAttendanceRate);
+    }
+    
+    @GetMapping("/total-attendance-rate")
+    public Map getTotalAttendanceRate() {
+        StudentInfoDTO loginUser = getLoginUser();
+        return Map.of("result", service.getTotalAttendanceRate(loginUser.getStudentId()));
     }
     
     private StudentInfoDTO getLoginUser() {

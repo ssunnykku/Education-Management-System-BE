@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -67,5 +68,35 @@ public class ApiService {
             result.add(new AttendanceHistoryResponse(item.getAttendanceDate(), item.getAttendanceStatus()));
         });
         return result;
+    }
+
+    public double getTotalAttendanceRate(String studentId) {
+        CourseDTO course = getCurrentCourse(studentId);
+        if(course == null) {
+            return 0;
+        }
+        int attendanceDays = attendanceMapper.selectCountAttendance(course.getCourseStartDate(), course.getCourseEndDate(), studentId);
+        
+        return 100.0 * attendanceDays / course.getTotalTrainingDays();
+    }
+    
+    public CourseDTO getCurrentCourse(String studentId) {
+        List<TakenCourseResponse> courses = getAllTakenCoursesByStudentId(studentId);
+        //최근 수강과정이 없거나 이미 지난 내역이라면(courses는 정렬되어있음) 빈 값 리턴
+        if(courses.isEmpty() || courses.get(0).getEndDate().isBefore(LocalDate.now())) {
+            return null;
+        }
+        TakenCourseResponse course = courses.get(0);
+        return CourseDTO.builder()
+                .courseName(course.getCourseName())
+                .courseNumber(course.getCourseNumber())
+                .courseStartDate(course.getStartDate())
+                .courseEndDate(course.getEndDate())
+                .courseType(course.getCourseType())
+                .professorName(course.getProfessorName())
+                .trainingHoursOfDate(course.getTrainingHoursPerDay())
+                .totalTrainingDays(course.getTotalTrainingDays())
+                .subject(course.getSubject())
+                .build();
     }
 }
