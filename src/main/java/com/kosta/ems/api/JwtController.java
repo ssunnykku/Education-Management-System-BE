@@ -1,6 +1,8 @@
 package com.kosta.ems.api;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kosta.ems.api.dto.AttendanceHistoryResponse;
 import com.kosta.ems.api.dto.TakenCourseResponse;
 import com.kosta.ems.course.CourseService;
 import com.kosta.ems.course.dto.AddCourseRequest;
@@ -41,13 +44,41 @@ public class JwtController {
     private String SECURITY_LEVEL;
 	
     @GetMapping("/course-list")
-    public List<TakenCourseResponse> getAllTakenCourses(){
+    public Map getAllTakenCourses(){
         StudentInfoDTO loginUser = getLoginUser();
-        List<TakenCourseResponse> result = null;
+        return Map.of("result", service.getAllTakenCoursesByStudentId(loginUser.getStudentId()));
+    }
+    
+    @GetMapping("/attendance-list")
+    public Map getAttendanceByMonth(LocalDate date){
+        StudentInfoDTO loginUser = getLoginUser();
+        List<AttendanceHistoryResponse> attendances = service.getAttendanceByMonth(date, loginUser.getStudentId());
         
-        result = service.getAllTakenCoursesByStudentId(loginUser.getStudentId());
+        double monthAttendanceRate;
         
-        return result;
+        //비효율적이지만 기존 메소드 재활용하였다.
+        List<TakenCourseResponse> courses = service.getAllTakenCoursesByStudentId(loginUser.getStudentId());
+        
+        //최근 수강과정이 없거나 이미 지난 내역이라면(courses는 정렬되어있음) 빈 값 리턴
+        if(courses.isEmpty() || courses.get(0).getEndDate().isBefore(LocalDate.now())) {
+            return Map.of("result", "[]");
+        }else {
+            int fullDaysOfMonth = 0;
+            int attendanceDays = 0;
+            LocalDate temp = LocalDate.of(date.getYear(), date.getMonth(), 1);
+            while (temp.getMonth() == date.getMonth()) {
+                if(temp.getDayOfWeek().getValue() <= 5)
+                    fullDaysOfMonth++;
+                temp = temp.plusDays(1);
+            }
+            for(AttendanceHistoryResponse item : attendances) {
+                if(item.getStatus().equals("출석"))
+                    attendanceDays++;
+            }
+            monthAttendanceRate = (100 * attendanceDays / fullDaysOfMonth);
+        }
+        
+        return Map.of("result", attendances, "monthAttendanceRate", monthAttendanceRate);
     }
     
     private StudentInfoDTO getLoginUser() {
@@ -63,7 +94,7 @@ public class JwtController {
                 .phoneNumber("01059341921")
                 .email("syc1234@gmail.com")
                 .gender('M')
-                .isActive(true)
+                .isActive('T')
                 .build();
 //        if (SECURITY_LEVEL.equals("OFF")) {
 //        }

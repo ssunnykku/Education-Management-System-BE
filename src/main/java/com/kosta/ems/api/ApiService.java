@@ -1,13 +1,18 @@
 package com.kosta.ems.api;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.kosta.ems.api.dto.AttendanceHistoryResponse;
 import com.kosta.ems.api.dto.TakenCourseResponse;
 import com.kosta.ems.attendance.AttendanceMapper;
+import com.kosta.ems.attendance.AttendanceStudentCourseDTO;
+import com.kosta.ems.attendance.AttendanceStudentCourseDTO;
 import com.kosta.ems.course.CourseDTO;
 import com.kosta.ems.course.CourseMapper;
 import com.kosta.ems.studentCourse.StudentCourseDTO;
@@ -51,4 +56,16 @@ public class ApiService {
         return result;
     }
     
+    public List<AttendanceHistoryResponse> getAttendanceByMonth(LocalDate date, String studentId){
+        List<AttendanceHistoryResponse> result = new ArrayList<>();
+        LocalDate startDate = LocalDate.of(date.getYear(), date.getMonth(), 1);
+        LocalDate endDate = startDate.plusMonths(1).minusDays(1);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        
+        Collection<AttendanceStudentCourseDTO> list = attendanceMapper.selectAttendanceByStudentIdAndDuration(startDate.format(formatter), endDate.format(formatter), studentId);
+        list.forEach(item -> {
+            result.add(new AttendanceHistoryResponse(item.getAttendanceDate(), item.getAttendanceStatus()));
+        });
+        return result;
+    }
 }
