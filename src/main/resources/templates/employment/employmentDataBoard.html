@@ -18,7 +18,7 @@
 
 <body id="content-wrapper">
     <div th:insert="~{common/header :: header}"></div>
-    <div th:insert="~{common/title :: title ('KOSTA 취업률 그래프')}"></div>
+    <div th:insert="~{common/title :: title ('취업 현황')}"></div>
     <section id="employment-contents">
         <article id="employment-search-btn-wrapper">
             <div class="search-form-wrapper">
@@ -74,6 +74,14 @@
 
                 });
 
+                chart.data.datasets[1].tooltipData.push({
+                    totalStudents: totalStudents,
+                    employedStudents: employedStudents,
+                    unemployedStudents: unemployedStudents,
+                    employmentRate: employmentRate
+
+                });
+
                 courseNumbers.push(courseNumber);
                 courseData.push(employedStudent);
                 totalStudentData.push(totalStudent);
@@ -94,29 +102,25 @@
                 labels: [],
                 datasets: [{
                     label: '전체 학생 수',
-                    backgroundColor: '#5C7CFA',
+                    backgroundColor: '#9DC658',
                     data: [],
                     tooltipData: [],// Array to store additional tooltip data
-                    yAxisID: 'y-axis-1'
+                    tooltips: {
+                        enabled: false // 첫 번째 데이터셋 툴팁 비활성화
+                    }
                 },
                 {
                     type: 'bar',
                     data: [],
                     label: '취업 학생 수',
                     fill: false,
+                    tooltipData: [],
                     backgroundColor: '#F19027',
-                    yAxisID: 'y-axis-2',
-                    tooltipData: []
+                    tooltips: {
+                        enabled: true // 두 번째 데이터셋 툴팁 활성화
+                    }
                 },
-                {
-                    type: 'line',
-                    data: [],
-                    label: '취업률',
-                    fill: false,
-                    backgroundColor: '#F19027',
-                    yAxisID: 'y-axis-2',
-                    tooltipData: []
-                }
+
                 ]
             },
             options: {
@@ -156,26 +160,7 @@
                         },
                         scaleLabel: {
                             display: true,
-                            labelString: '총 학생 수', // Set the Y-axis title text
-                            fontColor: '#000000',
-                            fontSize: 16,
-                            fontStyle: 'bold'
-                        }
-                    }, {
-                        id: 'y-axis-2',
-                        position: 'right',
-                        ticks: {
-                            beginAtZero: true,
-                            max: 30,
-                            fontColor: '#000000',
-                            fontSize: 15
-                        },
-                        gridLines: {
-                            display: false
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: '취업한 학생 수', // Set the Y-axis title text
+                            labelString: '학생 수', // Set the Y-axis title text
                             fontColor: '#000000',
                             fontSize: 16,
                             fontStyle: 'bold'
@@ -186,7 +171,8 @@
                     backgroundColor: '#F3F5F9',
                     bodyFontColor: '#000000',
                     bodySpacing: 6,
-                    bodyAlign: 'center',
+                    bodyFontSize: 15,
+                    bodyAlign: 'left',
                     callbacks: {
                         title: () => null,
                         label: function (tooltipItem, data) {
@@ -198,7 +184,6 @@
                             const employmentRate = data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].employmentRate.toFixed(1);
 
                             const tooltipBody = [
-                                ` ${courseNumber}기`,
                                 ` 총 학생: ${totalStudents}명`,
                                 ` 취업: ${employedStudents}명`,
                                 ` 미취업: ${unemployedStudents}명`,

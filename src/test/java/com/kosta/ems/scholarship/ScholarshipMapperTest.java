@@ -21,7 +21,7 @@ class ScholarshipMapperTest {
 
     @Test
     public void selectScholarshipTargetList() {
-        List<ScholarshipTargetDTO> data = (ArrayList<ScholarshipTargetDTO>) scholarshipMapper.selectScholarshipTargetList("강남", "손", "277", 10, 0);
+        List<ScholarshipTargetDTO> data = (ArrayList<ScholarshipTargetDTO>) scholarshipMapper.selectScholarshipTargetList("가산", "손", "277", 10, 0);
         log.info(data.toString());
 //        assertThat(data).size().isEqualTo(1);
     }
