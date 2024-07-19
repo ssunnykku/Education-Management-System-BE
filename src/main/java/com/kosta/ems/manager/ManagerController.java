@@ -20,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class ManagerController {
+      private final ManagerService managerService;
+
     @Value("${security.level}")
     private String SECURITY_LEVEL;
     private final ManagerService managerService;

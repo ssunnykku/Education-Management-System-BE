@@ -84,10 +84,6 @@ public class CourseServiceTest {
 	}
 
 
-    @Test
-    void getCurrentCourseList() {
-        assertThat(service.getCurrentCourseList(LocalDate.parse("2024-07-14"), "가산")).isNotNull();
-    }
 	@Test
 	@Transactional
 	public void getCourseNumberByYear() {

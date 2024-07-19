@@ -17,8 +17,9 @@
   <section id="course-section">
     <article id="courseBoard-btns-container">
       <div class="search-form-wrapper">
-        <!-- form???? -->
-        <form action="/ems/courses">
+
+        <form id="searchForm" action="/ems/courses">
+
           <select name="excludeExpired" class="data-filter" onChange="updateCourseNumber(event)">
             <option value="true" th:selected="${paging.excludeExpired} == 1">진행중</option>
             <option value="false" th:selected="${paging.excludeExpired} == 0">전체</option>
@@ -288,6 +289,8 @@
 
 
   <script>
+
+
     $("#pagination li").each((index, item) => {
       if ($(item).hasClass("inactivePage")) {
         let a = $(item).children("a");
@@ -295,7 +298,16 @@
       }
     });
     $("#all-checkbox").on("change", toggleAll);
+    $("#courseNumberSelect").on("change", gotoSearchPage);
 
+    function gotoSearchPage(){
+      const searchForm = $("#searchForm").get(0);
+      let str = "";
+      [...searchForm.elements].forEach((item, index) => 
+        str = str + "&" + item.name + "=" + item.value
+      );
+      location.href="/ems/courses?page=1" + str;
+    }
     function toggleAll() {
       const isChecked = $("#all-checkbox").prop('checked');
       $("#courseBoard-table input[type=checkbox]").prop('checked', isChecked);

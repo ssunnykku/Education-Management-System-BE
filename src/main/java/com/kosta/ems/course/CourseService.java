@@ -18,7 +18,7 @@ public interface CourseService {
     List<String> getCourseTypeList();
 
     CourseDTO getCourseByCourseNumber(int CourseNumber);
-
+    
     boolean addCourse(CourseDTO course);
 
     boolean editCourse(CourseDTO course);
@@ -31,6 +31,10 @@ public interface CourseService {
 
     List<Integer> getCourseNumberYearList();
 
+    Integer getStudentsNumberBySeq(int courseSeq);
+
+    List<Integer> getCourseNumberByYear(int courseEndYear);
+    List<Integer> getCourseNumberYearList();
     Integer getStudentsNumberBySeq(int courseSeq);
 
     Integer getSeqByCourseNumber(int courseNumber);
