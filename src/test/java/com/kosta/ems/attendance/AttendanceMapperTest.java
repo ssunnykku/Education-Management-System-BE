@@ -10,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @SpringBootTest
@@ -20,6 +22,8 @@ class AttendanceMapperTest {
 
     @Autowired
     private AttendanceMapper attendanceMapper;
+    @Autowired
+    private AttendanceTimeRepo attendanceTimeRepo;
 
     /*
     // [출결] - 수강생 출석 조회 목록 데이터 개수 (for 페이지네이션)
@@ -162,6 +166,28 @@ class AttendanceMapperTest {
     void insertAttendanceStatus() {
         UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus("출석").attendanceDate(LocalDate.of(2024,6,20)).studentCourseSeq(34).managerId("3ddf8577-3eaf-11ef-bd30-0206f94be675").build();
         attendanceMapper.insertAttendanceStatus(dto);
+    }
+    
+    @Test
+//    @Transactional
+    @DisplayName("모바일 API - 입실/퇴실 시간 CRUD 통합테스트")
+    void attendanceTimeCRUDTest(){
+        //주의: DB데이터 독립적이지 않다.
+        //DB에 오늘의 입실/퇴실시간 데이터가 들어있지 않다고 가정.
+        AttendanceTimeId id = new AttendanceTimeId(LocalDate.now(), 19);
+        Optional<AttendanceTimeDTO> dto = attendanceTimeRepo.findById(id);
+        assertThat(dto.isEmpty()).isTrue();
+        
+        AttendanceTimeDTO insertDto = AttendanceTimeDTO.builder()
+                .attendanceTimeId(id)
+                .inTime(LocalTime.now())
+                .build();
+        attendanceTimeRepo.save(insertDto);
+        
+        dto = attendanceTimeRepo.findById(id);
+        assertThat(dto.isEmpty()).isFalse();
+        assertThat(dto.get().getAttendanceTimeId().equals(id)).isTrue();
+        
     }
 }
 

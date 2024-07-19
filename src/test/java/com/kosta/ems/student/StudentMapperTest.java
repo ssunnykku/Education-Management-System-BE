@@ -154,5 +154,17 @@ class StudentMapperTest {
         }
 
     }
+    
+    @Test
+    void updateStudnet() {
+        String studentId = "738003dc-3eb0-11ef-bd30-0206f94be675";
+        String currentPassword = "1234";
+        String newPassword = "4321";
+        String phoneNumber = "01012345678";
+        String bank = "국민";
+        String accountNumber = "110123456789";
+        String email = "test@test.com";
+        assertThat(studentMapper.updateStudentContactInfo(studentId, currentPassword, newPassword, phoneNumber, bank, accountNumber, email)).isTrue();
+    }
 
 }
