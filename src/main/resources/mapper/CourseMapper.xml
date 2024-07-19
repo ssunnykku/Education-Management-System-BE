@@ -68,7 +68,7 @@
   	DATE_FORMAT(course_end_date, '%Y') AS courseEndYear
 	FROM courses
 	GROUP BY DATE_FORMAT(course_end_date, '%Y')
-	ORDER BY courseEndYear
+	ORDER BY courseEndYear desc
 	</select>
 	<select id="getStudentsNumberBySeq" resultType="int">		
 	SELECT COUNT(student_id) As studentNum
