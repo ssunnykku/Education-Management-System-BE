@@ -119,8 +119,24 @@ class AttendanceServiceImplTest {
         list.add(dto2);
         attendanceService.updateStudentAttendance(list);
     }
-    // ** 출결 수정 - 선택한 수강생의 출석 상태 수정 (end)
 
+    // --[출석 인정]
+    // --출석 인정 항목 리스트 가져오기
+    @Test
+    @DisplayName("출결 수정 - 출석인정 항목 리스트 가져오기")
+    void getAcknowledgeCategoryList() {
+        log.info("활성화된 출석인정 항목 리스트: " + attendanceService.getAcknowledgeCategoryList(1).toString());
+        log.info("비활성화된 출석인정 항목 리스트: " + attendanceService.getAcknowledgeCategoryList(0).toString());
+    }
+    // --출석 인정항목*인정일수 적용하여 출결 상태 반영 (update + insert)
+    @Test
+    @DisplayName("출결 수정 - 출석인정 항목*인정일수 적용하여 출결 상태 반영_update + insert")
+    @Transactional
+    void reflectAcknowledgeAttendanceStatus() {
+        RequestAcknowledgeDTO dto = RequestAcknowledgeDTO.builder().attendanceStatus("출석 인정").startDate("2024-07-16").endDate("2024-07-17").acknowledgeSeq(4).studentCourseSeq(21).evidentialDocuments("면접참여확인서_양유진_240716.pdf").build();
+        attendanceService.reflectAcknowledgeAttendanceStatus(dto);
+    }
+    // ** 출결 수정 - 선택한 수강생의 출석 상태 수정 (end)
 
     // ** 출결 입력
     // 1. 특정일의 출결 상태가 등록되지 않은 수강생 목록 가져오기

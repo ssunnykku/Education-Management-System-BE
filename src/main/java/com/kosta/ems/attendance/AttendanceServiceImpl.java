@@ -3,28 +3,39 @@ package com.kosta.ems.attendance;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
+import com.amazonaws.util.IOUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import java.util.UUID;
+import java.util.*;
 
 
 @Log4j2
@@ -33,6 +44,12 @@ import java.util.UUID;
 @Transactional
 public class AttendanceServiceImpl implements AttendanceService {
     private final AttendanceMapper attendanceMapper;
+
+    @Autowired
+    private AmazonS3Client s3Client;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucketName;
 
     @Override
     public int getNumberOfAttendance(LocalDate startDate, LocalDate endDate, String studentId) {
@@ -212,7 +229,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
     // --출석 인정항목*인정일수 적용하여 출결 상태 반영 (update + insert)
     @Override
-    public int reflectAcknowledgeAttendanceStatus(RequestAcknowledgeDTO dto) {
+    public void reflectAcknowledgeAttendanceStatus(RequestAcknowledgeDTO dto) {
         String attendanceStatus = dto.getAttendanceStatus();
         String evidentialDocument = dto.getEvidentialDocuments();
         int acknowledgeSeq = dto.getAcknowledgeSeq();
@@ -225,8 +242,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
         int daysBetween = Period.between(startDate, endDate).getDays();
 
-        // 에러 방지 임시 코드
-        String managerId = "1";
+        String managerId = "3ddf8577-3eaf-11ef-bd30-0206f94be675";  // 임시: 가산 매니저 양유진
 
         if(daysBetween == 0) {
             // 출석 인정일수가 '1'일인 경우는 startDate를 attendanceDate에 할당하여 출결 상태 Update
@@ -245,7 +261,6 @@ public class AttendanceServiceImpl implements AttendanceService {
                 }
             }
         }
-        return 0;
     }
 
 
@@ -295,4 +310,45 @@ public class AttendanceServiceImpl implements AttendanceService {
         UpdateStudentAttendanceStatusDTO dto = UpdateStudentAttendanceStatusDTO.builder().attendanceStatus(status).attendanceDate(LocalDate.of(year, month, day)).studentCourseSeq(studentCourseSeq).managerId(managerId).build();
         attendanceMapper.insertAttendanceStatus(dto);
     }
+
+    // 업로드한 출석인정 증빙서류 확인(파일 다운로드)
+    /*
+    @Override
+    public boolean downloadFile(String fileKey, String downloadFileName, HttpServletResponse response) {
+        if (fileKey == null) {
+            return false;
+        }
+        S3Object fullObject = null;
+        try {
+            fullObject = s3Client.getObject(bucketName, fileKey);
+            if (fullObject == null) {
+                return false;
+            }
+        } catch (AmazonS3Exception e) {
+            throw new RuntimeException("다운로드 파일이 존재하지 않습니다.", e);
+        }
+
+        try (S3ObjectInputStream objectInputStream = fullObject.getObjectContent()) {
+            byte[] bytes = IOUtils.toByteArray(objectInputStream);
+
+            String fileName = downloadFileName != null ? getEncodedFilename(downloadFileName) : getEncodedFilename(fileKey);
+            response.setContentType("application/octet-stream; charset=UTF-8");
+            response.setHeader("Content-Transfer-Encoding", "binary");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\";");
+            response.setHeader("Content-Length", String.valueOf(fullObject.getObjectMetadata().getContentLength()));
+            response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+            response.getOutputStream().write(bytes);
+        } catch (IOException e) {
+            log.debug(e.getMessage(), e);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String getEncodedFilename(String displayFileName) {
+        // return encodedFilename;
+        return "";
+    }
+     */
 }

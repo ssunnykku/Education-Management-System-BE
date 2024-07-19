@@ -61,6 +61,13 @@
 <div id="student-detail-modal" class="studentDetailModal">
     <input type="hidden" id="modal-student-id"/>
     <div class="modal-container">
+        <div id="modal-header">
+            <p>수강생 상세정보</p>
+        </div>
+        <div class="is-acitve-status-wrapper">
+            <input type="radio" id="activation" name="isActive" /><label>활성화</label>
+            <input type="radio" id="deactivation" name="isActive"/><label>비활성화</label>
+        </div>
         <div class="student-detail-wrapper">
             <div class="detail-info-item">
                 <label>수강생 이름:</label><br/>
@@ -103,19 +110,17 @@
             <div id="student-course-wrapper" class="detail-info-item">
                 <p>교육과정 이수내역</p>
                 <table class="modal-table">
-                    <tr>
-                        <th>과정 구분</th>
-                        <th>기수</th>
-                        <th>과정명</th>
-                        <th>강사명</th>
-                        <th>교육기간</th>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th scope="col">과정 구분</th>
+                            <th scope="col">기수</th>
+                            <th scope="col">과정명</th>
+                            <th scope="col">강사명</th>
+                            <th scope="col">교육기간</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
                 </table>
-            </div>
-            <div class="detail-info-item">
-
-                <input type="radio" id="activation" name="isActive" /><label>활성화</label>
-                <input type="radio" id="deactivation" name="isActive"/><label>비활성화</label>
             </div>
         </div>
         <div class="student-detail-wrapper">
@@ -307,8 +312,8 @@
 
     // *0710_가져온 수강내역 데이터를 모달에 연결
     async function getStudentCourseHistory(data) {
-        let result = `<tr><th>과정 구분</th><th>기수</th><th>과정명</th><th>강사명</th><th>교육기간</th></tr>`;
-        for (let i = 0; i < data.length; i++) {
+        let result = ``;
+        for(let i=0; i<data.length; i++) {
             result += `<tr class="board-table-row">
                     <td class="course-type">${data[i].courseType}</td>
                     <td class="course-number">${data[i].courseNumber}</td>
@@ -317,8 +322,8 @@
                     <td class="training-period">${data[i].courseStartDate} ~ ${data[i].courseEndDate}</td>
                 </tr>`;
         }
-        $(".modal-table").html("");
-        $(".modal-table").append(result);
+        $("tbody").html("");
+        $("tbody").append(result);
     }
 
     // 상세정보 모달의 '수정'버튼 클릭 -> 수정 가능한 내용 input disabled 해제

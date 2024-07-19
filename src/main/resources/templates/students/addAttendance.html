@@ -62,22 +62,43 @@
 </section>
 <footer></footer>
 
-<div id="acknowledge-setting-modal" class="acknowledgeModal" popover>
+<div class="modal-backdrop"></div>
+
+<div id="acknowledge-setting-modal" class="acknowledgeModal">
     <div class="modal-container">
         <div class="modal-contents-wrapper">
-            <!--<input type="hidden" value="29"/>--> <!--임시_ scq: 29 -- 김희석 -->
-            <p>출석 인정 항목</p>
-            <p>출석 인정 일수</p>
-            <p>출석인정일 기간 설정 (시작일 ~ 종료일)</p>
-            <form action="/attendances/upload" method="post" enctype="multipart/form-data">
-                <input type="file" name="evidentialDocument" multiple="false"/>
-                <button>업로드</button>
-            </form>
+            <p>출석 인정 및 증빙서류 설정</p>
+            <input type="hidden" name="selectedStudentSCQ" id="selected-student-course-seq"/>
+        </div>
+        <div class="modal-contents-wrapper">
+            <div class="content-item">
+                <label>출석 인정 항목</label>
+                <select name="acknowledge-category" id="acknowledge-category"></select>
+            </div>
+            <div class="content-item">
+                <label>출석인정일 기간 설정 (시작일 ~ 종료일)</label>
+                <div class="days-input-wrapper">
+                    <input type="date" name="start-date" id="start-date" class="input-date" disabled/><span> ~ </span><input type="date" name="end-date" id="end-date" class="input-date" disabled/>
+                </div>
+            </div>
+            <div class="content-item">
+                <label>증빙 서류: </label>
+                <!--<form method="post" enctype="multipart/form-data">-->
+                <div class="file-form">
+                    <label for="input-file">
+                        <div class="input-file-btn">파일 선택하기</div>
+                    </label>
+                    <input id="input-file" type="file" name="evidentialDocument" multiple="false"/>
+                    <!--<input id="file-submit-btn" type="submit" value="업로드" />-->
+                    <button id="file-submit-btn">업로드</button>
+                </div>
+                <!--</form>-->
+            </div>
         </div>
 
         <div class="modal-btn-wrapper">
-            <button id="setting-btn">설정</button>
-            <button class="cancel-btn btn" popovertarget="acknowledge-setting-modal" popovertargetaction="hide">취소</button>
+            <button id="acknowledge-setting-btn" class="btn">설정</button>
+            <button class="acknowledge-modal cancel-btn btn">취소</button>
         </div>
     </div>
 </div>
@@ -125,6 +146,7 @@
 </div>
 
 
+
 <script>
     let totalPage = 0;
     let currentPage = 1;
@@ -134,6 +156,27 @@
     const objList = [];
     let selectedValue = null;
     let totalAmount = 0;
+    let evidentialDocuments = "";
+
+    $('#input-file').on('change', function() {
+        const fileName = $(this).val().split('\\').pop();
+        if(fileName == "") {
+            $('.input-file-btn').text("파일 선택하기");
+            $("form > button").css ("border", "none");
+            $("form > button").css ("display", "none");
+        } else {
+            $('.input-file-btn').text(fileName);
+            $("form > button").css ("border", "2px solid rgb(0,141,206)");
+        }
+
+        $(".input-file-btn").css("font-size", "15px");
+        $(".input-file-btn").css("justify-content", "flex-start");
+        $(".input-file-btn").css("padding-left", "10px");
+        $(".input-file-btn").css("padding-top", "25px");
+        $(".input-file-btn").css("overflow", "overlay");
+    });
+
+
 
     // 출석 입력일은 input 범위는 '오늘'이 max _미래에 대한 출석 입력을 미리 하는 것 제한
     let now_utc = Date.now()
@@ -145,6 +188,24 @@
         $(".input-date").val(new Date().toISOString().substring(0,10));
         await fetchAttendanceList(1);
 
+        /*
+        // 모달 외부 클릭 시 모달 닫기 이벤트 처리기
+        $(document).on('click', function(event) {
+            const modal = $("#acknowledge-setting-modal");
+            const modalContainer = modal.find('.modal-container');
+
+            // 클릭이 모달 콘텐츠 영역 외부인지 확인
+            if (!modal.is(event.target) && !modalContainer.is(event.target) && modalContainer.has(event.target).length === 0) {
+                modal.css('display', 'none'); // 모달 숨기기
+                $(".modal-backdrop").css("display", "none");
+            }
+        });
+
+        // 모달 열려 있을 때 문서 외부 클릭 이벤트 방지
+        $("#acknowledge-setting-modal").on('shown.bs.modal', function() {
+            $('body').css('overflow', 'hidden'); // 스크롤 방지
+        });
+        */
         $('body').css('overflow', 'hidden'); // 스크롤 방지
     });
 
@@ -164,6 +225,19 @@
 
     function getAttendanceDate() {
         return $(".input-date").val();
+    }
+
+    function getAcknowledgeSeq() {
+        return $("#acknowledge-category").val();
+    }
+    function getStudentCourseSeq() {
+        return $("#selected-student-course-seq").val();
+    }
+    function getStartDate() {
+        return $("#start-date").val();
+    }
+    function getEndDate() {
+        return $("#end-date").val();
     }
 
     // <th>의 체크박스 클릭 -> 모든 <tr>의 체크박스 선택 처리
@@ -233,7 +307,7 @@
                 }
 
                 // const fileUploadInputHTML = data[i].attendanceStatus === "출석 인정" ? `<form ><label class="input-file-label" for="file-upload-btn">파일 첨부</label><input type="file" id="file-upload-btn" enabled /></form>` : `<input type="text" id="file-upload-btn" readonly/>`;
-                const fileUploadInputHTML = data[i].attendanceStatus === "출석 인정" ? `<button class="acknowledge-modal-popover" popovertarget="acknowledge-setting-modal">인정 내용 등록</button>` : `<button style="display: none;" class="acknowledge-modal-popover">인정 내용 등록</button>`;
+                const fileUploadInputHTML = data[i].attendanceStatus === "출석 인정" ? `<button class="acknowledge-modal-popover">인정 내용 등록</button>` : `<button style="display: none;" class="acknowledge-modal-popover">인정 내용 등록</button>`;
 
                 result += `<tr class="board-table-row set-attendance">
                         <td class="set-attendance board-checkbox"><input type="checkbox" name="checkbox" class="check-box"/><span class="student-course-seq" style="display:none;">${data[i].studentCourseSeq}</span></td>
@@ -296,7 +370,7 @@
             }
 
             if (newAttendanceStatus != initialAttendanceData[hrdNetId]) {
-                $(this).closest("tr").find("td:nth-child(6)").find("select").addClass("modifiedAttendance"); // Add border class
+                $(this).closest("tr").find("td:nth-child(6)").find("select").addClass("modifiedAttendance");
             } else if(newAttendanceStatus == initialAttendanceData[hrdNetId]) {
                 $(this).closest("tr").find("td:nth-child(6)").find("select").removeClass("modifiedAttendance");
             }
@@ -304,11 +378,55 @@
             // 출결 상태 '출석 인정'일 때만 증빙서류 input disabled 해제하기
             if (newAttendanceStatus === "출석 인정") {
                 // $(this).closest("tr").find(".file-input-wrapper").html('<label class="input-file-label" for="file-upload-btn">파일 첨부</label><input type="file" id="file-upload-btn" />');
-                $(this).closest("tr").find(".file-input-wrapper").html('<button class="acknowledge-modal-popover" popovertarget="acknowledge-setting-modal">인정 내용 등록</button>');
+                $(this).closest("tr").find(".file-input-wrapper").html('<button class="acknowledge-modal-popover">인정 내용 등록</button>');
             } else {
                 $(this).closest("tr").find(".file-input-wrapper").html('<button class="acknowledge-modal-popover" style="display: none;">인정 내용 등록</button>');
             }
 
+            // 출석인정 설정 모달 popover
+            $(".acknowledge-modal-popover").on("click", async function() {
+                await fetchCategoryList();
+                // console.log($(this).closest('tr').find(".student-course-seq").text());
+                // 출석인정 선택한 수강생의 scq 잠시 sessionStorage에 set
+                sessionStorage.setItem("scq", $(this).closest('tr').find(".student-course-seq").text());
+
+                $(".modal-contents-wrapper").on("change", "#acknowledge-category", function() {
+                    const dataDays = $("#acknowledge-category > option:selected").data("days")-1;  // 1, 2, 3, 5... 같은 숫자
+                    const startDateVal = $("#start-date").val();
+                    // 선택 항목에 대하여 endDate 자동으로 연산해주기
+                    if (startDateVal) {
+                        let startDate = new Date(startDateVal);
+                        let daysAdded = 0;
+
+                        while (daysAdded < dataDays) {
+                            startDate.setDate(startDate.getDate() + 1);
+                            const dayOfWeek = startDate.getDay();
+
+                            // (0 = Sunday, 6 = Saturday)
+                            if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+                                daysAdded++;
+                            }
+                        }
+
+                        const endDate = startDate.toISOString().split('T')[0];
+                        $("#end-date").val(endDate);
+                    }
+
+                });
+
+                let selectedSCQ = sessionStorage.getItem("scq");
+                $("#selected-student-course-seq").val(selectedSCQ);
+                sessionStorage.removeItem("scq");
+
+                $("#acknowledge-setting-modal").css("display", "flex");
+                $(".modal-backdrop").css("display", "flex");
+            });
+
+            $(".acknowledge-modal.cancel-btn.btn").on("click", function() {
+                sessionStorage.removeItem("scq");
+                $("#acknowledge-setting-modal").css("display", "none");
+                $(".modal-backdrop").css("display", "none");
+            });
         });
     };
 
@@ -499,8 +617,6 @@
             .catch((error) => console.error(error));
     };
 
-
-
     // 페이지네이션
     function updatePagination(param) {
         $("#page-number").html("");
@@ -652,20 +768,102 @@
         await fetchAddAttendance(checkedStudentData);
     });
 
-    // 출석인정 파일 업로드
-    /*$('#acknowledge-setting-modal #setting-btn').on('click', function() {
-        $('#acknowledge-setting-modal form').submit(function(e) {
-            e.preventDefault();
-        });
-        // console.log("파일 업로드!");
 
-        const form = $('#acknowledge-setting-modal form');
-        console.log("form");
-        console.log(form);
-        const formData = new FormData(form[0]);
-        console.log("formData");
-        console.log(formData);
-    });*/
+    // ** 출석인정 및 증빙서류 설정 모달
+    // 출석인정 항목 데이터 가져오기
+    async function fetchCategoryList() {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+
+        await fetch("/attendances/acknowledge-category", requestOptions)
+            .then((res) => res.json())
+            .then(async(data) => {
+                console.log(data);
+                const categoryList = data.data;
+
+                await updateCategoryList(categoryList);
+            })
+            .catch((error) => console.error(error));
+    }
+    // 불러온 출석인정 항목을 select box 의 데이터로 화면에 보여주기
+    async function updateCategoryList(data) {
+        let inputDate = $(".input-date").val();
+        let result = `<option value=0>출석인정 항목을 선택해주세요.</option>`;
+
+        for (let i = 0; i < data.length; i++) {
+            result += `<option value=${data[i].acknowledgeSeq} data-days=${data[i].acknowledgeDays}>${data[i].category} - ${data[i].acknowledgeDays}일</option>`;
+        }
+
+        $("#start-date").val(inputDate);
+        $("#acknowledge-category").html("");
+        $("#acknowledge-category").append(result);
+    }
+
+    // 업로드 버튼 클릭하면 s3에 증빙서류 업로드
+    let fileInput = document.querySelector("#input-file");
+    const sendButton = document.querySelector("#file-submit-btn");
+
+    sendButton.addEventListener("click", function() {
+        let formData = new FormData();
+        formData.append("evidentialDocument", fileInput.files[0]);
+
+        fetch('http://localhost:8888/attendances/upload', {
+            method: 'POST',
+            cache: 'no-cache',
+            body: formData // body 부분에 폼데이터 변수를 할당
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("파일 업로드 완료");
+                console.log(data.data);
+                evidentialDocuments = data.data;
+            });
+    });
+
+
+
+    // 선택한 출석인정 항목 + 업로드한 파일로 출석인정 처리
+    async function reflectAttendanceAcknowledgeStatus() {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "acknowledgeSeq": getAcknowledgeSeq(),
+            "studentCourseSeq": getStudentCourseSeq(),
+            "attendanceStatus": "출석 인정",
+            "startDate": getStartDate(),
+            "endDate": getEndDate(),
+            "evidentialDocuments": evidentialDocuments
+        });
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        await fetch("/attendances/reflect-acknowledge-documents", requestOptions)
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((error) => console.error(error));
+    }
+
+    $("#acknowledge-setting-btn").on("click", async function() {
+        await reflectAttendanceAcknowledgeStatus();
+        console.log('출석인정 처리 완료!');
+        location.reload();  // 화면 새로고침
+    });
+
+
 </script>
 </body>
 </html>
