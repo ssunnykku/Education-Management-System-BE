@@ -238,4 +238,8 @@
                  inner join courses c on sc.course_seq = c.course_seq
         where c.course_seq = #{courseSeq};
     </select>
+    <update id="updateStudentContactInfo">
+        Update students set phone_number = #{phoneNumber}, bank = #{bank}, account = #{accountNumber}, email = #{email}, password = #{newPassword}
+        where student_id=#{studentId} and password = #{currentPassword}
+    </update>
 </mapper>

@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.IntPredicate;
 
 @Mapper
 public interface StudentMapper {
@@ -49,5 +50,8 @@ public interface StudentMapper {
     GetStudentInfoByScqDTO selectStudentInfoByScq(int studentCourseSeq);
 
     List<StudentCourseInfoDTO> selectStudentListBycourseSeq(int courseSeq);
+
+    //mobile api에서 사용함
+    boolean updateStudentContactInfo(String studentId, String currentPassword, String newPassword, String phoneNumber, String bank, String accountNumber, String email);
 
 }

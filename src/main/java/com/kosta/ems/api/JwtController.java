@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kosta.ems.api.dto.AttendanceHistoryResponse;
 import com.kosta.ems.api.dto.TakenCourseResponse;
+import com.kosta.ems.api.dto.UpdateStudentInfoRequest;
 import com.kosta.ems.course.CourseDTO;
 import com.kosta.ems.course.CourseService;
 import com.kosta.ems.course.dto.AddCourseRequest;
@@ -44,12 +45,14 @@ public class JwtController {
     @Value("${security.level}")
     private String SECURITY_LEVEL;
 	
+    //과정조회, 포인트조회
     @GetMapping("/course-list")
     public Map getAllTakenCourses(){
         StudentInfoDTO loginUser = getLoginUser();
         return Map.of("result", service.getAllTakenCoursesByStudentId(loginUser.getStudentId()));
     }
     
+    //출결조회
     @GetMapping("/attendance-list")
     public Map getAttendanceByMonth(LocalDate date){
         StudentInfoDTO loginUser = getLoginUser();
@@ -84,6 +87,19 @@ public class JwtController {
         StudentInfoDTO loginUser = getLoginUser();
         return Map.of("result", service.getTotalAttendanceRate(loginUser.getStudentId()));
     }
+    
+    //포인트조회
+    @GetMapping("/point-history")
+    public Map getPointHistory(int courseSeq) {
+        StudentInfoDTO loginUser = getLoginUser();
+        return Map.of("result", service.getPointHistory(courseSeq, loginUser.getStudentId()));
+    }
+    
+    @PutMapping("/student")
+    public Map updateStudentInfo(@RequestBody UpdateStudentInfoRequest dto) {
+        StudentInfoDTO loginUser = getLoginUser();
+        return Map.of("result", service.updateStudentContactInfo(loginUser.getStudentId(), dto));
+    }   
     
     private StudentInfoDTO getLoginUser() {
         StudentInfoDTO loginUser;

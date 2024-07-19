@@ -6,18 +6,24 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.kosta.ems.api.dto.AttendanceHistoryResponse;
+import com.kosta.ems.api.dto.PointHistoryResponse;
 import com.kosta.ems.api.dto.TakenCourseResponse;
+import com.kosta.ems.api.dto.UpdateStudentInfoRequest;
 import com.kosta.ems.attendance.AttendanceMapper;
 import com.kosta.ems.attendance.AttendanceStudentCourseDTO;
 import com.kosta.ems.attendance.AttendanceStudentCourseDTO;
 import com.kosta.ems.course.CourseDTO;
 import com.kosta.ems.course.CourseMapper;
+import com.kosta.ems.student.StudentMapper;
 import com.kosta.ems.studentCourse.StudentCourseDTO;
 import com.kosta.ems.studentCourse.StudentCourseRepo;
+import com.kosta.ems.studentPoint.StudentPointMapper;
+import com.kosta.ems.studentPoint.dto.PointHistoryDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +34,8 @@ public class ApiService {
     private final StudentCourseRepo sCRepo;
     private final CourseMapper courseMapper;
     private final AttendanceMapper attendanceMapper;
+    private final StudentPointMapper studentPointMapper;
+    private final StudentMapper studentMapper;
     
     public List<TakenCourseResponse> getAllTakenCoursesByStudentId(String studentId) {
         List<TakenCourseResponse> result = new ArrayList<>();
@@ -98,5 +106,24 @@ public class ApiService {
                 .totalTrainingDays(course.getTotalTrainingDays())
                 .subject(course.getSubject())
                 .build();
+    }
+
+    public List<PointHistoryResponse> getPointHistory(int courseSeq, String studentId) {
+        List<PointHistoryResponse> result = new ArrayList<>();
+        Optional<StudentCourseDTO> sCDto = sCRepo.findByStudentIdAndCourseSeq(studentId,courseSeq);
+        if(sCDto.isEmpty()) {
+            //오류제어 코드 추가하기
+            return null;
+        }
+        List<PointHistoryDTO> list = studentPointMapper.getPointHistory(sCDto.get().getSeq());
+        list.forEach(item -> result.add(new PointHistoryResponse(item.getSaveDate(), item.getCategoryName(), item.getPoint())));
+        
+        return result;
+    }
+
+    public boolean updateStudentContactInfo(String studentId, UpdateStudentInfoRequest dto) {
+        //비밀번호 변경을 포함하지 않는 경우 새 비밀번호는 구 비밀번호와 동일하게 설정.
+        String newPassword = (dto.getNewPassword() == null || dto.getNewPassword().isEmpty()) ? dto.getCurrentPassword() : dto.getNewPassword(); 
+        return studentMapper.updateStudentContactInfo(studentId, dto.getCurrentPassword(), dto.getNewPassword(), dto.getPhoneNumber(), dto.getBank(), dto.getAccountNumber(), dto.getEmail());
     }
 }
