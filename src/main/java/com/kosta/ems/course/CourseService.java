@@ -30,4 +30,6 @@ public interface CourseService {
     List<Integer> getCourseNumberYearList();
     Integer getStudentsNumberBySeq(int courseSeq);
     Integer getSeqByCourseNumber(int courseNumber);
+
+    List<CourseDTO> getCurrentCourseList(LocalDate currentDate, String academyLocation);
 }

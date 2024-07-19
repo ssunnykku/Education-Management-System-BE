@@ -98,11 +98,11 @@ public class CourseMapperTest {
 				.build();
 		assertThat(mapper.insertCourse(course)).isTrue();
 	}
-	
+
 	@Test
 	@Transactional
 	public void updateCourse() {
-		CourseDTO course = 
+		CourseDTO course =
 				CourseDTO.builder()
 				.managerId("3ddf8303-3eaf-11ef-bd30-0206f94be675")
 				.courseNumber(3000)
@@ -122,11 +122,11 @@ public class CourseMapperTest {
 		course.setCourseName("수정된 이름");
 		assertThat(mapper.updateCourse(course)).isTrue();
 	}
-	
+
 	@Test
 	@Transactional
 	public void inactivateCourse() {
-		CourseDTO course = 
+		CourseDTO course =
 				CourseDTO.builder()
 				.managerId("3ddf8303-3eaf-11ef-bd30-0206f94be675")
 				.courseNumber(3000)

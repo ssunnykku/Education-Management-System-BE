@@ -67,12 +67,6 @@ public class CourseServiceImpl implements CourseService {
         return courseMapper.getCourseNumberList(academyLocation, excludeExpired);
     }
 
-    @Override
-    public List<CourseDTO> getCurrentCourseList(LocalDate currentDate, String academyLocation) {
-        return courseMapper.getCurrentCourseList(currentDate, academyLocation);
-    }
-
-
 	@Override
 	public List<String> getCourseTypeList() {
 		return courseMapper.getCourseTypeList();
@@ -86,6 +80,7 @@ public class CourseServiceImpl implements CourseService {
 	public List<Integer> getCourseNumberYearList(){
 		return courseMapper.getCourseNumberYearList();
 	}
+
 	@Override
 	public Integer getStudentsNumberBySeq(int courseSeq) {
 		Integer result=courseMapper.getStudentsNumberBySeq(courseSeq);
@@ -103,4 +98,10 @@ public class CourseServiceImpl implements CourseService {
     public CourseDTO getCourseByCourseNumber(int CourseNumber) {
         return courseMapper.getCourseByCourseNumber(CourseNumber);
     }
+    @Override
+    public List<CourseDTO> getCurrentCourseList(LocalDate currentDate, String academyLocation) {
+        return courseMapper.getCurrentCourseList(currentDate, academyLocation);
+    }
+
+
 }

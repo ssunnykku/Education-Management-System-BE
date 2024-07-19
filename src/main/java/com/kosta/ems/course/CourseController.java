@@ -70,7 +70,7 @@ public class CourseController {
 		return Map.of("result", courseService.getCourseNumberByYear(courseEndYear));
 	}
 
-	@GetMapping("course-year-list")
+	@GetMapping("/course-year-list")
 	public Map getCourseNumberYearList() {
 		return Map.of("result",courseService.getCourseNumberYearList());
 	}
@@ -103,7 +103,6 @@ public class CourseController {
 		boolean result = courseService.deleteCourse(courseSeq, loginUser.getAcademyLocation());
 		return Map.of("result", result);
 	}
-
 
 	@GetMapping("/students-number")
 	public Map getStudentsNumberBySeq(@RequestParam int courseNumber) {
