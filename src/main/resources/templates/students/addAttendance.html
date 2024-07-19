@@ -805,101 +805,7 @@
         $("#acknowledge-category").append(result);
     }
 
-
     // 업로드 버튼 클릭하면 s3에 증빙서류 업로드
-    /*$('#acknowledge-setting-modal #setting-btn').on('click', function() {
-        $('#acknowledge-setting-modal form').submit(function(e) {
-            e.preventDefault();
-        });
-        // console.log("파일 업로드!");
-
-        const form = $('#acknowledge-setting-modal form');
-        console.log("form");
-        console.log(form);
-        const formData = new FormData(form[0]);
-        console.log("formData");
-        console.log(formData);
-    });
-    */
-    /*
-    let uploadOption = {
-        dataType: 'json',
-        url: "http://localhost:8888/attendances/upload",
-        success: function(res) {
-            console.log(res);
-        },
-        error: function(res) {
-            console.error(res);
-        }
-    }
-    $('#acknowledge-setting-modal').submit(function() {
-        $(this).ajaxSubmit(uploadOption);
-        return false;
-    });
-    */
-    /*
-    $('#acknowledge-setting-modal > form').on('submit', async function(event) {
-        event.preventDefault(); // Prevent default form submission
-
-        const formData = new FormData(this); // Create form data object
-
-        try {
-            const response = await fetch('/attendances/upload', {
-                method: 'POST',
-                body: formData, // FormData object is directly used as body
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log(data);
-        } catch (error) {
-            console.error('Error submitting form:', error);
-        }
-
-        /*
-        $.ajax({
-            url: '/attendances/upload',
-            method: 'POST', // HTTP method (POST in this case)
-            data: formData, // Form data object
-            enctype: 'multipart/form-data',
-            processData: false,
-            contentType: false,
-            cache: false,
-            success: function(response) {
-                // Handle successful response from server
-                console.log('Form submitted successfully!');
-                console.log(response);
-            },
-            error: function(error) {
-                // Handle error response from server
-                console.error('Error submitting form:', error);
-            }
-        });
-         *
-    });
-    */
-    /*
-    $('#acknowledge-setting-modal #setting-btn').on('click', async function() {
-        try {
-            const response = await fetch('/attendances/upload', {
-                method: 'POST',
-                body: formData, // FormData object is directly used as body
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log(data);
-        } catch (error) {
-            console.error('Error submitting form:', error);
-        }
-    }
-     */
     let fileInput = document.querySelector("#input-file");
     const sendButton = document.querySelector("#file-submit-btn");
 
@@ -926,7 +832,6 @@
     async function reflectAttendanceAcknowledgeStatus() {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-
 
         const raw = JSON.stringify({
             "acknowledgeSeq": getAcknowledgeSeq(),
@@ -955,6 +860,7 @@
     $("#acknowledge-setting-btn").on("click", async function() {
         await reflectAttendanceAcknowledgeStatus();
         console.log('출석인정 처리 완료!');
+        location.reload();  // 화면 새로고침
     });
 
 
