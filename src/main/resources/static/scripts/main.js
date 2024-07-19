@@ -91,3 +91,20 @@ fetch("/courses/current-list?currentDate=" + currentDate, {
         $("#course-info-table").append(result);
     })
     .catch((error) => console.error(error));
+
+/*course 목록*/
+
+fetch("/courses/course-number-list?excludeExpired=false", {
+    method: "GET",
+})
+    .then((res) => res.json())
+    .then((data) => {
+        const courseList = data.result;
+        let result = '';
+        for (const resultElement of courseList) {
+            result += `<option value=${resultElement}>${resultElement}</option>`;
+        }
+        $(".courseId-filter").append(result);
+
+    })
+    .catch((error) => console.error(error));

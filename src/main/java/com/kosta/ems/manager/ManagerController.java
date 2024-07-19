@@ -20,7 +20,27 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class ManagerController {
+    @Value("${security.level}")
+    private String SECURITY_LEVEL;
     private final ManagerService managerService;
+
+    @GetMapping
+    public Map currentUser() {
+        ManagerDTO loginUser = getLoginUser();
+        String managerId = loginUser.getManagerId();
+
+        return Map.of("result", managerService.fintByManagerId(managerId));
+    }
+
+    private ManagerDTO getLoginUser() {
+        ManagerDTO loginUser;
+        if (SECURITY_LEVEL.equals("OFF")) {
+            loginUser = managerService.findByEmployeeNumber("EMP0001");
+        } else {
+            loginUser = (ManagerDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }
+        return loginUser;
+    }
 
 }
 
