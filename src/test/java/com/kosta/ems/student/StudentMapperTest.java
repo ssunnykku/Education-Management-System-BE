@@ -1,5 +1,8 @@
 package com.kosta.ems.student;
 
+import com.kosta.ems.student.dto.AddStudentBasicInfoDTO;
+import com.kosta.ems.student.dto.StudentCourseInfoDTO;
+import com.kosta.ems.student.dto.UpdateSelectedStudentInfoDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -7,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kosta.ems.attendance.UpdateStudentAttendanceStatusDTO;
-
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -64,6 +64,7 @@ class StudentMapperTest {
         log.info(Integer.toString(studentMapper.selectStudentInfoListCnt(1, "", 277, "갤럭시")));
         log.info(Integer.toString(studentMapper.selectStudentInfoListCnt(0, "", 277, "갤럭시")));
     }
+
     @Test
     @DisplayName("수강생 목록 조회 테스트")
     public void selectStudentInfoList() {
@@ -154,7 +155,7 @@ class StudentMapperTest {
         }
 
     }
-    
+
     @Test
     void updateStudnet() {
         String studentId = "738003dc-3eb0-11ef-bd30-0206f94be675";

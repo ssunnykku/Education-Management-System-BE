@@ -1,4 +1,4 @@
-package com.kosta.ems.student;
+package com.kosta.ems.student.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,20 +13,18 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @ToString
 @Builder
-public class StudentCourseInfoDTO {
+public class StudentBasicInfoDTO {
     private String studentId;
+    private int studentCourseSeq;
+    private int courseNumber;
     private String hrdNetId;
     private String name;
     private LocalDate birth;
     private String address;
     private String bank;
     private String account;
-    private String phoneNumber;
     private String email;
+    private String phoneNumber;
     private char gender;
-    private String managerId;
-    private String isActive;
-    private Long studentCourseSeq;
-    private Long courseSeq;
-    private int courseNumber;
+    private String courseName;
 }

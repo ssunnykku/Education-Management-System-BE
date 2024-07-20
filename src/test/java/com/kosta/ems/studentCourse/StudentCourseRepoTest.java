@@ -4,13 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
-import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kosta.ems.student.StudentBasicInfoDTO;
+import com.kosta.ems.student.dto.StudentBasicInfoDTO;
 import com.kosta.ems.student.StudentMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,7 @@ public class StudentCourseRepoTest {
         StudentBasicInfoDTO student = studentMapper.findByStudentNameOrCourseNumberList("손유철", 0, 1, 10).get(0);
         assertThat(repo.findByStudentId(student.getStudentId()).size()).isGreaterThan(0);
         assertThat(repo.findByStudentId("asd").size()).isEqualTo(0);
-        
+
     }
 
 }

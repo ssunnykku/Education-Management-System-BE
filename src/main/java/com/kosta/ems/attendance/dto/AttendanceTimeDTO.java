@@ -1,5 +1,6 @@
-package com.kosta.ems.attendance;
+package com.kosta.ems.attendance.dto;
 
+import com.kosta.ems.attendance.AttendanceTimeId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,25 +27,22 @@ import jakarta.persistence.ManyToOne;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name="attendance_times")
-public class AttendanceTimeDTO{
-    
+@Entity(name = "attendance_times")
+public class AttendanceTimeDTO {
+
     public AttendanceTimeDTO(LocalDate attendanceDate, int studentCourseSeq, LocalTime inTime, LocalTime outTime) {
         this.attendanceTimeId = new AttendanceTimeId(attendanceDate, studentCourseSeq);
         this.inTime = inTime;
         this.outTime = outTime;
     }
-    
+
     @EmbeddedId
     private AttendanceTimeId attendanceTimeId;
-    
-    @Column(name="in_time", nullable = false)
+
+    @Column(name = "in_time", nullable = false)
     private LocalTime inTime;
-    
-    @Column(name="out_time", nullable = false)
+
+    @Column(name = "out_time", nullable = false)
     private LocalTime outTime;
-    
-    
-    
-    
+
 }

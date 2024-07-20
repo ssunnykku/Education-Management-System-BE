@@ -1,4 +1,4 @@
-package com.kosta.ems.student;
+package com.kosta.ems.student.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,5 +10,5 @@ import lombok.Builder;
 @AllArgsConstructor
 @Builder
 public class PageResponseDTO {
-	private int totalCount, prevPage, nextPage, totalPage, currentPage;
+    private int totalCount, prevPage, nextPage, totalPage, currentPage;
 }
