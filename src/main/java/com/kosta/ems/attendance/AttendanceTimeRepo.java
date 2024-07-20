@@ -1,9 +1,14 @@
 package com.kosta.ems.attendance;
 
+import com.kosta.ems.attendance.dto.AttendanceTimeDTO;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.List;
 
-public interface AttendanceTimeRepo extends JpaRepository<AttendanceTimeDTO, AttendanceTimeId>{
+public interface AttendanceTimeRepo extends JpaRepository<AttendanceTimeDTO, AttendanceTimeId> {
+
+    List<AttendanceTimeDTO> findByAttendanceTimeIdAttendanceDate(LocalDate attendanceDate);
 }
+

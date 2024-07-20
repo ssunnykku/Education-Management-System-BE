@@ -1,15 +1,8 @@
 package com.kosta.ems.student;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import com.kosta.ems.student.dto.*;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.kosta.ems.attendance.StudentAttendanceListDTO;
-
-import lombok.RequiredArgsConstructor;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

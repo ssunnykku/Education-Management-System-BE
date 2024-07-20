@@ -1,4 +1,4 @@
-package com.kosta.ems.attendance;
+package com.kosta.ems.attendance.dto;
 
 import lombok.*;
 

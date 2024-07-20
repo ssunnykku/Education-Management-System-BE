@@ -2,7 +2,7 @@ package com.kosta.ems.studentLogin;
 
 import com.kosta.ems.config.jwt.JwtTokenProvider;
 import com.kosta.ems.config.jwt.TokenInfo;
-import com.kosta.ems.student.StudentDTO;
+import com.kosta.ems.student.dto.StudentDTO;
 import com.kosta.ems.student.StudentMapper;
 import com.kosta.ems.studentLogin.exception.ExceptionMessage;
 import lombok.RequiredArgsConstructor;

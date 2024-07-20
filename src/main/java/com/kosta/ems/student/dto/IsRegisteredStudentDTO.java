@@ -1,4 +1,4 @@
-package com.kosta.ems.student;
+package com.kosta.ems.student.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,5 +12,5 @@ import lombok.ToString;
 @ToString
 @Builder
 public class IsRegisteredStudentDTO {
-	private String hrdNetId;
+    private String hrdNetId;
 }

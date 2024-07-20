@@ -2,7 +2,7 @@ package com.kosta.ems.studentLogin;
 
 import com.kosta.ems.config.jwt.JwtTokenProvider;
 import com.kosta.ems.config.jwt.TokenInfo;
-import com.kosta.ems.student.StudentDTO;
+import com.kosta.ems.student.dto.StudentDTO;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;

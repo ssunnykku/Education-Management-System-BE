@@ -74,7 +74,7 @@
         ORDER BY course_number
         LIMIT #{offset}, #{pageSize}
     </select>
-    <select id="getSearchCourseListSize" resultType="Integer">
+    <select id="getSearchCourseListumberSize" resultType="Integer">
         SELECT count(course_seq)
         FROM courses
         WHERE is_active = true
