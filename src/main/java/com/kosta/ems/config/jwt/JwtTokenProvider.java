@@ -140,7 +140,6 @@ public class JwtTokenProvider {
     public String getAccessToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        log.debug("bearerToken : {}", bearerToken);
         log.info("bearerToken : {}", bearerToken);
         if (StringUtils.hasText(bearerToken)) {
             if (bearerToken.startsWith(TOKEN_PREFIX) && bearerToken.length() > TOKEN_PREFIX.length()) {
