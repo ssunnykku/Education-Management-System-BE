@@ -17,7 +17,7 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
-@RequestMapping({"/students", "/api"})
+@RequestMapping("/students")
 @RequiredArgsConstructor
 public class StudentController {
     private final StudentService studentService;
