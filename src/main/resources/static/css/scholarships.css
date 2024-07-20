@@ -20,10 +20,21 @@
     margin-left: 30%;
 }
 
+.important-search-form-wrapper {
+    width: 60% !important;
+    margin: 0 auto;
+}
+
+.important-button-wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
 .search-form-wrapper {
     display: flex;
     width: 450px;
     align-items: center;
+    gap: 5px;
 }
 
 
@@ -121,6 +132,7 @@
     border-radius: 8px;
 }
 
+
 #point-search-btn {
     font-weight: 600;
     color: rgb(64, 64, 64);
@@ -135,11 +147,16 @@
     height: 60px;
 }
 
+.important-search-form {
+    margin-left: 0% !important;
+}
+
 .filter-search-btn {
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
     line-height: 144%;
+    margin-left: 5px;
 
     width: 100px;
     height: 40px;
@@ -228,37 +245,34 @@
 /**************table***********************/
 
 #point-table-wrapper {
-    margin: 0 10% 0 10%;
-}
-
-.point-table {
-    width: 100%;
-    padding: 0 200px 0 200px;
-    /* 왜안됨... */
+    width: 60%;
+    margin: 0 auto 1rem auto;
 }
 
 .point-table-row {
     display: flex;
     flex-direction: row;
-    height: 60px;
+    height: 45px;
     width: 100%;
     align-items: center;
     text-align: center;
     justify-content: space-between;
 
     font-style: normal;
-    font-weight: 300;
+    font-weight: 400;
     font-size: 15px;
     line-height: 144%;
 
     color: #1d1d1d;
+    border-bottom: 0.5px solid lightgray;
 }
 
 #point-title-row {
     font-style: normal !important;
-    font-weight: 500 !important;
-    font-size: 15px;
+    font-size: 16px;
+    font-weight: 600;
     line-height: 144% !important;
+    background-color: #f9f9f9;
     text-align: center;
 
     color: #1d1d1d;
@@ -266,19 +280,20 @@
     box-sizing: border-box;
 
     width: 100%;
-    height: 60px;
+    height: 44px;
 
-    background: #ffffff;
-    border-bottom: 1px solid #f3f5f9;
-    border-radius: 10px 10px 0px 0px;
+    border-bottom: 0.5px solid lightgray;
+    border-top: 1px solid rgb(92, 92, 92);
+    /* border-radius: 10px 10px 0px 0px; */
 }
 
 #point-radio-btn {
-    width: 25%;
+    width: 5%;
+    min-height: 1px;
 }
 
 #point-table-courseId {
-    width: 25%;
+    width: 10%;
 }
 
 #point-table-birth {
@@ -286,16 +301,23 @@
 }
 
 #point-table-courseName {
-    width: 25%;
+    width: 30%;
 }
 
 
 #point-table-name {
-    width: 25%;
+    width: 10%;
 }
 
 #point-table-total-point {
-    width: 25%;
+    width: 15%;
+}
+
+.cnt-pages {
+    width: 60%;
+    margin: 5px auto 10px auto;
+    font-weight: 500;
+    color: #999999;
 }
 
 .point-cnt-pages {
@@ -616,6 +638,10 @@ body {
     font-family: "Pretendard";
 }
 
+::backdrop {
+    background-color: rgb(0, 0, 0, 0.5);
+}
+
 #addpoint-wrapper {
     display: flex;
     flex-direction: column;
@@ -663,7 +689,7 @@ body {
     background: #ffffff;
     border-bottom: 1px solid #f3f5f9;
     border-radius: 10px 10px 0px 0px;
-    padding-bottom: 20px;
+    padding-bottom: 5px;
 }
 
 .underline > h4 {
@@ -689,13 +715,52 @@ body {
 }
 
 .student-info,
-.choose-point-info,
 .point-info {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 350px;
     gap: 40px;
+}
+
+.point-info {
+    gap: 20px !important;
+}
+
+#point-info-name {
+    h1:first-child {
+        width: 20px;
+    }
+
+    h1:nth-child(2) {
+        width: 250px;
+        text-align: center;
+    }
+
+    h1:last-child {
+        width: 80px;
+        text-align: center;
+    }
+}
+
+.pointCategoryInfo {
+
+    h4:nth-child(2) {
+        width: 250px;
+        text-align: center;
+    }
+
+    h4:last-child {
+        width: 80px;
+        text-align: center;
+    }
+}
+
+.choose-point-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 350px;
 }
 
 .student-info-detail {
@@ -710,7 +775,19 @@ body {
     overflow-y: auto;
 }
 
-.choose-point-info-detail,
+.choose-point-info-detail {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+
+    gap: 10px;
+
+    h4:last-child {
+        text-align: center;
+        width: 70px;
+    }
+}
+
 .point-info-detail {
     display: flex;
     flex-direction: column;
@@ -778,6 +855,14 @@ body {
 }
 
 /*********PointModal **********/
+#showPointModal {
+    margin: auto;
+
+    & h1 {
+        font-weight: bold;
+        font-size: 25px;
+    }
+}
 
 #point-wrapper {
     display: flex;
@@ -785,6 +870,7 @@ body {
     justify-content: center;
     align-items: center;
     gap: 50px;
+    background-color: white;
     width: 1000px;
     height: 700px;
 }
@@ -808,13 +894,44 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+
+    h4:first-child, h5:first-child {
+        width: 100px;
+        text-align: center;
+    }
+
+    h4:nth-child(2), h5:nth-child(2) {
+        width: 280px;
+        text-align: center;
+    }
+
+    h4:last-child, h5:last-child {
+        width: 90px;
+        text-align: center;
+    }
 }
 
 .total-point {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    width: 100%;
+    /* justify-content: space-around; */
+    width: 480px;
+    margin: 0;
+
+    h3:first-child {
+        width: 100px;
+        text-align: center;
+    }
+
+    h3:nth-child(2) {
+        width: 280px;
+        text-align: center;
+    }
+
+    h3:last-child {
+        width: 90px;
+        text-align: center;
+    }
 }
 
 .total-point > h1 {
@@ -876,13 +993,24 @@ ul#pagination {
 }
 
 #addPointModal {
-    padding: 100px;
+    padding: 50px 70px 20px 70px;
+    margin: auto;
+
+    div.student-info h1.info-title {
+        font-weight: bold;
+        font-size: 25px;
+    }
+
+    div.choose-point-info h1 {
+        font-weight: 500;
+        font-size: 20px;
+    }
 }
 
 #pointBody {
-    height: 400px;
+    max-height: 400px;
     overflow-y: auto;
-    width: 400px;
+    width: 500px;
 }
 
 

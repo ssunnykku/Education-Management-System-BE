@@ -1,15 +1,9 @@
 package com.kosta.ems.student;
 
+import com.kosta.ems.student.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import com.kosta.ems.attendance.StudentAttendanceListDTO;
-import com.kosta.ems.attendance.UpdateStudentAttendanceStatusDTO;
-
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,12 +14,12 @@ public interface StudentMapper {
     // 수강생 정보 조회
     int findByStudentNumberOrCourseNumberAll(String name, int courseNumber);
 
-    List<StudentBasicInfoDTO> findByStudentNameOrCourseNumberList(@Param("name") String name, @Param("courseNumber") int courseNumber, int page, int size);
+    List<StudentBasicInfoDTO> findByStudentNameOrCourseNumberList(@Param("name") String name, @Param("courseNumber") int courseNumber, Integer page, Integer size);
 
     // *0710_수강생 정보 조회
-    int selectStudentInfoListCnt(int isActive, String name, int courseNumber);
+    int selectStudentInfoListCnt(int isActive, String name, int courseNumber, String academyLocation);
 
-    List<StudentInfoDTO> selectStudentInfoList(int isActive, String name, int courseNumber, int page, int size);
+    List<StudentInfoDTO> selectStudentInfoList(int isActive, String name, int courseNumber, String academyLocation, int page, int size);
     // *0710_수강생 정보 조회 (end)
 
     // *0710_수강생 id로 수강내역 조회
@@ -39,9 +33,7 @@ public interface StudentMapper {
     // 현재 진행 중+등록 가능한 교육과정 목록
     List<CourseInfoDTO> selectOnGoingCourseList(String academyLocation);
 
-    // void addStudentBasicInfo(AddStudentBasicInfoDTO dto);
-    int addStudentBasicInfo(AddStudentBasicInfoDTO dto);
-
+    // 수강생 교육과정 수강신청(등록)
     int addStudentCourseSeqInfo(AddStudentBasicInfoDTO dto);
 
     // 수강생 정보 수정
@@ -56,5 +48,10 @@ public interface StudentMapper {
 
     // scq로 수강생 기본 정보 가져오기
     GetStudentInfoByScqDTO selectStudentInfoByScq(int studentCourseSeq);
-    
+
+    List<StudentCourseInfoDTO> selectStudentListBycourseSeq(int courseSeq);
+
+    //mobile api에서 사용함
+    boolean updateStudentContactInfo(String studentId, String currentPassword, String newPassword, String phoneNumber, String bank, String accountNumber, String email);
+
 }

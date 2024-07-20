@@ -3,6 +3,7 @@ package com.kosta.ems.employment;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kosta.ems.course.CourseDTO;
 import com.kosta.ems.course.CourseService;
 import com.kosta.ems.employment.dto.AddEmployeedStatusRequest;
 import com.kosta.ems.employment.dto.EditEmployeedStatusRequest;
@@ -37,6 +38,7 @@ public class EmploymentController {
     private final EmploymentService service;
     private final StudentCourseService studentCourseService;
     private final ManagerService managerService;
+    private final CourseService courseService;
     @Value("${security.level}")
     private String SECURITY_LEVEL;
     
@@ -52,11 +54,23 @@ public class EmploymentController {
         return Map.of("result", service.getEmployeedRatePct(courseNumber));
     }
     
+    @GetMapping("/count-employeed")
+    public Map getCountEmployeedByCourseNumber(@RequestParam int courseNumber) {
+        return Map.of("result", service.countEmployeedByCourseNumber(courseNumber));
+    }
+    
+    @GetMapping("/count-students")
+    public Map getCountStudentsByCourseNumber(@RequestParam int courseNumber) {
+        ManagerDTO loginUser = getLoginUser();
+        return Map.of("result", studentCourseService.countByCourseNumber(courseNumber));
+    }
+    
     @PutMapping("/student")
     public Map editEmployeedStatus(@RequestBody EditEmployeedStatusRequest request) {
         ManagerDTO loginUser = getLoginUser();
         return Map.of("result", service.editEmployeedStatus(request, loginUser.getManagerId()));
     }
+   
     
     private ManagerDTO getLoginUser() {
         ManagerDTO loginUser;

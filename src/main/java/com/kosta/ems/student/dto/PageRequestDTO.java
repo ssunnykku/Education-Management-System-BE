@@ -1,4 +1,4 @@
-package com.kosta.ems.student;
+package com.kosta.ems.student.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,11 +13,11 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @Builder
 public class PageRequestDTO {
-	@Builder.Default
-	private int page = 1;
-	
-	@Builder.Default
-	private int size = 10;
+    @Builder.Default
+    private int page = 1;
 
-	private int currentPage;
+    @Builder.Default
+    private int size = 10;
+
+    private int currentPage;
 }

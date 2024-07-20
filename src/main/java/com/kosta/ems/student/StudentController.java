@@ -1,16 +1,14 @@
 package com.kosta.ems.student;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import jakarta.servlet.http.HttpSession;
+import com.kosta.ems.manager.ManagerDTO;
+import com.kosta.ems.manager.ManagerService;
+import com.kosta.ems.student.dto.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpCookie;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.extern.log4j.Log4j2;
@@ -22,19 +20,30 @@ import lombok.extern.log4j.Log4j2;
 public class StudentController {
     private final StudentService studentService;
 
+    private final ManagerService managerService;
+    @Value("OFF")
+    private String SECURITY_LEVEL;
+
+
     // [수강생 정보] - 수강생 정보 조회
+    // * 0715 _managerId 연결 및 테스트코드 정리 완료
     @PostMapping("/student-list")
-    public Map<String, Object> getStudentsByNameOrCourseNumber(@RequestParam(name = "page", required = false, defaultValue = "1") int page, @RequestBody AddStudentBasicInfoDTO dto) {
+    public Map<String, Object> getStudentsByNameOrCourseNumber(@RequestParam(name = "page", required = false, defaultValue = "1") int page, @RequestBody StudentInfoDTO dto) {
         Map<String, Object> result = new HashMap<String, Object>();
         int size = 10;
         int courseNumber = dto.getCourseNumber();
+        log.info("☄️☄️ request courseNumber: " + courseNumber);
         String name = dto.getName().equals("") ? "" : dto.getName();
-        int isActive = 1;  // 임시
+        log.info("☄️☄️ request name: " + name);
+        int isActive = dto.getIsActive();  // 임시
+        log.info("☄️☄️ request isActive: " + isActive);
+        String academyLocation = getAcademyOfLoginUser();
+        log.info("☄️☄️ request academyLocation: " + academyLocation);
 
-        int totalCount = studentService.getStudentInfoListCnt(isActive, name, courseNumber);
+        int totalCount = studentService.getStudentInfoListCnt(isActive, name, courseNumber, academyLocation);
         result.put("amount", totalCount);
-        result.put("studentList", studentService.getStudentInfoList(isActive, name, courseNumber, page, size));
-        log.info("☄️result.studentList 1 :" + studentService.getStudentsByNameOrCourseNumberList(name, courseNumber, page, size).toString());
+        // result.put("studentList", studentService.getStudentInfoList(isActive, name, courseNumber, academyLocation, page, size));
+        result.put("studentList", studentService.getStudentInfoList2(isActive, name, courseNumber, academyLocation, page, size));
 
         // 페이징 response
         int totalPage = (totalCount / size) + 1;
@@ -53,10 +62,6 @@ public class StudentController {
         PageResponseDTO pageInfo = PageResponseDTO.builder().totalCount(totalCount).totalPage(totalPage).currentPage(currentPage).prevPage(prevPage).nextPage(nextPage).build();
         result.put("pageInfo", pageInfo);
 
-        log.info("☄️result.amount " + totalCount);
-        log.info("☄️result.studentList " + studentService.getStudentsByNameOrCourseNumberList(name, courseNumber, page, size).toString());
-        log.info("☄️result.pageInfo " + pageInfo.toString());
-
         return result;
     }
 
@@ -64,12 +69,6 @@ public class StudentController {
     @PostMapping("/student-course-history")
     public Map<String, Object> getStudentCourseHistory(@RequestBody StudentInfoDTO request) {
         Map<String, Object> result = new HashMap<String, Object>();
-		/*
-		log.info("🙃 request.studentId(): " + request.getStudentId());
-		log.info("🙃 request.studentId() substring: " + request.getStudentId().substring(0, request.getStudentId().length()-1));
-		result.put("studentCourseHistory", studentService.getStudentCourseHistory(request.getStudentId().substring(0, request.getStudentId().length()-1)));
-		log.info("🙃 studentCourseHistory"+studentService.getStudentCourseHistory(request.getStudentId().substring(0, request.getStudentId().length()-1)).toString());
-		*/
 
         log.info("🙃 request.studentId(): " + request.getStudentId());
         result.put("studentCourseHistory", studentService.getStudentCourseHistory(request.getStudentId()));
@@ -100,31 +99,13 @@ public class StudentController {
 
     // [수강생 정보] - 수강생 등록
     // 2. 현재 진행 중인 수강신청 가능한 교육과정 목록 불러오기
+    // * 0715 _managerId 연결 및 테스트코드 정리 완료
     @GetMapping("/on-going-courses")
-    // spring security 적용 후에는 principal 로 로그인한 매니저의 교육장을 받아오는 걸로 변경해야함.
     public Map<String, Object> getOnGoingCourseList() {
         Map<String, Object> result = new HashMap<String, Object>();
-        String academyLocation = "가산";  // spring security 적용 전, 임시 코드
+        String academyLocation = getAcademyOfLoginUser();
         result.put("courseList", studentService.getOnGoingCourseList(academyLocation));
         return result;
-    }
-
-    // [수강생 정보] - 수강생 등록
-    // 3-1. 신규 수강생 등록
-    @PostMapping()
-    public UpdateDeleteResultDTO setStudentWithCourse(@RequestBody RequestAddStudentBasicInfoDTO request) {
-        UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
-        // @principal 적용 후에는 String managerId 제거하고 @principal 내용으로 교체할 것!
-        String managerId = "e84dea58-3784-11ef-b0b2-0206f94be675";  // Name: 테스트용, pw: 1234, 교육장: 가산
-        try {
-            studentService.setStudentWithCourse(request.getHrdNetId(), request.getName(), request.getBirth(), request.getAddress(), request.getBank(), request.getAccount(), request.getPhoneNumber(), request.getEmail(), request.getGender(), managerId, request.getCourseNumber());
-        } catch (NoSuchDataException e) {
-            dto.setCode(ResCode.FAIL.value());
-            dto.setMessage("Fail: setStudentWithCourse");
-        } catch (Exception e) {
-            log.error("[StudentController addStudentWithCourse]", e);
-        }
-        return dto;
     }
 
     // [수강생 정보] - 수강생 등록
@@ -132,8 +113,13 @@ public class StudentController {
     @PostMapping("/new-course")
     public UpdateDeleteResultDTO setRegisteredStudentWithNewCourse(@RequestBody RequestAddStudentBasicInfoDTO request) {
         UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
+
+        String managerId = getManagerIdOfLoginUser();
+        log.info("💥managerId: " + managerId);
+
         try {
-            studentService.setStudentCourseSeqInfo(request.getHrdNetId(), request.getCourseNumber());
+            studentService.setStudentCourseSeqInfo(request.getHrdNetId(), request.getCourseNumber(), managerId);
+
         } catch (NoSuchDataException e) {
             dto.setCode(ResCode.FAIL.value());
             dto.setMessage("Fail: setRegisteredStudentWithNewCourse");
@@ -153,10 +139,10 @@ public class StudentController {
     @PutMapping()
     public UpdateDeleteResultDTO updateSelectedStudentInfo(@RequestBody UpdateSelectedStudentInfoDTO request) {
         UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
-        log.info("🧰 수강생 정보 수정: ");
-        log.info("🧰 requestDTO: " + request.toString());
+
         try {
-            studentService.updateSelectedStudentInfo(request.getName(), request.getAddress(), request.getBank(), request.getAccount(), request.getPhoneNumber(), request.getEmail(), request.getStudentId());
+            studentService.updateSelectedStudentInfo(request.getName(), request.getAddress(), request.getBank(), request.getAccount(), request.getPhoneNumber(), request.getEmail(), request.getStudentId(), request.getIsActive());
+
         } catch (NoSuchDataException e) {
             dto.setCode(ResCode.FAIL.value());
             dto.setMessage("Fail: updateSelectedStudentInfo");
@@ -184,4 +170,32 @@ public class StudentController {
         }
         return dto;
     }
+
+
+    private String getAcademyOfLoginUser() {
+        if (SECURITY_LEVEL.equals("OFF")) {
+            return "가산";
+        }
+        ManagerDTO loginUser = getLoginUser();
+        return loginUser.getAcademyLocation();
+    }
+
+    private String getManagerIdOfLoginUser() {
+        if (SECURITY_LEVEL.equals("OFF")) {
+            return "3ddf8577-3eaf-11ef-bd30-0206f94be675";
+        }
+        ManagerDTO loginUser = getLoginUser();
+        return loginUser.getManagerId();
+    }
+
+    private ManagerDTO getLoginUser() {
+        ManagerDTO loginUser;
+        if (SECURITY_LEVEL.equals("OFF")) {
+            loginUser = managerService.findByEmployeeNumber("EMP0002");
+        } else {
+            loginUser = (ManagerDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }
+        return loginUser;
+    }
+
 }

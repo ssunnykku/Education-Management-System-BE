@@ -9,8 +9,10 @@ import java.util.Map;
 
 @Mapper
 public interface ManagerMapper {
-	Map<String, String> login(@Param("employeeNumber") String employeeNumber, @Param("password") String password);
+    Map<String, String> login(@Param("employeeNumber") String employeeNumber, @Param("password") String password);
 
     ManagerDTO findByEmployeeNumber(String employeeNumber);
-	
+
+    ManagerDTO findByManagerId(String managerId);
+
 }

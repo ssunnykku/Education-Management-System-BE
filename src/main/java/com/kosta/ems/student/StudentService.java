@@ -1,15 +1,9 @@
 package com.kosta.ems.student;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import com.kosta.ems.student.dto.*;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.kosta.ems.attendance.StudentAttendanceListDTO;
-
-import lombok.RequiredArgsConstructor;
-
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -26,10 +20,12 @@ public interface StudentService {
     List<StudentBasicInfoDTO> getStudentsByNameOrCourseNumberList(String name, int courseNumber, int page, int size);
 
     // *0710_수강생 정보 조회
-    int getStudentInfoListCnt(int isActive, String name, int courseNumber);
+    int getStudentInfoListCnt(int isActive, String name, int courseNumber, String academyLocation);
 
-    List<StudentInfoDTO> getStudentInfoList(int isActive, String name, int courseNumber, int page, int size);
+    List<StudentInfoDTO> getStudentInfoList(int isActive, String name, int courseNumber, String academyLocation, int page, int size);
+
     // *0710_수강생 정보 조회 (end)
+    List<ArrayList> getStudentInfoList2(int isActive, String name, int courseNumber, String academyLocation, int page, int size);
 
     // *0710_수강생 id로 수강내역 조회
     List<StudentCourseHistoryDTO> getStudentCourseHistory(String studentId);
@@ -41,19 +37,15 @@ public interface StudentService {
 
     List<CourseInfoDTO> getOnGoingCourseList(String academyLocation);
 
-    // 신규 수강생 등록
-    void setStudentWithCourse(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber);
-
-    void setStudentBasicInfo(String hrdNetId, String name, String birth, String address, String bank, String account, String phoneNumber, String email, String gender, String managerId, String courseNumber);
-
-    void setStudentCourseSeqInfo(String hrdNetId, String courseNumber);
+    // 수강생 교육과정 수강신청(등록)
+    void setStudentCourseSeqInfo(String hrdNetId, String courseNumber, String managerId);
 
     // 수강생 정보 수정
     StudentBasicInfoDTO getRegisteredStudentInfo(String studentId);
 
-    void updateSelectedStudentInfo(String name, String address, String bank, String account, String phoneNumber, String email, String studentId);
+    void updateSelectedStudentInfo(String name, String address, String bank, String account, String phoneNumber, String email, String studentId, int isActiveStatus);
 
     // 수강생 삭제(isActive 값 수정)
     void removeSelectedStudent(String studentId);
-    
+
 }

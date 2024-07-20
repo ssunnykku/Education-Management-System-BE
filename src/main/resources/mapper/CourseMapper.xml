@@ -1,73 +1,165 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kosta.ems.course.CourseMapper">
-<select id="getCourseTypeList" resultType="String">
-	SELECT distinct course_type courseType FROM courses
-	</select>
-<select id="getCourseNumberList" resultType="int">
-	SELECT course_number courseNumber FROM courses
-	WHERE is_active = true and academy_location =#{academyLocation}
-	and (false = #{excludeExpired} OR course_end_date &gt; CURDATE())
-	</select>
-<select id="getCourse" resultType="com.kosta.ems.course.CourseDTO">
-	SELECT course_seq courseSeq, manager_id managerId, course_number courseNumber, academy_location academyLocation, course_name courseName, course_start_date courseStartDate, course_end_date courseEndDate, subject, course_type courseType, total_training_days totalTrainingDays, training_hours_of_date trainingHoursOfDate, professor_name professorName, max_students maxStudents, is_active isActive FROM courses
-	WHERE course_seq = #{courseSeq} and is_active = true
-	</select>
-<select id="getCourseByCourseNumber" resultType="com.kosta.ems.course.CourseDTO">
-    SELECT course_seq courseSeq, manager_id managerId, course_number courseNumber, academy_location academyLocation, course_name courseName, course_start_date courseStartDate, course_end_date courseEndDate, subject, course_type courseType, total_training_days totalTrainingDays, training_hours_of_date trainingHoursOfDate, professor_name professorName, max_students maxStudents, is_active isActive FROM courses
-    WHERE course_number = #{courseNumber} and is_active = true
+
+    <select id="getCourseTypeList" resultType="String">
+        SELECT distinct course_type courseType
+        FROM courses
     </select>
-<select id="searchCourseList" resultType="com.kosta.ems.course.CourseDTO">
-	SELECT course_seq courseSeq, manager_id managerId, course_number courseNumber, academy_location academyLocation, course_name courseName, course_start_date courseStartDate, course_end_date courseEndDate, subject, course_type courseType, total_training_days totalTrainingDays, training_hours_of_date trainingHoursOfDate, professor_name professorName, max_students maxStudents, is_active isActive 
-	FROM courses
-	WHERE is_active = true
-	and (IF(#{courseNumber}, 0,'전체') = '전체' or course_number = #{courseNumber})
-	AND (#{academyLocation} IS NULL OR #{academyLocation} = '' or academy_location =#{academyLocation})
-	and (false = #{excludeExpired} OR course_end_date &gt; CURDATE())
-	ORDER BY course_number
-	LIMIT #{offset}, #{pageSize} 
-	</select>
-<select id="getSearchCourseListSize" resultType="Integer">
-	SELECT count(course_seq) 
-	FROM courses
-	WHERE is_active = true
-	and (IF(#{courseNumber}, 0,'전체') = '전체' or course_number = #{courseNumber})
-	AND (#{academyLocation} IS NULL OR #{academyLocation} = '' or academy_location =#{academyLocation})
-	and (false = #{excludeExpired} OR course_end_date &gt; CURDATE())
-	</select>
-	
-<insert id="insertCourse" parameterType="com.kosta.ems.course.CourseDTO">
-	INSERT INTO courses (manager_id, course_number, academy_location, course_name, course_start_date, course_end_date, subject, course_type, total_training_days, training_hours_of_date, professor_name, max_students) values
-(#{managerId}, #{courseNumber}, #{academyLocation}, #{courseName}, #{courseStartDate}, #{courseEndDate}, #{subject}, #{courseType}, #{totalTrainingDays}, #{trainingHoursOfDate}, #{professorName}, #{maxStudents})
-	</insert>
-	<update id="updateCourse" parameterType="com.kosta.ems.course.CourseDTO">
-	update courses set manager_id = #{managerId}
-	, course_number = #{courseNumber}
-	, academy_location = #{academyLocation}
-	, course_name = #{courseName}
-	, course_start_date = #{courseStartDate}
-	, course_end_date = #{courseEndDate}
-	, subject = #{subject}
-	, course_type = #{courseType}
-	, total_training_days = #{totalTrainingDays}
-	, training_hours_of_date = #{trainingHoursOfDate}
-	, professor_name = #{professorName}
-	, max_students = #{maxStudents} where course_seq = #{courseSeq} and is_active = true;
-	</update>
-	<update id="inactivateCourse" parameterType="int">
-	update courses set 
-	is_active = false where course_seq = #{courseSeq};
-	</update>
-	<select id="getCourseNumberListByYear" resultType="int">
-	SELECT course_number courseNumber
-	FROM courses
-	WHERE DATE_FORMAT(course_end_date, '%Y') = #{courseEndYear}
-	</select>
-	<select id="getCourseNumberYearList" resultType="int">		
-	SELECT
-  	DATE_FORMAT(course_end_date, '%Y') AS courseEndYear
-	FROM courses
-	GROUP BY DATE_FORMAT(course_end_date, '%Y')
-	ORDER BY courseEndYear
-	</select>
+    <select id="getCourseNumberList" resultType="int">
+        SELECT course_number courseNumber
+        FROM courses
+        WHERE is_active = true
+          and academy_location = #{academyLocation}
+          and (false = #{excludeExpired} OR course_end_date &gt; CURDATE())
+    </select>
+    <select id="getCourse" resultType="com.kosta.ems.course.CourseDTO">
+        SELECT course_seq             courseSeq,
+               manager_id             managerId,
+               course_number          courseNumber,
+               academy_location       academyLocation,
+               course_name            courseName,
+               course_start_date      courseStartDate,
+               course_end_date        courseEndDate,
+               subject,
+               course_type            courseType,
+               total_training_days    totalTrainingDays,
+               training_hours_of_date trainingHoursOfDate,
+               professor_name         professorName,
+               max_students           maxStudents,
+               is_active              isActive
+        FROM courses
+        WHERE course_seq = #{courseSeq}
+          and is_active = true
+    </select>
+    <select id="getCourseByCourseNumber" resultType="com.kosta.ems.course.CourseDTO">
+        SELECT course_seq             courseSeq,
+               manager_id             managerId,
+               course_number          courseNumber,
+               academy_location       academyLocation,
+               course_name            courseName,
+               course_start_date      courseStartDate,
+               course_end_date        courseEndDate,
+               subject,
+               course_type            courseType,
+               total_training_days    totalTrainingDays,
+               training_hours_of_date trainingHoursOfDate,
+               professor_name         professorName,
+               max_students           maxStudents,
+               is_active              isActive
+        FROM courses
+        WHERE course_number = #{courseNumber}
+          and is_active = true
+    </select>
+    <select id="searchCourseList" resultType="com.kosta.ems.course.CourseDTO">
+        SELECT course_seq             courseSeq,
+               manager_id             managerId,
+               course_number          courseNumber,
+               academy_location       academyLocation,
+               course_name            courseName,
+               course_start_date      courseStartDate,
+               course_end_date        courseEndDate,
+               subject,
+               course_type            courseType,
+               total_training_days    totalTrainingDays,
+               training_hours_of_date trainingHoursOfDate,
+               professor_name         professorName,
+               max_students           maxStudents,
+               is_active              isActive
+        FROM courses
+        WHERE is_active = true
+          and (IF(#{courseNumber}, 0, '전체') = '전체' or course_number = #{courseNumber})
+          AND (#{academyLocation} IS NULL OR #{academyLocation} = '' or academy_location = #{academyLocation})
+          and (false = #{excludeExpired} OR course_end_date &gt; CURDATE())
+        ORDER BY course_number
+        LIMIT #{offset}, #{pageSize}
+    </select>
+    <select id="getSearchCourseListumberSize" resultType="Integer">
+        SELECT count(course_seq)
+        FROM courses
+        WHERE is_active = true
+          and (IF(#{courseNumber}, 0, '전체') = '전체' or course_number = #{courseNumber})
+          AND (#{academyLocation} IS NULL OR #{academyLocation} = '' or academy_location = #{academyLocation})
+          and (false = #{excludeExpired} OR course_end_date &gt; CURDATE())
+    </select>
+
+    <insert id="insertCourse" parameterType="com.kosta.ems.course.CourseDTO">
+        INSERT INTO courses (manager_id, course_number, academy_location, course_name, course_start_date,
+                             course_end_date, subject, course_type, total_training_days, training_hours_of_date,
+                             professor_name, max_students)
+        values (#{managerId}, #{courseNumber}, #{academyLocation}, #{courseName}, #{courseStartDate}, #{courseEndDate},
+                #{subject}, #{courseType}, #{totalTrainingDays}, #{trainingHoursOfDate}, #{professorName},
+                #{maxStudents})
+    </insert>
+    <update id="updateCourse" parameterType="com.kosta.ems.course.CourseDTO">
+        update courses
+        set manager_id             = #{managerId}
+                ,
+            course_number          = #{courseNumber}
+                ,
+            academy_location       = #{academyLocation}
+                ,
+            course_name            = #{courseName}
+                ,
+            course_start_date      = #{courseStartDate}
+                ,
+            course_end_date        = #{courseEndDate}
+                ,
+            subject                = #{subject}
+                ,
+            course_type            = #{courseType}
+                ,
+            total_training_days    = #{totalTrainingDays}
+                ,
+            training_hours_of_date = #{trainingHoursOfDate}
+                ,
+            professor_name         = #{professorName}
+                ,
+            max_students           = #{maxStudents}
+        where course_seq = #{courseSeq}
+          and is_active = true;
+    </update>
+
+    <select id="getCurrentCourseList" resultType="com.kosta.ems.course.CourseDTO">
+        select course_number     as courseNumber,
+               course_name       as courseName,
+               professor_name    as professorName,
+               course_start_date as courseStartDate,
+               course_end_date   as courseEndDate
+        from courses
+        where course_start_date <![CDATA[<=]]> #{currentDate}
+          and course_end_date <![CDATA[>=]]> #{currentDate}
+          and is_active = true
+          and academy_location = #{academyLocation}
+
+    </select>
+
+    <update id="inactivateCourse" parameterType="int">
+        update courses
+        set is_active = false
+        where course_seq = #{courseSeq};
+    </update>
+    <select id="getCourseNumberListByYear" resultType="int">
+        SELECT course_number courseNumber
+        FROM courses
+        WHERE DATE_FORMAT(course_end_date, '%Y') = #{courseEndYear}
+    </select>
+    <select id="getCourseNumberYearList" resultType="int">
+        SELECT DATE_FORMAT(course_end_date, '%Y') AS courseEndYear
+        FROM courses
+        GROUP BY DATE_FORMAT(course_end_date, '%Y')
+        ORDER BY courseEndYear desc
+    </select>
+    <select id="getStudentsNumberBySeq" resultType="int">
+        SELECT COUNT(student_id) As studentNum
+        FROM students_courses
+        WHERE course_seq = ${courseSeq}
+        GROUP BY course_seq
+    </select>
+    <select id="getSeqByCourseNumber" resultType="int">
+        SELECT course_seq
+        FROM courses
+        WHERE course_number = #{courseNumber}
+    </select>
+
 </mapper>

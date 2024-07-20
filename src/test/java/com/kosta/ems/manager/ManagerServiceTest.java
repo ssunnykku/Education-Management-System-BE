@@ -15,7 +15,11 @@ import com.kosta.ems.manager.ManagerService;
 
 @SpringBootTest
 public class ManagerServiceTest {
-	@Autowired
-	ManagerService service;
-	
+    @Autowired
+    ManagerService service;
+
+    @Test
+    void fintByManagerIdTest() {
+        assertThat(service.fintByManagerId("3ddf8681-3eaf-11ef-bd30-0206f94be675").getName()).isEqualTo("김선희");
+    }
 }

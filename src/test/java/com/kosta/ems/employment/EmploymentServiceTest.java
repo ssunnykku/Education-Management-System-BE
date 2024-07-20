@@ -55,4 +55,11 @@ public class EmploymentServiceTest {
                 "3ddf8303-3eaf-11ef-bd30-0206f94be675")).isTrue();
     }
 
+    @Test
+    @Transactional
+    public void countEmployeementFindByCourseNumber() {
+        assertThat(service.countEmployeedByCourseNumber(277)).isGreaterThan(0);
+        assertThat(service.countEmployeedByCourseNumber(286)).isEqualTo(0);
+    }
+
 }

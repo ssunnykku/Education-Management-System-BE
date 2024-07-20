@@ -1,7 +1,7 @@
 package com.kosta.ems.employment;
 
 import com.kosta.ems.course.CourseDTO;
-import com.kosta.ems.student.GetStudentInfoByScqDTO;
+import com.kosta.ems.student.dto.GetStudentInfoByScqDTO;
 
 import lombok.Builder;
 import lombok.Getter;
