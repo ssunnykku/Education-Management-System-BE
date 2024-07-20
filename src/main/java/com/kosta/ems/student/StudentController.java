@@ -19,6 +19,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class StudentController {
     private final StudentService studentService;
+
     private final ManagerService managerService;
     @Value("OFF")
     private String SECURITY_LEVEL;
@@ -107,17 +108,18 @@ public class StudentController {
         return result;
     }
 
-
     // [수강생 정보] - 수강생 등록
     // 3-2. 기존 수강생의 과정 수강 신규 등록
     @PostMapping("/new-course")
     public UpdateDeleteResultDTO setRegisteredStudentWithNewCourse(@RequestBody RequestAddStudentBasicInfoDTO request) {
         UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
+
         String managerId = getManagerIdOfLoginUser();
         log.info("💥managerId: " + managerId);
 
         try {
             studentService.setStudentCourseSeqInfo(request.getHrdNetId(), request.getCourseNumber(), managerId);
+
         } catch (NoSuchDataException e) {
             dto.setCode(ResCode.FAIL.value());
             dto.setMessage("Fail: setRegisteredStudentWithNewCourse");
@@ -137,8 +139,10 @@ public class StudentController {
     @PutMapping()
     public UpdateDeleteResultDTO updateSelectedStudentInfo(@RequestBody UpdateSelectedStudentInfoDTO request) {
         UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
+
         try {
             studentService.updateSelectedStudentInfo(request.getName(), request.getAddress(), request.getBank(), request.getAccount(), request.getPhoneNumber(), request.getEmail(), request.getStudentId(), request.getIsActive());
+
         } catch (NoSuchDataException e) {
             dto.setCode(ResCode.FAIL.value());
             dto.setMessage("Fail: updateSelectedStudentInfo");
@@ -167,6 +171,7 @@ public class StudentController {
         return dto;
     }
 
+
     private String getAcademyOfLoginUser() {
         if (SECURITY_LEVEL.equals("OFF")) {
             return "가산";
@@ -192,4 +197,5 @@ public class StudentController {
         }
         return loginUser;
     }
+
 }
