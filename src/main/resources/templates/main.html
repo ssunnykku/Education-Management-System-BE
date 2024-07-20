@@ -65,21 +65,20 @@
                     <option value="278">278</option>
                 </select>
             </div>
+            <div id="course-name">
+            </div>
         </div>
-        <table id="attendance-table">
-            <tr>
-                <th>기수</th>
-                <th>과정명</th>
-                <th>수강생 이름</th>
-                <th>출결 상태</th>
-            </tr>
-            <tr>
-                <td>기수</td>
-                <td>과정명</td>
-                <td>수강생 이름</td>
-                <td>출결 상태</td>
-            </tr>
-        </table>
+        <div id="attendance-table-wrapper">
+            <table id="attendance-table">
+                <tr id="attendance-table-first-row">
+                    <th>기수</th>
+                    <th>수강생 이름</th>
+                    <th>입실</th>
+                    <th>퇴실</th>
+                </tr>
+                <tr style="display: contents" id="attendance-table-contents"></tr>
+            </table>
+        </div>
     </article>
 </section>
 <script type="text/javascript" th:src="@{/scripts/main.js}"></script>
