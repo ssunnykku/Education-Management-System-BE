@@ -25,4 +25,5 @@ public class TakenCourseResponse {
     private LocalDate endDate;
     private int attendanceDays;
     private int status;
+    private Integer courseSeq;
 }

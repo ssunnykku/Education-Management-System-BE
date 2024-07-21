@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.kosta.ems.student.dto.StudentBasicInfoDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ApiService {
     private static final LocalTime CLASS_END_TIME = LocalTime.of(17, 50);
     private static final LocalTime CLASS_START_TIME = LocalTime.of(9, 10);
@@ -54,6 +56,8 @@ public class ApiService {
             courseList.add(courseMapper.getCourse(item.getCourseSeq()));
         });
 
+        log.info("{} ", courseList);
+
         courseList.forEach(course -> {
             int attendanceDays = attendanceMapper.selectCountAttendance(course.getCourseStartDate(), course.getCourseEndDate(), studentId);
             int status = course.getCourseEndDate().isAfter(LocalDate.now()) ? 0 : (100.0 * attendanceDays / course.getTotalTrainingDays()) > ATTENDANCE_ACK_RATE_PCT ? 1 : -1;
@@ -69,6 +73,7 @@ public class ApiService {
                     .subject(course.getSubject())
                     .attendanceDays(attendanceDays)
                     .status(status)
+                    .courseSeq(course.getCourseSeq())
                     .build());
         });
         return result;
@@ -209,5 +214,5 @@ public class ApiService {
 
         attendanceMapper.updateStudentAttendance(new UpdateStudentAttendanceStatusDTO(status, LocalDate.now(), studentCourseSeq, STUDENT_MANAGER_ID));
     }
-    
+
 }

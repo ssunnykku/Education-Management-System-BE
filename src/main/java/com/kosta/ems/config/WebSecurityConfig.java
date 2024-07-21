@@ -67,7 +67,7 @@ public class WebSecurityConfig {
 
         http.formLogin(formLogin -> formLogin
                         .loginPage("/ems/login")
-                        .defaultSuccessUrl("/ems/courses", true)
+                        .defaultSuccessUrl("/ems", true)
                         .failureUrl("/ems/login")
                         .usernameParameter("employeeNumber"))
                 .logout(logout -> logout

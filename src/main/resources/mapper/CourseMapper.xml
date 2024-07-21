@@ -161,5 +161,15 @@
         FROM courses
         WHERE course_number = #{courseNumber}
     </select>
+    
+    <select id="getSearchCourseListSize" resultType="Integer">
+        SELECT count(course_seq)
+        FROM courses
+        WHERE is_active = 'T'
+          and (IF(#{courseNumber}, 0, '전체') = '전체' or course_number = #{courseNumber})
+          AND (#{academyLocation} IS NULL OR #{academyLocation} = '' or academy_location = #{academyLocation})
+          and (false = #{excludeExpired} OR course_end_date &gt; CURDATE())
+    </select>
+
 
 </mapper>
