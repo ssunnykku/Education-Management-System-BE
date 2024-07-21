@@ -6,6 +6,11 @@ let currentBlock = 1;
 
 let totalPages = 0;
 
+$(document).ready(() => {
+    fetchCountScholarship();
+    fetchScholarshipBoard(1)
+})
+
 async function getSettlementList(data) {
     let result = '';
     for (let i = 0; i < data.length; i++) {
@@ -52,8 +57,8 @@ function courseNumber() {
     return $(".scholarship-courseId-filter option:selected").text();
 }
 
-$(".board-filter-search-btn").click(async function () {
-    $("#page_number").html("");
+function fetchCountScholarship() {
+
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -69,8 +74,6 @@ $(".board-filter-search-btn").click(async function () {
         redirect: "follow"
     };
 
-    await fetchScholarshipBoard(1);
-
     fetch("/scholarships/count", {
         method: "POST",
         headers: myHeaders,
@@ -80,14 +83,21 @@ $(".board-filter-search-btn").click(async function () {
         .then(async (data) => {
             $(".scholarship-cnt-pages").html(`<span>총 ${data.result}</span>건`);
 
-            // const countPage = Math.ceil(data.result / 10);
-            // const countPage = 12;  // Example total pages
             totalPages = Math.ceil(data.result / 10);
             console.log(totalPages);
 
             updatePagination();
         })
         .catch((error) => console.error(error));
+
+}
+
+$(".board-filter-search-btn").click(async function () {
+    $("#page_number").html("");
+    
+    await fetchScholarshipBoard(1);
+
+    await fetchCountScholarship()
 });
 
 function updatePagination() {
@@ -106,7 +116,6 @@ function updatePagination() {
     $("#page_number").append(result);
 }
 
-fetchScholarshipBoard(1)
 
 async function fetchScholarshipBoard(page) {
     const myHeaders = new Headers();

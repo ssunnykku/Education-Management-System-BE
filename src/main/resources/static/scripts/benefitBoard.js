@@ -24,20 +24,22 @@ function getCourseNumber() {
 
 /*course 목록*/
 
-fetch("/courses/course-number-list?excludeExpired=false", {
-    method: "GET",
-})
-    .then((res) => res.json())
-    .then((data) => {
-        const courseList = data.result;
-        let result = '';
-        for (const resultElement of courseList) {
-            result += `<option value=${resultElement}>${resultElement}</option>`;
-        }
-        $(".courseId-filter").append(result);
-
+$(document).ready(() => {
+    fetch("/courses/course-number-list?excludeExpired=false", {
+        method: "GET",
     })
-    .catch((error) => console.error(error));
+        .then((res) => res.json())
+        .then((data) => {
+            const courseList = data.result;
+            let result = '';
+            for (const resultElement of courseList) {
+                result += `<option value=${resultElement}>${resultElement}</option>`;
+            }
+            $(".courseId-filter").append(result);
+
+        })
+        .catch((error) => console.error(error));
+})
 
 
 async function fetchSettlementTarget() {
