@@ -637,3 +637,10 @@ ul#pagination {
 .page-link {
     width: 10px;
 }
+
+#search-course-modal {
+    width: 60rem;
+    height: 45rem;
+    border: #BBBBBB 1px solid;
+    border-radius: 20px;
+}

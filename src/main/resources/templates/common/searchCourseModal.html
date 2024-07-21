@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>전체 교육과정 모달</title>
+    <link rel="stylesheet" th:href="@{/css/searchCourse.css}"/>
+</head>
+<body th:fragment="searchCourseModal">
+<div>
+    <h1>전체 교육과정 정보</h1>
+</div>
+<div>
+    <input placeholder="기수 또는 과정명을 입력하세요" class="search-input"/>
+</div>
+<div id="course-list-table-wrapper">
+    <table id="course-list-table">
+        <tr>
+            <th>과정 구분</th>
+            <th>기수</th>
+            <th>과정명</th>
+            <th>교육 기간</th>
+            <th>강사명</th>
+        </tr>
+        <tr>
+            <td>과정 구분</td>
+            <td>기수</td>
+            <td>과정명</td>
+            <td>교육 기간</td>
+            <td>강사명</td>
+        </tr>
+    </table>
+    <div>
+        <button>선택 과정으로 조회</button>
+    </div>
+
+</div>
+</body>
+</html>
