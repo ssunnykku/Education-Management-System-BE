@@ -170,7 +170,12 @@
         WHERE course_number = #{courseNumber}
         ORDER BY course_number DESC
     </select>
-    
+
+	<select id="getCourseNameByCourseNumber" resultType="string">
+	SELECT course_name FROM courses
+        	WHERE course_number=#{courseNumber}
+	</select>
+
     <select id="getSearchCourseListSize" resultType="Integer">
         SELECT count(course_seq)
         FROM courses
@@ -179,6 +184,7 @@
           AND (#{academyLocation} IS NULL OR #{academyLocation} = '' or academy_location = #{academyLocation})
           and (false = #{excludeExpired} OR course_end_date &gt; CURDATE())
     </select>
+
 
 
 </mapper>

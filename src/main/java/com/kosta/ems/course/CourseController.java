@@ -127,6 +127,11 @@ public class CourseController {
 
         return Map.of("result", courseService.getCurrentCourseList(currentDate, loginUser.getAcademyLocation()));
     }
-
+    @GetMapping("/course-name")
+    public Map getCourseNameByCourseNumber(@RequestParam int courseNumber) {
+    	return Map.of("result",courseService.getCourseNameByCourseNumber(courseNumber));
+    }
+    
+    
 
 }

@@ -105,4 +105,9 @@ public class CourseServiceTest {
 	public void getSeqByCourseNumber() {
 		assertThat(service.getSeqByCourseNumber(277)).isEqualTo(10);
 	}
+	@Test
+	@Transactional
+	public void getCourseNameByCourseNumber() {
+		assertThat(service.getCourseNameByCourseNumber(277)).isEqualTo("자바");
+	}
 }
