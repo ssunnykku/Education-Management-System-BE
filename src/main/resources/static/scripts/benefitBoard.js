@@ -69,16 +69,16 @@ function getSettlementData(dataList) {
                     <span>${dataList[i].account}</span>
                 </div>
                 <div class="benefitSettlement-training-aid">
-                    <span>${dataList[i].trainingAidAmount}</span>
+                    <span>${dataList[i].trainingAidAmount.toLocaleString('ko-KR')}</span>
                 </div>
                 <div class="benefitSettlement-meal-aid-amount">
-                    <span>${dataList[i].mealAidAmount}</span>
+                    <span>${dataList[i].mealAidAmount.toLocaleString('ko-KR')}</span>
                 </div>
                 <div class="benefitSettlement-settlement_aid_amount">
-                    <span>${dataList[i].settlementAidAmount}</span>
+                    <span>${dataList[i].settlementAidAmount.toLocaleString('ko-KR')}</span>
                 </div>
                 <div class="benefitSettlement-total-amount">
-                    <span>${dataList[i].totalAmount}</span>
+                    <span>${dataList[i].totalAmount.toLocaleString('ko-KR')}</span>
                 </div>
             </div>`;
 
@@ -155,12 +155,12 @@ function fetchSettlement(data) {
             }
             if (data.result) {
                 // Bootstrap 모달 띄우기
-                        $('#settlementSuccessModal').modal('show');
+                $('#settlementSuccessModal').modal('show');
 
-                        // 모달이 닫힐 때 페이지 리디렉션
-                        $('#settlementSuccessModal').on('hidden.bs.modal', function () {
-                location.href = "/ems/benefits";
-            });
+                // 모달이 닫힐 때 페이지 리디렉션
+                $('#settlementSuccessModal').on('hidden.bs.modal', function () {
+                    location.href = "/ems/benefits";
+                });
             }
         })
         .catch((error) => console.error(error));

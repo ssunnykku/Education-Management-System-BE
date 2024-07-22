@@ -4,7 +4,31 @@ footer {
   height: 0;
 }
 
+.employment-courseId-filter {
+    width: 90px;
+    height: 41px;
 
+    background: #ffffff;
+
+    border: 1px solid #cfcfcf;
+    border-radius: 5px;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 144%;
+
+    padding-left: 18px;
+    padding-right: 37px;
+
+    color: #000000;
+
+    background-image: url("../assets/Polygon.svg");
+    background-repeat: no-repeat;
+    background-size: 12px;
+    background-position: right;
+    background-position: 60px;
+}
 /**************** addStudentModal *******************/
 article {
   display: flex;
@@ -540,7 +564,6 @@ body {
   flex-direction: row;
   gap: 10px;
   margin-left: 62.7%;
-  margin-top: 20px;
 }
 
 .student-btn-setting {

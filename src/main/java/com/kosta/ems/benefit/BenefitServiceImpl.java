@@ -116,6 +116,8 @@ public class BenefitServiceImpl implements BenefitService {
         int limit = size;
         int offset = size * (page - 1);
 
+        log.info("dto: {}", dto);
+
         List<BenefitTargetInfoDTO> studentInfo = (ArrayList<BenefitTargetInfoDTO>) benefitMapper.resultList(dto.getAcademyLocation(), dto.getName(), dto.getCourseNumber(), dto.getBenefitSettlementDate(), limit, offset);
         List<BenefitTargetInfoDTO> benefitAmount = (ArrayList<BenefitTargetInfoDTO>) benefitMapper.getBefitAmount(dto.getBenefitSettlementDate());
         List<BenefitTargetInfoDTO> result = new ArrayList<BenefitTargetInfoDTO>();
@@ -157,7 +159,7 @@ public class BenefitServiceImpl implements BenefitService {
             result.add(newData);
         }
 
-
+        log.info("정산 결과:{} ", result);
         return result;
     }
 

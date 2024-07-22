@@ -100,7 +100,10 @@ $(document).ready(function() {
 async function getSettlementList(data) {
   let tableBody = "";
 if (!data || data.length === 0) {
-    tableBody = '<div class="no-data-message">데이터가 없습니다</div>';
+    tableBody =    `<tr>
+            <td colspan="9" class="no-data-message" style="border-bottom: none;">데이터가 없습니다</td>
+        </tr>
+    `;
   } else {
   for (let i = 0; i < data.length; i++) {
 	const employmentStatusText = data[i].employeed ? "취업" : "미취업";

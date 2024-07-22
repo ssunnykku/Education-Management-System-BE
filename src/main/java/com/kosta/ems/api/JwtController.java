@@ -76,14 +76,28 @@ public class JwtController {
         StudentInfoDTO loginUser = getLoginUser();
         return Map.of("result", service.getPointHistory(courseSeq, loginUser.getStudentId()));
     }
+    
+    //마이페이지 정보 조회
+    @GetMapping("/student")
+    public Map getStudentInfo() {
+        StudentInfoDTO loginUser = getLoginUser();
+        return Map.of("result", loginUser);
+    }
 
     //마이페이지 정보 수정 모달
     @PutMapping("/student")
     public Map updateStudentInfo(@RequestBody UpdateStudentInfoRequest dto) {
         StudentInfoDTO loginUser = getLoginUser();
         return Map.of("result", service.updateStudentContactInfo(loginUser.getStudentId(), dto));
+//        return Map.of("result", false);
     }
-
+    
+    //현재 수강중인 과정
+    @GetMapping("/current-course")
+    public Map GetCurrentCourse() {
+        StudentInfoDTO loginUser = getLoginUser();
+        return Map.of("result", service.getCurrentCourse(loginUser.getStudentId()));
+    }
     //마이페이지 입실/
     @GetMapping("/time")
     public Map GetAttendanceTimeStatus() {
@@ -105,19 +119,20 @@ public class JwtController {
 
     private StudentInfoDTO getLoginUser() {
         StudentInfoDTO loginUser;
-        loginUser = StudentInfoDTO.builder()
-                .studentId("738003dc-3eb0-11ef-bd30-0206f94be675")
-                .hrdNetId("syc1234")
-                .name("손유철")
-                .birth(LocalDate.of(2002, 2, 16))
-                .address("경기도 부천시 소사로 111 연꽃가득아파트 101호")
-                .bank("국민")
-                .account("110583195038")
-                .phoneNumber("01059341921")
-                .email("syc1234@gmail.com")
-                .gender('M')
-                .isActive('T')
-                .build();
+         loginUser = service.getStudentByStudentCourseSeq(19);
+//        loginUser = StudentInfoDTO.builder()
+//                .studentId("738003dc-3eb0-11ef-bd30-0206f94be675")
+//                .hrdNetId("syc1234")
+//                .name("손유철")
+//                .birth(LocalDate.of(2002, 2, 16))
+//                .address("경기도 부천시 소사로 111 연꽃가득아파트 101호")
+//                .bank("국민")
+//                .account("110583195038")
+//                .phoneNumber("01059341921")
+//                .email("syc1234@gmail.com")
+//                .gender('M')
+//                .isActive('T')
+//                .build();
 //        if (SECURITY_LEVEL.equals("OFF")) {
 //        }
 //        else {

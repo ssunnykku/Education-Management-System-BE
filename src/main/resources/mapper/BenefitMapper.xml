@@ -142,7 +142,9 @@
                bc.benefits_categories_seq as benefitsCategoriesSeq
         from benefits b
                  inner join benefits_categories bc on b.benefits_categories_seq = bc.benefits_categories_seq
-        where benefit_settlement_date = #{benefitSettlementDate}
+        where (#{benefitSettlementDate} IS NULL
+            OR #{benefitSettlementDate} = ''
+            OR b.benefit_settlement_date = #{benefitSettlementDate})
           and b.is_active = true
     </select>
 
