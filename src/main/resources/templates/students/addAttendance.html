@@ -879,7 +879,7 @@
         let formData = new FormData();
         formData.append("evidentialDocument", fileInput.files[0]);
 
-        fetch('http://localhost:8888/attendances/upload', {
+        fetch('/attendances/upload', {
             method: 'POST',
             cache: 'no-cache',
             body: formData // body 부분에 폼데이터 변수를 할당
