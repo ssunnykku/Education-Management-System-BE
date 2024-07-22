@@ -510,7 +510,8 @@ filter and search
 
 .benefit-result-board-table {
     white-space: nowrap;
-    overflow: auto
+    overflow: auto;
+    min-height: 50vh;
 }
 
 
@@ -626,7 +627,6 @@ ul#pagination {
 }
 
 #page_number {
-    min-width: 30px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

@@ -107,10 +107,13 @@ function updatePagination() {
     let result = "";
     for (let i = firstPage; i <= lastPage; i++) {
         let num = i;
+        let fontWeight = (num === currentPage) ? 'bold' : 'normal';
 
-        result += `<a class=" v" onclick="fetchScholarshipResultBoard(${num})">${num}</a>`;
+        result += `<li>
+                <a class="page-link" style="font-weight: ${fontWeight}" onclick="fetchScholarshipResultBoard(${num})">${num}</a>
+                </li>`;
     }
-    $("#page_number").append(result);
+    $("#page-number").append(result);
 }
 
 

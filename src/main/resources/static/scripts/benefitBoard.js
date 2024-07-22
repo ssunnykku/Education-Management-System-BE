@@ -48,31 +48,11 @@ $(document).ready(() => {
         .catch((error) => console.error(error));
 })
 
+function getSettlementData(dataList) {
+    let result = '';
+    for (let i = 0; i < dataList.length; i++) {
 
-async function fetchSettlementTarget() {
-
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    const raw = JSON.stringify({
-        "settlementDurationStartDate": getStartDate(),
-        "settlementDurationEndDate": getEndDate(),
-        "courseNumber": courseNumber(),
-        "lectureDays": getLectureDays(),
-        "name": ""
-    });
-
-    const requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-    };
-
-    function getSettlementData(dataList) {
-        let result = '';
-        for (let i = 0; i < dataList.length; i++) {
-
-            result += `<div class="board-row">
+        result += `<div class="board-row">
                 <div class="benefitSettlement-courseId">
                     <span>${dataList[i].courseNumber}</span>
                 </div>
@@ -102,17 +82,40 @@ async function fetchSettlementTarget() {
                 </div>
             </div>`;
 
-        }
-        $("#benefit-table-contents").html("");
-        $("#benefit-table-contents").append(result);
-
-        $(".benefit-cnt-pages").html("");
-        $(".benefit-cnt-pages").append(`<span> 총 ${dataList.length}건 </span>`);
     }
+    $("#benefit-table-contents").html("");
+    $("#benefit-table-contents").append(result);
+
+    $(".benefit-cnt-pages").html("");
+    $(".benefit-cnt-pages").append(`<span> 총 ${dataList.length}건 </span>`);
+}
+
+async function fetchSettlementTarget() {
+
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+        "settlementDurationStartDate": getStartDate(),
+        "settlementDurationEndDate": getEndDate(),
+        "courseNumber": courseNumber(),
+        "lectureDays": getLectureDays(),
+        "name": ""
+    });
+
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+    };
 
     fetch("/benefits", requestOptions)
         .then((res) => res.json())
         .then(async (data) => {
+            if (data.status == 400) {
+                handleError('해당 기수의 정산 대상 기간이 아닙니다.');
+                return;
+            }
             if (data.error == 500) {
                 handleError('Error 발생. 관리자에게 문의하세요');
             } else {
@@ -121,10 +124,7 @@ async function fetchSettlementTarget() {
 
             }
 
-        })
-        .catch((error) => console.error(error));
-
-
+        }).catch((error) => console.error(error));
 }
 
 function fetchSettlement(data) {
@@ -166,7 +166,6 @@ function fetchSettlement(data) {
 $(".filter-search-btn").click(async () => {
     $("#error").html("");
     await fetchSettlementTarget();
-
 })
 
 $("#settlement-btn").click(async () => {

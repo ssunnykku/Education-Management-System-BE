@@ -208,6 +208,8 @@ public class BenefitServiceImpl implements BenefitService {
             }
 
             if (benefitMapper.selectLastSettlementDate(dto.getCourseNumber()) == null) {
+                log.info("benefitTargetList:{} ", benefitTargetList == null);
+
                 return benefitTargetList;
 
             }
@@ -217,6 +219,7 @@ public class BenefitServiceImpl implements BenefitService {
 
             }
 
+            log.info("benefitTargetList:{} ", benefitTargetList);
             return benefitTargetList;
         } catch (ResponseStatusException e) {
             log.error(e.getMessage());
