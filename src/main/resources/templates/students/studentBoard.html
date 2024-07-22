@@ -20,7 +20,10 @@
                     <option value="1">활성화된 수강생</option>
                     <option value="0">비활성화된 수강생</option>
                 </select>
-                <input placeholder="기수" id="input-course-number" class="courseId-filter" name="courseNumber"/>
+                 <select name="employment-courseId-filter"
+                    class="employment-courseId-filter">
+                <option value="course-number" id="course-number">기수</option>
+            </select>
                 <input placeholder="수강생을 입력하세요" id="input-name" class="student-name-filter" name="name"/>
                 <button type="button" class="filter-search-btn">검색</button>
             </div>
@@ -141,7 +144,26 @@
 </div>
 
 <script>
+fetch("/courses/course-number-list?excludeExpired=false", {
+    method: "GET",
+})
+    .then((res) => res.json())
+    .then((data) => {
+        const courseList = data.result;
+        let result = '';
+        for (const resultElement of courseList) {
+            result += `<option value=${resultElement}>${resultElement}</option>`;
+        }
+        $(".employment-courseId-filter").append(result);
+
+    })
+    .catch((error) => console.error(error));
+   
+   let courseNumber=0; 
     $(document).ready(async function () {
+    $(".employment-courseId-filter").on("change", async function() {
+  	courseNumber = $(this).val(); // 'this' refers to the selected dropdown element
+	});
         await fetchStudentList(1);
 
         // 모달 외부 클릭 시 모달 닫기 이벤트 처리기
@@ -189,12 +211,14 @@
         window.location.href = "/ems/students/set";
     });
 
-    function getCourseNumber() {
+   /* function getCourseNumber() {
         if ($("#input-course-number").val() == "") {
             return 0;
         }
         return parseInt($("#input-course-number").val());
-    }
+    }*/
+    
+    
 
     function getStudentName() {
         return $(".student-name-filter").val();
@@ -432,7 +456,7 @@
 
         const raw = JSON.stringify({
             "name": getStudentName(),
-            "courseNumber": getCourseNumber(),
+            "courseNumber": courseNumber,
             "isActive": getIsActive()
         });
         console.log("fetchStudentList - raw::");
