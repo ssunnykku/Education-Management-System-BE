@@ -11,7 +11,7 @@ import java.util.Collection;
 public interface ScholarshipService {
     Collection<ScholarshipTargetDTO> getScholarshipTargetList(ScholarshipTargetListReqDTO dto, int page, int size);
 
-    void setScholarshipSettlement(Integer studentCourseSeq, String managerId);
+    void setScholarshipSettlementDate(int studentCourseSeq);
 
     Collection<ScholarshipSettlementResultDTO> getScholarshipResultList(ScholarshipTargetListReqDTO dto, int page, int size);
 

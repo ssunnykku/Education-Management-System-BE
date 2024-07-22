@@ -1,7 +1,5 @@
 package com.kosta.ems.course;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -31,51 +29,38 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/courses")
 @RequiredArgsConstructor
 public class CourseController {
-    private final CourseService courseService;
-    private final ManagerService managerService;
+	private final CourseService courseService;
+	private final ManagerService managerService;
     @Value("${security.level}")
     private String SECURITY_LEVEL;
-
+	
 	@GetMapping("/course")
 	public Map<String, CourseDTO> getCourse(@RequestParam int courseSeq) {
-	    ManagerDTO loginUser = getLoginUser();
-		return Map.of("result", courseService.getCourse(courseSeq, loginUser.getAcademyLocation()));
+		return Map.of("result", courseService.getCourse(courseSeq, getAcademyOfLoginUser()));
 	}
-
+	
 	@GetMapping("/course-list")
 	public Map CourseList(
 			@RequestParam(value = "page",           defaultValue = "1"   ) int page,
 			@RequestParam(value = "pageSize",       defaultValue = "10"  ) int pageSize,
 			@RequestParam(value = "courseNumber",   defaultValue = "0"   ) int courseNumber,
-			@RequestParam(value = "excludeExpired", defaultValue = "true") boolean excludeExpired,
-			HttpServletRequest request)
+			@RequestParam(value = "excludeExpired", defaultValue = "true") boolean excludeExpired, 
+			HttpServletRequest request) 
 	{
-	    ManagerDTO loginUser = getLoginUser();
-		String academyLocation = loginUser.getAcademyLocation();
+		String academyLocation = getAcademyOfLoginUser();
 		return Map.of("result", courseService.searchCourseList(courseNumber, academyLocation, page, pageSize, excludeExpired));
 	}
 	
 	@GetMapping("/course-number-list")
 	public Map getCourseNumberList(@RequestParam(value="excludeExpired", defaultValue = "true") boolean excludeExpired, HttpServletRequest request) {
-	    ManagerDTO loginUser = getLoginUser();
-		return Map.of("result", courseService.getCourseNumberList(loginUser.getAcademyLocation(), excludeExpired));
+		return Map.of("result", courseService.getCourseNumberList(getAcademyOfLoginUser(), excludeExpired));
 	}
 	@GetMapping("/course-type-list")
 	public Map getCourseTypeList() {
 		return Map.of("result", courseService.getCourseTypeList());
 	}
-
-	@GetMapping("/course-list-by-year")
-	public Map getCourseNumberByYear(@RequestParam int courseEndYear) {
-		return Map.of("result", courseService.getCourseNumberByYear(courseEndYear));
-	}
 	
-
-	@GetMapping("/course-year-list")
-	public Map getCourseNumberYearList() {
-		return Map.of("result",courseService.getCourseNumberYearList());
-	}
-
+	
 	@PostMapping("/course")
 	public Map<String, Boolean> addCourse(@RequestBody @Valid AddCourseRequest cRequest, BindingResult bindingResult){
 	    if(bindingResult.hasErrors()) {
@@ -88,29 +73,37 @@ public class CourseController {
 		boolean result = courseService.addCourse(course);
 		return Map.of("result", result);
 	}
-
+	
 	@PutMapping("/course")
 	public Map<String, Boolean> editCourse(@RequestBody CourseDTO course){
-	    ManagerDTO loginUser = getLoginUser();
-		course.setManagerId(loginUser.getManagerId());
-		course.setAcademyLocation(loginUser.getAcademyLocation());
+		course.setManagerId(getManagerIdOfLoginUser());
+		course.setAcademyLocation(getAcademyOfLoginUser());
 		boolean result = courseService.editCourse(course);
 		return Map.of("result", result);
 	}
-
+	
 	@PatchMapping("/course/{courseSeq}")
 	public Map<String, Boolean> deleteCourse(@PathVariable("courseSeq") int courseSeq){
-	    ManagerDTO loginUser = getLoginUser();
-		boolean result = courseService.deleteCourse(courseSeq, loginUser.getAcademyLocation());
+		boolean result = courseService.deleteCourse(courseSeq, getAcademyOfLoginUser());
 		return Map.of("result", result);
 	}
 
-	@GetMapping("/students-number")
-	public Map getStudentsNumberBySeq(@RequestParam int courseNumber) {
-		int courseSeq=courseService.getSeqByCourseNumber(courseNumber);
-		return Map.of("result", courseService.getStudentsNumberBySeq(courseSeq));
+	private String getAcademyOfLoginUser() {
+        if(SECURITY_LEVEL.equals("OFF")) {
+            return("가산");
+        }
+        ManagerDTO loginUser = getLoginUser();
+        return loginUser.getAcademyLocation();
 	}
-
+	
+	private String getManagerIdOfLoginUser() {
+	    if(SECURITY_LEVEL.equals("OFF")) {
+	        return("bd8c73e1-39c9-11ef-aad4-06a5a7b26ae5");
+	    }
+	    ManagerDTO loginUser = getLoginUser();
+		return loginUser.getManagerId();
+	}
+	
     private ManagerDTO getLoginUser() {
         ManagerDTO loginUser;
         if (SECURITY_LEVEL.equals("OFF")) {
@@ -120,18 +113,5 @@ public class CourseController {
         }
         return loginUser;
     }
-
-    @GetMapping("/current-list")
-    public Map<String, List<CourseDTO>> currentProcessList(@RequestParam LocalDate currentDate) {
-        ManagerDTO loginUser = getLoginUser();
-
-        return Map.of("result", courseService.getCurrentCourseList(currentDate, loginUser.getAcademyLocation()));
-    }
-    @GetMapping("/course-name")
-    public Map getCourseNameByCourseNumber(@RequestParam int courseNumber) {
-    	return Map.of("result",courseService.getCourseNameByCourseNumber(courseNumber));
-    }
-    
-    
-
+	
 }

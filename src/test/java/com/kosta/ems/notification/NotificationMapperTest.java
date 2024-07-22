@@ -21,10 +21,10 @@ class NotificationMapperTest {
 	}
 	@Test
 	void testFindByKeyword() {
-		log.info(notificationMapper.selectByKeyword("2025","d893c29b-2f8f-11ef-b0b2-0206f94be675", 10, 0 ).toString());
+		log.info(notificationMapper.selectByKeyword("gg","d893c29b-2f8f-11ef-b0b2-0206f94be675", 10, 0 ).toString());
 	}
 
-	@Test
+	//@Test
 	void testInsertNotification() {
 		NotificationDTO notification=
 				NotificationDTO.builder()

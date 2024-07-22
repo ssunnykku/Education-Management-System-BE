@@ -26,7 +26,6 @@ public class CourseDTO {
     private String professorName;
     private int maxStudents;
     private char isActive;
-    private int courseEndYear;
     
 //    public void setIsActive(boolean isActive) {
 //    	this.isActive = isActive ? 'T' : 'F';

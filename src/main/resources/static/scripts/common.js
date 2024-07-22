@@ -7,7 +7,6 @@ $(document).ready(() => {
         $("#nav-wrapper-dropdown").css("display", "none");
     })
 
-
 })
 
 

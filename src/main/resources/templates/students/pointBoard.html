@@ -15,8 +15,8 @@
   <div th:insert="~{common/header :: header}"></div>
   <div th:insert="~{common/title :: title ('포인트 관리')}"></div>
   <section id="point-section">
-    <article class="search-form-wrapper point-search important-search-form-wrapper">
-      <form action="#" class="seacrch-form important-search-form">
+    <article class="search-form-wrapper point-search">
+      <form action="#" class="seacrch-form">
         <div id="filter-button-wrapper">
           <form action="/ems/points">
             <select id="courseNumberSelect" name="courseNumber" class="courseId-filter">
@@ -33,14 +33,11 @@
           </form>
         </div>
       </form>
-      <div id="button-wrapper" class="important-button-wrapper">
+      <div id="button-wrapper">
         <button id="point-search-btn" class="btn-setting" onclick="initShowPointModal()">조회</button>
         <button id="enroll-btn" class="btn-setting" onclick="initAddPointModal()">포인트 등록</button>
       </div>
     </article>
-    <div class="cnt-pages">
-      <span th:text="${'총 ' + paging.totalStudentCount +'개'}">총 개수 alt</span>
-    </div>
     <article id="point-table-wrapper">
       <div id="point-table">
         <form>
@@ -91,7 +88,9 @@
       </div>
     </article>
     <article class="page-information">
-
+      <div class="cnt-pages">
+        <span th:text="${'총 ' + paging.totalStudentCount +'개'}">총 개수 alt</span>
+      </div>
       <ul id="pagination">
         <li th:classappend="${paging.pageOffset == 1} ? 'inactivePage'">
           <a class="page-link"
@@ -154,10 +153,21 @@
               <h4>항목</h4>
               <h4>포인트(점)</h4>
             </div>
-           
+            <!-- <div id="pointBody" style="display: contents;">
+
+              </div> -->
+            <!-- <div>
+                <h5>24.02.10</h5>
+                <h5>시험치기 응시</h5>
+                <h5>10</h5>
+              </div>
+              <div>
+                <h5>24.04.01</h5>
+                <h5>국가 자격증 취득</h5>
+                <h5>10</h5>
+              </div> -->
           </div>
           <div class="total-point line">
-            <h3></h3>
             <h3>총 적립 포인트</h3>
             <h3 id="totalPoint">20</h3>
           </div>
@@ -213,7 +223,6 @@
       <div id="addpoint-wrapper2">
         <div class="point-info">
           <div class="info-title underline" id="point-info-name">
-            <h1></h1>
             <h1>항목</h1>
             <h1>포인트(점)</h1>
           </div>

@@ -23,8 +23,8 @@ public class ScholarshipSettlementResultDTO {
     private char isActive;
     private Long studentCourseSeq;
     private Long courseSeq;
-    private Integer courseNumber;
+    private int courseNumber;
     private String courseName;
-    private LocalDate settlementDate;
+    private LocalDate scholarshipDate;
     private int scholarshipAmount;
 }

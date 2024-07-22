@@ -16,6 +16,9 @@ function getScholarshipResultData(data) {
     let result = "";
     for (let i = 0; i < dataList.length; i++) {
         result += ` <div class="scholarshipResultBoard-row">
+                            <div class="scholarshipResultBoard-checkbox">
+                                <input type="checkbox" name=""/>
+                            </div>
                             <div class="scholarshipResultBoard-courseId">
                                 <span>${dataList[i].courseNumber}</span>
                             </div>
@@ -30,10 +33,10 @@ function getScholarshipResultData(data) {
                                 <span>${dataList[i].account}</span>
                             </div>
                             <div class="scholarshipResultBoard-total-amount">
-                                <span>${dataList[i].scholarshipAmount.toLocaleString('ko-KR')}</span>
+                                <span>${dataList[i].scholarshipAmount}</span>
                             </div>
                             <div class="scholarshipResultBoard-settlement-date">
-                                <span>${dataList[i].settlementDate}</span>
+                                <span>${dataList[i].scholarshipDate}</span>
                             </div>
                         </div>`
 
@@ -43,15 +46,11 @@ function getScholarshipResultData(data) {
 }
 
 function searchInput() {
-    if ($(".search-input").val() === null) {
-        return '';
-    }
     return $(".search-input").val();
 }
 
 function courseNumber() {
-    console.log($(".scholarshipResult-courseId-filter option:selected").text());
-    return $(".scholarshipResult-courseId-filter option:selected").text();
+    return $(".scholarship-courseId-filter option:selected").text();
 }
 
 function settlementDate() {
@@ -66,7 +65,7 @@ async function fetchScholarshipResultBoard(param) {
     const raw = JSON.stringify({
         "courseNumber": courseNumber() == "기수" ? "" : courseNumber(),
         "name": searchInput(),
-        "settlementDate": settlementDate()
+        "scholarshipDate": settlementDate()
     });
 
     const requestOptions = {
@@ -104,14 +103,10 @@ function updatePagination() {
     let result = "";
     for (let i = firstPage; i <= lastPage; i++) {
         let num = i;
-        let fontWeight = (num === currentPage) ? 'bold' : 'normal';
 
-        result += `<li>
-                <a class="page-link" style="font-weight: ${fontWeight}" onclick="fetchScholarshipResultBoard(${num})">${num}</a>
-                </li>`;
+        result += `<a class=" v" onclick="fetchScholarshipResultBoard(${num})">${num}</a>`;
     }
-    $("#page-number").html('');
-    $("#page-number").append(result);
+    $("#page_number").append(result);
 }
 
 

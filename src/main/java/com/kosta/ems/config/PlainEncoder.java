@@ -2,7 +2,7 @@ package com.kosta.ems.config;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-public class PlainEncoder implements PasswordEncoder {
+public class PlainEncoder implements PasswordEncoder{
 
     @Override
     public String encode(CharSequence rawPassword) {

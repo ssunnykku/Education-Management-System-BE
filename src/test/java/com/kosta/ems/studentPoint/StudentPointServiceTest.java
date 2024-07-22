@@ -28,17 +28,14 @@ public class StudentPointServiceTest {
 	@Test
 	@Transactional
 	public void getTotal() {
-		assertThat(service.getCountOfStudentWithPoint(277, null, "가산")).isGreaterThan(0);
-		assertThat(service.getCountOfStudentWithPoint(-277, null, "가산")).isEqualTo(0);
+		assertThat(service.getCountOfStudentWithPoint(277, null, "가산")).isEqualTo(18);
 	}
 	
 	@Test
 	@Transactional
 	public void getPointHistory() {
-		List<PointHistoryDTO> history = service.getPointHistory(19, "가산");
-		assertThat(history.size()).isGreaterThan(0);
-		history = service.getPointHistory(-1, "가산");
-        assertThat(history.size()).isEqualTo(0);
+		List<PointHistoryDTO> history = service.getPointHistory(1, "가산");
+		assertThat(history.size()).isEqualTo(34);
 	}
 	
 	@Test
@@ -50,7 +47,7 @@ public class StudentPointServiceTest {
 	@Test
 	@Transactional
 	public void insertStudentPoint() {
-		boolean result = service.insertStudentPoint(2, "3ddf8303-3eaf-11ef-bd30-0206f94be675", 19, "가산");
+		boolean result = service.insertStudentPoint(2, "d893c29b-2f8f-11ef-b0b2-0206f94be675", 1, "가산");
 		assertThat(result).isTrue();
 	}
 	

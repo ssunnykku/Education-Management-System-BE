@@ -27,8 +27,8 @@
             </select>
             <input placeholder="수강생을 입력하세요" class="search-input"/>
             <button type="button" class="filter-search-btn">검색</button>
+
         </div>
-        <div id="benefit-result-error"></div>
     </article>
     <article class="page-information">
         <div class="benefitResult-cnt-pages">
@@ -77,7 +77,7 @@
         <ul id="pagination">
             <li>
                 <a class="page-link" id="before">
-                    <img src="../../assets/navigate_prev_white_24dp%201.svg" alt="이전"/>
+                    이전
                 </a>
             </li>
             <!--// 이게 페이지 번호-->
@@ -85,14 +85,13 @@
             </ul>
             <li class="page-item">
                 <a class="page-link" id="next">
-                    <img src="../../assets/navigate_next_white_24dp%201.svg" alt="다음"/>
+                    다음
                 </a>
             </li>
         </ul>
         </div>
     </article>
 </section>
-<!--<div th:insert="~{common/searchCourseModal :: searchCourseModal}" id="search-course-modal"></div>-->
 
 <footer></footer>
 <script type="text/javascript" th:src="@{/scripts/benefitResultBoard.js}"></script>

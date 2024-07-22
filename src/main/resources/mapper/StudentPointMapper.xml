@@ -15,8 +15,8 @@
 		FROM courses c, students s, students_points sp, point_categories pc, students_courses sc
 		WHERE
 		(sc.student_id=s.student_id AND sc.course_seq=c.course_seq AND sc.student_course_seq=sp.student_course_seq AND sp.point_seq=pc.point_seq)
-		AND s.is_active = true AND (#{name} IS NULL OR #{name} = '' OR s.name LIKE CONCAT('%', #{name}, '%'))
-		AND c.is_active = true AND (IF(#{courseNumber}, 0,'전체') = '전체' or c.course_number = #{courseNumber})
+		AND s.is_active = 'T' AND (#{name} IS NULL OR #{name} = '' OR s.name LIKE CONCAT('%', #{name}, '%'))
+		AND c.is_active = 'T' AND (IF(#{courseNumber}, 0,'전체') = '전체' or c.course_number = #{courseNumber})
 		GROUP BY sc.student_course_seq
 		ORDER BY c.course_number, sc.student_course_seq
 		LIMIT #{offset}, #{pageSize}
@@ -28,8 +28,8 @@ SELECT
 		FROM courses c, students s, students_points sp, students_courses sc
 		WHERE
 		(sc.student_id=s.student_id AND sc.course_seq=c.course_seq AND sc.student_course_seq=sp.student_course_seq)
-		AND s.is_active = true AND (#{name} IS NULL OR #{name} = '' OR s.name LIKE CONCAT('%', #{name}, '%'))
-		AND c.is_active = true AND (IF(#{courseNumber}, 0,'전체') = '전체' or c.course_number = #{courseNumber})
+		AND s.is_active = 'T' AND (#{name} IS NULL OR #{name} = '' OR s.name LIKE CONCAT('%', #{name}, '%'))
+		AND c.is_active = 'T' AND (IF(#{courseNumber}, 0,'전체') = '전체' or c.course_number = #{courseNumber})
 	</select>
 	<select id="getPointHistory"
 		resultType="com.kosta.ems.studentPoint.dto.PointHistoryDTO">
@@ -43,7 +43,7 @@ SELECT
 		resultType="com.kosta.ems.studentPoint.dto.PointCategoryDTO">
 SELECT point_seq pointSeq, category, point
 FROM point_categories
-WHERE is_active = true
+WHERE is_active = 'T'
 ORDER BY point_seq;
 	</select>
 	<insert id="insertStudentPoint">

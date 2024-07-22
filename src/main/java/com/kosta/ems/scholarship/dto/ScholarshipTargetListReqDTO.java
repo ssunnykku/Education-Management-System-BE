@@ -20,6 +20,6 @@ public class ScholarshipTargetListReqDTO {
 
     /*getScholarshipSettlementResultList + name*/
     private int courseNumber;
-    private LocalDate settlementDate;
+    private LocalDate scholarshipDate;
 
 }

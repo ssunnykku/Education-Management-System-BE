@@ -13,8 +13,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BenefitDTO {
-
-
     @NotNull
     private Integer benefitSeq;
     @NotNull
@@ -28,10 +26,6 @@ public class BenefitDTO {
     @NotNull
     private String studentId;
     @NotNull
-    private Integer settlementDurationSeq;
-    private int amount;
-    private Integer benefitsCategoriesSeq;
-    private String managerId;
-
+    private int settlementDurationSeq;
 
 }

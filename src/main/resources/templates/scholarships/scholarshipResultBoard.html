@@ -13,26 +13,33 @@
 <div th:insert="~{common/header :: header}"></div>
 <div th:insert="~{common/title :: title ('정산 결과 조회')}"></div>
 <section id="scholoarshipResult-contents">
-    <article class="scholarshipResult-search-form-wrapper">
+    <article>
+        <div class="scholarshipResult-search-form-wrapper">
             <input type="date" id="settlement-date"/>
             <select
                     name="scholarshipResult-courseId-filter"
                     class="scholarshipResult-courseId-filter"
             >
-                <option value="기수">기수</option>
+                <option value="none">기수</option>
             </select>
             <input placeholder="수강생을 입력하세요" class="search-input"/>
             <button type="button" class="filter-search-btn">검색</button>
+        </div>
     </article>
     <article class="scholarship-page-information">
         <div class="scholarship-cnt-pages">
             <span>총 2건</span>
         </div>
     </article>
-    <article id="scholarshipResultBoard-table-wrapper">
+    <article>
         <div class="scholarshipResultBoard-table">
-            <div class="scholarshipResultBoard-row"
+            <div
+                    class="scholarshipResultBoard-row"
                     id="scholarshipResultBoard-title-row">
+
+                <div class="scholarshipResultBoard-checkbox">
+                    <input type="checkbox" name=""/>
+                </div>
                 <div class="scholarshipResultBoard-courseId">
                     <span>기수</span>
                 </div>
@@ -60,15 +67,15 @@
         <ul id="pagination">
             <li>
                 <a class="page-link" id="before">
-                    <img src="../../assets/navigate_prev_white_24dp%201.svg" alt="이전"/>
+                    이전
                 </a>
             </li>
             <!--// 이게 페이지 번호-->
-            <ul class="page-item" id="page-number">
-            </ul>
+            <li class="page-item" id="page_number">
+            </li>
             <li class="page-item">
                 <a class="page-link" id="next">
-                    <img src="../../assets/navigate_next_white_24dp%201.svg" alt="다음"/>
+                    다음
                 </a>
             </li>
         </ul>

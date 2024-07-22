@@ -50,10 +50,8 @@ public class ScholarshipController {
 
     @PostMapping("/settlement/{studentCourseSeq}")
     public ResponseEntity<Map<String, Boolean>> scholarshipSettlement(@PathVariable int studentCourseSeq) {
-        ManagerDTO loginUser = getLoginUser();
-        String managerId = loginUser.getManagerId();
         try {
-            scholarshipService.setScholarshipSettlement(studentCourseSeq, managerId);
+            scholarshipService.setScholarshipSettlementDate(studentCourseSeq);
             return ResponseEntity.ok(Map.of("result", true));
 
         } catch (ResponseStatusException e) {

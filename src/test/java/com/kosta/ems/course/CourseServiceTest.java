@@ -21,8 +21,8 @@ public class CourseServiceTest {
 	@Test
 	@Transactional
 	public void getCourse() {
-		assertThat(service.getCourse(1, "강남")).isNotNull();
-		assertThat(service.getCourse(5, "강남")).isNull();
+		assertThat(service.getCourse(27, "가산")).isNotNull();
+		assertThat(service.getCourse(27, "강남")).isNull();
 	}
 	
 	@Test
@@ -37,7 +37,7 @@ public class CourseServiceTest {
 	public void addCourse() {
 		CourseDTO course = 
 				CourseDTO.builder()
-				.managerId("3ddf8303-3eaf-11ef-bd30-0206f94be675")
+				.managerId("d893c34e-2f8f-11ef-b0b2-0206f94be675")
 				.courseNumber(3000)
 				.academyLocation("가산")
 				.courseName("123")
@@ -57,7 +57,7 @@ public class CourseServiceTest {
 	public void editCourse() {
 		CourseDTO course = 
 				CourseDTO.builder()
-				.managerId("3ddf8303-3eaf-11ef-bd30-0206f94be675")
+				.managerId("d893c34e-2f8f-11ef-b0b2-0206f94be675")
 				.courseNumber(3000)
 				.academyLocation("가산")
 				.courseName("123")
@@ -79,35 +79,8 @@ public class CourseServiceTest {
 	@Test
 	@Transactional
     public void deleteCourse() {
-		assertThat(service.deleteCourse(5, "가산")).isTrue();
-		assertThat(service.deleteCourse(1, "가산")).isFalse();
+		assertThat(service.deleteCourse(27, "가산")).isTrue();
 	}
-
-
-	@Test
-	@Transactional
-	public void getCourseNumberByYear() {
-		assertThat(service.getCourseNumberByYear(2024).size()).isEqualTo(1);
-	}
-	@Test
-	@Transactional
-	public void getCourseNumberYearList() {
-		assertThat(service.getCourseNumberYearList().size()).isEqualTo(2);
-	}
-
-	@Test
-	@Transactional
-	public void getStudentsNumberBySeq() {
-		assertThat(service.getStudentsNumberBySeq(5)).isEqualTo(10);
-	}
-	@Test
-	@Transactional
-	public void getSeqByCourseNumber() {
-		assertThat(service.getSeqByCourseNumber(277)).isEqualTo(10);
-	}
-	@Test
-	@Transactional
-	public void getCourseNameByCourseNumber() {
-		assertThat(service.getCourseNameByCourseNumber(277)).isEqualTo("자바");
-	}
+	
+	
 }

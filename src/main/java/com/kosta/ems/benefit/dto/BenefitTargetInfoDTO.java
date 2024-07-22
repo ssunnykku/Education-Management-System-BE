@@ -22,9 +22,9 @@ public class BenefitTargetInfoDTO {
     private String hrdNetId;
     private String bank;
     private String account;
-    private int settlementAidAmount;
-    private int trainingAidAmount;
-    private int mealAidAmount;
+    private Integer settlementAidAmount;
+    private Integer trainingAidAmount;
+    private Integer mealAidAmount;
     /**/
     private String academyLocation;
     private LocalDate settlementDurationStartDate;
@@ -34,9 +34,8 @@ public class BenefitTargetInfoDTO {
     private LocalDate benefitSettlementDate;
 
     /**/
-    private int totalAmount;
+    private Integer totalAmount;
     private int benefitSeq;
-    private Integer benefitsCategoriesSeq;
-    private int amount;
+
 
 }
