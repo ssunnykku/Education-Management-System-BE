@@ -200,7 +200,8 @@ public class AttendanceController {
     public Map<String, Object> attendanceFileUpload(MultipartFile evidentialDocument) throws IOException {
         Map<String, Object> result = new HashMap<String, Object>();
         String orgFileName = evidentialDocument.getOriginalFilename();
-        String bucketKey = tempPath + orgFileName;
+        log.info("🎃 tempPath: " + tempPath);
+        String bucketKey = tempPath + "attendance/" + orgFileName;
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentType(evidentialDocument.getContentType());
         objectMetadata.setContentLength(evidentialDocument.getSize());
