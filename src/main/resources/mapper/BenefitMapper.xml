@@ -69,11 +69,16 @@
                  left join settlement_durations sd on b.settlement_duration_seq = sd.settlement_duration_seq
                  left join courses c on c.course_seq = sd.course_seq
                  left join students s on s.student_id = b.student_id
-        WHERE c.academy_location = #{academyLocation}
-          AND s.name LIKE CONCAT('%', #{name}, '%')
-          AND (#{courseNumber} IS NULL OR #{courseNumber} = '' OR c.course_number = #{courseNumber})
-          AND (#{benefitSettlementDate} IS NULL OR #{benefitSettlementDate} = '' OR
-               benefit_settlement_date = #{benefitSettlementDate})
+        where s.name LIKE CONCAT('%'
+            , #{name}
+            , '%')
+          AND (#{courseNumber} IS NULL
+            OR #{courseNumber} = ''
+            OR c.course_number = #{courseNumber})
+          AND (#{benefitSettlementDate} IS NULL
+            OR #{benefitSettlementDate} = ''
+            OR b.benefit_settlement_date = #{benefitSettlementDate})
+          AND c.academy_location = #{academyLocation}
           AND c.is_active = true
           AND s.is_active = true
     </select>
@@ -120,8 +125,7 @@
             OR c.course_number = #{courseNumber})
           AND (#{benefitSettlementDate} IS NULL
             OR #{benefitSettlementDate} = ''
-            OR
-               benefit_settlement_date = #{benefitSettlementDate})
+            OR b.benefit_settlement_date = #{benefitSettlementDate})
           AND c.academy_location = #{academyLocation}
           AND c.is_active = true
           AND s.is_active = true

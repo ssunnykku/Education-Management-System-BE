@@ -19,6 +19,10 @@ function getBenefitSettlementDate() {
     return $("#settlement-date").val();
 }
 
+$(document).ready(() => {
+    fetchResultData(1);
+})
+
 
 /*course 목록*/
 
@@ -105,12 +109,26 @@ function fetchResultData(page) {
 
             await getResultData(dataList)
 
+            if (data.result.length === 0) {
+                $("#result-contents").html("");
+                $("#result-contents").append(`
+                        <div style="width: 100%; text-align: center; height: 100px; display: flex; flex-direction: column; justify-content: center">
+                        <span style="color: red; font-size: 16px">데이터를 찾을 수 없습니다.</span>
+                        </div>`);
+            } else {
+                $(".benefitResult-cnt-pages").html(`<span>총 ${data.result.length}건</span>`);
+
+                totalPages = Math.ceil(data.result.length / 10);
+                updatePagination();
+            }
+
+
         })
         .catch((error) => console.error(error));
 }
 
 $(".filter-search-btn").click(async () => {
-    await getCountData();
+    // await getCountData();
     await fetchResultData(1);
 })
 
@@ -124,14 +142,18 @@ function updatePagination() {
 
     let result = "";
     for (let i = firstPage; i <= lastPage; i++) {
+
         let num = i;
+        let fontWeight = (num == currentPage) ? 'bold' : 'normal';
+
         result += `<li>
-                    <a class="page-link" onclick="fetchResultData(${num})">${num}</a>
+                    <a class="page-link" style="font-weight: ${fontWeight}"  onclick="fetchResultData(${num})">${num}</a>
                     </li>`;
     }
     $("#page_number").append(result);
 }
 
+ㅍ
 
 $("#next").click(() => {
     if (currentBlock * pageSize < totalPages) {
@@ -149,37 +171,4 @@ $("#before").click(() => {
     }
 });
 
-function getCountData() {
-    const requestOptions = {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-            "name": getName(),
-            "courseNumber": getCourseNumber(),
-            "benefitSettlementDate": getBenefitSettlementDate()
-
-        }),
-        redirect: "follow"
-    };
-
-    fetch("/benefits/result/count", requestOptions)
-        .then((res) => res.json())
-        .then((data) => {
-
-            if (data.result === 0) {
-                $("#result-contents").html("");
-                $("#result-contents").append(`
-                        <div style="width: 100%; text-align: center; height: 100px; display: flex; flex-direction: column; justify-content: center">
-                        <span style="color: red; font-size: 16px">데이터를 찾을 수 없습니다.</span>
-                        </div>`);
-            } else {
-                $(".benefitResult-cnt-pages").html(`<span>총 ${data.result}건</span>`);
-                totalPages = Math.ceil(data.result / 10);
-                updatePagination();
-            }
-
-
-        })
-        .catch((error) => console.error(error));
-}
 

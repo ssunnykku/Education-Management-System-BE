@@ -6,12 +6,14 @@ import com.kosta.ems.manager.ManagerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,16 +28,25 @@ public class BenefitController {
     private final BenefitService benefitService;
 
     @PostMapping
-    public ResponseEntity<Map<String, List<BenefitTargetInfoDTO>>> getBenefitTargetList(@RequestBody BenefitTargetInfoDTO dto) {
-        log.info("{}", dto);
-        ManagerDTO loginUser = getLoginUser();
-        String managerId = loginUser.getManagerId();
-        String academyLocation = loginUser.getAcademyLocation();
+    public ResponseEntity<Map<String, Object>> getBenefitTargetList(@RequestBody BenefitTargetInfoDTO dto) {
+        try {
+            log.info("{}", dto);
+            ManagerDTO loginUser = getLoginUser();
+            String managerId = loginUser.getManagerId();
+            String academyLocation = loginUser.getAcademyLocation();
 
-        dto.setAcademyLocation(academyLocation);
-        dto.setManagerId(managerId);
-        List<BenefitTargetInfoDTO> result = (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitTargetList(dto);
-        return ResponseEntity.ok(Map.of("result", result));
+            dto.setAcademyLocation(academyLocation);
+            dto.setManagerId(managerId);
+            List<BenefitTargetInfoDTO> result = (ArrayList<BenefitTargetInfoDTO>) benefitService.getBenefitTargetList(dto);
+            return ResponseEntity.ok(Map.of("result", result));
+        } catch (RuntimeException e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("result", "error");
+            errorResponse.put("status", HttpStatus.BAD_REQUEST.value());
+            errorResponse.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+
 
     }
 
