@@ -642,7 +642,7 @@ select {
     top: 27.5%;
     left: 35%;
     font-size: 16px;
-    z-index: 999;
+    /*z-index: 996;*/
     background-color: #fff;
 
     .input-date {

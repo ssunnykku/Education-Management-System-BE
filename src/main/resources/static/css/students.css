@@ -220,9 +220,9 @@ select {
 }
 
 #enroll-btn {
-  width: 80px;
+  width: 100px;
   height: 34px;
-  margin-left: 35%;
+  margin-left: 32%;
   padding: 19px 16px;
   color: #ffffff;
   border-radius: 8px;
@@ -752,7 +752,7 @@ body {
   font-size: 16px;
 
   /* 수강생 isActive option DIV */
-  .is-acitve-status-wrapper {
+  .is-active-status-wrapper {
     display: flex;
     justify-content: flex-start;
     width: 100%;
