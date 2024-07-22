@@ -516,7 +516,7 @@
     margin: 20px 0 20px 0;
     display: flex;
     gap: 4px;
-    padding: 0 250px;
+    padding-left: 13rem;
 }
 
 .scholarshipResult-search-btn-wrapper {
@@ -604,7 +604,7 @@
     font-weight: 500;
     font-size: 15px;
     line-height: 144%;
-    padding-left: 18px;
+    padding-left: 8px;
     color: #000000;
     background-size: 12px;
     background-position: right;

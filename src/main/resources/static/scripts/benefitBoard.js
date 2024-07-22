@@ -1,4 +1,7 @@
 function getLectureDays() {
+    if ($("#lecture-days").val() === null || $("#lecture-days").val() === '') {
+        handleError('강의 일수를 입력해주세요');
+    }
     return $("#lecture-days").val();
 }
 
@@ -11,15 +14,19 @@ function getEndDate() {
 }
 
 function courseNumber() {
+    if ($(".courseId-filter option:selected").text() === '기수') {
+        handleError('기수를 입력해주세요');
+    }
     return $(".courseId-filter option:selected").text();
-}
-
-function getName() {
-    return $(".search-input").val();
 }
 
 function getCourseNumber() {
     return $('.benefitSettlement-courseId').val();
+}
+
+function handleError(message) {
+    $("#error").html("");
+    $("#error").append(`<span style="color: red">${message}</span>`)
 }
 
 /*course 목록*/
@@ -103,17 +110,11 @@ async function fetchSettlementTarget() {
         $(".benefit-cnt-pages").append(`<span> 총 ${dataList.length}건 </span>`);
     }
 
-    function handleError(message) {
-        console.error('Error:', message);
-        $("#error").html("");
-        $("#error").append(`<span style="color: red">${message}</span>`)
-    }
-
     fetch("/benefits", requestOptions)
         .then((res) => res.json())
         .then(async (data) => {
-            if (data.error) {
-                handleError(data.message);
+            if (data.error == 500) {
+                handleError('Error 발생. 관리자에게 문의하세요');
             } else {
                 const dataList = data.result;
                 getSettlementData(dataList)
