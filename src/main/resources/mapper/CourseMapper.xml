@@ -12,6 +12,7 @@
         WHERE is_active = true
           and academy_location = #{academyLocation}
           and (false = #{excludeExpired} OR course_end_date &gt; CURDATE())
+        ORDER BY course_number DESC
     </select>
     <select id="getCourse" resultType="com.kosta.ems.course.CourseDTO">
         SELECT course_seq             courseSeq,
@@ -31,6 +32,7 @@
         FROM courses
         WHERE course_seq = #{courseSeq}
           and is_active = true
+        ORDER BY course_number DESC
     </select>
     <select id="getCourseByCourseNumber" resultType="com.kosta.ems.course.CourseDTO">
         SELECT course_seq             courseSeq,
@@ -50,6 +52,7 @@
         FROM courses
         WHERE course_number = #{courseNumber}
           and is_active = true
+        ORDER BY course_number DESC
     </select>
     <select id="searchCourseList" resultType="com.kosta.ems.course.CourseDTO">
         SELECT course_seq             courseSeq,
@@ -71,7 +74,7 @@
           and (IF(#{courseNumber}, 0, '전체') = '전체' or course_number = #{courseNumber})
           AND (#{academyLocation} IS NULL OR #{academyLocation} = '' or academy_location = #{academyLocation})
           and (false = #{excludeExpired} OR course_end_date &gt; CURDATE())
-        ORDER BY course_number
+        ORDER BY course_number DESC
         LIMIT #{offset}, #{pageSize}
     </select>
     <select id="getSearchCourseListumberSize" resultType="Integer">
@@ -81,6 +84,8 @@
           and (IF(#{courseNumber}, 0, '전체') = '전체' or course_number = #{courseNumber})
           AND (#{academyLocation} IS NULL OR #{academyLocation} = '' or academy_location = #{academyLocation})
           and (false = #{excludeExpired} OR course_end_date &gt; CURDATE())
+        ORDER BY course_number DESC
+
     </select>
 
     <insert id="insertCourse" parameterType="com.kosta.ems.course.CourseDTO">
@@ -131,6 +136,7 @@
           and course_end_date <![CDATA[>=]]> #{currentDate}
           and is_active = true
           and academy_location = #{academyLocation}
+        ORDER BY course_number DESC
 
     </select>
 
@@ -143,6 +149,8 @@
         SELECT course_number courseNumber
         FROM courses
         WHERE DATE_FORMAT(course_end_date, '%Y') = #{courseEndYear}
+        ORDER BY course_number DESC
+
     </select>
     <select id="getCourseNumberYearList" resultType="int">
         SELECT DATE_FORMAT(course_end_date, '%Y') AS courseEndYear
@@ -160,6 +168,7 @@
         SELECT course_seq
         FROM courses
         WHERE course_number = #{courseNumber}
+        ORDER BY course_number DESC
     </select>
     
     <select id="getSearchCourseListSize" resultType="Integer">
