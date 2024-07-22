@@ -22,7 +22,8 @@
 
                 </div>
                 <div id="manager-info-img-wrapper">
-                    <img src="https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp"/>
+                    <label for="input-profile" id="input-profile-label"></label>
+                    <input id="input-profile" type="file" name="managerProfile" multiple="false" hidden />
                 </div>
             </div>
         </div>
@@ -82,6 +83,16 @@
         </table>
     </article>
 </section>
+
+<div class="modal-backdrop"></div>
+
+<!--프로필 이미지 업로드 성공 모달-->
+<div id="profile-upload-success-modal">
+    <div class="modal-contents-wrapper">
+        <p>프로필 이미지 등록/수정이 정상 처리되었습니다.</p>
+        <button>확인</button>
+    </div>
+</div>
 <script type="text/javascript" th:src="@{/scripts/main.js}"></script>
 
 </body>

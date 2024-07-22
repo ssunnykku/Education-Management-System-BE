@@ -11,4 +11,8 @@ public interface ManagerService {
     ManagerDTO findByEmployeeNumber(String employeeNumber);
 
     ManagerDTO fintByManagerId(String managerId);
+
+    // 프로필 이미지 파일 업로드
+    /*void updateProfileImage(String managerId, ManagerDTO dto);*/
+    void updateProfileImage(String managerId, String imgURL);
 }

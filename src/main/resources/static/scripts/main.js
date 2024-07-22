@@ -47,6 +47,8 @@ const requestOptions = {
 fetch("/managers", requestOptions)
     .then((res) => res.json())
     .then((data) => {
+            console.log("콘솔로그");
+            console.log(data.result);
             const user = data.result;
             let result = `<div id="manager-info-name-wrapper" class="manager-info-item">
                         <span>이름</span>
@@ -62,10 +64,85 @@ fetch("/managers", requestOptions)
                     </div>`
             $("#manager-info-wrapper").append(result);
 
-            $('#course-info-location-wrapper').append(`<span id="course-info-location">${user.academyLocation} 교육장</span>`)
+            $('#course-info-location-wrapper').append(`<span id="course-info-location">${user.academyLocation} 교육장</span>`);
+
+            if(user.profileImage == null) {
+                user.profileImage = "https://i.namu.wiki/i/Bge3xnYd4kRe_IKbm2uqxlhQJij2SngwNssjpjaOyOqoRhQlNwLrR2ZiK-JWJ2b99RGcSxDaZ2UCI7fiv4IDDQ.webp";
+            }
+
+            const profileImg = $("#input-profile-label");
+            profileImg.css("background", "url('" + user.profileImage + "')");
+            profileImg.css("background-repeat", "no-repeat");
+            profileImg.css("background-size", "cover");
+
+            $(document).ready(function() {
+                // 모달 외부 클릭 시 모달 닫기 이벤트 처리
+                $(document).on('click', function(event) {
+                    const modal = $("#profile-upload-success-modal");
+                    const modalContainer = modal.find('.modal-contents-wrapper');
+
+                    // 클릭이 모달 콘텐츠 영역 외부인지 확인
+                    if (!modal.is(event.target) && !modalContainer.is(event.target) && modalContainer.has(event.target).length === 0) {
+                        modal.css('display', 'none'); // 모달 숨기기
+                        $(".modal-backdrop").css("display", "none");
+                    }
+                });
+
+                $("#input-profile").change(function(event) {
+                    const file = event.target.files[0];
+                    const reader = new FileReader();
+
+                    reader.onload = function(event) {
+                        $("#input-profile-label").css("background-image", "url('" + event.target.result + "')");
+                    };
+
+                    reader.readAsDataURL(file);
+
+                    let formData = new FormData();
+                    formData.append("profileImage", fileInput.files[0]);
+
+                    fetch('http://localhost:8888/managers/upload', {
+                        method: 'POST',
+                        cache: 'no-cache',
+                        body: formData
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            console.log("프로필 이미지 업로드 완료");
+                            $("#profile-upload-success-modal").css("display", "flex");
+                            $(".modal-backdrop").css("display", "flex");
+
+                            $("#profile-upload-success-modal button").on("click", function() {
+                                $("#profile-upload-success-modal").css("display", "none");
+                                $(".modal-backdrop").css("display", "none");
+                            });
+                        })
+                });
+            });
+
+
         }
     )
     .catch((error) => console.error(error));
+
+/* 매니저 프로필 이미지 업로드 */
+let fileInput = document.querySelector("#input-profile");
+const sendButton = document.querySelector("#file-submit-btn");
+sendButton.addEventListener("click", function() {
+    /*let formData = new FormData();
+    formData.append("profileImage", fileInput.files[0]);
+
+    fetch('http://localhost:8888/managers/upload', {
+        method: 'POST',
+        cache: 'no-cache',
+        body: formData
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("프로필 이미지 업로드 완료");
+            console.log(data.data);
+        })*/
+})
 
 
 /* 현재 과정 정보  */

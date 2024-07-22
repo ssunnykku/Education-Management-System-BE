@@ -19,8 +19,13 @@
         WHERE employee_number = #{employeeNumber}
     </select>
     <select id="findByManagerId" resultType="com.kosta.ems.manager.ManagerDTO">
-        select name, position, academy_location as academyLocation
+        select name, position, academy_location as academyLocation, profile_image AS profileImage
         from managers
         where manager_id = #{managerId}
     </select>
+    <update id="updateProfileImage">
+        UPDATE managers
+        SET profile_image=#{profileImg}
+        WHERE manager_id=#{managerId}
+    </update>
 </mapper>

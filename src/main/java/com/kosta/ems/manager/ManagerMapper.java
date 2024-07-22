@@ -15,4 +15,6 @@ public interface ManagerMapper {
 
     ManagerDTO findByManagerId(String managerId);
 
+    // 프로필 이미지 파일 업로드
+    void updateProfileImage(String managerId, String profileImg);
 }
