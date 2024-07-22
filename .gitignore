@@ -39,7 +39,7 @@ build/
 .LSOverride
 
 .properties
-application.properties
+src/main/resources/application.properties
 .vscode/
 
 ### macOS ###
@@ -49,7 +49,7 @@ application.properties
 .LSOverride
 
 .properties
-application.properties
+src/main/resources/application.properties
 
 ### Maven ###
 target/

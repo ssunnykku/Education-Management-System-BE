@@ -47,23 +47,22 @@ public class WebSecurityConfig {
 
     // 3
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf(csrf -> csrf.disable());
 
 
         http.httpBasic(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers("/ems/login", "/api/students/login", "/api/token").permitAll()
-                            .requestMatchers(HttpMethod.POST, "/api/**").authenticated()
-                            .requestMatchers("/api/**").authenticated()
+                    authorize.requestMatchers("/ems/login", "/api/students/login").permitAll()
+//                            .requestMatchers(HttpMethod.POST, "/api/**").authenticated()
+                            .requestMatchers("/ems/**").authenticated()
                             .anyRequest().authenticated();
-                })
+                });
 
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-                .addFilterBefore(new TokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+//                .addFilterBefore(new TokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         http.formLogin(formLogin -> formLogin
                         .loginPage("/ems/login")
@@ -73,13 +72,14 @@ public class WebSecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/manager/logout").logoutSuccessUrl("/ems/login")
                         .invalidateHttpSession(true).deleteCookies("JSESSIONID"));
+//                .authenticationManager(webAuthenticationManager);
 
         return http.build();
     }
 
     // 4
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, PlainEncoder passwordEncoder) throws Exception {
+    public AuthenticationManager webAuthenticationManager(HttpSecurity http, PlainEncoder passwordEncoder) throws Exception {
 
         AuthenticationManagerBuilder authBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
 
@@ -93,10 +93,10 @@ public class WebSecurityConfig {
         authBuilder.authenticationProvider(managerAuthProvider);
 
         // Student AuthenticationProvider
-        DaoAuthenticationProvider studentAuthProvider = new DaoAuthenticationProvider();
-        studentAuthProvider.setUserDetailsService(studentService);
-        studentAuthProvider.setPasswordEncoder(passwordEncoder);
-        authBuilder.authenticationProvider(studentAuthProvider);
+//        DaoAuthenticationProvider studentAuthProvider = new DaoAuthenticationProvider();
+//        studentAuthProvider.setUserDetailsService(studentService);
+//        studentAuthProvider.setPasswordEncoder(passwordEncoder);
+//        authBuilder.authenticationProvider(studentAuthProvider);
 
         return authBuilder.build();
 
@@ -104,8 +104,12 @@ public class WebSecurityConfig {
 
     // 1비밀번호 암호화를 위해
     @Bean
-    public PlainEncoder plainEncoder() {
+    public PlainEncoder webPlainEncoder() {
         return new PlainEncoder();
     }
+//    @Bean
+//    public PasswordEncoder webPlainEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 
 }

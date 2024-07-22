@@ -31,10 +31,19 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             String token = jwtTokenProvider.getAccessToken((HttpServletRequest) request);
 
             log.info("authorization = " + token);
+            String requestURI = request.getRequestURI();
 
-//            if (token == null) {
-//                throw new AccessDeniedException("권한이 없습니다.");
-//            }
+            log.info("url: {}", requestURI);
+
+            // 로그인 요청일 경우 토큰 검증을 생략한다.
+            if ("/api/students/login".equals(requestURI)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            if (token == null) {
+                throw new AccessDeniedException("권한이 없습니다.");
+            }
 
             // 유효성 검사
             if (token != null && jwtTokenProvider.isValid(token)) {
