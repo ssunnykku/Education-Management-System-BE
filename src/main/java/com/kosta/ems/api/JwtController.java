@@ -76,6 +76,13 @@ public class JwtController {
         StudentInfoDTO loginUser = getLoginUser();
         return Map.of("result", service.getPointHistory(courseSeq, loginUser.getStudentId()));
     }
+    
+    //마이페이지 정보 조회
+    @GetMapping("/student")
+    public Map getStudentInfo() {
+        StudentInfoDTO loginUser = getLoginUser();
+        return Map.of("result", loginUser);
+    }
 
     //마이페이지 정보 수정 모달
     @PutMapping("/student")
