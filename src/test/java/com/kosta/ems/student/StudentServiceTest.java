@@ -31,7 +31,7 @@ public class StudentServiceTest {
         log.info(studentService.getStudentsByNameOrCourseNumberList("", 0, 1, 10).toString());
     }
 
-    // *0710_수강생 정보 조회 // *0715 테스트 코드 검토 완료
+    // *0710_수강생 정보 조회
     @Test
     @DisplayName("수강생 목록 조회 Cnt 테스트")
     void getStudentInfoListCnt() {
@@ -73,7 +73,7 @@ public class StudentServiceTest {
         log.info(studentService.getStudentInfoList(1, "", 277, "갤럭시", 1, 10).toString());
         log.info(studentService.getStudentInfoList(0, "", 277, "갤럭시", 1, 10).toString());
     }
-    // *0710_수강생 정보 조회  // *0715 테스트 코드 검토 완료 (end)
+    // *0710_수강생 정보 조회 (end)
 
     // *0710_선택한 수강생 id로 수강내역 데이터 가져오기
     @Test
@@ -83,7 +83,7 @@ public class StudentServiceTest {
 
     // 수강생 정보 - 수강생 등록
     // -- 입력 id가 등록된 hrdNetId인지 확인
-    // @Test
+    @Test
     void findByHrdNetId() {
         log.info(String.valueOf(studentService.findByHrdNetId("youyou33wea")));
     }
@@ -114,19 +114,19 @@ public class StudentServiceTest {
 
 
     // -- students_courses 테이블에 수강생 데이터 등록
-    // @Test
+    @Test
     void addStudentCourseSeqInfo() {
         studentService.setStudentCourseSeqInfo("yyj1234", "284", "3ddf8577-3eaf-11ef-bd30-0206f94be675");
     }
 
     // 수강생 정보 수정
-    // @Test
+    @Test
     void updateSelectedStudentInfo() {
         studentService.updateSelectedStudentInfo("박기영", "부산광역시 사상구 사상중앙로12길", "부산", "110583195038", "01059341921", "syc1234@gmail.com", "78b21862-32bf-11ef-b0b2-0206f94be675", 1);
     }
 
     // 수강생 삭제
-    // @Test
+    @Test
     void removeSelectedStudent() {
         studentService.removeSelectedStudent("8b48e083-2fa8-11ef-b0b2-0206f94be675");
     }
