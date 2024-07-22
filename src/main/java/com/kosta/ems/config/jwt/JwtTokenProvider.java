@@ -1,6 +1,5 @@
 package com.kosta.ems.config.jwt;
 
-import com.kosta.ems.studentLogin.exception.ExceptionMessage;
 import com.kosta.ems.studentLogin.exception.ExpiredTokenException;
 import com.kosta.ems.studentLogin.exception.InvalidTokenException;
 import io.jsonwebtoken.*;
@@ -18,6 +17,12 @@ import org.springframework.util.StringUtils;
 
 import java.time.Duration;
 import java.util.*;
+
+import static com.kosta.ems.studentLogin.exception.ExceptionMessage.EXPIRED_TOKEN;
+import static com.kosta.ems.studentLogin.exception.ExceptionMessage.INVALID_TOKEN;
+
+import jakarta.servlet.http.Cookie;
+
 
 @Component
 @Slf4j
@@ -77,11 +82,13 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token);
 
         } catch (ExpiredJwtException e) {
+
             log.error(e.getMessage());
-            throw new ExpiredTokenException(ExceptionMessage.EXPIRED_TOKEN.getMessage());
+            throw new ExpiredTokenException(EXPIRED_TOKEN.getMessage());
         }
         return true;
     }
+
 
     public Authentication getAuthentication(String accessToken) {
         Claims claims = parseClaims(accessToken);
@@ -92,8 +99,7 @@ public class JwtTokenProvider {
         if (claims.get("id") == null) {
             // 권한 정보 없는 토큰
             log.error("토큰 권한 없음");
-            throw new IllegalArgumentException();
-//            throw new InvalidTokenException(INVALID_TOKEN.getMessage());
+            throw new InvalidTokenException(INVALID_TOKEN.getMessage());
         }
 
         log.info("claim 권한 정보: {}", authorities);
@@ -108,9 +114,13 @@ public class JwtTokenProvider {
     }
 
     public String getHrdNetId(HttpServletRequest request) {
-
+        log.info("request {}", request);
         String accessToken = getAccessToken(request);
+
         Claims claims = parseClaims(accessToken);
+
+        log.info("?? {}", (String) claims.get("id"));
+        log.info("???? {}", claims);
 
         return claims.getSubject();
     }
@@ -123,15 +133,14 @@ public class JwtTokenProvider {
                     .parseClaimsJws(accessToken)
                     .getBody();
         } catch (ExpiredJwtException e) {
-            throw new IllegalStateException();
+            throw new ExpiredTokenException(EXPIRED_TOKEN.getMessage());
         }
-//            throw new ExpiredTokenException(EXPIRED_TOKEN.getMessage());
     }
 
     public String getAccessToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        log.debug("bearertoken : {}", bearerToken);
+        log.info("bearerToken : {}", bearerToken);
         if (StringUtils.hasText(bearerToken)) {
             if (bearerToken.startsWith(TOKEN_PREFIX) && bearerToken.length() > TOKEN_PREFIX.length()) {
                 int tokenStartIndex = TOKEN_PREFIX.length();
@@ -142,6 +151,17 @@ public class JwtTokenProvider {
         }
 
         return bearerToken;
+    }
+
+    public String getCookieValue(HttpServletRequest request, String name) {
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals(name)) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 
 }

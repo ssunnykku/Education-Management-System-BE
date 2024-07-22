@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kosta.ems.studentLogin.UserMapper">
-    <select id="getLoginInfo" resultType="com.kosta.ems.student.StudentDTO">
+    <select id="getLoginInfo" resultType="com.kosta.ems.student.dto.StudentDTO">
         select hrd_net_id as hrdNetId, password
         from students
         where hrd_net_id = #{hrdNetId}
@@ -11,8 +11,8 @@
         select student_id as studentId
         from students
         where hrd_net_id = #{hrdNetId}
-          and password = #{password}
-          and is_active = true;
+        and password = #{password}
+        and is_active = true;
     </select>
 
     <update id="setRefreshToken">
@@ -40,12 +40,12 @@
     </update>
 
     <select id="selectStudentListBycourseSeq" parameterType="int">
-        select s.student_id    as studentId,
-               sc.course_seq   as courseSeq,
-               c.course_number as courseNumber
+        select s.student_id as studentId,
+        sc.course_seq as courseSeq,
+        c.course_number as courseNumber
         from students s
-                 inner join students_courses sc on s.student_id = sc.student_id
-                 inner join courses c on sc.course_seq = c.course_seq
+        inner join students_courses sc on s.student_id = sc.student_id
+        inner join courses c on sc.course_seq = c.course_seq
         where c.course_seq = #{courseSeq};
     </select>
 

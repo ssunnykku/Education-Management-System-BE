@@ -1,5 +1,6 @@
 package com.kosta.ems.student;
 
+import com.kosta.ems.student.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,7 +14,7 @@ public interface StudentMapper {
     // 수강생 정보 조회
     int findByStudentNumberOrCourseNumberAll(String name, int courseNumber);
 
-    List<StudentBasicInfoDTO> findByStudentNameOrCourseNumberList(@Param("name") String name, @Param("courseNumber") int courseNumber, int page, int size);
+    List<StudentBasicInfoDTO> findByStudentNameOrCourseNumberList(@Param("name") String name, @Param("courseNumber") int courseNumber, Integer page, Integer size);
 
     // *0710_수강생 정보 조회
     int selectStudentInfoListCnt(int isActive, String name, int courseNumber, String academyLocation);
@@ -49,5 +50,8 @@ public interface StudentMapper {
     GetStudentInfoByScqDTO selectStudentInfoByScq(int studentCourseSeq);
 
     List<StudentCourseInfoDTO> selectStudentListBycourseSeq(int courseSeq);
+
+    //mobile api에서 사용함
+    boolean updateStudentContactInfo(String studentId, String currentPassword, String newPassword, String phoneNumber, String bank, String accountNumber, String email);
 
 }

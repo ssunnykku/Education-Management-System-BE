@@ -1,5 +1,7 @@
 package com.kosta.ems.attendance;
 
+import com.kosta.ems.attendance.dto.RequestAcknowledgeDTO;
+import com.kosta.ems.attendance.dto.RequestStudentAttendanceDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,10 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
@@ -71,6 +70,7 @@ class AttendanceServiceImplTest {
 
         log.info("데이터 없는 경우: " + Integer.toString(attendanceService.getAttendanceIntegratedListAmount("이름없음", -111, "갤럭시")));
     }
+
     @Test
     @DisplayName("출결 조회 - 수강생 출결 조회 목록")
     void getAttendanceIntegratedList() {
@@ -106,7 +106,6 @@ class AttendanceServiceImplTest {
     // ** 출결 입력 - 날짜별 입력된 수강생 출결 상태 목록 조회 (end)
 
 
-
     // ** 출결 수정 - 선택한 수강생의 출석 상태 수정
     @Test
     @DisplayName("출결 수정 - 선택한 수강생의 출석 상태 수정")
@@ -128,6 +127,7 @@ class AttendanceServiceImplTest {
         log.info("활성화된 출석인정 항목 리스트: " + attendanceService.getAcknowledgeCategoryList(1).toString());
         log.info("비활성화된 출석인정 항목 리스트: " + attendanceService.getAcknowledgeCategoryList(0).toString());
     }
+
     // --출석 인정항목*인정일수 적용하여 출결 상태 반영 (update + insert)
     @Test
     @DisplayName("출결 수정 - 출석인정 항목*인정일수 적용하여 출결 상태 반영_update + insert")
@@ -149,6 +149,7 @@ class AttendanceServiceImplTest {
 
         log.info("그냥 데이터 없는 경우: " + attendanceService.getNoAttendanceStatusStudentList("2024-07-11", "갤럭시").toString());
     }
+
     // 2. 목록의 학생 중 선택한 학생의 출결 상태 등록하기
     @Test  // 확인 완료  *0715
     @DisplayName("출결 등록 - 선택 학생의 출결 상태 등록")
@@ -158,5 +159,9 @@ class AttendanceServiceImplTest {
         attendanceService.setAttendanceStatus("출석", "2024-06-19", 31, "3ddf8577-3eaf-11ef-bd30-0206f94be675");
         attendanceService.setAttendanceStatus("외출", "2024-06-19", 30, "3ddf8577-3eaf-11ef-bd30-0206f94be675");
     }
-    // ** 출결 입력 (end)
+
+    @Test
+    void getTimeByAttendanceDate() {
+        log.info("{}", attendanceService.getTimeByAttendanceDate(LocalDate.parse("2024-07-19"), 277));
+    }
 }

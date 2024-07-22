@@ -1,6 +1,6 @@
 package com.kosta.ems.studentLogin;
 
-import com.kosta.ems.student.StudentCourseInfoDTO;
+import com.kosta.ems.student.dto.StudentCourseInfoDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

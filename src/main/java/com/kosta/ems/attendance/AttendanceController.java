@@ -1,6 +1,7 @@
 package com.kosta.ems.attendance;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,20 +10,21 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.kosta.ems.attendance.dto.RequestAcknowledgeDTO;
+import com.kosta.ems.attendance.dto.RequestStudentAttendanceDTO;
 import com.kosta.ems.manager.ManagerDTO;
 import com.kosta.ems.manager.ManagerService;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import com.kosta.ems.student.NoSuchDataException;
-import com.kosta.ems.student.PageResponseDTO;
+import com.kosta.ems.student.dto.PageResponseDTO;
 import com.kosta.ems.student.ResCode;
-import com.kosta.ems.student.UpdateDeleteResultDTO;
+import com.kosta.ems.student.dto.UpdateDeleteResultDTO;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,9 +51,9 @@ public class AttendanceController {
     // [출결] - 수강생 출석 조회 목록 조회
     @PostMapping("/student-list")
     @ResponseBody
-    public Map<String, Object> getStudentAttendanceList(@RequestParam(name="page", required=false, defaultValue="1") int page, @RequestBody RequestStudentAttendanceDTO dto) {
+    public Map<String, Object> getStudentAttendanceList(@RequestParam(name = "page", required = false, defaultValue = "1") int page, @RequestBody RequestStudentAttendanceDTO dto) {
         Map<String, Object> result = new HashMap<String, Object>();
-        int size=10;
+        int size = 10;
         int totalCount = 0;
         String academyLocation = getAcademyOfLoginUser();
 
@@ -62,16 +64,16 @@ public class AttendanceController {
         result.put("searchStudentName", dto.getName());
 
         // 페이징 response
-        int totalPage = (totalCount/size) + 1;
+        int totalPage = (totalCount / size) + 1;
         int currentPage = 1;
         int prevPage = 0;
         int nextPage = 0;
-        if(currentPage > 1 && currentPage < totalPage) {
+        if (currentPage > 1 && currentPage < totalPage) {
             prevPage = currentPage - 1;
             nextPage = currentPage + 1;
-        } else if(currentPage == totalPage) {
+        } else if (currentPage == totalPage) {
             prevPage = currentPage - 1;
-        } else if(currentPage == 1) {
+        } else if (currentPage == 1) {
             nextPage = currentPage + 1;
         }
 
@@ -85,7 +87,7 @@ public class AttendanceController {
 
     // [출결] - 출결 검색(조건: 날짜, 기수, 수강생명) 데이터 목록 가져오기
     @PostMapping("/search-list")
-    public Map<String, Object> getFilteredAttendanceList(@RequestParam(name="page", required = false, defaultValue = "1") int page, @RequestBody RequestStudentAttendanceDTO dto) {
+    public Map<String, Object> getFilteredAttendanceList(@RequestParam(name = "page", required = false, defaultValue = "1") int page, @RequestBody RequestStudentAttendanceDTO dto) {
         Map<String, Object> result = new HashMap<String, Object>();
 
         int size = 10;
@@ -95,27 +97,27 @@ public class AttendanceController {
         int totalCount = 0;
         String academyLocation = getAcademyOfLoginUser();
 
-        totalCount = attendanceService.getAttendanceStatusListAmount(dto.getAttendanceDate(),academyLocation, name, courseNumber);
+        totalCount = attendanceService.getAttendanceStatusListAmount(dto.getAttendanceDate(), academyLocation, name, courseNumber);
         result.put("amount", totalCount);
-        result.put("attendanceList", attendanceService.getAttendanceStatusList(dto.getAttendanceDate(), academyLocation, name, courseNumber, page,size));
+        result.put("attendanceList", attendanceService.getAttendanceStatusList(dto.getAttendanceDate(), academyLocation, name, courseNumber, page, size));
 
         // 페이징 response
-        int totalPage = (totalCount/size) + 1;
+        int totalPage = (totalCount / size) + 1;
         int currentPage = 1;
         int prevPage = 0;
         int nextPage = 0;
-        if(currentPage > 1 && currentPage < totalPage) {
+        if (currentPage > 1 && currentPage < totalPage) {
             prevPage = currentPage - 1;
             nextPage = currentPage + 1;
-        } else if(currentPage == totalPage) {
+        } else if (currentPage == totalPage) {
             prevPage = currentPage - 1;
-        } else if(currentPage == 1) {
+        } else if (currentPage == 1) {
             nextPage = currentPage + 1;
         }
 
         PageResponseDTO pageInfo = PageResponseDTO.builder().totalCount(totalCount).totalPage(totalPage).currentPage(currentPage).prevPage(prevPage).nextPage(nextPage).build();
         result.put("pageInfo", pageInfo);
-        log.info(">> pageInfo: "+pageInfo.toString());
+        log.info(">> pageInfo: " + pageInfo.toString());
 
         return result;
     }
@@ -144,7 +146,7 @@ public class AttendanceController {
 
     // [출결 입력] - 특정일의 출결 상태가 등록되지 않은 수강생 목록 데이터 가져오기
     @GetMapping("/no-attendance-list")
-    public Map<String, Object> getNoAttendanceStatusList(@RequestParam(name="attendanceDate") String attendanceDate) {
+    public Map<String, Object> getNoAttendanceStatusList(@RequestParam(name = "attendanceDate") String attendanceDate) {
         Map<String, Object> result = new HashMap<String, Object>();
         String academyLocation = getAcademyOfLoginUser();
 
@@ -163,7 +165,7 @@ public class AttendanceController {
             log.info("🚀 request 확인");
             log.info(">> request.length: " + request.size());
             log.info(">> request: " + request.toString());
-            for(int i=0; i<request.size(); i++) {
+            for (int i = 0; i < request.size(); i++) {
                 attendanceService.setAttendanceStatus(request.get(i).getAttendanceStatus(), request.get(i).getAttendanceDate(), request.get(i).getStudentCourseSeq(), managerId);
             }
             dto.setCode(ResCode.SUCCESS.value());
@@ -218,7 +220,7 @@ public class AttendanceController {
         amazonS3Client.putObject(putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead));
         log.info("출석인정 서류 파일 업로드 완료!!");
         log.info(amazonS3Client.getUrl(bucketName, bucketKey).toString().substring(6));
-        String fileURL = "http:"+amazonS3Client.getUrl(bucketName, bucketKey).toString().substring(6);
+        String fileURL = "http:" + amazonS3Client.getUrl(bucketName, bucketKey).toString().substring(6);
 
         result.put("data", fileURL);
         return result;
@@ -254,31 +256,23 @@ public class AttendanceController {
         return result;
     }
 
-    // 업로드한 증빙서류 파일 확인을 위해 다운로드도 있으면 좋을 것 같긴한데...
-    /*@GetMapping("/download/{fileKey}")
-    public ResponseEntity<Void> downloadFile(@PathVariable String fileKey, String downloadFileName, HttpServletResponse response) {
-        boolean success = s3FileDownloadService.downloadFile(fileKey, downloadFileName, response);
-        if (success) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }*/
+    @GetMapping("/current-status")
+    public ResponseEntity<Map<String, Object>> getTimeByAttendanceDate(@RequestParam LocalDate attendanceDate, @RequestParam int courseNumber) {
+        return ResponseEntity.ok(Map.of("result", attendanceService.getTimeByAttendanceDate(attendanceDate, courseNumber)));
+    }
+
 
     private String getAcademyOfLoginUser() {
-        if(SECURITY_LEVEL.equals("OFF")) {
+        if (SECURITY_LEVEL.equals("OFF")) {
             return "가산";
-            // return "강남";
         }
         ManagerDTO loginUser = getLoginUser();
         return loginUser.getAcademyLocation();
     }
 
     private String getManagerIdOfLoginUser() {
-        if(SECURITY_LEVEL.equals("OFF")) {
+        if (SECURITY_LEVEL.equals("OFF")) {
             return "3ddf8577-3eaf-11ef-bd30-0206f94be675";
-            // 강남직원1:
-            // return "3ddf8703-3eaf-11ef-bd30-0206f94be675";
         }
         ManagerDTO loginUser = getLoginUser();
         return loginUser.getManagerId();
@@ -288,11 +282,10 @@ public class AttendanceController {
         ManagerDTO loginUser;
         if (SECURITY_LEVEL.equals("OFF")) {
             loginUser = managerService.findByEmployeeNumber("EMP0002");
-            // 강남직원1:
-            // loginUser = managerService.findByEmployeeNumber("EMP0006");
         } else {
             loginUser = (ManagerDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         }
         return loginUser;
     }
 }
+

@@ -2,17 +2,13 @@ package com.kosta.ems.employment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.IntPredicate;
 
 import org.springframework.stereotype.Service;
 
 import com.kosta.ems.course.CourseDTO;
 import com.kosta.ems.course.CourseMapper;
-import com.kosta.ems.employment.dto.AddEmployeedStatusRequest;
 import com.kosta.ems.employment.dto.EditEmployeedStatusRequest;
-import com.kosta.ems.student.GetStudentInfoByScqDTO;
-import com.kosta.ems.student.StudentBasicInfoDTO;
+import com.kosta.ems.student.dto.GetStudentInfoByScqDTO;
 import com.kosta.ems.student.StudentMapper;
 import com.kosta.ems.studentCourse.StudentCourseDTO;
 import com.kosta.ems.studentCourse.StudentCourseRepo;
@@ -26,14 +22,14 @@ public class EmploymentService {
     private final StudentCourseRepo sCRepo;
     private final StudentMapper studentMapper;
     private final CourseMapper courseMapper;
-    
-    public List<EmploymentInfoResponse> getEmploymentInfoByCourseNumber(int courseNumber){
+
+    public List<EmploymentInfoResponse> getEmploymentInfoByCourseNumber(int courseNumber) {
         CourseDTO course = courseMapper.getCourseByCourseNumber(courseNumber);
         return getEmploymentInfoByCourseSeq(course.getCourseSeq());
     }
-    
+
     //TODO: pageable 기능 구현하기
-    public List<EmploymentInfoResponse> getEmploymentInfoByCourseSeq(int courseSeq){
+    public List<EmploymentInfoResponse> getEmploymentInfoByCourseSeq(int courseSeq) {
         List<EmploymentInfoResponse> result = new ArrayList<>();
         CourseDTO course = courseMapper.getCourse(courseSeq);
         //과정에 다니는 학생 seq 목록을 받아오고 
@@ -58,12 +54,12 @@ public class EmploymentService {
                     .company(employmentDto.getCompany())
                     .isEmployeed(employmentDto.getCompany().equals("") ? false : true)
                     .build();
-            
+
             result.add(resultDto);
         }
         return result;
     }
-    
+
     public double getEmployeedRatePct(int courseNumber) {
         List<EmploymentInfoResponse> result = new ArrayList<>();
         int courseSeq = courseMapper.getCourseByCourseNumber(courseNumber).getCourseSeq();
@@ -71,11 +67,11 @@ public class EmploymentService {
         int numEmployeed = 0;
         int numTotal = result.size();
         for (EmploymentInfoResponse info : result) {
-            if(info.isEmployeed())
+            if (info.isEmployeed())
                 numEmployeed++;
         }
-        
-        return 100 * (double)numEmployeed/numTotal;
+
+        return 100 * (double) numEmployeed / numTotal;
     }
 
     public boolean editEmployeedStatus(EditEmployeedStatusRequest request, String managerId) {
@@ -85,7 +81,7 @@ public class EmploymentService {
                 .build());
         dto.setCompany(request.getCompany());
         dto.setManagerId(managerId);
-        if(repo.save(dto) == null) {
+        if (repo.save(dto) == null) {
             return false;
         }
         return true;
@@ -98,10 +94,10 @@ public class EmploymentService {
         int numEmployeed = 0;
         int numTotal = result.size();
         for (EmploymentInfoResponse info : result) {
-            if(info.isEmployeed())
+            if (info.isEmployeed())
                 numEmployeed++;
         }
         return numEmployeed;
     }
-    
+
 }

@@ -42,7 +42,6 @@ public class BenefitController {
     @PostMapping("/settlement")
     public ResponseEntity<Map<String, Boolean>> setBenefitSettlement(@RequestBody BenefitTargetInfoDTO dto) {
         try {
-
             ManagerDTO loginUser = getLoginUser();
             String managerId = loginUser.getManagerId();
             String academyLocation = loginUser.getAcademyLocation();
@@ -51,7 +50,7 @@ public class BenefitController {
             dto.setManagerId(managerId);
             benefitService.setBenefitSettlement(dto);
             return ResponseEntity.ok(Map.of("result", true));
-        } catch (ResponseStatusException e) {
+        } catch (ResponseStatusException | NullPointerException e) {
             log.error(e.getMessage());
             return ResponseEntity.ok(Map.of("result", false));
         }
