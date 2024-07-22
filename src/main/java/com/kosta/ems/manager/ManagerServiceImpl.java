@@ -28,4 +28,10 @@ public class ManagerServiceImpl implements ManagerService {
         return managerMapper.findByManagerId(managerId);
     }
 
+    // 프로필 이미지 파일 업로드
+    @Override
+    public void updateProfileImage(String managerId, String imgURL) {
+        /*String profileImg = dto.getProfileImage();*/
+        managerMapper.updateProfileImage(managerId, imgURL);
+    }
 }

@@ -55,6 +55,8 @@
     gap: 16px;
     font-size: 20px;
 
+    padding: 0;
+
 }
 
 .manager-info-item {
@@ -95,7 +97,6 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 12px;
 }
 
 #manager-info-name-wrapper {
@@ -127,8 +128,27 @@
 }
 
 #manager-info-img-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    margin-top: -20px;
+
     width: 140px;
-    height: 150px;
+    height: 180px;
+
+    label {
+        width: 100%;
+        height: 170px;
+        cursor: pointer;
+    }
+
+    #file-submit-btn {
+        padding: 5px;
+        border: 1px solid lightgray;
+        border-raidus: 5px;
+        background-color: #f9f9f9;
+    }
 }
 
 #manager-info-img-wrapper > img {
@@ -358,6 +378,46 @@
     width: 25%;
 }
 
+.modal-backdrop {
+    position: absolute;
+    display: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 100;
+}
+
+#profile-upload-success-modal {
+    display: none;
+    justify-content: center;
+    position: absolute;
+    top: 40%;
+    left: 41%;
+    width: 400px;
+    height: 150px;
+    border-radius: 10px;
+    border: 1px solid gray;
+    z-index: 999;
+    background-color: #fff;
+    .modal-contents-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin-top: 4%;
+
+        button {
+            width: 100px;
+            padding: 5px 15px;
+            border-radius: 10px;
+            background-color: #b8b8b8;
+        }
+    }
+}
+
 #attendance-table-wrapper {
     width: 100%;
     padding: 0;
@@ -386,4 +446,3 @@
 #course-name > span:nth-child(2) {
     font-weight: 400;
 }
-
