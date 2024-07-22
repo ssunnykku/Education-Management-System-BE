@@ -28,9 +28,13 @@
             </div>
         </div>
         <div id="main-course-info-wrapper">
-            <div id="course-info-title" class="info-title">
-                <h1>진행중인 교육 과정</h1>
+
+            <div id="course-info-title">
+                <a href="/ems/courses">
+                    <h1 class="info-title">진행중인 교육 과정</h1>
+                </a>
             </div>
+
             <div id="course-info-contents">
                 <div id="course-info-location-wrapper">
                     <span id="course-info-item">교육장: </span>
@@ -53,7 +57,9 @@
         <div>
             <div id="attendance-title-wrapper">
                 <div class="info-title">
-                    <h1>출결 관리</h1>
+                    <a href="/ems/attendances">
+                        <h1>출결 관리</h1>
+                    </a>
                 </div>
                 <div id="today">
 
@@ -61,26 +67,23 @@
             </div>
             <div id="course-number-wrapper">
                 <select name="course-number-filter" id="course-number-filter" class="courseId-filter">
-                    <option value="none">기수</option>
-                    <option value="277">277</option>
-                    <option value="278">278</option>
+                    <!--                    <option value="none">기수</option>-->
                 </select>
             </div>
+            <div id="course-name">
+            </div>
         </div>
-        <table id="attendance-table">
-            <tr>
-                <th>기수</th>
-                <th>과정명</th>
-                <th>수강생 이름</th>
-                <th>출결 상태</th>
-            </tr>
-            <tr>
-                <td>기수</td>
-                <td>과정명</td>
-                <td>수강생 이름</td>
-                <td>출결 상태</td>
-            </tr>
-        </table>
+        <div id="attendance-table-wrapper">
+            <table id="attendance-table">
+                <tr id="attendance-table-first-row">
+                    <th>기수</th>
+                    <th>수강생 이름</th>
+                    <th>입실</th>
+                    <th>퇴실</th>
+                </tr>
+                <tr style="display: contents" id="attendance-table-contents"></tr>
+            </table>
+        </div>
     </article>
 </section>
 

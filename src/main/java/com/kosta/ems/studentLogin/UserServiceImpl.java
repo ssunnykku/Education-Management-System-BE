@@ -2,9 +2,10 @@ package com.kosta.ems.studentLogin;
 
 import com.kosta.ems.config.jwt.JwtTokenProvider;
 import com.kosta.ems.config.jwt.TokenInfo;
-import com.kosta.ems.student.StudentDTO;
+import com.kosta.ems.student.dto.StudentDTO;
 import com.kosta.ems.student.StudentMapper;
 import com.kosta.ems.studentLogin.exception.ExceptionMessage;
+import com.kosta.ems.studentLogin.exception.InvalidTokenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -45,26 +46,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public TokenInfo isRefreshTokenValid(String refreshToken) {
+    public TokenInfo isRefreshTokenValid(String refreshToken, String accessToken) {
 
+        // refreshToken 으로 id 검색
         String hrdNetId = studentLoginMapper.findByToken(refreshToken);
+        String userAccessToken = studentLoginMapper.getRefreshToken(accessToken);
 
+        log.info("이~~~거");
+//        log.info(jwtTokenProvider.getHrdNetId(userAccessToken));
+//        log.info(hrdNetId);
+
+//        access Token의 사용자와 토큰으로 찾은 사용자 비교하기(같지 않을 경우 -> exception)
+//        if (!hrdNetId.equals(jwtTokenProvider.getHrdNetId(userAccessToken))) {
+//            throw new InvalidTokenException(ExceptionMessage.AUTHENTICATION_FAILED.getMessage());
+//        }
+
+        // 저장된 id 없거나 token이 유효하지 않을 경우 /
         if (hrdNetId != null && jwtTokenProvider.isValid(refreshToken)) {
 
-            /*      check refreshToken -> 유효한 경우 access만 재발급*/
+            /*      check refreshToken -> 유효한 경우 access Token만 재발급*/
             return TokenInfo.builder().accessToken(jwtTokenProvider.createAccessToken(hrdNetId)).refreshToken(refreshToken).build();
+
         } else if (!jwtTokenProvider.isValid(refreshToken)) {
 
-            /*            check refereshToken : 만료되었거나 DB에 없으면 access, refresh 둘 다 재발행*/
+            /*        check refreshToken : 만료되었거나 DB에 없으면 access, refresh 둘 다 재발행*/
+            String newAccessToken = jwtTokenProvider.createAccessToken(hrdNetId);
             String newRefreshToken = jwtTokenProvider.createRefreshToken(hrdNetId);
 
             log.info("1 {} ", newRefreshToken);
 
             //   DB 업데이트하기
             studentLoginMapper.setRefreshToken(hrdNetId, newRefreshToken);
+
             log.info("2 {} ", newRefreshToken);
 
-            return TokenInfo.builder().accessToken(jwtTokenProvider.createAccessToken(hrdNetId)).refreshToken(newRefreshToken).build();
+            return TokenInfo.builder().accessToken(newAccessToken).refreshToken(newRefreshToken).build();
 
         } else {
             throw new IllegalArgumentException(ExceptionMessage.INVALID_TOKEN.getMessage());

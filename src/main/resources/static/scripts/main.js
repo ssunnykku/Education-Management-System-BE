@@ -156,7 +156,6 @@ fetch("/courses/current-list?currentDate=" + currentDate, {
         const resultList = data.result;
         let result;
         for (const resultElement of resultList) {
-            console.log(resultElement);
             result += `<tr>
                 <td>${resultElement.courseNumber}</td>
                 <td>${resultElement.courseName}</td>
@@ -171,17 +170,72 @@ fetch("/courses/current-list?currentDate=" + currentDate, {
 
 /*course 목록*/
 
-fetch("/courses/course-number-list?excludeExpired=false", {
-    method: "GET",
-})
-    .then((res) => res.json())
-    .then((data) => {
-        const courseList = data.result;
-        let result = '';
-        for (const resultElement of courseList) {
-            result += `<option value=${resultElement}>${resultElement}</option>`;
-        }
-        $(".courseId-filter").append(result);
-
+$(document).ready(() => {
+    fetch("/courses/current-list?currentDate=" + currentDate, {
+        method: "GET",
     })
-    .catch((error) => console.error(error));
+        .then((res) => res.json())
+        .then((data) => {
+            const courseList = data.result;
+            let result = '';
+            for (const resultElement of courseList) {
+                result += `<option value=${resultElement.courseNumber}>${resultElement.courseNumber}</option>`;
+            }
+            $(".courseId-filter").append(result);
+
+        }).then(() => {
+        fetch('/attendances/current-status?attendanceDate=' + currentDate + '&courseNumber=' + parseInt(courseNumber()), {
+            method: "GET",
+        }).then((res) => res.json()).then((data) => {
+            const dataList = data.result;
+            $("#course-name").html('');
+            $('#course-name').append(
+                `<span>과정명: </span>
+                <span>${dataList[0].courseName}</span>`)
+
+            let result;
+            for (const resultElement of dataList) {
+                result += `<tr>
+                <td>${resultElement.courseNumber}</td>
+                <td>${resultElement.name}</td>
+                <td>${resultElement.inTime == null ? '-' : resultElement.inTime}</td>
+                <td>${resultElement.outTime == null ? '-' : resultElement.outTime}</td>
+            </tr>`
+            }
+            $("#attendance-table-contents").html('');
+            $("#attendance-table-contents").append(result);
+        })
+    })
+        .catch((error) => console.error(error));
+
+})
+
+function courseNumber() {
+    return $(".courseId-filter option:selected").text();
+}
+
+$(".courseId-filter").change(function () {
+    if ($(".courseId-filter").val()) {
+        fetch('/attendances/current-status?attendanceDate=' + currentDate + '&courseNumber=' + parseInt(courseNumber()), {
+            method: "GET",
+        }).then((res) => res.json()).then((data) => {
+            const dataList = data.result;
+            $("#course-name").html('');
+            $('#course-name').append(
+                `<span>과정명: </span>
+                <span>${dataList[0].courseName}</span>`)
+
+            let result;
+            for (const resultElement of dataList) {
+                result += `<tr>
+                <td>${resultElement.courseNumber}</td>
+                <td>${resultElement.name}</td>
+                <td>${resultElement.inTime == null ? '-' : resultElement.inTime}</td>
+                <td>${resultElement.outTime == null ? '-' : resultElement.outTime}</td>
+            </tr>`
+            }
+            $("#attendance-table-contents").html('');
+            $("#attendance-table-contents").append(result);
+        })
+    }
+});

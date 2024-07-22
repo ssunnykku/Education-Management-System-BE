@@ -20,12 +20,12 @@
     margin-left: 30%;
 }
 
-.important-search-form-wrapper{
+.important-search-form-wrapper {
     width: 60% !important;
     margin: 0 auto;
 }
 
-.important-button-wrapper{
+.important-button-wrapper {
     margin: 0 !important;
     padding: 0 !important;
 }
@@ -34,6 +34,7 @@
     display: flex;
     width: 450px;
     align-items: center;
+    gap: 5px;
 }
 
 
@@ -146,9 +147,10 @@
     height: 60px;
 }
 
-.important-search-form{
+.important-search-form {
     margin-left: 0% !important;
 }
+
 .filter-search-btn {
     font-style: normal;
     font-weight: 500;
@@ -311,7 +313,7 @@
     width: 15%;
 }
 
-.cnt-pages{
+.cnt-pages {
     width: 60%;
     margin: 5px auto 10px auto;
     font-weight: 500;
@@ -401,8 +403,7 @@
 
 #scholarshipBoard-table {
     width: 100%;
-    /* padding: 0 100px 0 100px; */
-    min-height: 700px;
+    min-height: 50vh;
 }
 
 .scholarshipBoard-row {
@@ -515,7 +516,7 @@
     margin: 20px 0 20px 0;
     display: flex;
     gap: 4px;
-    padding: 0 250px;
+    padding-left: 13rem;
 }
 
 .scholarshipResult-search-btn-wrapper {
@@ -555,7 +556,7 @@
 
 #scholarshipResultBoard-table-wrapper {
     width: 100%;
-    /*padding: 0 200px;*/
+    min-height: 20vh;
 }
 
 .scholarshipResultBoard-row {
@@ -591,7 +592,23 @@
 
     width: 100%;
 
-    /*border-radius: 10px 10px 0px 0px;*/
+}
+
+#settlement-date {
+    width: 120px;
+    /*height: 41px;*/
+    background: #ffffff;
+    border: 1px solid #cfcfcf;
+    border-radius: 5px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 144%;
+    padding-left: 8px;
+    color: #000000;
+    background-size: 12px;
+    background-position: right;
+    background-position: 60px;
 }
 
 #scholarship-table-contents {
@@ -635,9 +652,11 @@
 body {
     font-family: "Pretendard";
 }
-::backdrop{
-    background-color: rgb(0,0,0,0.5);
+
+::backdrop {
+    background-color: rgb(0, 0, 0, 0.5);
 }
+
 #addpoint-wrapper {
     display: flex;
     flex-direction: column;
@@ -719,39 +738,40 @@ body {
     gap: 40px;
 }
 
-.point-info{
-    gap:20px !important;
+.point-info {
+    gap: 20px !important;
 }
 
-#point-info-name{
-    h1:first-child{
+#point-info-name {
+    h1:first-child {
         width: 20px;
     }
 
-    h1:nth-child(2){
+    h1:nth-child(2) {
         width: 250px;
         text-align: center;
     }
 
-    h1:last-child{
+    h1:last-child {
         width: 80px;
         text-align: center;
     }
 }
 
-.pointCategoryInfo{
-    
-    h4:nth-child(2){
+.pointCategoryInfo {
+
+    h4:nth-child(2) {
         width: 250px;
         text-align: center;
     }
-    h4:last-child{
+
+    h4:last-child {
         width: 80px;
         text-align: center;
     }
 }
 
-.choose-point-info{
+.choose-point-info {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -770,14 +790,14 @@ body {
     overflow-y: auto;
 }
 
-.choose-point-info-detail{
+.choose-point-info-detail {
     display: flex;
     flex-direction: column;
     width: 350px;
 
     gap: 10px;
 
-    h4:last-child{
+    h4:last-child {
         text-align: center;
         width: 70px;
     }
@@ -850,14 +870,15 @@ body {
 }
 
 /*********PointModal **********/
-#showPointModal{
+#showPointModal {
     margin: auto;
 
-    & h1{
+    & h1 {
         font-weight: bold;
         font-size: 25px;
     }
 }
+
 #point-wrapper {
     display: flex;
     flex-direction: column;
@@ -889,15 +910,17 @@ body {
     flex-direction: row;
     justify-content: space-around;
 
-    h4:first-child, h5:first-child{
+    h4:first-child, h5:first-child {
         width: 100px;
         text-align: center;
     }
-    h4:nth-child(2), h5:nth-child(2){
+
+    h4:nth-child(2), h5:nth-child(2) {
         width: 280px;
         text-align: center;
     }
-    h4:last-child, h5:last-child{
+
+    h4:last-child, h5:last-child {
         width: 90px;
         text-align: center;
     }
@@ -910,15 +933,17 @@ body {
     width: 480px;
     margin: 0;
 
-    h3:first-child{
+    h3:first-child {
         width: 100px;
         text-align: center;
     }
-    h3:nth-child(2){
+
+    h3:nth-child(2) {
         width: 280px;
         text-align: center;
     }
-    h3:last-child{
+
+    h3:last-child {
         width: 90px;
         text-align: center;
     }
@@ -986,11 +1011,12 @@ ul#pagination {
     padding: 50px 70px 20px 70px;
     margin: auto;
 
-    div.student-info h1.info-title{
+    div.student-info h1.info-title {
         font-weight: bold;
         font-size: 25px;
     }
-    div.choose-point-info h1{
+
+    div.choose-point-info h1 {
         font-weight: 500;
         font-size: 20px;
     }

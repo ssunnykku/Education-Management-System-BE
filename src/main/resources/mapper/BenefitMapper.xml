@@ -21,7 +21,7 @@
         AND course_end_date <![CDATA[>=]]> #{endDate}
         AND c.is_active = true
         AND s.is_active = true
-        AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
+        AND c.course_number = #{courseNumber}
         ORDER BY name
         <if test="limit != null and offset != null">
             limit #{limit} offset #{offset}
@@ -59,7 +59,7 @@
           AND s.student_id != ''
           AND c.is_active = true
           AND s.is_active = true
-          AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
+          AND c.course_number = #{courseNumber}
         ]]>
     </select>
 

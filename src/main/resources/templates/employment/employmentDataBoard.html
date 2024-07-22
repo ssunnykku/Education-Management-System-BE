@@ -47,7 +47,7 @@
 
             const courseNumberLabels = data.result.map(courseNumber => courseNumber.toString());
             chart.data.labels = courseNumberLabels;
-
+			const courseName =[];
             const courseNumbers = [];
             const courseData = [];
             const studentDataPromises = []; // Array to store student data promises
@@ -63,12 +63,16 @@
                 const employedStudentDataResponse = await fetch(`/employments/count-employeed?courseNumber=${courseNumber}`);
                 const employedStudentData = await employedStudentDataResponse.json();
                 const employedStudent = employedStudentData.result;
+                const courseNameDataResponse = await fetch(`/courses/course-name?courseNumber=${courseNumber}`);
+                const courseNameData = await courseNameDataResponse.json();
+                const courseName = courseNameData.result;
                 totalStudents = studentData.result
                 employedStudents = employedStudentData.result
                 unemployedStudents = totalStudents - employedStudents;
                 employmentRate = employmentData.result;
                 // Update tooltip content using the fetched totalStudents
                 chart.data.datasets[0].tooltipData.push({
+                	courseName : courseName,
                     totalStudents: totalStudents,
                     employedStudents: employedStudents,
                     unemployedStudents: unemployedStudents,
@@ -78,6 +82,7 @@
 
 
                 chart.data.datasets[1].tooltipData.push({
+                	courseName : courseName,
                     totalStudents: totalStudents,
                     employedStudents: employedStudents,
                     unemployedStudents: unemployedStudents,
@@ -185,6 +190,7 @@
                         title: () => null,
                         label: function (tooltipItem, data) {
                             const courseNumber = data.labels[tooltipItem.index];
+                            const courseName =data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].courseName;
                             const employmentData = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                             const totalStudents = data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].totalStudents;
                             const employedStudents = data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].employedStudents;
@@ -192,7 +198,7 @@
                             const employmentRate = data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].employmentRate.toFixed(1);
 
                             const tooltipBody = [
-
+								`${courseName}`,
                                 ` 총 학생: ${totalStudents}명`,
                                 ` 취업: ${employedStudents}명`,
                                 ` 미취업: ${unemployedStudents}명`,

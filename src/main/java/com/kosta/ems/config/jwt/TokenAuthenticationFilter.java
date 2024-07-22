@@ -1,5 +1,7 @@
 package com.kosta.ems.config.jwt;
 
+import com.kosta.ems.studentLogin.exception.ExceptionMessage;
+import com.kosta.ems.studentLogin.exception.InvalidTokenException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,6 +51,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
         } catch (AccessDeniedException e) {
             log.error(e.getMessage());
+            throw new InvalidTokenException(ExceptionMessage.AUTHORIZATION_FAILED.getMessage());
 
 
         }

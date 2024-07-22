@@ -167,5 +167,10 @@ public class CourseMapperTest {
 	public void getSeqByCourseNumber() {
 		assertThat(mapper.getSeqByCourseNumber(277)).isEqualTo(20);
 	}
+	@Test
+	@Transactional
+	void getCourseNameByCourseNumber() {
+		log.info(mapper.getCourseNameByCourseNumber(277).toString());
+	}
 }
 

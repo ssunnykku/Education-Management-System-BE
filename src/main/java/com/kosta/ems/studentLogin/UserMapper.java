@@ -1,7 +1,7 @@
 package com.kosta.ems.studentLogin;
 
-import com.kosta.ems.student.StudentCourseInfoDTO;
-import com.kosta.ems.student.StudentDTO;
+import com.kosta.ems.student.dto.StudentCourseInfoDTO;
+import com.kosta.ems.student.dto.StudentDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

@@ -3,8 +3,6 @@ package com.kosta.ems.employment;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kosta.ems.course.CourseDTO;
-import com.kosta.ems.student.GetStudentInfoByScqDTO;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -27,6 +25,6 @@ public class EmploymentInfoResponse {
     private LocalDate courseEndDate;
     private String company;
     private boolean isEmployeed;
-    
+
 
 }

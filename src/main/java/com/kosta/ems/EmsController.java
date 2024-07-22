@@ -1,6 +1,6 @@
 package com.kosta.ems;
 
-import com.kosta.ems.student.StudentBasicInfoDTO;
+import com.kosta.ems.student.dto.StudentBasicInfoDTO;
 import com.kosta.ems.student.StudentService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -202,7 +202,11 @@ public class EmsController {
     public String main() {
         return "main";
     }
-    
+
+    @GetMapping("/employments/data")
+    public String employment() {
+        return "employment/employmentDataBoard";
+    }
 
 
 }
