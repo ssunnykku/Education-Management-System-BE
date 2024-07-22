@@ -33,7 +33,6 @@
           AND s.name LIKE CONCAT('%', #{name}, '%')
           AND s.is_active = true
           AND c.is_active = true
-          AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
           AND (select totalPoint
         from view_students_course_point
         where student_id = s.student_id

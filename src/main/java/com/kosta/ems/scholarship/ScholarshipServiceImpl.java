@@ -45,10 +45,13 @@ public class ScholarshipServiceImpl implements ScholarshipService {
         int limit = size;
         int offset = size * (page - 1);
 
+        log.info("dto: {}", dto);
+        log.info("result: {}", scholarshipMapper.selectScholarshipResultList(dto.getCourseNumber(), dto.getAcademyLocation(), dto.getName(), dto.getSettlementDate(), limit, offset));
+        log.info("result: {}", scholarshipMapper.selectScholarshipResultList(dto.getCourseNumber(), dto.getAcademyLocation(), dto.getName(), dto.getSettlementDate(), limit, offset).size());
         dto.setLimit(limit);
         dto.setOffset(offset);
 
-        return (ArrayList<ScholarshipSettlementResultDTO>) scholarshipMapper.selectScholarshipResultList(String.valueOf(dto.getCourseNumber()), dto.getAcademyLocation(), dto.getName(), dto.getSettlementDate(), limit, offset);
+        return (ArrayList<ScholarshipSettlementResultDTO>) scholarshipMapper.selectScholarshipResultList(dto.getCourseNumber(), dto.getAcademyLocation(), dto.getName(), dto.getSettlementDate(), limit, offset);
     }
 
     @Override

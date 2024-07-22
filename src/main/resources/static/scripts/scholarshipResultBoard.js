@@ -46,11 +46,15 @@ function getScholarshipResultData(data) {
 }
 
 function searchInput() {
+    if ($(".search-input").val() === null) {
+        return '';
+    }
     return $(".search-input").val();
 }
 
 function courseNumber() {
-    return $(".scholarship-courseId-filter option:selected").text();
+    console.log($(".scholarshipResult-courseId-filter option:selected").text());
+    return $(".scholarshipResult-courseId-filter option:selected").text();
 }
 
 function settlementDate() {
@@ -65,7 +69,7 @@ async function fetchScholarshipResultBoard(param) {
     const raw = JSON.stringify({
         "courseNumber": courseNumber() == "기수" ? "" : courseNumber(),
         "name": searchInput(),
-        "scholarshipDate": settlementDate()
+        "settlementDate": settlementDate()
     });
 
     const requestOptions = {
