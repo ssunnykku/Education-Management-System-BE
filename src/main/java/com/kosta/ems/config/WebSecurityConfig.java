@@ -1,6 +1,7 @@
 package com.kosta.ems.config;
 
 import com.kosta.ems.config.jwt.JwtTokenProvider;
+import com.kosta.ems.config.jwt.StudentDetailService;
 import com.kosta.ems.config.jwt.TokenAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,14 +12,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -34,6 +32,7 @@ import java.util.Arrays;
 public class WebSecurityConfig {
 
     private final UserDetailService userService;
+    private final StudentDetailService studentService;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Value("${security.level}")
@@ -74,10 +73,7 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 );
-//            http.addFilterBefore(new TokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-//                .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers("/api/**").authenticated()
-//                );
+
         http.addFilterBefore(new TokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -98,10 +94,10 @@ public class WebSecurityConfig {
         authBuilder.authenticationProvider(managerAuthProvider);
 
         // Student AuthenticationProvider
-//        DaoAuthenticationProvider studentAuthProvider = new DaoAuthenticationProvider();
-//        studentAuthProvider.setUserDetailsService(studentService);
-//        studentAuthProvider.setPasswordEncoder(passwordEncoder);
-//        authBuilder.authenticationProvider(studentAuthProvider);
+        DaoAuthenticationProvider studentAuthProvider = new DaoAuthenticationProvider();
+        studentAuthProvider.setUserDetailsService(studentService);
+        studentAuthProvider.setPasswordEncoder(passwordEncoder);
+        authBuilder.authenticationProvider(studentAuthProvider);
 
         return authBuilder.build();
 

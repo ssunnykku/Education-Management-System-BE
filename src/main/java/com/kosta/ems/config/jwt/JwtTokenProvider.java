@@ -38,12 +38,13 @@ public class JwtTokenProvider {
 
     private final static String TOKEN_PREFIX = "Bearer ";
 
-    public String createAccessToken(String hrdNetId) {
+    public String createAccessToken(String hrdNetId, String studentId) {
         Date now = new Date();
 
         return Jwts.builder()
                 .claim("id", hrdNetId)
                 .setSubject(hrdNetId)
+                .claim("studentId", studentId)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(now.getTime() + Duration.ofMinutes(ACCESS_EXPIRE).toMillis()))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
@@ -60,10 +61,10 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public TokenInfo createJwt(String hrdNetId) {
+    public TokenInfo createJwt(String hrdNetId, String studentId) {
 
         String refreshToken = createRefreshToken(hrdNetId);
-        String accessToken = createAccessToken(hrdNetId);
+        String accessToken = createAccessToken(hrdNetId, studentId);
 
         return TokenInfo.builder()
                 .grantType("Bearer")
@@ -92,7 +93,7 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String accessToken) {
         Claims claims = parseClaims(accessToken);
-        Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("STUDENT"));
+        Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_STUDENT"));
 
         log.info("claims {} :", claims);
 
@@ -123,6 +124,18 @@ public class JwtTokenProvider {
         log.info("???? {}", claims);
 
         return claims.getSubject();
+    }
+
+    public String getStudentId(HttpServletRequest request){
+        log.info("request {}", request);
+        String accessToken = getAccessToken(request);
+
+        Claims claims = parseClaims(accessToken);
+
+        log.info("?? {}", (String) claims.get("studentId"));
+        log.info("???? {}", claims);
+
+        return (String) claims.get("studentId");
     }
 
     private Claims parseClaims(String accessToken) {

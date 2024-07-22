@@ -75,11 +75,8 @@ public class NotificationController {
     //검색하기(O)
     @GetMapping("/list")
     public Map<String, Collection> searchByKeyword(@RequestParam("keyword") String keyword, HttpSession session, @RequestParam(defaultValue = "1") int page, HttpServletRequest request) {
-//        ManagerDTO loginUser = getLoginUser();
-//        String managerId = loginUser.getManagerId();
-        String managerId = "3ddf8303-3eaf-11ef-bd30-0206f94be675";
-
-        log.info("이거 {}", jwtTokenProvider.getHrdNetId(request));
+        ManagerDTO loginUser = getLoginUser();
+        String managerId = loginUser.getManagerId();
 
         log.info(jwtTokenProvider.getCookieValue(request, "refreshToken"));
         return Map.of("result", notification.searchByKeyword(keyword, managerId, page, 10));

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kosta.ems.studentLogin.UserMapper">
-    <select id="getLoginInfo" resultType="com.kosta.ems.student.dto.StudentDTO">
+    <select id="getLoginInfo" resultType="com.kosta.ems.studentLogin.StudentDTO">
         select hrd_net_id as hrdNetId, password
         from students
         where hrd_net_id = #{hrdNetId}
@@ -27,8 +27,9 @@
         where hrd_net_id = #{hrdNetId}
     </select>
 
-    <select id="findByToken" resultType="java.lang.String">
-        select hrd_net_id as hrdNetId
+    <select id="findByToken" resultType="com.kosta.ems.studentLogin.StudentDTO">
+        select hrd_net_id as hrdNetId,
+               student_id as studentId
         from students
         where refresh_token = #{refreshToken}
     </select>
