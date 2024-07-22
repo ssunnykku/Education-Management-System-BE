@@ -6,6 +6,10 @@ let currentBlock = 1;
 
 let totalPages = 0;
 
+function handleError(message) {
+    $("#error").html("");
+    $("#error").append(`<span style="color: red">${message}</span>`)
+}
 
 function getName() {
     return $(".search-input").val();
@@ -18,6 +22,7 @@ function getCourseNumber() {
 function getBenefitSettlementDate() {
     return $("#settlement-date").val();
 }
+
 
 $(document).ready(() => {
     fetchResultData(1);
@@ -65,16 +70,16 @@ function getResultData(dataList) {
                     <span>${dataList[i].settlementDurationStartDate} ~ ${dataList[i].settlementDurationEndDate}</span>
                 </div>
                 <div class="benefitSettlementResult-training-aid">
-                    <span>${dataList[i].trainingAidAmount}</span>
+                    <span>${dataList[i].trainingAidAmount.toLocaleString('ko-KR')}</span>
                 </div>
                 <div class="benefitSettlementResult-meal-aid-amount">
-                    <span>${dataList[i].mealAidAmount}</span>
+                    <span>${dataList[i].mealAidAmount.toLocaleString('ko-KR')}</span>
                 </div>
                 <div class="benefitSettlementResult-settlement_aid_amount">
-                    <span>${dataList[i].settlementAidAmount}</span>
+                    <span>${dataList[i].settlementAidAmount.toLocaleString('ko-KR')}</span>
                 </div>
                 <div class="benefitSettlementResult-total-amount">
-                    <span>${dataList[i].totalAmount}</span>
+                    <span>${dataList[i].totalAmount.toLocaleString('ko-KR')}</span>
                 </div>
                 <div class="benefit-result-settlement-date">
                     <span>${dataList[i].benefitSettlementDate}</span>
@@ -91,6 +96,7 @@ function getResultData(dataList) {
 }
 
 function fetchResultData(page) {
+
     const requestOptions = {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -128,7 +134,11 @@ function fetchResultData(page) {
 }
 
 $(".filter-search-btn").click(async () => {
-    // await getCountData();
+    console.log("이거" + getBenefitSettlementDate());
+    if (getBenefitSettlementDate() == '' || getBenefitSettlementDate() == null) {
+        handleError('정산 기간을 입력하세요');
+        return;
+    }
     await fetchResultData(1);
 })
 
@@ -150,9 +160,9 @@ function updatePagination() {
                     <a class="page-link" style="font-weight: ${fontWeight}"  onclick="fetchResultData(${num})">${num}</a>
                     </li>`;
     }
+    $("#page_number").html('');
     $("#page_number").append(result);
 }
-
 
 $("#next").click(() => {
     if (currentBlock * pageSize < totalPages) {

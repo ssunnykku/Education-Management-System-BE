@@ -66,7 +66,7 @@ async function getSettlementList(data) {
                             <span id="point">${data[i].totalPoint}</span>
                         </div>
                         <div class="scholarshipBoard-total-amount">
-                            <span id="totalAmount">${data[i].scholarshipAmount}</span>
+                            <span id="totalAmount">${data[i].scholarshipAmount.toLocaleString('ko-KR')}</span>
                         </div>
                     </div>`;
     }
