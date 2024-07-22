@@ -16,9 +16,6 @@ function getScholarshipResultData(data) {
     let result = "";
     for (let i = 0; i < dataList.length; i++) {
         result += ` <div class="scholarshipResultBoard-row">
-                            <div class="scholarshipResultBoard-checkbox">
-                                <input type="checkbox" name=""/>
-                            </div>
                             <div class="scholarshipResultBoard-courseId">
                                 <span>${dataList[i].courseNumber}</span>
                             </div>
@@ -33,7 +30,7 @@ function getScholarshipResultData(data) {
                                 <span>${dataList[i].account}</span>
                             </div>
                             <div class="scholarshipResultBoard-total-amount">
-                                <span>${dataList[i].scholarshipAmount}</span>
+                                <span>${dataList[i].scholarshipAmount.toLocaleString('ko-KR')}</span>
                             </div>
                             <div class="scholarshipResultBoard-settlement-date">
                                 <span>${dataList[i].settlementDate}</span>
@@ -113,6 +110,7 @@ function updatePagination() {
                 <a class="page-link" style="font-weight: ${fontWeight}" onclick="fetchScholarshipResultBoard(${num})">${num}</a>
                 </li>`;
     }
+    $("#page-number").html('');
     $("#page-number").append(result);
 }
 
