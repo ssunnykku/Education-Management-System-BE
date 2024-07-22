@@ -15,48 +15,7 @@ public interface AttendanceMapper {
 
     int selectCountLeave(LocalDate startDate, LocalDate endDate, String studentId);
 
-    /*
-    // [출결 조회] - 수강생 출결 조회 목록 데이터 개수 (for 페이지네이션)
-    // 경우1 _ 기수+수강생명 입력
-    Collection<StudentAttendanceListDTO> selectAttendanceIntegratedListFilterAllAmount(String name, int courseNumber);
-    // 경우2_ 기수 또는 수강생명 입력
-    Collection<StudentAttendanceListDTO> selectAttendanceIntegratedListFilterAmount(String name, int courseNumber);
-    // 경우3_ 기수, 수강생명 미입력 (전체 데이터)
-    Collection<StudentAttendanceListDTO> selectAttendanceIntegratedListNoFilterAmount(String name, int courseNumber);
-
-    // [출결 조회] - 수강생 출석 조회 목록 조회
-    // 경우1 _ 기수+수강생명 입력
-    List<StudentAttendanceListDTO> selectAttendanceIntegratedListFilterAll(String name, int courseNumber, int page, int size);
-    // 경우2_ 기수 또는 수강생명 입력
-    List<StudentAttendanceListDTO> selectAttendanceIntegratedListFilter(String name, int courseNumber, int page, int size);
-    // 경우3_ 기수, 수강생명 미입력 (전체 데이터)
-    List<StudentAttendanceListDTO> selectAttendanceIntegratedListNoFilter(String name, int courseNumber, int page, int size);
-     */
-
-    /*
-    // [출결 수정] - 특정일의 수강생 출석 상태 목록 조회 (for 출결 입력/수정)
-    // 경우1 _ 기수+수강생명 입력
-    // 검색 결과 개수 가져오기 (for 페이지네이션)
-    int selectCourseNumberAndStudentNameListAmount(LocalDate attendanceDate, String academyLocation, String name, int courseNumber);
-    // 검색 결과 데이터 목록 가져오기
-    List<AttendanceListBySearchFilterDTO> selectCourseNumberAndStudentNameList(LocalDate attendanceDate, String academyLocation, String name, int courseNumber, int page, int size);
-
-    // 경우2 _ 기수 또는 수강생명 입력
-    // 검색 결과 개수 가져오기 (for 페이지네이션)
-    int selectCourseNumberOrStudentNameListAmount(LocalDate attendanceDate, String academyLocation, String name, int courseNumber);
-    // 검색 결과 데이터 목록 가져오기
-    List<AttendanceListBySearchFilterDTO> selectCourseNumberOrStudentNameList(LocalDate attendanceDate, String academyLocation, String name, int courseNumber, int page, int size);
-
-    // 경우3 _ 기수+수강생명 미입력
-    // 검색 결과 개수 가져오기 (for 페이지네이션)
-    int selectDateAndLocationListAmount(LocalDate attendanceDate, String academyLocation, String name, int courseNumber);
-    // 검색 결과 데이터 목록 가져오기
-    List<AttendanceListBySearchFilterDTO> selectDateAndLocationList(LocalDate attendanceDate, String academyLocation, String name, int courseNumber, int page, int size);
-    */
-
-
     // 2차 - 경우 1~3을 하나의 쿼리문으로 해결하기
-    // int selectAttendanceIntegratedListAmount(String name, int courseNumber, String academyLocation);
     List<StudentAttendanceListDTO> selectAttendanceIntegratedListAmount(String name, int courseNumber, String academyLocation);
 
     List<StudentAttendanceListDTO> selectAttendanceIntegratedList(String name, int courseNumber, String academyLocation, int page, int size);

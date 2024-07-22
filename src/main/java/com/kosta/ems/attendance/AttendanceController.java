@@ -80,7 +80,7 @@ public class AttendanceController {
         PageResponseDTO pageInfo = PageResponseDTO.builder().totalCount(totalCount).totalPage(totalPage).currentPage(currentPage).prevPage(prevPage).nextPage(nextPage).build();
         result.put("pageInfo", pageInfo);
 
-        log.info(">> -- pageInfo: " + result.get("pageInfo").toString());
+        log.info("pageInfo: " + result.get("pageInfo").toString());
 
         return result;
     }
@@ -117,7 +117,7 @@ public class AttendanceController {
 
         PageResponseDTO pageInfo = PageResponseDTO.builder().totalCount(totalCount).totalPage(totalPage).currentPage(currentPage).prevPage(prevPage).nextPage(nextPage).build();
         result.put("pageInfo", pageInfo);
-        log.info(">> pageInfo: " + pageInfo.toString());
+        log.info("pageInfo: " + pageInfo.toString());
 
         return result;
     }
@@ -128,9 +128,6 @@ public class AttendanceController {
         UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
 
         try {
-            log.info("🚀 request 확인");
-            log.info(">> request.length: " + request.size());
-            log.info(">> request: " + request.toString());
             attendanceService.updateStudentAttendance(request);
             dto.setCode(ResCode.SUCCESS.value());
         } catch (NoSuchDataException e) {
@@ -162,9 +159,6 @@ public class AttendanceController {
         String managerId = getManagerIdOfLoginUser();
 
         try {
-            log.info("🚀 request 확인");
-            log.info(">> request.length: " + request.size());
-            log.info(">> request: " + request.toString());
             for (int i = 0; i < request.size(); i++) {
                 attendanceService.setAttendanceStatus(request.get(i).getAttendanceStatus(), request.get(i).getAttendanceDate(), request.get(i).getStudentCourseSeq(), managerId);
             }
@@ -202,25 +196,23 @@ public class AttendanceController {
     public Map<String, Object> attendanceFileUpload(MultipartFile evidentialDocument) throws IOException {
         Map<String, Object> result = new HashMap<String, Object>();
         String orgFileName = evidentialDocument.getOriginalFilename();
-        log.info("🎃 tempPath: " + tempPath);
+        log.info("tempPath: " + tempPath);
         String bucketKey = tempPath + "attendance/" + orgFileName;
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentType(evidentialDocument.getContentType());
         objectMetadata.setContentLength(evidentialDocument.getSize());
 
-        log.info("🎃 bucketName: " + bucketName);
-        log.info("🎃 bucketKey: " + bucketKey);
-        log.info("🎃 document.getInputStream(): " + evidentialDocument.getInputStream());
-        log.info("🎃 ObjectMetadata - contentType: " + objectMetadata.getContentType());
+        log.info("bucketName: " + bucketName);
+        log.info("bucketKey: " + bucketKey);
+        log.info("document.getInputStream(): " + evidentialDocument.getInputStream());
+        log.info("ObjectMetadata - contentType: " + objectMetadata.getContentType());
 
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, bucketKey, evidentialDocument.getInputStream(), objectMetadata);
-        log.info("🎃 putObjectRequest: " + putObjectRequest);
-        log.info("🎃🎃 bucketName: " + putObjectRequest.getBucketName());
-        log.info("🎃🎃 bucketKey: " + putObjectRequest.getKey());
+        log.info("putObjectRequest: " + putObjectRequest);
+        log.info("bucketName: " + putObjectRequest.getBucketName());
+        log.info("bucketKey: " + putObjectRequest.getKey());
 
         amazonS3Client.putObject(putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead));
-        log.info("출석인정 서류 파일 업로드 완료!!");
-        log.info(amazonS3Client.getUrl(bucketName, bucketKey).toString().substring(6));
         String fileURL = "http:" + amazonS3Client.getUrl(bucketName, bucketKey).toString().substring(6);
 
         result.put("data", fileURL);
@@ -234,8 +226,6 @@ public class AttendanceController {
         UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
 
         try {
-            log.info("🚀 request 확인");
-            log.info(">> request: " + request.toString());
             attendanceService.reflectAcknowledgeAttendanceStatus(request);
 
             dto.setCode(ResCode.SUCCESS.value());

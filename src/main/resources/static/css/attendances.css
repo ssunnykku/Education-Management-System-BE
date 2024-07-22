@@ -59,7 +59,6 @@
 
 table {
     border-collapse: separate;
-    /*border-spacing: 0px 13px;*/
     border-spacing: 0px 8px;
 }
 
@@ -127,7 +126,6 @@ select {
     justify-content: flex-end;
     gap: 10px;
     width: 100%;
-    /*margin-top: 20px;*/
     padding-right: 7%;
     .btn {
         display: flex;
@@ -498,8 +496,6 @@ select {
     font-size: 16px;
 }
 
-/* table */
-
 
 .attendance-btn-setting {
     font-style: normal;
@@ -587,8 +583,6 @@ select {
 }
 #attendance-add-table-article {
     display: flex;
-    /*height: 495px;*/
-    /*height: 490px;*/
     height: 420px;
 }
 .board-table.set-attendance {
@@ -600,7 +594,7 @@ select {
     }
 }
 .modifiedAttendance {
-    border: 2px solid rgb(0, 141, 206);  /* 임시 컬러: kosta 로고 파란색 rgb 코드 */
+    border: 2px solid rgb(0, 141, 206);
 }
 .update-btn-div.attendance-add {
     padding-right: 10%;
@@ -642,7 +636,6 @@ select {
     top: 27.5%;
     left: 35%;
     font-size: 16px;
-    /*z-index: 996;*/
     background-color: #fff;
 
     .input-date {
