@@ -35,4 +35,6 @@ public interface CourseMapper {
     Integer getStudentsNumberBySeq(@Param("courseSeq") int courseSeq);
 
     Integer getSeqByCourseNumber(@Param("courseNumber") int courseNumber);
+    
+    String getCourseNameByCourseNumber(@Param("courseNumber") int courseNumber);
 }

@@ -34,4 +34,6 @@ public interface CourseService {
     Integer getStudentsNumberBySeq(int courseSeq);
 
     Integer getSeqByCourseNumber(int courseNumber);
+    
+    String getCourseNameByCourseNumber(int courseNumber);
 }

@@ -170,5 +170,8 @@
         WHERE course_number = #{courseNumber}
         ORDER BY course_number DESC
     </select>
-
+	<select id="getCourseNameByCourseNumber" resultType="string">
+	SELECT course_name FROM courses
+        	WHERE course_number=#{courseNumber}
+	</select>
 </mapper>

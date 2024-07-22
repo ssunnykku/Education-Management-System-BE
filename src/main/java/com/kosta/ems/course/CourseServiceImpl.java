@@ -106,6 +106,9 @@ public class CourseServiceImpl implements CourseService {
     public List<String> getCourseTypeList() {
         return courseMapper.getCourseTypeList();
     }
-
+    @Override
+    public String getCourseNameByCourseNumber(int courseNumber) {
+    	return courseMapper.getCourseNameByCourseNumber(courseNumber);
+    }
 
 }
