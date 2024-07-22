@@ -43,7 +43,7 @@ class StudentMapperTest {
         log.info(studentMapper.findByStudentNameOrCourseNumberList("진", 277, 0, 10).toString());
     }
 
-    // *0710_수강생 정보 조회 // *0715 테스트 코드 검토 완료
+    // *0710_수강생 정보 조회
     @Test
     @DisplayName("수강생 목록 조회 Cnt 테스트")
     public void selectStudentInfoListCnt() {
@@ -112,12 +112,6 @@ class StudentMapperTest {
         log.info("교육장 - '갤럭시': " + studentMapper.selectOnGoingCourseList("갤럭시").toString());
     }
 
-    // *0715_안 쓰기로 결정된 개념
-    /*// @Test
-    public void addStudentBasicInfo() {
-        studentMapper.addStudentBasicInfo(new AddStudentBasicInfoDTO("test0001", "테스터양씨", LocalDate.of(1995, 02, 17), "서울시 용산구 이촌동 동부이촌2길, 대림아파트 101동 901호", "우리", "10029387655086", "01028768976", "test0001@naver.com", 'M', "d893c3ad-2f8f-11ef-b0b2-0206f94be675", 277));
-    }*/
-
     // 수강생 교육과정 수강신청(등록)
     @Test
     void addStudentCourseSeqInfo() {
@@ -126,21 +120,21 @@ class StudentMapperTest {
     }
 
     // 수강생 정보 수정
-    // @Test
+    @Test
     void updateSelectedStudentInfo() {
         UpdateSelectedStudentInfoDTO dto = UpdateSelectedStudentInfoDTO.builder().studentId("78b21862-32bf-11ef-b0b2-0206f94be675").name("박기영").address("부산광역시 해운대구 해운대로2").bank("부산").account("110583195038").phoneNumber("01059341921").email("syc1234@gmail.com").build();
         studentMapper.updateSelectedStudentInfo(dto);
     }
 
     // 수강생 삭제
-    // @Test
+    @Test
     void deleteSelectedStudent() {
         studentMapper.deleteSelectedStudent("8b48e083-2fa8-11ef-b0b2-0206f94be675");
     }
 
 
     // scq로 수강생 기본 정보 가져오기
-    // @Test
+    @Test
     void selectStudentInfoByScq() {
         log.info(studentMapper.selectStudentInfoByScq(66).toString());
     }

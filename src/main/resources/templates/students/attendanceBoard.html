@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="../../css/format.css"/>
     <link rel="stylesheet" href="../../css/students.css"/>
     <link rel="stylesheet" href="../../css/attendances.css"/>
-    <!--<link rel="stylesheet" href="../../css/scholarships.css" />-->
     <style>
         .page-link {
             width: 10px;
@@ -94,7 +93,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
     let currentPage = 1;
     let currentBlock = 1;
     const pageSize = 10;
-    // const page = new URL(location.href).search.split("=")[0];
     const page = 1;
 
     function getCourseNumber() {
@@ -164,10 +162,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
         await fetch("/attendances/student-list?page="+param, requestOptions)
             .then((res) => res.json())
             .then(async(data) => {
-                console.log("출결 조회 Data");
-                console.log(data);
-                console.log(data.attendanceList);
-                console.log(data.attendanceList[0]);
                 let attendanceList = data.attendanceList;
 
                 let amount = data.amount;

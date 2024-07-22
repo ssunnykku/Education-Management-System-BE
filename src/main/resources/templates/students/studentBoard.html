@@ -29,7 +29,7 @@
             </div>
             <div class="student-btn-wrapper">
                 <button type="button" id="enroll-btn" class="student-btn-setting">
-                    등록
+                    수강 등록
                 </button>
             </div>
         </div>
@@ -67,9 +67,9 @@
         <div id="modal-header">
             <p>수강생 상세정보</p>
         </div>
-        <div class="is-acitve-status-wrapper">
-            <input type="radio" id="activation" name="isActive" /><label>활성화</label>
-            <input type="radio" id="deactivation" name="isActive"/><label>비활성화</label>
+        <div class="is-active-status-wrapper">
+            <input type="radio" id="activation" name="isActive" value="activation" /><label for="activation">활성화</label>
+            <input type="radio" id="deactivation" name="isActive" value="deactivation"/><label for="deactivation">비활성화</label>
         </div>
         <div class="student-detail-wrapper">
             <div class="detail-info-item">
@@ -128,7 +128,6 @@
         </div>
         <div class="student-detail-wrapper">
             <button id="update-btn" class="btn">수정</button>
-            <!--<button id="delete-btn" class="btn">삭제</button>-->
             <button id="update-set-btn" class="btn">수정</button>
         </div>
     </div>
@@ -191,12 +190,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
                 $(".modal-backdrop").css("display", "none");
             }
         });
-
-        // 모달 열려 있을 때 문서 외부 클릭 이벤트 방지
-        // $("#student-detail-modal").on('shown.bs.modal', function() {
-        //     $('body').css('overflow', 'hidden'); // 스크롤 방지
-        // });
-        // $('body').css('overflow', 'hidden'); // 스크롤 방지
     });
 
     // 페이징 관련 멤버 데이터
@@ -205,6 +198,7 @@ fetch("/courses/course-number-list?excludeExpired=false", {
     let currentBlock = 1;
     const pageSize = 10;
     const page = 1;
+    let isActiveStatus = $("input[name='isActive']:checked").val();
 
     // '등록' 버튼 클릭하면 수강생 등록 페이지로 이동
     $("#enroll-btn").click(function () {
@@ -228,15 +222,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
         return $("input[name='student-radio']:checked").val();
     }
     function getIsActive() {
-        console.log("active 상태");
-        console.log($("#is-active-filter").val());
-        let isActive = $("#is-active-filter").val() == 1 ? 1 : 0;
-        return isActive;
-    }
-
-    function getIsActive() {
-        console.log("active 상태");
-        console.log($("#is-active-filter").val());
         let isActive = $("#is-active-filter").val() == 1 ? 1 : 0;
         return isActive;
     }
@@ -245,12 +230,8 @@ fetch("/courses/course-number-list?excludeExpired=false", {
 
     // -- 검색 결과 '총 **건' 화면에 연결
     async function getAmountStudentList(data) {
-        console.log("총 ** 건 - data");
-        console.log(data);
-
         totalPage = Math.ceil(data/10);   // 페이징 확인을 위해 임시로 '2'해둔 것. 10으로 바꿔야함.
 
-        console.log("totalPage: " + totalPage);
         let result = '';
         result += `<span class="span-attendance-list-amount">총 ${data}건</span>`;
         $(".student-cnt-pages").html("");
@@ -265,10 +246,9 @@ fetch("/courses/course-number-list?excludeExpired=false", {
         for(let i=0; i<data.length; i++) {
             let tmpRatio = "";
             if(data[i][1] == null) {
-                tmpRatio = "해당 없음";
+                tmpRatio = "미수료";
             } else {
                 tmpRatio = data[i][1].split("%")[0];
-                console.log(tmpRatio);
                 if(tmpRatio < 80.0) {
                     tmpRatio = "미수료";
                 } else {
@@ -320,7 +300,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
             } else {
                 $("#deactivation").attr("checked", true);
             }
-            // $("input[name='isActive']").val($(this).find(".student-isActive").val());
 
             $(".modal-backdrop").css("display", "flex");
             $("#student-detail-modal").css("display", "flex");
@@ -384,16 +363,24 @@ fetch("/courses/course-number-list?excludeExpired=false", {
         $("input[name='isActive']").attr("disabled", false);
     });
 
-    $("#update-set-btn").click(async function() {
-        let isActiveStatus = null;
+    $("input[name='isActive']").change(function() {
+        const selectedValue = $(this).val(); // 선택된 라디오 버튼의 값
+        console.log("상태 변경O");
+        console.log(isActiveStatus);
 
-        if($("#activation").attr("checked", true)) {
+        if (selectedValue === "activation") {
+            $("#activation").prop("checked", true); // "활성화" 버튼 선택
+            $("#deactivation").prop("checked", false); // "비활성화" 버튼 선택 해제
             isActiveStatus = 1;
-        } else if($("#deactivation").attr("checked", true)) {
-
+        } else if (selectedValue === "deactivation") {
+            $("#deactivation").prop("checked", true); // "비활성화" 버튼 선택
+            $("#activation").prop("checked", false); // "활성화" 버튼 선택 해제
             isActiveStatus = 0;
         }
+    });
 
+    $("#update-set-btn").click(async function() {
+        console.log(isActiveStatus);
         const raw = JSON.stringify({
             "name": $("#modal-student-name").val(),
             "address": $("#modal-student-address").val(),
@@ -422,19 +409,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
-        /*const raw = JSON.stringify({
-            "name": $("#modal-student-name").val(),
-            "address": $("#modal-student-address").val(),
-            "bank": $("#modal-student-bank").val(),
-            "account": $("#modal-student-account").val(),
-            "phoneNumber": $("#modal-student-phone-number").val(),
-            "email": $("#modal-student-email").val(),
-            "studentId": $("#modal-student-id").val()
-        });*/
-
-        console.log("업데이트할 정보");
-        console.log(params);
-
         const requestOptions = {
             method: "PUT",
             headers: myHeaders,
@@ -459,8 +433,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
             "courseNumber": courseNumber,
             "isActive": getIsActive()
         });
-        console.log("fetchStudentList - raw::");
-        console.log(raw);
 
         const requestOptions = {
             method: "POST",
@@ -474,8 +446,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
             .then(async (data) => {
                 let studentList = data.studentList;
                 let amount = data.amount;
-                console.log(">> studentList");
-                console.log(studentList);
 
                 await getSearchedStudentList(studentList);
                 await getAmountStudentList(amount);

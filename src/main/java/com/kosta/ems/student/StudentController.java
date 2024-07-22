@@ -26,23 +26,21 @@ public class StudentController {
 
 
     // [수강생 정보] - 수강생 정보 조회
-    // * 0715 _managerId 연결 및 테스트코드 정리 완료
     @PostMapping("/student-list")
     public Map<String, Object> getStudentsByNameOrCourseNumber(@RequestParam(name = "page", required = false, defaultValue = "1") int page, @RequestBody StudentInfoDTO dto) {
         Map<String, Object> result = new HashMap<String, Object>();
         int size = 10;
         int courseNumber = dto.getCourseNumber();
-        log.info("☄️☄️ request courseNumber: " + courseNumber);
+        log.info("request courseNumber: " + courseNumber);
         String name = dto.getName().equals("") ? "" : dto.getName();
-        log.info("☄️☄️ request name: " + name);
-        int isActive = dto.getIsActive();  // 임시
-        log.info("☄️☄️ request isActive: " + isActive);
+        log.info("request name: " + name);
+        int isActive = dto.getIsActive();
+        log.info("request isActive: " + isActive);
         String academyLocation = getAcademyOfLoginUser();
-        log.info("☄️☄️ request academyLocation: " + academyLocation);
+        log.info(" request academyLocation: " + academyLocation);
 
         int totalCount = studentService.getStudentInfoListCnt(isActive, name, courseNumber, academyLocation);
         result.put("amount", totalCount);
-        // result.put("studentList", studentService.getStudentInfoList(isActive, name, courseNumber, academyLocation, page, size));
         result.put("studentList", studentService.getStudentInfoList2(isActive, name, courseNumber, academyLocation, page, size));
 
         // 페이징 response
@@ -70,9 +68,9 @@ public class StudentController {
     public Map<String, Object> getStudentCourseHistory(@RequestBody StudentInfoDTO request) {
         Map<String, Object> result = new HashMap<String, Object>();
 
-        log.info("🙃 request.studentId(): " + request.getStudentId());
+        log.info("request.studentId(): " + request.getStudentId());
         result.put("studentCourseHistory", studentService.getStudentCourseHistory(request.getStudentId()));
-        log.info("🙃 studentCourseHistory" + studentService.getStudentCourseHistory(request.getStudentId()));
+        log.info("studentCourseHistory" + studentService.getStudentCourseHistory(request.getStudentId()));
         return result;
     }
 
@@ -84,7 +82,7 @@ public class StudentController {
         String hrdNetId = request.getHrdNetId();
 
         boolean check = studentService.findByHrdNetId(request.getHrdNetId());
-        // check: true - 등록 이력 있는 수강생, false - 신규 수강생 등록
+        // check: true - 등록 이력 있는 수강생, false - DB에 등록되지 않은 id(=미가입자)
 
         if (check == false) {
             result.put("result", String.valueOf(check));
@@ -99,7 +97,6 @@ public class StudentController {
 
     // [수강생 정보] - 수강생 등록
     // 2. 현재 진행 중인 수강신청 가능한 교육과정 목록 불러오기
-    // * 0715 _managerId 연결 및 테스트코드 정리 완료
     @GetMapping("/on-going-courses")
     public Map<String, Object> getOnGoingCourseList() {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -115,7 +112,7 @@ public class StudentController {
         UpdateDeleteResultDTO dto = new UpdateDeleteResultDTO();
 
         String managerId = getManagerIdOfLoginUser();
-        log.info("💥managerId: " + managerId);
+        log.info("managerId: " + managerId);
 
         try {
             studentService.setStudentCourseSeqInfo(request.getHrdNetId(), request.getCourseNumber(), managerId);
@@ -133,8 +130,6 @@ public class StudentController {
 
     // [수강생 정보] - 수강생 정보 수정
     // 1. 선택한 수강생의 등록된 정보 불러오기
-    // @Controller에서 작업
-
     // 2. 페이지 양식에서 작성한 내용으로 수강생 정보 수정하기
     @PutMapping()
     public UpdateDeleteResultDTO updateSelectedStudentInfo(@RequestBody UpdateSelectedStudentInfoDTO request) {

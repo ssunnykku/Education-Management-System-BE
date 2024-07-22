@@ -63,37 +63,36 @@ public class StudentServiceImpl implements StudentService {
         List<ArrayList> item = new ArrayList<>();  // [[studentInfoList, attendanceRatio], []]
         List<StudentInfoDTO> studentInfoList = studentMapper.selectStudentInfoList(isActive, name, courseNumber, academyLocation, ((page * size) - size), size);
         List<ArrayList> attendanceRatioList = attendanceService.getAttendanceIntegratedList(name, courseNumber, "가산", 1, 1000);
-        log.info("🌕 studentInfoList: " + studentInfoList.toString());
-        log.info("🌕 attendanceRatioList: " + attendanceRatioList.toString());
+        log.info("studentInfoList: " + studentInfoList.toString());
+        log.info("attendanceRatioList: " + attendanceRatioList.toString());
 
         for (int i = 0; i < studentInfoList.size(); i++) {
             ArrayList tmp = new ArrayList<>(2);
-            log.info(">>>>> studentInfoList.get(i): " + studentInfoList.get(i));
+            log.info("studentInfoList.get(i): " + studentInfoList.get(i));
             tmp.add(0, studentInfoList.get(i));
 
             for (int j = 0; j < attendanceRatioList.size(); j++) {
-                log.info(">>>>>>>>> attendanceRatioList.get(j).get(0): " + attendanceRatioList.get(j).get(0));
-                log.info(">>>>>>>>> attendanceRatioList.get(j).get(1): " + attendanceRatioList.get(j).get(1));
+                log.info("attendanceRatioList.get(j).get(0): " + attendanceRatioList.get(j).get(0));
+                log.info("attendanceRatioList.get(j).get(1): " + attendanceRatioList.get(j).get(1));
                 String dataString = attendanceRatioList.get(j).get(0).toString();
-                log.info("🔥 dataString: " + dataString);
+                log.info("dataString: " + dataString);
 
                 String[] dataPairs = dataString.split(", ");
-                log.info("🔥 dataPairs: " + dataPairs);
+                log.info("dataPairs: " + dataPairs);
 
                 for (String pair : dataPairs) {
-                    log.info("🔥 pair: " + pair);
+                    log.info("pair: " + pair);
                     String[] keyValue = pair.split("=");
-                    log.info("🔥 keyValue: " + keyValue.toString());
+                    log.info("keyValue: " + keyValue.toString());
 
                     if (keyValue[0].equals("hrdNetId")) {
                         String hrdNetId = keyValue[1];
                         if (hrdNetId.equals(studentInfoList.get(i).getHrdNetId())) {
                             String ratio = attendanceRatioList.get(j).get(1).toString();
-                            System.out.println("ratio 길이: " + ratio.length());
                             if (ratio.length() == 0 || ratio.isEmpty()) {
                                 ratio = "0";
                             }
-                            log.info("🔥🔥 ratio: " + ratio);
+                            log.info("ratio: " + ratio);
                             tmp.add(1, ratio);
                         }
                     } else {
@@ -104,7 +103,7 @@ public class StudentServiceImpl implements StudentService {
             item.add(tmp);
             log.info("ITEM: " + item.toString());
         }
-        log.info(">>> item: " + item);
+        log.info("item: " + item);
 
         return item;
     }
@@ -122,7 +121,6 @@ public class StudentServiceImpl implements StudentService {
     public boolean findByHrdNetId(String hrdNetId) {
         int count = studentMapper.findByHrdNetId(hrdNetId);
         if (count == 0) {
-            // 수강생 신규 등록 진행
             return false;
         } else {
             // 수강생 기존 정보 불러오기 + DB엔 수강생_강좌에 새로 강좌 등록하기

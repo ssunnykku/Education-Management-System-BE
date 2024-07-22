@@ -502,6 +502,72 @@ fetch("/courses/course-number-list?excludeExpired=false", {
                 await getAmountAttendanceList(amount);
                 await getAttendanceList(attendanceList);
 
+                // 선택한 학생의 출결 처리 - 경우1_'출결 상태' 먼저 바꾸고 체크박스 선택하는 경우
+                $('.board-checkbox input[type="checkbox"]').on('change', function() {
+                    console.log("선택 수정 경우1 시작");
+                    if (this.checked) {
+                        const row = $(this).closest('tr');
+                        const studentCourseSeq = row.find('.student-course-seq').text();
+                        const courseNumber = row.find('.course-number').text();
+                        const hrdNetId = row.find('.hrd-net-id').text();
+                        const studentName = row.find('.student-name').text();
+                        const academyLocation = row.find('.academy-location').text();
+                        const selectedAttendanceStatus = row.find('.attendance-status select').val();
+                        const originAttendanceStatus = row.find('.attendance-status-origin').val();
+
+                        console.log(studentCourseSeq);
+                        console.log(selectedAttendanceStatus);
+                        console.log(getAttendanceDate());
+
+                        const obj = {
+                            "attendanceStatus": selectedAttendanceStatus,
+                            "attendanceDate": getAttendanceDate(),
+                            "studentCourseSeq": parseInt(studentCourseSeq, 10)
+                        };
+                        objList.push(obj);
+                    }
+                });
+
+                /*// 선택한 학생의 출결 처리 - 경우2_'체크박스' 먼저 선택하고 출결 상태 변경하는 경우
+                $("select[name='attendance-status-select']").change(function() {
+                    console.log("선택 수정 경우2 시작");
+                    const row = $(this).closest('tr');
+                    const studentCourseSeq = row.find('.student-course-seq').text();
+                    const courseNumber = row.find('.course-number').text();
+                    const hrdNetId = row.find('.hrd-net-id').text();
+                    const studentName = row.find('.student-name').text();
+                    const academyLocation = row.find('.academy-location').text();
+                    const selectedAttendanceStatus = row.find('.attendance-status select').val();
+                    const originAttendanceStatus = row.find('.attendance-status-origin').val();
+
+                    console.log(studentCourseSeq);
+                    console.log(selectedAttendanceStatus);
+                    console.log(getAttendanceDate());
+
+                    if(selectedAttendanceStatus == "출석 인정") {
+                        const obj = {
+                            "attendanceStatus": selectedAttendanceStatus,
+                            "attendanceDate": getAttendanceDate(),
+                            "studentCourseSeq": parseInt(studentCourseSeq, 10)
+                        };
+
+                    } else {
+                        const obj = {
+                            "attendanceStatus": selectedAttendanceStatus,
+                            "attendanceDate": getAttendanceDate(),
+                            "studentCourseSeq": parseInt(studentCourseSeq, 10)
+                        };
+                    }
+
+                    /!*const obj = {
+                        "attendanceStatus": selectedAttendanceStatus,
+                        "attendanceDate": getAttendanceDate(),
+                        "studentCourseSeq": parseInt(studentCourseSeq, 10)
+                    };*!/
+
+                    objList.push(obj);
+                });*/
+
             })
             .catch((error) => console.error(error));
     };
@@ -538,63 +604,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
         } else {
             await fetchAttendanceList(page);
             checkAll(); // <th>의 체크박스 클릭 -> 모든 <tr>의 체크박스 선택 처리
-
-            // 선택한 학생의 출결 처리 - 경우1_'출결 상태' 먼저 바꾸고 체크박스 선택하는 경우
-            $('.board-checkbox input[type="checkbox"]').on('change', function() {
-                if (this.checked) {
-                    const row = $(this).closest('tr');
-                    const studentCourseSeq = row.find('.student-course-seq').text();
-                    const courseNumber = row.find('.course-number').text();
-                    const hrdNetId = row.find('.hrd-net-id').text();
-                    const studentName = row.find('.student-name').text();
-                    const academyLocation = row.find('.academy-location').text();
-                    const selectedAttendanceStatus = row.find('.attendance-status select').val();
-                    const originAttendanceStatus = row.find('.attendance-status-origin').val();
-
-                    const obj = {
-                        "attendanceStatus": selectedAttendanceStatus,
-                        "attendanceDate": getAttendanceDate(),
-                        "studentCourseSeq": parseInt(studentCourseSeq, 10)
-                    };
-
-                    objList.push(obj);
-                }
-            });
-
-            // 선택한 학생의 출결 처리 - 경우2_'체크박스' 먼저 선택하고 출결 상태 변경하는 경우
-            $("select[name='attendance-status-select']").change(function() {
-                const row = $(this).closest('tr');
-                const studentCourseSeq = row.find('.student-course-seq').text();
-                const courseNumber = row.find('.course-number').text();
-                const hrdNetId = row.find('.hrd-net-id').text();
-                const studentName = row.find('.student-name').text();
-                const academyLocation = row.find('.academy-location').text();
-                const selectedAttendanceStatus = row.find('.attendance-status select').val();
-                const originAttendanceStatus = row.find('.attendance-status-origin').val();
-
-                if(selectedAttendanceStatus == "출석 인정") {
-                    const obj = {
-                        "attendanceStatus": selectedAttendanceStatus,
-                        "attendanceDate": getAttendanceDate(),
-                        "studentCourseSeq": parseInt(studentCourseSeq, 10)
-                    };
-
-                } else {
-                    const obj = {
-                        "attendanceStatus": selectedAttendanceStatus,
-                        "attendanceDate": getAttendanceDate(),
-                        "studentCourseSeq": parseInt(studentCourseSeq, 10)
-                    };
-                }
-
-                /*const obj = {
-                    "attendanceStatus": selectedAttendanceStatus,
-                    "attendanceDate": getAttendanceDate(),
-                    "studentCourseSeq": parseInt(studentCourseSeq, 10)
-                };*/
-
-                objList.push(obj);
-            });
         }
     });
 
@@ -638,6 +647,8 @@ fetch("/courses/course-number-list?excludeExpired=false", {
     async function fetchUpdateAttendance(objList) {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
+        console.log("fetchUpdateAttendance(objList)");
+        console.log(objList);
 
         const requestOptions = {
             method: "PUT",
@@ -653,6 +664,8 @@ fetch("/courses/course-number-list?excludeExpired=false", {
                 if(data.code === 0) {
                     /*alert("정상적으로 출결 등록/수정되었습니다.");*/
 
+                    $("#add-attendance-modal").css("display", "none");
+                    $(".modal-backdrop").css("display", "none");
                     $("#alert-message").text("정상적으로 출결 등록/수정되었습니다.");
                     $("#alert-modal").css("display", "flex");
                     $(".modal-backdrop").css("display", "flex");
@@ -726,6 +739,8 @@ fetch("/courses/course-number-list?excludeExpired=false", {
                 console.log(data);
                 if(data.code === 0) {
                     /*alert("정상적으로 출결 등록/수정되었습니다.");*/
+                    $("#add-attendance-modal").css("display", "none");
+                    $(".modal-backdrop").css("display", "none");
                     $("#alert-message").text("정상적으로 출결 등록/수정되었습니다.");
                     $("#alert-modal").css("display", "flex");
                     $(".modal-backdrop").css("display", "flex");

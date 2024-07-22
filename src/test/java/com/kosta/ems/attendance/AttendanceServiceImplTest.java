@@ -20,46 +20,6 @@ class AttendanceServiceImplTest {
     @Autowired
     AttendanceService attendanceService;
 
-    /*
-    // [출결] - 특정일의 수강생 출석 상태 목록 조회 (for 출결 입력/수정)
-    // 경우1 _ 기수+수강생명 입력
-    // 검색 결과 개수 가져오기 (for 페이지네이션)
-    // @Test
-    void selectCourseNumberAndStudentNameListAmount() {
-        log.info(Integer.toString(attendanceService.getCourseNumberAndStudentNameListAmount("2024-07-21", "가산", "", 0)));
-    }
-    // 검색 결과 데이터 목록 가져오기
-    // @Test
-    void selectCourseNumberAndStudentNameList() {
-    	log.info(attendanceService.getCourseNumberAndStudentNameList("2024-06-21", "가산", "", 0, 1, 10).toString());
-    }
-    
-    // 경우2 _ 기수 또는 수강생명 입력
-    // 검색 결과 개수 가져오기 (for 페이지네이션)
-    // @Test
-    void selectCourseNumberOrStudentNameListAmount() {
-    	log.info(Integer.toString(attendanceService.getCourseNumberOrStudentNameListAmount("2024-06-21", "가산", "none", 277)));
-    }
-    // 검색 결과 데이터 목록 가져오기
-    // @Test
-    void selectCourseNumberOrStudentNameList() {
-        log.info(attendanceService.getCourseNumberOrStudentNameList("2024-06-21", "가산", "none", 277, 1, 10).toString());
-    }
-    
-    // 경우3 _ 기수+수강생명 미입력
-    // 검색 결과 개수 가져오기 (for 페이지네이션)
-    // @Test
-    void selectDateAndLocationListAmount() {
-    	log.info(Integer.toString(attendanceService.getDateAndLocationListAmount("2024-06-21", "가산", "", 0)));
-    }
-    // 검색 결과 데이터 목록 가져오기
-    // @Test
-    @DisplayName("출결 조회 - 검색 필터 모두 미입력")
-    void selectDateAndLocationList() {
-    	log.info(attendanceService.getDateAndLocationList("2024-06-21", "가산", "", 0, 1, 10).toString());
-    }
-     */
-
     // ** 출결 조회 - 수강생 출결 데이터 목록
     @Test
     @DisplayName("출결 조회 - 수강생 출결 조회 cnt")
@@ -140,7 +100,7 @@ class AttendanceServiceImplTest {
 
     // ** 출결 입력
     // 1. 특정일의 출결 상태가 등록되지 않은 수강생 목록 가져오기
-    @Test  // 확인 완료  *0715
+    @Test
     @DisplayName("출결 등록 - 아직 출결 등록되지 않은 수강생 목록 불러오기")
     void getNoAttendanceStatusStudentList() {
         log.info("출결 등록 다 해서 목록 0: " + attendanceService.getNoAttendanceStatusStudentList("2024-07-15", "가산").toString());
@@ -151,7 +111,7 @@ class AttendanceServiceImplTest {
     }
 
     // 2. 목록의 학생 중 선택한 학생의 출결 상태 등록하기
-    @Test  // 확인 완료  *0715
+    @Test
     @DisplayName("출결 등록 - 선택 학생의 출결 상태 등록")
     @Transactional
     void setAttendanceStatus() {
