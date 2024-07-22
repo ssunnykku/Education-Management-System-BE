@@ -127,22 +127,6 @@ fetch("/managers", requestOptions)
 
 /* 매니저 프로필 이미지 업로드 */
 let fileInput = document.querySelector("#input-profile");
-const sendButton = document.querySelector("#file-submit-btn");
-sendButton.addEventListener("click", function() {
-    /*let formData = new FormData();
-    formData.append("profileImage", fileInput.files[0]);
-
-    fetch('http://localhost:8888/managers/upload', {
-        method: 'POST',
-        cache: 'no-cache',
-        body: formData
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log("프로필 이미지 업로드 완료");
-            console.log(data.data);
-        })*/
-})
 
 
 /* 현재 과정 정보  */
