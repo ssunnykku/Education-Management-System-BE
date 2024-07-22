@@ -39,7 +39,7 @@
                 <th class="course-number">기수</th>
                 <th class="student-name">이름</th>
                 <th class="student-phonenumber">전화번호</th>
-                <th class="student-completion-status">출석률</th>
+                <th class="student-completion-status">수료 여부</th>
             </tr>
         </table>
     </article>
@@ -131,6 +131,14 @@
     </div>
 </div>
 <div class="modal-backdrop"></div>
+
+<!--수강생 정보 수정 성공 모달-->
+<div id="update-student-success-modal">
+    <div class="modal-contents-wrapper">
+        <p>수강생 정보 수정이 정상처리되었습니다.</p>
+        <button>확인</button>
+    </div>
+</div>
 
 <script>
     $(document).ready(async function () {
@@ -229,11 +237,20 @@
 
     // -- 검색 결과 목록 화면에 연결
     async function getSearchedStudentList(data) {
-        let result = `<tr><th class="hrd-net-id">HRD-Net ID</th><th class="course-number">기수</th><th class="student-name">이름</th><th class="student-phonenumber">전화번호</th><th class="student-completion-status">출석률</th></tr>`;
-
+        let result = `<tr><th class="hrd-net-id">HRD-Net ID</th><th class="course-number">기수</th><th class="student-name">이름</th><th class="student-phonenumber">전화번호</th><th class="student-completion-status">수료 여부</th></tr>`;
         for(let i=0; i<data.length; i++) {
-            let tmpRatio = data[i][1].split("%")[0];
-            console.log(tmpRatio);
+            let tmpRatio = "";
+            if(data[i][1] == null) {
+                tmpRatio = "해당 없음";
+            } else {
+                tmpRatio = data[i][1].split("%")[0];
+                console.log(tmpRatio);
+                if(tmpRatio < 80.0) {
+                    tmpRatio = "미수료";
+                } else {
+                    tmpRatio = "수료";
+                }
+            }
 
             result += `<tr class="board-table-row">
                     <td class="hrd-net-id">${data[i][0].hrdNetId}<input type="hidden" name="student-id" class="fetch-student-id" value=${data[i][0].studentId}/></td>
@@ -241,7 +258,7 @@
                     <td class="student-name">${data[i][0].name}</td>
                     <td class="student-phonenumber">${data[i][0].phoneNumber}</td>
                     <td class="student-completion-status">
-                        <span>${data[i][1]}</span>
+                        <span>${tmpRatio}</span>
                         <input type="hidden" class="student-email" value="${data[i][0].email}" />
                         <input type="date" class="student-birth" style="display: none" value="${data[i][0].birth}" />
                         <input type="hidden" class="student-gender" value="${data[i][0].gender}" />
@@ -365,8 +382,14 @@
         });
         await fetchUpdateStudentInfo(raw)
             .then(async (response) => {
-                alert("수강생 정보 수정이 정상처리되었습니다.");
-                location.reload();  // 화면 새로고침
+                $("#update-student-success-modal").css("display", "flex");
+                $(".modal-backdrop").css("display", "flex");
+
+                $("#update-student-success-modal button").on("click", function() {
+                    $("#update-student-success-modal").css("display", "none");
+                    $(".modal-backdrop").css("display", "none");
+                    location.reload();  // 화면 새로고침
+                });
             })
     });
 
