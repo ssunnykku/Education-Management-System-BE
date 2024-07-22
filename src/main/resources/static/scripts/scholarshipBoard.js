@@ -150,19 +150,23 @@ $("#settlement-btn").click(function () {
 
     $(".checkbox").each(function () {
         if ($(this).prop("checked")) {
-            fetch("http://localhost:8080/scholarships/settlement/" + this.value, {
+            fetch("/scholarships/settlement/" + this.value, {
                 method: "POST",
             })
                 .then((res) => res.json())
                 .then((data) => {
                     if (data.result) {
-                        alert("정산이 완료되었습니다.")
-                        location.href = "/ems/scholarships";
+                        // Bootstrap 모달 띄우기
+                        $('#settlementSuccessModal').modal('show');
+
+                        // 모달이 닫힐 때 페이지 리디렉션
+                        $('#settlementSuccessModal').on('hidden.bs.modal', function () {
+                            location.href = "/ems/scholarships";
+                        });
                     }
                 })
                 .catch((error) => console.error(error));
         }
-
     });
 });
 
