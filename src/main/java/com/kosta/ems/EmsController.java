@@ -4,6 +4,8 @@ import com.kosta.ems.student.dto.StudentBasicInfoDTO;
 import com.kosta.ems.student.StudentService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,21 +48,26 @@ public class EmsController {
     private final ManagerService managerService;
 
     @GetMapping("/benefits")
+    @PreAuthorize("hasRole('MANAGER')")
     public String benefitBoard() {
         return "benefits/benefitBoard";
     }
 
     @GetMapping("/benefits/result")
+    @PreAuthorize("hasRole('MANAGER')")
+
     public String benefitResultBoard() {
         return "benefits/benefitResultBoard";
     }
 
     @GetMapping("/certifications")
+    @PreAuthorize("hasRole('MANAGER')")
     public String certificationBoard() {
         return "certifications/certificationBoard";
     }
 
     @GetMapping("/courses")
+    @PreAuthorize("hasRole('MANAGER')")
     public String addCourseModal(@RequestParam(value = "page", defaultValue = "1") int page,
                                  @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                  @RequestParam(value = "courseNumber", defaultValue = "0") int courseNumber,
@@ -102,51 +109,61 @@ public class EmsController {
     }
 
     @GetMapping("/login")
+    @Secured("ROLE_MANAGER")
     public String login() {
         return "login/login";
     }
 
-    @GetMapping("/notifications") //@AuthenticationPrincipal 사용할수있음.
+    @GetMapping("/notifications")
+    @Secured("ROLE_MANAGER")
     public String notificationBoard(@RequestParam(defaultValue = "1") int page) {
         return "notifications/notificationBoard";
     }
 
     @GetMapping("/notification")
+    @PreAuthorize("hasRole('MANAGER')")
     public String notificationPost(@RequestParam("notificationSeq") int notificationSeq) {
         return "notifications/notification";
     }
 
     @GetMapping("/notifications/write")
+    @PreAuthorize("hasRole('MANAGER')")
     public String notificationWrite() {
         return "notifications/setNotification";
     }
 
     @GetMapping("/notification/update")
+    @PreAuthorize("hasRole('MANAGER')")
     public String notificationSet(@RequestParam("notificationSeq") int notificationSeq) {
         return "notifications/editNotification";
     }
 
     @GetMapping("/scholarships")
+    @PreAuthorize("hasRole('MANAGER')")
     public String scholarshipBoard() {
         return "scholarships/scholarshipBoard";
     }
 
     @GetMapping("/scholarships/results")
+    @PreAuthorize("hasRole('MANAGER')")
     public String scholarshipResultBoard() {
         return "scholarships/scholarshipResultBoard";
     }
 
     @GetMapping("/attendances/add")
+    @PreAuthorize("hasRole('MANAGER')")
     public String addAttendance() {
         return "students/addAttendance";
     }
 
     @GetMapping("/attendances")
+    @PreAuthorize("hasRole('MANAGER')")
     public String attendanceBoard() {
         return "students/attendanceBoard";
     }
 
     @GetMapping("/points")
+    @PreAuthorize("hasRole('MANAGER')")
     public String pointBoard(@RequestParam(value = "page", defaultValue = "1") int page,
                              @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                              @RequestParam(value = "courseNumber", defaultValue = "0") int courseNumber,
@@ -177,6 +194,7 @@ public class EmsController {
     }
 
     @GetMapping("/students/update/{selected}")
+    @PreAuthorize("hasRole('MANAGER')")
     public String updateStudent(@PathVariable String selected, Model model) {
         StudentBasicInfoDTO dto = studentService.getRegisteredStudentInfo(selected);
         model.addAttribute("dto", dto);
@@ -184,29 +202,34 @@ public class EmsController {
     }
 
     @GetMapping("/students/set")
+    @PreAuthorize("hasRole('MANAGER')")
     public String addStudent() {
         return "students/addStudent";
     }
 
     @GetMapping("/students")
+    @PreAuthorize("hasRole('MANAGER')")
     public String studentBoard() {
         return "students/studentBoard";
     }
 
     @GetMapping("/employments")
+    @PreAuthorize("hasRole('MANAGER')")
     public String employmentBoard() {
         return "employment/employmentBoard";
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('MANAGER')")
     public String main() {
         return "main";
     }
 
     @GetMapping("/employments/data")
+    @PreAuthorize("hasRole('MANAGER')")
     public String employment() {
         return "employment/employmentDataBoard";
     }
-
+    
 
 }

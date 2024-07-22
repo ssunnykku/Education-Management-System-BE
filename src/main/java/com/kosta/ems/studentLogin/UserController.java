@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -34,6 +36,7 @@ public class UserController {
 //    만료시 exception -> 401 -> 쿠키의 rt 확인,, 비교 후 ac 재발급
 //
 
+    @PreAuthorize("hasRole('STUDENT')")
     @PostMapping("/students/login")
     public ResponseEntity<Map<String, Object>> studentLogin(@RequestBody StudentDTO studentDTO) {
         TokenInfo result = userService.login(studentDTO);

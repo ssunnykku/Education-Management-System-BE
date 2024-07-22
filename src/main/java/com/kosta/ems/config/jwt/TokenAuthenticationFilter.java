@@ -28,11 +28,18 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
+
+
             String token = jwtTokenProvider.getAccessToken((HttpServletRequest) request);
 
             log.info("authorization = " + token);
             String requestURI = request.getRequestURI();
 
+            if (!requestURI.startsWith("/api")) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+            log.info("여기");
             log.info("url: {}", requestURI);
 
             // 로그인 요청일 경우 토큰 검증을 생략한다.

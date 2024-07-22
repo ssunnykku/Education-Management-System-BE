@@ -28,7 +28,7 @@ public class ManagerDTO implements UserDetails{
     private String profileImage;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("user"));
+        return List.of(new SimpleGrantedAuthority("ROLE_MANAGER"));
     }
 
     @Override
