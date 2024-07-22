@@ -154,10 +154,13 @@ function fetchSettlement(data) {
                 return Promise.reject(new Error(data.message));
             }
             if (data.result) {
-                alert("정산이 완료되었습니다.")
+                // Bootstrap 모달 띄우기
+                        $('#settlementSuccessModal').modal('show');
+
+                        // 모달이 닫힐 때 페이지 리디렉션
+                        $('#settlementSuccessModal').on('hidden.bs.modal', function () {
                 location.href = "/ems/benefits";
-            } else {
-                alert("정산에 실패했습니다.")
+            });
             }
         })
         .catch((error) => console.error(error));
