@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
+        integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/format.css" />
+    <link rel="stylesheet" href="../../css/employment.css" />
+</head>
+
+<body id="content-wrapper">
+    <div th:insert="~{common/header :: header}"></div>
+
+    <div th:insert="~{common/title :: title ('취업 현황')}"></div>
+
+    <section id="employment-contents">
+        <article id="employment-search-btn-wrapper">
+            <div class="search-form-wrapper">
+                <select name="employment-year-filter" class="employment-year-filter">
+
+                </select>
+            </div>
+        </article>
+        <div class="main">
+            <div class="chart-container">
+                <canvas id="employment-graph"></canvas>
+            </div>
+        </div>
+    </section>
+    <footer></footer>
+    <script>
+        $(".employment-year-filter").on("change", async function () {
+            const courseEndYear = $(this).val();
+
+            const response = await fetch("/courses/course-list-by-year?courseEndYear=" + courseEndYear, {
+                method: "GET"
+            });
+            const data = await response.json();
+
+            const courseNumberLabels = data.result.map(courseNumber => courseNumber.toString());
+            chart.data.labels = courseNumberLabels;
+			const courseName =[];
+            const courseNumbers = [];
+            const courseData = [];
+            const studentDataPromises = []; // Array to store student data promises
+            const totalStudentData = [];
+            for (const courseNumber of data.result) {
+                // Fetch student data for the current courseNumber
+                const employmentDataResponse = await fetch(`/employments/avg-rate?courseNumber=${courseNumber}`);
+                const employmentData = await employmentDataResponse.json();
+                const courseEmploymentRate = employmentData.result;
+                const studentDataResponse = await fetch(`/courses/students-number?courseNumber=${courseNumber}`);
+                const studentData = await studentDataResponse.json();
+                const totalStudent = studentData.result;
+                const employedStudentDataResponse = await fetch(`/employments/count-employeed?courseNumber=${courseNumber}`);
+                const employedStudentData = await employedStudentDataResponse.json();
+                const employedStudent = employedStudentData.result;
+                const courseNameDataResponse = await fetch(`/courses/course-name?courseNumber=${courseNumber}`);
+                const courseNameData = await courseNameDataResponse.json();
+                const courseName = courseNameData.result;
+                totalStudents = studentData.result
+                employedStudents = employedStudentData.result
+                unemployedStudents = totalStudents - employedStudents;
+                employmentRate = employmentData.result;
+                // Update tooltip content using the fetched totalStudents
+                chart.data.datasets[0].tooltipData.push({
+                	courseName : courseName,
+                    totalStudents: totalStudents,
+                    employedStudents: employedStudents,
+                    unemployedStudents: unemployedStudents,
+                    employmentRate: employmentRate
+
+                });
+
+
+                chart.data.datasets[1].tooltipData.push({
+                	courseName : courseName,
+                    totalStudents: totalStudents,
+                    employedStudents: employedStudents,
+                    unemployedStudents: unemployedStudents,
+                    employmentRate: employmentRate
+
+                });
+
+                courseNumbers.push(courseNumber);
+                courseData.push(employedStudent);
+                totalStudentData.push(totalStudent);
+            }
+
+            chart.data.labels = courseNumbers;
+            //총 학생 수 
+            chart.data.datasets[0].data = totalStudentData;
+            chart.data.datasets[1].data = courseData;
+
+            chart.update();
+        });
+
+        var ctx = document.getElementById('employment-graph').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: '전체 학생 수',
+                    backgroundColor: '#9DC658',
+                    data: [],
+                    tooltipData: [],// Array to store additional tooltip data
+                    tooltips: {
+                        enabled: false // 첫 번째 데이터셋 툴팁 비활성화
+                    }
+                },
+                {
+                    type: 'bar',
+                    data: [],
+                    label: '취업 학생 수',
+                    fill: false,
+                    tooltipData: [],
+                    backgroundColor: '#F19027',
+                    tooltips: {
+                        enabled: true // 두 번째 데이터셋 툴팁 활성화
+                    }
+                },
+
+                ]
+            },
+            options: {
+                legend: {
+                    labels: {
+                        fontColor: '#000000',
+                        fontSize: 15
+                    }
+                },
+                scales: {
+                    xAxes: [{
+
+                        barThickness: 20,
+
+                        ticks: {
+                            fontColor: '#000000',
+                            fontSize: 15
+                        },
+                        gridLines: {
+                            display: true // Always show Y-axis grid lines
+                        },
+                        scaleLabel: { // Add X-axis title
+                            display: true,
+                            labelString: '기수', // Set the X-axis title text
+                            fontColor: '#000000',
+                            fontStyle: 'bold',
+                            fontSize: 16,
+                        }
+                    }],
+                    yAxes: [{
+                        id: 'y-axis-1', // ID for the bar chart y-axis
+                        ticks: {
+                            beginAtZero: true,
+                            max: 30,
+                            fontColor: '#000000',
+                            fontSize: 15
+                        },
+                        gridLines: {
+                            display: true
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: '학생 수', // Set the Y-axis title text
+                            fontColor: '#000000',
+                            fontSize: 16,
+                            fontStyle: 'bold'
+                        }
+                    }]
+                },
+                tooltips: {
+                    backgroundColor: '#F3F5F9',
+                    bodyFontColor: '#000000',
+                    bodySpacing: 6,
+
+                    bodyFontSize: 15,
+                    bodyAlign: 'left',
+
+                    callbacks: {
+                        title: () => null,
+                        label: function (tooltipItem, data) {
+                            const courseNumber = data.labels[tooltipItem.index];
+                            const courseName =data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].courseName;
+                            const employmentData = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                            const totalStudents = data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].totalStudents;
+                            const employedStudents = data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].employedStudents;
+                            const unemployedStudents = data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].unemployedStudents;
+                            const employmentRate = data.datasets[tooltipItem.datasetIndex].tooltipData[tooltipItem.index].employmentRate.toFixed(1);
+
+                            const tooltipBody = [
+								`${courseName}`,
+                                ` 총 학생: ${totalStudents}명`,
+                                ` 취업: ${employedStudents}명`,
+                                ` 미취업: ${unemployedStudents}명`,
+                                ` 취업률: ${employmentRate}%`
+                            ];
+                            return tooltipBody;
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+<script type="text/javascript" th:src="@{/scripts/employmentBoard.js}"></script>
+
+</html>
+

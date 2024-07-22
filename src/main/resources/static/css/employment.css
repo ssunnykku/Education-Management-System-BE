@@ -1,0 +1,1218 @@
+@import "reset.css";
+
+.avg-form{
+	font-weight: 500;
+	margin-left: 20px;
+}
+
+.modal-content{
+	margin-top: 300px;
+	 width: 500px;
+  height: 250px;
+}
+.modal-title{
+	margin-left: 200px;
+	font-weight: 600;
+}
+#company-input{
+	resize: none;
+	height: 100%;
+	width: 100%;
+	padding: 20px;
+	border: none;
+}
+.btn-secondary{
+	        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 34px;
+        width: 50px;
+        color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0px 0px 5px #d4d4d4;
+        background-color: rgb(64, 64, 64);
+}
+.save-btn{
+	    font-weight: 600;
+    color: rgb(64, 64, 64);
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+     height: 34px;
+        width: 50px;
+            display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid black;
+}
+.modal-footer{
+	margin-left: 200px;
+	justify-content: flex-start;
+	border-top: none;
+}
+/* Basic table styles */
+td{
+	 height: 45px; /* Adjust the height as needed */
+  	overflow-y: auto;
+  	  vertical-align: middle;
+}
+#employmentBoard-table {
+    border-collapse: collapse;
+     text-align: center;
+     vertical-align: middle;
+
+   
+  }
+  
+  #employmentBoard-table th, #employmentBoard-table td {
+    border-bottom: 0.5px solid lightgray;
+    
+    
+  }
+ 
+ #employmentBoard-table td.employmentBoard-company:not(:first-child) {
+  cursor: pointer;
+}
+ #employmentBoard-table td.employmentBoard-company:not(:first-child):hover {
+  /*color: rgb(0, 141, 206);*/
+  font-weight: 600;
+   outline: 2px solid #008dbc; /* Add outline on hover */
+  outline-offset: 0; /* Ensure outline appears within the cell */
+}
+   
+  
+  #employmentBoard-table th {
+    background-color: #eee;
+    font-weight: 600;
+    width: 500px;
+     border-top: 1px solid #5c5c5c;
+    text-align: center;
+
+     
+  }
+  
+  #employmentBoard-table tbody tr {
+     width: 1190px; /* Set table width to 1190px */
+    margin: 0 auto; /* Center the table horizontally */
+  }
+  
+  #employmentBoard-table th, #employmentBoard-table td {
+    vertical-align: middle;
+        height: 45px;
+  }
+  
+  /* Distribute column widths proportionally */
+  #employmentBoard-table th, #employmentBoard-table td {
+    box-sizing: border-box; /* Include padding and border in width calculation */
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    #employmentBoard-table {
+      font-size: 14px;
+          height: 45px;
+    }
+  
+    #employmentBoard-table th, #employmentBoard-table td {
+      padding: 8px;
+    }
+  
+    #employmentBoard-table tbody tr {
+      min-height: 30px;
+          height: 45px;
+    }
+  
+    #employmentBoard-table td {
+      min-width: 120px;
+      
+    }
+  }
+/************pointBoard*****************/
+
+/***** button/ search *******/
+
+#employment-search-btn-wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding-left: 10%;
+    padding-right: 5%;
+    height: 80px;
+    align-items: center;
+
+}
+.no-data-message{
+	color: red;
+	margin-top: 20px;
+}
+.seacrch-form {
+    margin-left: 30%;
+}
+.employmentBoard-company,
+.employmentBoard-is-employed {
+  border: none; /* 테두리 제거 */
+  outline: none; /* 포커스 시 생기는 윤곽선 제거 (선택사항) */
+}
+.search-form-wrapper {
+    display: flex;
+    width: 450px;
+    align-items: center;
+}
+
+
+.employment-btn-wrapper {
+    height: 53px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap:10px;
+    padding-left: 340px;
+}
+.email-btn{
+	font-weight: 600;
+    color: rgb(64, 64, 64);
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    width: 80px;
+    height: 40px;
+        box-shadow: 0px 0px 5px #888;
+}
+
+.btn-wrapper {
+    padding-top: 12px;
+    width: 250px;
+    height: 53px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+#setting-btn-wrapper {
+    padding-bottom: 5px;
+}
+
+#get-settlement-list-btn {
+    background-color: rgb(255, 255, 255);
+    width: 100px;
+    height: 90%;
+    border-radius: 8px;
+}
+
+#settlement-btn {
+    color: #ffffff;
+    background-color: rgb(64, 64, 64);
+    width: 60px;
+    height: 32px;
+    border-radius: 8px;
+}
+
+.btn-setting {
+      color: #ffffff;
+    background-color: rgb(64, 64, 64);
+    border-radius: 8px;
+    position: relative;
+    top: 40%;
+    flex-direction: row;
+    transform: translateY(-50%);
+    width: 80px;
+    height: 40px;
+    text-align:center;
+    box-shadow: 0px 0px 5px #888;
+}
+
+
+/*************************************/
+
+
+#button-wrapper {
+    height: 55px;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+
+    display: flex;
+    justify-content: end;
+
+    padding-right: 130px;
+}
+
+#enroll-btn {
+    width: 96px;
+    color: #ffffff;
+    background-color: rgb(64, 64, 64);
+    border-radius: 8px;
+}
+
+#point-search-btn {
+    font-weight: 600;
+    color: rgb(64, 64, 64);
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+}
+
+#filter-button-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 60px;
+}
+
+.filter-search-btn {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 144%;
+
+    width: 100px;
+    height: 40px;
+    padding: 10px 16px;
+    gap: 10px;
+
+    line-height: 1.5em;
+    border-radius: 8px;
+
+    /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15); */
+
+    box-shadow: 0px 0px 2px #888;
+    line-height: 1.5em;
+
+    background: rgba(244, 244, 244, 1);
+    color: #000000;
+}
+
+#search-date-input {
+    background: #ffffff;
+
+    border: 1px solid #cfcfcf;
+    border-radius: 5px;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 144%;
+}
+
+.courseId-filter {
+    width: 90px;
+    height: 41px;
+
+    background: #ffffff;
+
+    border: 1px solid #cfcfcf;
+    border-radius: 5px;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 144%;
+
+    padding-left: 18px;
+    margin-right: 7px;
+
+    color: #000000;
+
+    background-image: url("../assets/Polygon.svg");
+    background-repeat: no-repeat;
+    background-size: 12px;
+    background-position: right;
+    background-position: 60px;
+}
+
+.search-input {
+    width: 300px;
+    height: 41px;
+
+    background: #ffffff;
+
+    border: 1px solid #cfcfcf;
+    border-radius: 10px;
+
+    z-index: 1;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 144%;
+
+    padding-left: 15px;
+    margin-right: 5px;
+
+    color: #000000;
+    text-align: center;
+}
+
+.search-input::placeholder {
+    background-image: url("../assets/search.svg");
+    background-repeat: no-repeat;
+    background-size: 19px;
+    background-position: left;
+}
+
+/**************table***********************/
+
+#point-table-wrapper {
+    margin: 0 10% 0 10%;
+}
+
+.point-table {
+    width: 100%;
+    padding: 0 200px 0 200px;
+    /* 왜안됨... */
+}
+
+.point-table-row {
+    display: flex;
+    flex-direction: row;
+    height: 60px;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    justify-content: space-between;
+
+    font-style: normal;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 144%;
+
+    color: #1d1d1d;
+}
+
+#point-title-row {
+    font-style: normal !important;
+    font-weight: 500 !important;
+    font-size: 15px;
+    line-height: 144% !important;
+    text-align: center;
+
+    color: #1d1d1d;
+
+    box-sizing: border-box;
+
+    width: 100%;
+    height: 60px;
+
+    background: #ffffff;
+    border-bottom: 1px solid #f3f5f9;
+    border-radius: 10px 10px 0px 0px;
+}
+
+#point-radio-btn {
+    width: 25%;
+}
+
+#point-table-courseId {
+    width: 25%;
+}
+
+#point-table-birth {
+    width: 25%;
+}
+
+#point-table-courseName {
+    width: 25%;
+}
+
+
+#point-table-name {
+    width: 25%;
+}
+
+#point-table-total-point {
+    width: 25%;
+}
+
+.point-cnt-pages {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+
+    margin-top: 5%;
+    margin-left: 10%;
+
+    color: #999999;
+}
+
+/*****************employment settlement***********/
+.employment-page-information {
+    height: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.employment-cnt-pages {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+
+    color: #999999;
+    display: flex;
+    height: 10px;
+
+}
+
+#employment-contents {
+    padding: 0 10% 0 10%;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+
+}
+.chart-container{
+	 padding: 0 10% 0 10%;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+
+}
+
+/* button, search */
+
+.employment-search-form-wrapper {
+    width: 520px;
+    margin: 20px 0 20px 35%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.employment-courseId-filter {
+    width: 90px;
+    height: 41px;
+
+    background: #ffffff;
+
+    border: 1px solid #cfcfcf;
+    border-radius: 5px;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 144%;
+
+    padding-left: 18px;
+    padding-right: 37px;
+    margin-left: 4px;
+
+    color: #000000;
+
+    background-image: url("../assets/Polygon.svg");
+    background-repeat: no-repeat;
+    background-size: 12px;
+    background-position: right;
+    background-position: 60px;
+}
+
+
+.employment-year-filter {
+    width: 90px;
+    height: 41px;
+
+    background: #ffffff;
+
+    border: 1px solid #cfcfcf;
+    border-radius: 5px;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 144%;
+
+    padding-left: 18px;
+    padding-right: 28px;
+    margin-left: 4px;
+
+    color: #000000;
+
+    background-image: url("../assets/Polygon.svg");
+    background-repeat: no-repeat;
+    background-size: 12px;
+    background-position: right;
+    background-position: 60px;
+}
+
+
+#employmentBoard-table {
+    width: 100%;
+    /* padding: 0 100px 0 100px; */
+    min-height: 700px;
+    
+}
+
+.employmentBoard-row {
+    display: flex;
+    flex-direction: row;
+    height: 60px;
+    width: 100%;
+    align-items: center;
+    /*   text-align: center; */
+    justify-content: space-between;
+
+    font-style: normal;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 144%;
+
+    color: #1d1d1d;
+
+    text-align: center;
+}
+
+.employmentBoard-checkbox {
+    width: 50px;
+    text-align: center;
+}
+
+#employmentBoard-title-row {
+    font-style: normal !important;
+    font-weight: 500 !important;
+    font-size: 15px;
+    line-height: 144% !important;
+    text-align: center;
+
+    color: #1d1d1d;
+
+    box-sizing: border-box;
+
+    /*   width: 100%; */
+    height: 60px;
+
+    background: #ffffff;
+    border-bottom: 1px solid #f3f5f9;
+    border-radius: 10px 10px 0px 0px;
+}
+
+/* 버튼 */
+.board-filter-search-btn {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 144%;
+
+    width: 100px;
+    height: 40px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 16px;
+    gap: 10px;
+
+    line-height: 1.5em;
+    border-radius: 8px;
+
+    /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15); */
+
+    box-shadow: 0px 0px 2px #888;
+    line-height: 1.5em;
+
+    background: rgba(244, 244, 244, 1);
+    color: #000000;
+
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+}
+
+.employmentBoard-courseId {
+    width: 50px;;
+    text-align: center;
+}
+
+.employmentBoard-course-name {
+    width: 20%;
+}
+
+.employmentBoard-hrd-net-id {
+    width: 10%;
+}
+
+.employmentBoard-name {
+    width: 5%;
+}
+
+.employmentBoard-bank {
+    width: 5%;
+}
+
+.employmentBoard-account {
+    width: 15%;
+}
+
+.employmentBoard-point {
+    width: 5%;
+
+}
+
+.employmentBoard-total-amount {
+    width: 10%;
+}
+
+/************************employmentResultBoard  ************/
+#scholoarshipResult-contents {
+    padding: 0 10% 0 10%;
+}
+
+/* 검색, 버튼 */
+
+.employmentResult-search-form-wrapper {
+    margin: 20px 0 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.employmentResult-search-btn-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-right: 4%;
+}
+
+.employmentResult-courseId-filter {
+    width: 90px;
+    height: 41px;
+
+    background: #ffffff;
+
+    border: 1px solid #cfcfcf;
+    border-radius: 5px;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 144%;
+
+    padding-left: 18px;
+    margin-left: 4px;
+
+    color: #000000;
+
+    background-image: url("../assets/Polygon.svg");
+    background-repeat: no-repeat;
+    background-size: 12px;
+    background-position: right;
+    background-position: 60px;
+}
+
+/* table */
+
+#employmentResultBoard-table {
+    width: 100%;
+    /* padding: 0 100px 0 100px; */
+}
+
+.employmentResultBoard-row {
+    display: flex;
+    flex-direction: row;
+    height: 60px;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    justify-content: space-between;
+
+    font-style: normal;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 144%;
+
+    color: #1d1d1d;
+}
+
+.employmentResultBoard-checkbox {
+    width: 10px;
+}
+
+#employmentResultBoard-title-row {
+    font-style: normal !important;
+    font-weight: 500 !important;
+    font-size: 15px;
+    line-height: 144% !important;
+    text-align: center;
+
+    color: #1d1d1d;
+
+    box-sizing: border-box;
+
+    width: 100%;
+    height: 60px;
+
+    background: #ffffff;
+    border-bottom: 1px solid #f3f5f9;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.employmentResultBoard-checkbox {
+    width: 5%;
+}
+
+.employmentResultBoard-courseId {
+    width: 7%;
+}
+
+.employmentResultBoard-hrd-net-id {
+    width: 12%;
+}
+
+.employmentResultBoard-name {
+    width: 12%;
+}
+
+.employmentResultBoard-bank {
+    width: 12%;
+}
+
+.employmentResultBoard-account {
+    width: 16%;
+}
+
+.employmentResultBoard-total-amount {
+    width: 16%;
+}
+
+.employmentResultBoard-settlement-date {
+    width: 13%;
+}
+
+/********** addPointModal**********/
+
+body {
+    font-family: "Pretendard";
+}
+
+#addpoint-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    width: 100%;
+    height: 650px;
+}
+
+#main-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 100px;
+}
+
+#addpoint-wrapper1,
+#addpoint-wrapper2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+}
+
+.info-title {
+    width: 100%;
+    height: 40px;
+    left: 46px;
+    top: 43px;
+
+    font-family: "Pretendard";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 144%;
+    /* or 24px */
+    text-align: center;
+
+    /* Text/Text_900 */
+    color: #1d1d1d;
+}
+
+.underline {
+    background: #ffffff;
+    border-bottom: 1px solid #f3f5f9;
+    border-radius: 10px 10px 0px 0px;
+    padding-bottom: 20px;
+}
+
+.underline > h4 {
+    font-weight: bold;
+}
+
+.total-point > h3,
+.line > h3 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+body {
+    font-family: "Pretendard";
+}
+
+/* 적용 안됨 */
+#point-info-name {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.student-info,
+.choose-point-info,
+.point-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 350px;
+    gap: 40px;
+}
+
+.student-info-detail {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    gap: 30px;
+}
+
+.choose-point-info-detail {
+    height: 250px;
+    overflow-y: auto;
+}
+
+.choose-point-info-detail,
+.point-info-detail {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+
+    gap: 30px;
+}
+
+.student-info-detail > div,
+.choose-point-info-detail > div,
+.point-info-detail > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#point-btn-wrapper {
+    height: 55px;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+
+    display: flex;
+    align-items: center;
+}
+
+.point-btn-setting {
+    font-style: normal;
+
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 144%;
+
+    color: #ffffff;
+
+    width: 57px;
+    height: 32px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    float: right;
+    background: #eee;
+    padding: 5px;
+    box-shadow: 0px 0px 3px #888;
+    line-height: 1.5em;
+}
+
+#point-enroll-btn {
+    color: #ffffff;
+    background-color: rgb(64, 64, 64);
+    border-radius: 8px;
+}
+
+#edit-btn,
+#delete-btn {
+    font-weight: 600;
+    color: rgb(64, 64, 64);
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+}
+
+/*********PointModal **********/
+
+#point-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    width: 1000px;
+    height: 700px;
+}
+
+.total-point-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 350px;
+    gap: 40px;
+}
+
+.total-point-info-detail {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    gap: 20px;
+}
+
+.total-point-info-detail > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.total-point {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.total-point > h1 {
+    font-size: 17px;
+}
+
+/*  studentBoard page */
+.student-cnt-pages {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+
+    margin-top: 5%;
+
+    color: #999999;
+}
+
+ul#pagination {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-size: 1.3rem;
+
+
+    li {
+        /*display: inline;*/
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        gap: 12px;
+    }
+
+    .activePage {
+        text-decoration: underline;
+        font-weight: bold;
+    }
+
+    .inactivePage a {
+        cursor: default;
+    }
+}
+
+#page_number {
+    min-width: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-link {
+    width: 10px;
+}
+
+.check-settlement-modal {
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+
+}
+
+#addPointModal {
+    padding: 100px;
+}
+
+#pointBody {
+    height: 400px;
+    overflow-y: auto;
+    width: 400px;
+}
+
+
+.removecourse-wrapper {
+    width: 340px;
+    height: 200px;
+    background: #ffffff;
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 16px;
+    gap: 10px;
+}
+
+.removecourse-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    column-gap: 30px;
+}
+
+.removecourse-info > h1 {
+    font-size: 18px;
+}
+
+.title {
+    font-weight: bold;
+    color: rgba(45, 98, 234, 1);
+}
+
+.upperline {
+    background: #ffffff;
+    border-top: 1px solid #f3f5f9;
+    border-radius: 10px 10px 0px 0px;
+    padding: 20px 0;
+}
+
+#btn-wrapper {
+    height: 55px;
+    padding: 0;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+
+
+#enroll-btn {
+    color: #ffffff;
+    background-color: rgb(64, 64, 64);
+    border-radius: 8px;
+}
+
+#edit-btn,
+#delete-btn {
+    font-weight: 600;
+    color: rgb(64, 64, 64);
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+}
+
+#enroll-btn-format {
+    font-weight: 600;
+    color: rgba(45, 98, 234, 1);
+    border-radius: 8px;
+}
+
+.enroll-btn-format {
+    font-weight: 600;
+    color: rgba(45, 98, 234, 1);
+    border-radius: 8px;
+}
+
+.btn-setting-format {
+    font-style: normal;
+
+    /* font-weight: 600; */
+    font-size: 14px;
+    line-height: 144%;
+
+    width: 57px;
+    height: 32px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    padding: 5px;
+    box-shadow: 0px 0px 3px rgba(45, 98, 234, 1);
+    line-height: 1.5em;
+}
+
+.point-search {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#button-wrapper {
+    margin-right: 5%;
+}
+
+
+/*********** settlementListModal.html ************/
+
+.check-settlement-wrapper {
+    width: 340px;
+    height: 200px;
+    background: #ffffff;
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 16px;
+    gap: 10px;
+}
+
+.settlement-list-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    column-gap: 30px;
+}
+
+.settlement-list-info > h1 {
+    font-size: 18px;
+}
+
+.title {
+    font-weight: bold;
+    color: rgba(45, 98, 234, 1);
+}
+
+.upperline {
+    background: #ffffff;
+    border-top: 1px solid #f3f5f9;
+    border-radius: 10px 10px 0px 0px;
+    padding: 20px 0;
+}
+
+.modal-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 200;
+
+}

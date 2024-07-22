@@ -8,7 +8,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="../../css/format.css"/>
     <link rel="stylesheet" href="../../css/students.css"/>
-    <link rel="stylesheet" href="../../css/scholarships.css" />
+    <!--<link rel="stylesheet" href="../../css/scholarships.css" />-->
     <link rel="stylesheet" href="../../css/attendances.css" />
 </head>
 <body id="content-wrapper">
@@ -16,18 +16,18 @@
 <div th:insert="~{common/title :: title ('출결 입력')}"></div>
 <section id="attendance-contents" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
     <article class="attendance-search-btn-wrapper">
-        <div class="attendance-search-form-wrapper" style="margin-left: 30%; width: auto;">
+        <div class="attendance-search-form-wrapper" style="width: auto;">
             <div id="search-form">
                 <input type="date" required class="input-date" name="attendanceDate" />
                 <input placeholder="기수" id="input-course-number" class="courseId-filter" name="courseNumber"/>
-                <input placeholder="수강생을 입력하세요" id="input-name" class="search-input" name="name"/>
+                <input placeholder="수강생을 입력하세요" id="input-name" class="student-name-filter" name="name"/>
                 <button type="button" class="filter-search-btn">검색</button>
             </div>
         </div>
     </article>
-    <section id="content-section">
-        <article id="attendance-content-article">
-            <div class="attendance-status-wrapper">
+    <section id="content-section" class="attendance-add">
+        <article id="attendance-content-article" class="attendance-add">
+            <div class="attendance-status-wrapper attendance-add">
                 <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="출석">출석</label>
                 <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="결석">결석</label>
                 <label><input type="radio" class="attendance-status-btn" name="attendanceStatus" value="지각">지각</label>
@@ -37,30 +37,68 @@
                 <button id="combine-update-btn" class="btn">선택 내용 출결 처리</button>
             </div>
 
-            <div class="student-cnt-pages">
+            <div class="student-cnt-pages attendance-add">
             </div>
         </article>
-        <article>
-            <table class="board-table"></table>
+        <article id="attendance-add-table-article">
+            <table class="board-table set-attendance"></table>
         </article>
-        <div class="update-btn-div">
+        <div class="update-btn-div attendance-add">
             <button id="set-btn" class="btn" popovertarget="add-attendance-modal">입력</button>
             <button id="update-btn" class="btn">수정</button>
         </div>
     </section>
-    <article class="page-information">
-        <ul id="pagination" style="margin-top: 35px;">
+    <article class="page-information attendance-add">
+        <ul id="pagination" class="attendance-add">
             <li>
-                <a class="page-link" id="prev">이전</a>
+                <a class="page-link" id="prev"><img src="../../assets/navigate_prev_white_24dp%201.svg" alt="이전"/></a>
             </li>
             <li id="page-number" class="page-item" style="display: flex; gap: 20px"></li>
             <li class="page-item">
-                <a id="next" class="page-link">다음</a>
+                <a id="next" class="page-link"><img src="../../assets/navigate_next_white_24dp%201.svg" alt="다음"/></a>
             </li>
         </ul>
     </article>
 </section>
 <footer></footer>
+
+<div class="modal-backdrop"></div>
+
+<div id="acknowledge-setting-modal" class="acknowledgeModal">
+    <div class="modal-container">
+        <div class="modal-contents-wrapper">
+            <p>출석 인정 및 증빙서류 설정</p>
+            <input type="hidden" name="selectedStudentSCQ" id="selected-student-course-seq"/>
+        </div>
+        <div class="modal-contents-wrapper">
+            <div class="content-item">
+                <label>출석 인정 항목</label>
+                <select name="acknowledge-category" id="acknowledge-category"></select>
+            </div>
+            <div class="content-item">
+                <label>출석인정일 기간 설정 (시작일 ~ 종료일)</label>
+                <div class="days-input-wrapper">
+                    <input type="date" name="start-date" id="start-date" class="input-date" disabled/><span> ~ </span><input type="date" name="end-date" id="end-date" class="input-date" disabled/>
+                </div>
+            </div>
+            <div class="content-item">
+                <label>증빙 서류: </label>
+                <div class="file-form">
+                    <label for="input-file">
+                        <div class="input-file-btn">파일 선택하기</div>
+                    </label>
+                    <input id="input-file" type="file" name="evidentialDocument" multiple="false"/>
+                    <button id="file-submit-btn">업로드</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-btn-wrapper">
+            <button id="acknowledge-setting-btn" class="btn">설정</button>
+            <button class="acknowledge-modal cancel-btn btn">취소</button>
+        </div>
+    </div>
+</div>
 
 <div id="add-attendance-modal" class="addAttendanceModal" popover>
     <div class="modal-container">
@@ -104,6 +142,16 @@
     </div>
 </div>
 
+<!--alert 대체 모달-->
+<div id="alert-modal">
+    <div class="modal-contents-wrapper">
+        <p id="alert-message"></p>
+        <button>확인</button>
+    </div>
+</div>
+
+
+
 <script>
     let totalPage = 0;
     let currentPage = 1;
@@ -112,24 +160,89 @@
     const page = 1;
     const objList = [];
     let selectedValue = null;
+    let totalAmount = 0;
+    let evidentialDocuments = "";
+
+    $('#input-file').on('change', function() {
+        const fileName = $(this).val().split('\\').pop();
+        if(fileName == "") {
+            $('.input-file-btn').text("파일 선택하기");
+            $("form > button").css ("border", "none");
+            $("form > button").css ("display", "none");
+        } else {
+            $('.input-file-btn').text(fileName);
+            $("form > button").css ("border", "2px solid rgb(0,141,206)");
+        }
+
+        $(".input-file-btn").css("font-size", "15px");
+        $(".input-file-btn").css("justify-content", "flex-start");
+        $(".input-file-btn").css("padding-left", "10px");
+        $(".input-file-btn").css("padding-top", "25px");
+        $(".input-file-btn").css("overflow", "overlay");
+    });
+
+
+
+    // 출석 입력일은 input 범위는 '오늘'이 max _미래에 대한 출석 입력을 미리 하는 것 제한
+    let now_utc = Date.now()
+    let timeOff = new Date().getTimezoneOffset()*60000;
+    let today = new Date(now_utc-timeOff).toISOString().split("T")[0];
+    $(".input-date").attr("max", today);
+
+    $(document).ready(async function() {
+        $(".input-date").val(new Date().toISOString().substring(0,10));
+        await fetchAttendanceList(1);
+
+        /*
+        // 모달 외부 클릭 시 모달 닫기 이벤트 처리기
+        $(document).on('click', function(event) {
+            const modal = $("#acknowledge-setting-modal");
+            const modalContainer = modal.find('.modal-container');
+
+            // 클릭이 모달 콘텐츠 영역 외부인지 확인
+            if (!modal.is(event.target) && !modalContainer.is(event.target) && modalContainer.has(event.target).length === 0) {
+                modal.css('display', 'none'); // 모달 숨기기
+                $(".modal-backdrop").css("display", "none");
+            }
+        });
+
+        // 모달 열려 있을 때 문서 외부 클릭 이벤트 방지
+        $("#acknowledge-setting-modal").on('shown.bs.modal', function() {
+            $('body').css('overflow', 'hidden'); // 스크롤 방지
+        });
+        */
+        $('body').css('overflow', 'hidden'); // 스크롤 방지
+    });
 
     function getCourseNumber() {
         if($("#input-course-number").val() == "") {
-            return -1;
+            return 0;
         }
-        return parseInt($(".courseId-filter").val());
+        return parseInt($("#input-course-number").val());
     }
 
     function getStudentName() {
-        // return $(".search-input").val();
-        if($(".search-input").val() == "") {
-            return "none";
+        if($(".student-name-filter").val() == "") {
+            return "";
         }
-        return $(".search-input").val();
+        return $(".student-name-filter").val();
     }
 
     function getAttendanceDate() {
         return $(".input-date").val();
+    }
+
+    function getAcknowledgeSeq() {
+        return $("#acknowledge-category").val();
+    }
+    function getStudentCourseSeq() {
+        return $("#selected-student-course-seq").val();
+    }
+    function getStartDate() {
+        return $("#start-date").val();
+    }
+    function getEndDate() {
+        return $("#end-date").val();
     }
 
     // <th>의 체크박스 클릭 -> 모든 <tr>의 체크박스 선택 처리
@@ -157,82 +270,186 @@
     // 검색한 출결 상태 목록 데이터 화면에 보여주기
     async function getAttendanceList(data) {
         let result = `<tr>
-                    <th><input type="checkbox" id="check-all"/></th>
-                    <th>기수</th>
-                    <th>HRD-Net ID</th>
-                    <th>이름</th>
-                    <th>강의장</th>
-                    <th>출결 상태</th>
-                    <th>증빙 서류</th>
+                    <th class="set-attendance"><input type="checkbox" id="check-all"/></th>
+                    <th class="set-attendance">기수</th>
+                    <th class="set-attendance">HRD-Net ID</th>
+                    <th class="set-attendance">이름</th>
+                    <th class="set-attendance">강의장</th>
+                    <th class="set-attendance">출결 상태</th>
+                    <th class="set-attendance">증빙 서류</th>
                 </tr>`;
-        for(let i=0; i<data.length; i++) {
-            let attendanceCheck = "";
-            let latenessCheck = "";
-            let absenceCheck = "";
-            let earlyLeaveCheck = "";
-            let goOutCheck = "";
-            let acknowledgeCheck = "";
-            let defaultCheck = "";
+        if(totalAmount === 0) {
+            result += `<tr style="height: 340px; line-height: 25px;"><td colspan="7">아직 해당 날짜에 등록된 출결 정보가 없습니다.<br/>출결 입력해주세요.</td></tr>`;
+        } else {
+            for(let i=0; i<data.length; i++) {
+                let attendanceCheck = "";
+                let latenessCheck = "";
+                let absenceCheck = "";
+                let earlyLeaveCheck = "";
+                let goOutCheck = "";
+                let acknowledgeCheck = "";
+                let defaultCheck = "";
 
-            switch(data[i].attendanceStatus) {
-                case "출석":
-                    attendanceCheck = "selected";
+                switch(data[i].attendanceStatus) {
+                    case "출석":
+                        attendanceCheck = "selected";
+                        break;
+                    case "지각":
+                        latenessCheck = "selected";
+                        break;
+                    case "결석":
+                        absenceCheck = "selected";
+                        break;
+                    case "조퇴":
+                        earlyLeaveCheck = "selected";
+                        break;
+                    case "외출":
+                        goOutCheck = "selected";
+                        break;
+                    case "출석 인정":
+                        acknowledgeCheck = "selected";
+                        break;
+                }
+
+                // const fileUploadInputHTML = data[i].attendanceStatus === "출석 인정" ? `<form ><label class="input-file-label" for="file-upload-btn">파일 첨부</label><input type="file" id="file-upload-btn" enabled /></form>` : `<input type="text" id="file-upload-btn" readonly/>`;
+                const fileUploadInputHTML = data[i].attendanceStatus === "출석 인정" ? `<button class="acknowledge-modal-popover">인정 내용 등록</button>` : `<button style="display: none;" class="acknowledge-modal-popover">인정 내용 등록</button>`;
+
+                result += `<tr class="board-table-row set-attendance">
+                        <td class="set-attendance board-checkbox"><input type="checkbox" name="checkbox" class="check-box"/><span class="student-course-seq" style="display:none;">${data[i].studentCourseSeq}</span></td>
+                        <td class="set-attendance course-number">${data[i].courseNumber}</td>
+                        <td class="set-attendance hrd-net-id">${data[i].hrdNetId}</td>
+                        <td class="set-attendance student-name">${data[i].name}</td>
+                        <td class="set-attendance academy-location">${data[i].academyLocation}</td>
+                        <td class="set-attendance attendance-status">
+                            <select name="attendance-status-select" id="attendance-status-select">
+                                <option value="attendance" ${attendanceCheck}>출석</option>
+                                <option value="lateness" ${latenessCheck}>지각</option>
+                                <option value="absence" ${absenceCheck}>결석</option>
+                                <option value="earlyLeave" ${earlyLeaveCheck}>조퇴</option>
+                                <option value="goOut" ${goOutCheck}>외출</option>
+                                <option value="acknowledge" ${acknowledgeCheck}>출석 인정</option>
+                            </select>
+                            <span class="attendance-status-origin" style="display: none;">${data[i].attendanceStatus}</span>
+                        </td>
+                        <td class="set-attendance evidentiary-documents">
+                            <div class="file-input-wrapper">
+                                ${fileUploadInputHTML}
+                            </div>
+                        </td>
+                    </tr>`;
+            }
+        }
+
+        $(".board-table").html("");
+        $(".board-table").append(result);
+
+        const initialAttendanceData = {};
+        for (let i = 0; i < data.length; i++) {
+            initialAttendanceData[data[i].hrdNetId] = data[i].attendanceStatus;
+        }
+
+        // 출결상태 변경에 따른 select Border 처리
+        $("select[name='attendance-status-select']").change(function() {
+            const hrdNetId = $(this).closest("tr").find("td:nth-child(3)").text();
+            let newAttendanceStatus = $(this).val();
+
+            switch(newAttendanceStatus) {
+                case "attendance":
+                    newAttendanceStatus = "출석";
                     break;
-                case "지각":
-                    latenessCheck = "selected";
+                case "lateness":
+                    newAttendanceStatus = "지각";
                     break;
-                case "결석":
-                    absenceCheck = "selected";
+                case "absence":
+                    newAttendanceStatus = "결석";
                     break;
-                case "조퇴":
-                    earlyLeaveCheck = "selected";
+                case "earlyLeave":
+                    newAttendanceStatus = "조퇴";
                     break;
-                case "외출":
-                    goOutCheck = "selected";
+                case "goOut":
+                    newAttendanceStatus = "외출";
                     break;
-                case "출석 인정":
-                    acknowledgeCheck = "selected";
+                case "acknowledge":
+                    newAttendanceStatus = "출석 인정";
                     break;
             }
 
-            result += `<tr class="board-table-row">
-                    <td class="board-checkbox"><input type="checkbox" name="checkbox" class="check-box"/><span class="student-course-seq" style="display:none;">${data[i].studentCourseSeq}</span></td>
-                    <td class="course-number">${data[i].courseNumber}</td>
-                    <td class="hrd-net-id">${data[i].hrdNetId}</td>
-                    <td class="student-name">${data[i].name}</td>
-                    <td class="academy-location">${data[i].academyLocation}</td>
-                    <td class="attendance-status">
-                        <select name="attendance-status-select" id="attendance-status-select">
-                            <option value="attendance" ${attendanceCheck}>출석</option>
-                            <option value="lateness" ${latenessCheck}>지각</option>
-                            <option value="absence" ${absenceCheck}>결석</option>
-                            <option value="earlyLeave" ${earlyLeaveCheck}>조퇴</option>
-                            <option value="goOut" ${goOutCheck}>외출</option>
-                            <option value="acknowledge" ${acknowledgeCheck}>출석 인정</option>
-                        </select>
-                    </td>
-                    <td class="evidentiary-documents">
-                        <div class="file-input-wrapper">
-                            <label class="input-file-label" for="file-upload-btn">파일 첨부</label>
-                            <input type="file" id="file-upload-btn"/>
-                        </div>
-                    </td>
-                </tr>`;
-        }
-        $(".board-table").html("");
-        $(".board-table").append(result);
+            if (newAttendanceStatus != initialAttendanceData[hrdNetId]) {
+                $(this).closest("tr").find("td:nth-child(6)").find("select").addClass("modifiedAttendance");
+            } else if(newAttendanceStatus == initialAttendanceData[hrdNetId]) {
+                $(this).closest("tr").find("td:nth-child(6)").find("select").removeClass("modifiedAttendance");
+            }
+
+            // 출결 상태 '출석 인정'일 때만 증빙서류 input disabled 해제하기
+            if (newAttendanceStatus === "출석 인정") {
+                // $(this).closest("tr").find(".file-input-wrapper").html('<label class="input-file-label" for="file-upload-btn">파일 첨부</label><input type="file" id="file-upload-btn" />');
+                $(this).closest("tr").find(".file-input-wrapper").html('<button class="acknowledge-modal-popover">인정 내용 등록</button>');
+            } else {
+                $(this).closest("tr").find(".file-input-wrapper").html('<button class="acknowledge-modal-popover" style="display: none;">인정 내용 등록</button>');
+            }
+
+            // 출석인정 설정 모달 popover
+            $(".acknowledge-modal-popover").on("click", async function() {
+                await fetchCategoryList();
+                // console.log($(this).closest('tr').find(".student-course-seq").text());
+                // 출석인정 선택한 수강생의 scq 잠시 sessionStorage에 set
+                sessionStorage.setItem("scq", $(this).closest('tr').find(".student-course-seq").text());
+
+                $(".modal-contents-wrapper").on("change", "#acknowledge-category", function() {
+                    const dataDays = $("#acknowledge-category > option:selected").data("days")-1;  // 1, 2, 3, 5... 같은 숫자
+                    const startDateVal = $("#start-date").val();
+                    // 선택 항목에 대하여 endDate 자동으로 연산해주기
+                    if (startDateVal) {
+                        let startDate = new Date(startDateVal);
+                        let daysAdded = 0;
+
+                        while (daysAdded < dataDays) {
+                            startDate.setDate(startDate.getDate() + 1);
+                            const dayOfWeek = startDate.getDay();
+
+                            // (0 = Sunday, 6 = Saturday)
+                            if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+                                daysAdded++;
+                            }
+                        }
+
+                        const endDate = startDate.toISOString().split('T')[0];
+                        $("#end-date").val(endDate);
+                    }
+
+                });
+
+                let selectedSCQ = sessionStorage.getItem("scq");
+                $("#selected-student-course-seq").val(selectedSCQ);
+                sessionStorage.removeItem("scq");
+
+                $("#acknowledge-setting-modal").css("display", "flex");
+                $(".modal-backdrop").css("display", "flex");
+            });
+
+            $(".acknowledge-modal.cancel-btn.btn").on("click", function() {
+                sessionStorage.removeItem("scq");
+                $("#acknowledge-setting-modal").css("display", "none");
+                $(".modal-backdrop").css("display", "none");
+            });
+        });
     };
 
     // 검색한 출결 상태 목록 데이터 전체 개수 가져오기
     async function getAmountAttendanceList(data) {
         totalPage = Math.ceil(data/10);
+        totalAmount = data;
+        if(totalAmount === 0) {
+            totalPage = 1;
+        }
+        console.log("totalPage: " + totalPage);
 
         let result = '';
         result += `<span class="span-attendance-list-amount">총 ${data}건</span>`;
         $(".student-cnt-pages").html("");
         $(".student-cnt-pages").append(result);
 
-        await updatePagination();
+        await updatePagination(totalPage);
     }
 
     // 검색한 출결 상태 목록 데이터 가져오기
@@ -258,9 +475,10 @@
             .then(async(data) => {
                 let attendanceList = data.attendanceList;
                 let amount = data.amount;
+                // totalPage = data.pageInfo.totalPage;
 
-                await getAttendanceList(attendanceList);
                 await getAmountAttendanceList(amount);
+                await getAttendanceList(attendanceList);
 
             })
             .catch((error) => console.error(error));
@@ -278,7 +496,6 @@
 
         const updateDTO = null;
 
-
         const requestOptions = {
             method: "POST",
             headers: myHeaders,
@@ -287,33 +504,20 @@
         };
 
         if(getAttendanceDate() == "") {
-            alert("날짜는 필수 검색 조건입니다!");
+            // alert("날짜는 필수 검색 조건입니다!");
+            $("#alert-message").text("날짜는 필수 검색 조건입니다!");
+            $("#alert-modal").css("display", "flex");
+            $(".modal-backdrop").css("display", "flex");
+
+            $("#alert-modal button").on("click", function() {
+                $("#alert-modal").css("display", "none");
+                $(".modal-backdrop").css("display", "none");
+            });
         } else {
             await fetchAttendanceList(page);
             checkAll(); // <th>의 체크박스 클릭 -> 모든 <tr>의 체크박스 선택 처리
 
-            // 선택 내용 일괄 출결 처리
-            $("#combine-update-btn").click(async function() {
-                const checkedStudentData = [];
-                const selectedRadio = $("input[name=attendanceStatus]:checked");
-                if(!selectedRadio.length) {
-                    alert("처리할 출결 상태를 체크해주세요!");
-                    return;
-                }
-                const combineAttendanceStatus = selectedRadio.val();
-                $('input[type="checkbox"][name="checkbox"]:checked:not(#check-all)').each(function(index, checkboxElement) {
-                    const studentCourseSeq = $(this).closest('tr').find('.student-course-seq').text();
-                    const studentRow = $(this).closest('tr');
-                    checkedStudentData.push({
-                        "studentCourseSeq": studentCourseSeq,
-                        "attendanceDate": getAttendanceDate(),
-                        "attendanceStatus": combineAttendanceStatus
-                    });
-                });
-                await fetchUpdateAttendance(checkedStudentData);
-            });
-
-            // 선택한 학생의 출결 처리
+            // 선택한 학생의 출결 처리 - 경우1_'출결 상태' 먼저 바꾸고 체크박스 선택하는 경우
             $('.board-checkbox input[type="checkbox"]').on('change', function() {
                 if (this.checked) {
                     const row = $(this).closest('tr');
@@ -323,6 +527,7 @@
                     const studentName = row.find('.student-name').text();
                     const academyLocation = row.find('.academy-location').text();
                     const selectedAttendanceStatus = row.find('.attendance-status select').val();
+                    const originAttendanceStatus = row.find('.attendance-status-origin').val();
 
                     const obj = {
                         "attendanceStatus": selectedAttendanceStatus,
@@ -331,19 +536,84 @@
                     };
 
                     objList.push(obj);
-
-                    $("#update-btn").click(async function() {
-                        await fetchUpdateAttendance(objList);
-                    });
                 }
+            });
+
+            // 선택한 학생의 출결 처리 - 경우2_'체크박스' 먼저 선택하고 출결 상태 변경하는 경우
+            $("select[name='attendance-status-select']").change(function() {
+                const row = $(this).closest('tr');
+                const studentCourseSeq = row.find('.student-course-seq').text();
+                const courseNumber = row.find('.course-number').text();
+                const hrdNetId = row.find('.hrd-net-id').text();
+                const studentName = row.find('.student-name').text();
+                const academyLocation = row.find('.academy-location').text();
+                const selectedAttendanceStatus = row.find('.attendance-status select').val();
+                const originAttendanceStatus = row.find('.attendance-status-origin').val();
+
+                if(selectedAttendanceStatus == "출석 인정") {
+                    const obj = {
+                        "attendanceStatus": selectedAttendanceStatus,
+                        "attendanceDate": getAttendanceDate(),
+                        "studentCourseSeq": parseInt(studentCourseSeq, 10)
+                    };
+
+                } else {
+                    const obj = {
+                        "attendanceStatus": selectedAttendanceStatus,
+                        "attendanceDate": getAttendanceDate(),
+                        "studentCourseSeq": parseInt(studentCourseSeq, 10)
+                    };
+                }
+
+                /*const obj = {
+                    "attendanceStatus": selectedAttendanceStatus,
+                    "attendanceDate": getAttendanceDate(),
+                    "studentCourseSeq": parseInt(studentCourseSeq, 10)
+                };*/
+
+                objList.push(obj);
             });
         }
     });
 
+    // '수정' 버튼 클릭시 선택한 수강생+출결 상태로 수정 요청
+    $("#update-btn").click(async function() {
+        await fetchUpdateAttendance(objList);
+    });
+
+    // 선택 내용 일괄 출결 처리
+    $("#combine-update-btn").click(async function() {
+        const checkedStudentData = [];
+        const selectedRadio = $("input[name=attendanceStatus]:checked");
+        if(!selectedRadio.length) {
+            /*alert("처리할 출결 상태를 체크해주세요!");*/
+
+            $("#alert-message").text("처리할 출결 상태를 체크해주세요!");
+            $("#alert-modal").css("display", "flex");
+            $(".modal-backdrop").css("display", "flex");
+
+            $("#alert-modal button").on("click", function() {
+                $("#alert-modal").css("display", "none");
+                $(".modal-backdrop").css("display", "none");
+            });
+            return;
+        }
+        const combineAttendanceStatus = selectedRadio.val();
+        $('input[type="checkbox"][name="checkbox"]:checked:not(#check-all)').each(function(index, checkboxElement) {
+            const studentCourseSeq = $(this).closest('tr').find('.student-course-seq').text();
+            const studentRow = $(this).closest('tr');
+            checkedStudentData.push({
+                "studentCourseSeq": studentCourseSeq,
+                "attendanceDate": getAttendanceDate(),
+                "attendanceStatus": combineAttendanceStatus
+            });
+        });
+        await fetchUpdateAttendance(checkedStudentData);
+    });
+
+
     // 선택한 학생의 출결 상태 저장(수정)
     async function fetchUpdateAttendance(objList) {
-        console.log(">> fetchUpdateAttendance")
-        console.log(objList);
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
@@ -359,16 +629,33 @@
             .then(async(data) => {
                 console.log(data.code);
                 if(data.code === 0) {
-                    alert("정상적으로 출결 등록/수정되었습니다.");
+                    /*alert("정상적으로 출결 등록/수정되었습니다.");*/
+
+                    $("#alert-message").text("정상적으로 출결 등록/수정되었습니다.");
+                    $("#alert-modal").css("display", "flex");
+                    $(".modal-backdrop").css("display", "flex");
+
+                    $("#alert-modal button").on("click", function() {
+                        $("#alert-modal").css("display", "none");
+                        $(".modal-backdrop").css("display", "none");
+                        location.reload();  // 화면 새로고침
+                    });
+                    /*location.reload();  // 화면 새로고침*/
                 } else {
-                    alert("출결 등록/수정 실패");
+                    /*alert("출결 등록/수정 실패");*/
+                    $("#alert-message").text("출결 등록/수정 실패");
+                    $("#alert-modal").css("display", "flex");
+                    $(".modal-backdrop").css("display", "flex");
+
+                    $("#alert-modal button").on("click", function() {
+                        $("#alert-modal").css("display", "none");
+                        $(".modal-backdrop").css("display", "none");
+                    });
                 }
                 console.log(data.message);
             })
             .catch((error) => console.error(error));
     };
-
-
 
     // 페이지네이션
     function updatePagination(param) {
@@ -416,9 +703,27 @@
             .then(async(data) => {
                 console.log(data);
                 if(data.code === 0) {
-                    alert("정상적으로 출결 등록/수정되었습니다.");
+                    /*alert("정상적으로 출결 등록/수정되었습니다.");*/
+                    $("#alert-message").text("정상적으로 출결 등록/수정되었습니다.");
+                    $("#alert-modal").css("display", "flex");
+                    $(".modal-backdrop").css("display", "flex");
+
+                    $("#alert-modal button").on("click", function() {
+                        $("#alert-modal").css("display", "none");
+                        $(".modal-backdrop").css("display", "none");
+                        location.reload();
+                    });
+                    /*location.reload();*/
                 } else {
-                    alert("출결 등록/수정 실패");
+                    /*alert("출결 등록/수정 실패");*/
+                    $("#alert-message").text("출결 등록/수정 실패");
+                    $("#alert-modal").css("display", "flex");
+                    $(".modal-backdrop").css("display", "flex");
+
+                    $("#alert-modal button").on("click", function() {
+                        $("#alert-modal").css("display", "none");
+                        $(".modal-backdrop").css("display", "none");
+                    });
                 }
                 console.log(data.message);
             })
@@ -500,10 +805,19 @@
 
     // -- 선택한 출결 상태로 수강생 출결 일괄 입력(등록)
     $("#set-attendance-btn").click(async function() {
-       const checkedStudentData = [];
+        const checkedStudentData = [];
         const selectedRadio = $("input[name=attendanceStatusModal]:checked");
         if(!selectedRadio.length) {
-            alert("등록할 수강생 출결 상태를 체크해주세요!");
+            /*alert("등록할 수강생 출결 상태를 체크해주세요!");*/
+
+            $("#alert-message").text("등록할 수강생 출결 상태를 체크해주세요!");
+            $("#alert-modal").css("display", "flex");
+            $(".modal-backdrop").css("display", "flex");
+
+            $("#alert-modal button").on("click", function() {
+                $("#alert-modal").css("display", "none");
+                $(".modal-backdrop").css("display", "none");
+            });
             return;
         }
         const combineAttendanceStatus = selectedRadio.val();
@@ -519,6 +833,102 @@
         });
         await fetchAddAttendance(checkedStudentData);
     });
+
+
+    // ** 출석인정 및 증빙서류 설정 모달
+    // 출석인정 항목 데이터 가져오기
+    async function fetchCategoryList() {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+
+        await fetch("/attendances/acknowledge-category", requestOptions)
+            .then((res) => res.json())
+            .then(async(data) => {
+                console.log(data);
+                const categoryList = data.data;
+
+                await updateCategoryList(categoryList);
+            })
+            .catch((error) => console.error(error));
+    }
+    // 불러온 출석인정 항목을 select box 의 데이터로 화면에 보여주기
+    async function updateCategoryList(data) {
+        let inputDate = $(".input-date").val();
+        let result = `<option value=0>출석인정 항목을 선택해주세요.</option>`;
+
+        for (let i = 0; i < data.length; i++) {
+            result += `<option value=${data[i].acknowledgeSeq} data-days=${data[i].acknowledgeDays}>${data[i].category} - ${data[i].acknowledgeDays}일</option>`;
+        }
+
+        $("#start-date").val(inputDate);
+        $("#acknowledge-category").html("");
+        $("#acknowledge-category").append(result);
+    }
+
+    // 업로드 버튼 클릭하면 s3에 증빙서류 업로드
+    let fileInput = document.querySelector("#input-file");
+    const sendButton = document.querySelector("#file-submit-btn");
+
+    sendButton.addEventListener("click", function() {
+        let formData = new FormData();
+        formData.append("evidentialDocument", fileInput.files[0]);
+
+        fetch('http://localhost:8888/attendances/upload', {
+            method: 'POST',
+            cache: 'no-cache',
+            body: formData // body 부분에 폼데이터 변수를 할당
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("파일 업로드 완료");
+                console.log(data.data);
+                evidentialDocuments = data.data;
+            });
+    });
+
+
+
+    // 선택한 출석인정 항목 + 업로드한 파일로 출석인정 처리
+    async function reflectAttendanceAcknowledgeStatus() {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "acknowledgeSeq": getAcknowledgeSeq(),
+            "studentCourseSeq": getStudentCourseSeq(),
+            "attendanceStatus": "출석 인정",
+            "startDate": getStartDate(),
+            "endDate": getEndDate(),
+            "evidentialDocuments": evidentialDocuments
+        });
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        await fetch("/attendances/reflect-acknowledge-documents", requestOptions)
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((error) => console.error(error));
+    }
+
+    $("#acknowledge-setting-btn").on("click", async function() {
+        await reflectAttendanceAcknowledgeStatus();
+        console.log('출석인정 처리 완료!');
+        location.reload();  // 화면 새로고침
+    });
+
 
 </script>
 </body>

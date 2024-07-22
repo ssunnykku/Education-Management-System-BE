@@ -1,0 +1,86 @@
+#course-list-table-wrapper {
+    width: 100%;
+    padding: 0;
+
+    height: 400px;
+    overflow-y: scroll;
+
+    ::-webkit-scrollbar {
+        width: 10px;
+        background-color: black;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #2f3542;
+        border-radius: 10px;
+        background-clip: padding-box;
+        border: 2px solid transparent;
+    }
+}
+
+
+#course-list-table {
+    th, td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    tr:first-child {
+        height: 45px;
+        background-color: #f9f9f9;
+    }
+
+    th {
+        font-weight: 600;
+        border-top: 1px solid #5c5c5c;
+    }
+
+    tr {
+        border-bottom: 0.5px solid lightgray;
+        height: 45px;
+    }
+}
+
+#course-list-table td:first-child,
+#course-list-table th:first-child {
+    width: 20%;
+}
+
+#course-list-table td:nth-child(2),
+#course-list-table th:nth-child(2) {
+    width: 10%;
+}
+
+#course-list-table th:nth-child(3),
+#course-list-table th:nth-child(3),
+#course-list-table td:nth-child(4),
+#course-list-table th:nth-child(4) {
+    width: 30%;
+}
+
+#course-list-table td:nth-child(5),
+#course-list-table th:nth-child(5) {
+    width: 10%;
+}
+
+.search-input {
+    width: 300px;
+    height: 41px;
+
+    background: #ffffff;
+
+    border: 1px solid #cfcfcf;
+    border-radius: 10px;
+
+    z-index: 1;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 144%;
+
+    padding-left: 15px;
+
+    color: #000000;
+    text-align: center;
+}

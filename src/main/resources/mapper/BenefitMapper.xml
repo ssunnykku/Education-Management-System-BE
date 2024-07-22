@@ -19,9 +19,9 @@
         AND s.name LIKE CONCAT('%', #{name}, '%')
         AND course_start_date <![CDATA[<=]]> #{startDate}
         AND course_end_date <![CDATA[>=]]> #{endDate}
-        AND c.is_active = 'T'
-        AND s.is_active = 'T'
-        AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
+        AND c.is_active = true
+        AND s.is_active = true
+        AND c.course_number = #{courseNumber}
         ORDER BY name
         <if test="limit != null and offset != null">
             limit #{limit} offset #{offset}
@@ -38,45 +38,13 @@
         values (#{settlementDurationStartDate}, #{settlementDurationEndDate}, #{courseSeq}, #{managerId})
     </insert>
     <insert id="insertBenefitSettlementAmount" parameterType="com.kosta.ems.benefit.dto.BenefitDTO">
-        insert into benefits (training_aid_amount,
-                              meal_aid_amount,
-                              settlement_aid_amount,
+        insert into benefits (amount,
                               student_id,
-                              settlement_duration_seq)
-        values (#{trainingAidAmount}, #{mealAidAmount}, #{settlementAidAmount}, #{studentId}, #{settlementDurationSeq})
+                              settlement_duration_seq,
+                              benefits_categories_seq,
+                              manager_id)
+        values (#{amount}, #{studentId}, #{settlementDurationSeq}, #{benefitsCategoriesSeq}, #{managerId});
     </insert>
-    <select id="selectBenefitSettlementResult">
-        select c.course_seq                                                    as courseSeq,
-               s.student_id                                                    as studentId,
-               c.course_number                                                 as courseNumber,
-               s.hrd_net_id                                                    as hrdNetId,
-               s.name,
-               s.bank,
-               s.account,
-               benefit_seq                                                     as benefitSeq,
-               training_aid_amount                                             as trainingAidAmount,
-               meal_aid_amount                                                 as mealAidAmount,
-               settlement_aid_amount                                           as settlementAidAmount,
-               benefit_settlement_date                                         as benefitSettlementDate,
-               sd.settlement_duration_seq                                      as settlementDurationSeq,
-               settlement_duration_start_date                                  as settlementDurationStartDate,
-               settlement_duration_end_date                                    as settlementDurationEndDate,
-               c.manager_id                                                    as managerId,
-               (training_aid_amount + meal_aid_amount + settlement_aid_amount) as totalAmount
-        from benefits b
-                 left join settlement_durations sd on b.settlement_duration_seq = sd.settlement_duration_seq
-                 left join courses c on c.course_seq = sd.course_seq
-                 left join students s on s.student_id = b.student_id
-        where s.name LIKE CONCAT('%', #{name}, '%')
-          AND (#{courseNumber} IS NULL OR #{courseNumber} = '' OR c.course_number = #{courseNumber})
-          AND (#{benefitSettlementDate} IS NULL OR #{benefitSettlementDate} = '' OR
-               benefit_settlement_date = #{benefitSettlementDate})
-          AND c.academy_location = #{academyLocation}
-          AND c.is_active = 'T'
-          AND s.is_active = 'T'
-        ORDER BY b.benefit_settlement_date desc, sd.settlement_duration_start_date desc, s.name
-        limit #{limit} offset #{offset}
-    </select>
 
     <select id="countSettlementTarget" resultType="int">
         <![CDATA[
@@ -89,9 +57,9 @@
           AND course_start_date <= #{startDate}
           AND course_end_date >= #{endDate}
           AND s.student_id != ''
-          AND c.is_active = 'T'
-          AND s.is_active = 'T'
-          AND (IF(#{courseNumber}, 0, '기수') = '기수' OR c.course_number = #{courseNumber})
+          AND c.is_active = true
+          AND s.is_active = true
+          AND c.course_number = #{courseNumber}
         ]]>
     </select>
 
@@ -101,13 +69,18 @@
                  left join settlement_durations sd on b.settlement_duration_seq = sd.settlement_duration_seq
                  left join courses c on c.course_seq = sd.course_seq
                  left join students s on s.student_id = b.student_id
-        WHERE c.academy_location = #{academyLocation}
-          AND s.name LIKE CONCAT('%', #{name}, '%')
-          AND (#{courseNumber} IS NULL OR #{courseNumber} = '' OR c.course_number = #{courseNumber})
-          AND (#{benefitSettlementDate} IS NULL OR #{benefitSettlementDate} = '' OR
-               benefit_settlement_date = #{benefitSettlementDate})
-          AND c.is_active = 'T'
-          AND s.is_active = 'T'
+        where s.name LIKE CONCAT('%'
+            , #{name}
+            , '%')
+          AND (#{courseNumber} IS NULL
+            OR #{courseNumber} = ''
+            OR c.course_number = #{courseNumber})
+          AND (#{benefitSettlementDate} IS NULL
+            OR #{benefitSettlementDate} = ''
+            OR b.benefit_settlement_date = #{benefitSettlementDate})
+          AND c.academy_location = #{academyLocation}
+          AND c.is_active = true
+          AND s.is_active = true
     </select>
 
     <select id="selectLastSettlementDate" parameterType="String">
@@ -122,6 +95,57 @@
         from settlement_durations sd
                  inner join courses c on sd.course_seq = c.course_seq
         where sd.course_seq = #{courseSeq};
+    </select>
+
+    <select id="resultList">
+        select c.course_seq                      as courseSeq,
+               s.student_id                      as studentId,
+               c.course_number                   as courseNumber,
+               s.hrd_net_id                      as hrdNetId,
+               s.name,
+               s.bank,
+               s.account,
+               b.benefit_seq                     as benefitSeq,
+               b.benefits_categories_seq         as benefitsCategoriesSeq,
+               b.settlement_duration_seq         as settlementDurationSeq,
+               sd.settlement_duration_start_date as settlementDurationStartDate,
+               sd.settlement_duration_end_date   as settlementDurationEndDate,
+               b.benefits_categories_seq         as benefitsCategoriesSeq,
+               b.benefit_settlement_date         as benefitSettlementDate
+        from benefits b
+                 left join settlement_durations sd
+                           on b.settlement_duration_seq = sd.settlement_duration_seq
+                 left join courses c on c.course_seq = sd.course_seq
+                 left join students s on s.student_id = b.student_id
+        where s.name LIKE CONCAT('%'
+            , #{name}
+            , '%')
+          AND (#{courseNumber} IS NULL
+            OR #{courseNumber} = ''
+            OR c.course_number = #{courseNumber})
+          AND (#{benefitSettlementDate} IS NULL
+            OR #{benefitSettlementDate} = ''
+            OR b.benefit_settlement_date = #{benefitSettlementDate})
+          AND c.academy_location = #{academyLocation}
+          AND c.is_active = true
+          AND s.is_active = true
+        GROUP BY s.student_id, b.benefit_settlement_date, sd.settlement_duration_start_date, s.name
+        ORDER BY b.benefit_settlement_date DESC,
+                 sd.settlement_duration_start_date DESC,
+                 s.name
+    </select>
+
+    <select id="getBefitAmount">
+        select benefit_seq                as benefitSeq,
+               amount,
+               student_id                 as studentId,
+               bc.benefits_categories_seq as benefitsCategoriesSeq
+        from benefits b
+                 inner join benefits_categories bc on b.benefits_categories_seq = bc.benefits_categories_seq
+        where (#{benefitSettlementDate} IS NULL
+            OR #{benefitSettlementDate} = ''
+            OR b.benefit_settlement_date = #{benefitSettlementDate})
+          and b.is_active = true
     </select>
 
 </mapper>

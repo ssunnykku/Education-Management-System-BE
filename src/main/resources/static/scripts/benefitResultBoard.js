@@ -6,6 +6,10 @@ let currentBlock = 1;
 
 let totalPages = 0;
 
+function handleError(message) {
+    $("#error").html("");
+    $("#error").append(`<span style="color: red">${message}</span>`)
+}
 
 function getName() {
     return $(".search-input").val();
@@ -18,6 +22,11 @@ function getCourseNumber() {
 function getBenefitSettlementDate() {
     return $("#settlement-date").val();
 }
+
+
+$(document).ready(() => {
+    fetchResultData(1);
+})
 
 
 /*course 목록*/
@@ -61,16 +70,16 @@ function getResultData(dataList) {
                     <span>${dataList[i].settlementDurationStartDate} ~ ${dataList[i].settlementDurationEndDate}</span>
                 </div>
                 <div class="benefitSettlementResult-training-aid">
-                    <span>${dataList[i].trainingAidAmount}</span>
+                    <span>${dataList[i].trainingAidAmount.toLocaleString('ko-KR')}</span>
                 </div>
                 <div class="benefitSettlementResult-meal-aid-amount">
-                    <span>${dataList[i].mealAidAmount}</span>
+                    <span>${dataList[i].mealAidAmount.toLocaleString('ko-KR')}</span>
                 </div>
                 <div class="benefitSettlementResult-settlement_aid_amount">
-                    <span>${dataList[i].settlementAidAmount}</span>
+                    <span>${dataList[i].settlementAidAmount.toLocaleString('ko-KR')}</span>
                 </div>
                 <div class="benefitSettlementResult-total-amount">
-                    <span>${dataList[i].totalAmount}</span>
+                    <span>${dataList[i].totalAmount.toLocaleString('ko-KR')}</span>
                 </div>
                 <div class="benefit-result-settlement-date">
                     <span>${dataList[i].benefitSettlementDate}</span>
@@ -87,6 +96,7 @@ function getResultData(dataList) {
 }
 
 function fetchResultData(page) {
+
     const requestOptions = {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -105,12 +115,30 @@ function fetchResultData(page) {
 
             await getResultData(dataList)
 
+            if (data.result.length === 0) {
+                $("#result-contents").html("");
+                $("#result-contents").append(`
+                        <div style="width: 100%; text-align: center; height: 100px; display: flex; flex-direction: column; justify-content: center">
+                        <span style="color: red; font-size: 16px">데이터를 찾을 수 없습니다.</span>
+                        </div>`);
+            } else {
+                $(".benefitResult-cnt-pages").html(`<span>총 ${data.result.length}건</span>`);
+
+                totalPages = Math.ceil(data.result.length / 10);
+                updatePagination();
+            }
+
+
         })
         .catch((error) => console.error(error));
 }
 
 $(".filter-search-btn").click(async () => {
-    await getCountData();
+    console.log("이거" + getBenefitSettlementDate());
+    if (getBenefitSettlementDate() == '' || getBenefitSettlementDate() == null) {
+        handleError('정산 기간을 입력하세요');
+        return;
+    }
     await fetchResultData(1);
 })
 
@@ -124,14 +152,17 @@ function updatePagination() {
 
     let result = "";
     for (let i = firstPage; i <= lastPage; i++) {
+
         let num = i;
+        let fontWeight = (num == currentPage) ? 'bold' : 'normal';
+
         result += `<li>
-                    <a class="page-link" onclick="fetchResultData(${num})">${num}</a>
+                    <a class="page-link" style="font-weight: ${fontWeight}"  onclick="fetchResultData(${num})">${num}</a>
                     </li>`;
     }
+    $("#page_number").html('');
     $("#page_number").append(result);
 }
-
 
 $("#next").click(() => {
     if (currentBlock * pageSize < totalPages) {
@@ -149,37 +180,4 @@ $("#before").click(() => {
     }
 });
 
-function getCountData() {
-    const requestOptions = {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-            "name": getName(),
-            "courseNumber": getCourseNumber(),
-            "benefitSettlementDate": getBenefitSettlementDate()
-
-        }),
-        redirect: "follow"
-    };
-
-    fetch("/benefits/result/count", requestOptions)
-        .then((res) => res.json())
-        .then((data) => {
-
-            if (data.result === 0) {
-                $("#result-contents").html("");
-                $("#result-contents").append(`
-                        <div style="width: 100%; text-align: center; height: 100px; display: flex; flex-direction: column; justify-content: center">
-                        <span style="color: red; font-size: 16px">데이터를 찾을 수 없습니다.</span>
-                        </div>`);
-            } else {
-                $(".benefitResult-cnt-pages").html(`<span>총 ${data.result}건</span>`);
-                totalPages = Math.ceil(data.result / 10);
-                updatePagination();
-            }
-
-
-        })
-        .catch((error) => console.error(error));
-}
 

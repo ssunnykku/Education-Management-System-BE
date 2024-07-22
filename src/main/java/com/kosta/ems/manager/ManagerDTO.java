@@ -25,6 +25,7 @@ public class ManagerDTO implements UserDetails{
     private String academyLocation;
     private String employeeNumber;
     private char isActive;
+    private String profileImage;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("user"));
