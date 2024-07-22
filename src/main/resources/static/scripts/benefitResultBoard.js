@@ -153,7 +153,6 @@ function updatePagination() {
     $("#page_number").append(result);
 }
 
-ㅍ
 
 $("#next").click(() => {
     if (currentBlock * pageSize < totalPages) {
