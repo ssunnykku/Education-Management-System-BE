@@ -220,11 +220,13 @@ select {
 }
 
 #enroll-btn {
-  color: #ffffff;
-  background-color: rgb(64, 64, 64);
-  border-radius: 8px;
+  width: 80px;
   height: 34px;
-  margin-left: 40%;
+  margin-left: 35%;
+  padding: 19px 16px;
+  color: #ffffff;
+  border-radius: 8px;
+  background-color: rgb(64, 64, 64);
 }
 
 #long-enroll-btn {
@@ -376,7 +378,7 @@ body {
 
 .content-article {
   width: 80%;
-  height: 495px;
+  height: 450px;
 }
 
 /* board-table */
@@ -389,7 +391,7 @@ body {
     text-align: center;
   }
   tr:first-child {
-    height: 45px;
+    height: 40px;
     background-color: #f9f9f9;
   }
   th{
@@ -398,7 +400,7 @@ body {
   }
   tr {
     border-bottom: 0.5px solid lightgray;
-    height: 45px;
+    height: 40px;
   }
 }
 .board-table td:nth-child(2), .board-table th:first-child,
@@ -690,7 +692,7 @@ body {
   justify-content: center;
   gap: 20px;
   width: 50%;
-  margin-top: 35px;
+  margin-top: 20px;
 }
 
 .page-item {
