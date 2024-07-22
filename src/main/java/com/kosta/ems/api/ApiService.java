@@ -161,18 +161,20 @@ public class ApiService {
             if (status.getInTime() != null) {
                 return false;
             }
-
             StudentCourseDTO sCDTO;
+            //먼저 attendance table에 추가
             sCDTO = sCRepo.findByStudentIdAndCourseSeq(studentId, course.getCourseSeq()).orElseThrow(() -> new RuntimeException("수강하는 과정이 없습니다."));
-            AttendanceTimeId id = new AttendanceTimeId(LocalDate.now(), sCDTO.getSeq());
-            AttendanceTimeDTO inTime = new AttendanceTimeDTO(id, LocalTime.now(), null);
-            attendanceTimeRepo.save(inTime);
             attendanceMapper.insertAttendanceStatus(UpdateStudentAttendanceStatusDTO.builder()
                     .attendanceDate(LocalDate.now())
                     .attendanceStatus("입실")
                     .managerId(STUDENT_MANAGER_ID)
                     .studentCourseSeq(sCDTO.getSeq())
                     .build());
+
+            //후에 attendance_time table 추가
+            AttendanceTimeId id = new AttendanceTimeId(LocalDate.now(), sCDTO.getSeq());
+            AttendanceTimeDTO inTime = new AttendanceTimeDTO(id, LocalTime.now(), null);
+            attendanceTimeRepo.save(inTime);
             return true;
         } catch (Exception e) {
             return false;

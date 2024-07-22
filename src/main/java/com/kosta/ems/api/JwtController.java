@@ -81,7 +81,6 @@ public class JwtController {
     @GetMapping("/student")
     public Map getStudentInfo() {
         StudentInfoDTO loginUser = getLoginUser();
-        System.out.println(getLoginUser());
         return Map.of("result", loginUser);
     }
 
@@ -92,7 +91,13 @@ public class JwtController {
         return Map.of("result", service.updateStudentContactInfo(loginUser.getStudentId(), dto));
 //        return Map.of("result", false);
     }
-
+    
+    //현재 수강중인 과정
+    @GetMapping("/current-course")
+    public Map GetCurrentCourse() {
+        StudentInfoDTO loginUser = getLoginUser();
+        return Map.of("result", service.getCurrentCourse(loginUser.getStudentId()));
+    }
     //마이페이지 입실/
     @GetMapping("/time")
     public Map GetAttendanceTimeStatus() {
