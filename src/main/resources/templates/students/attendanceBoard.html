@@ -22,7 +22,10 @@
 <section id="attendance-contents">
     <article class="attendance-search-btn-wrapper">
         <div class="attendance-search-form-wrapper">
-            <input placeholder="기수" id="input-course-number" class="courseId-filter" name="courseNumber"/>
+            <select name="employment-courseId-filter"
+                    class="employment-courseId-filter">
+                <option value="course-number" id="course-number">기수</option>
+            </select>
             <input placeholder="수강생을 입력하세요" id="input-name" class="student-name-filter" name="name"/>
             <button type="button" class="filter-search-btn">검색</button>
         </div>
@@ -65,10 +68,28 @@
 
 <footer></footer>
 <script>
+fetch("/courses/course-number-list?excludeExpired=false", {
+    method: "GET",
+})
+    .then((res) => res.json())
+    .then((data) => {
+        const courseList = data.result;
+        let result = '';
+        for (const resultElement of courseList) {
+            result += `<option value=${resultElement}>${resultElement}</option>`;
+        }
+        $(".employment-courseId-filter").append(result);
+
+    })
+    .catch((error) => console.error(error));
+
     $(document).ready(async function() {
+     $(".employment-courseId-filter").on("change", async function() {
+  	courseNumber = $(this).val(); // 'this' refers to the selected dropdown element
+	});
         await fetchStudentAttendanceList(1);
     });
-
+	let courseNumber = 0;
     let totalPage = 0;
     let currentPage = 1;
     let currentBlock = 1;
@@ -130,7 +151,7 @@
 
         const raw = JSON.stringify({
             "name": getStudentName(),
-            "courseNumber": getCourseNumber()
+            "courseNumber": courseNumber
         });
 
         const requestOptions = {
