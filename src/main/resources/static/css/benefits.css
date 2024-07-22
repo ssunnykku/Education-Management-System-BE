@@ -19,7 +19,7 @@ section {
 }
 
 .benefit-settlement-duration {
-    width: 100px;
+    width: 120px;
     height: 41px;
 
     background: #ffffff;
@@ -43,7 +43,7 @@ section {
 
 .benefit-settlement-date {
     width: 100px;
-    height: 41px;
+    height: 39px;
 
     background: #ffffff;
 
@@ -72,8 +72,8 @@ section {
 
 .settlement-date {
     border: none;
-    width: 100%;
-    height: 40px;
+    width: 98%;
+    height: 38px;
 }
 
 .result-settlement-date {
@@ -84,7 +84,7 @@ section {
 
 #lecture-days {
     border: none;
-    width: 100%;
+    width: 99%;
     text-align: center;
 }
 
@@ -113,7 +113,7 @@ section {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding-left: 300px;
+    padding-left: 250px;
 }
 
 .benefit-settlement-filter-search-wrapper {
@@ -167,8 +167,7 @@ section {
 }
 
 .benefit-search-input {
-    width: 300px;
-    height: 40px;
+    height: 37px;
 
     background: #ffffff;
 
@@ -181,7 +180,6 @@ section {
     font-weight: 500;
     font-size: 15px;
     line-height: 144%;
-    
     color: #000000;
     text-align: center;
 }
@@ -409,11 +407,16 @@ filter and search
 }
 
 #benefit-result-settlement-date {
-    width: 90px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#benefit-result-settlement-date > input {
+    width: 120px;
     height: 41px;
-
-    background: #ffffff;
-
     border: 1px solid #cfcfcf;
     border-radius: 5px;
 
@@ -423,11 +426,6 @@ filter and search
     line-height: 144%;
 
     color: #000000;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
 
 }
 
@@ -637,4 +635,11 @@ ul#pagination {
 
 .page-link {
     width: 10px;
+}
+
+#search-course-modal {
+    width: 60rem;
+    height: 45rem;
+    border: #BBBBBB 1px solid;
+    border-radius: 20px;
 }

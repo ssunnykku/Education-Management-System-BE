@@ -403,8 +403,7 @@
 
 #scholarshipBoard-table {
     width: 100%;
-    /* padding: 0 100px 0 100px; */
-    min-height: 700px;
+    min-height: 50vh;
 }
 
 .scholarshipBoard-row {
@@ -557,7 +556,7 @@
 
 #scholarshipResultBoard-table-wrapper {
     width: 100%;
-    /*padding: 0 200px;*/
+    min-height: 20vh;
 }
 
 .scholarshipResultBoard-row {
@@ -593,7 +592,23 @@
 
     width: 100%;
 
-    /*border-radius: 10px 10px 0px 0px;*/
+}
+
+#settlement-date {
+    width: 120px;
+    /*height: 41px;*/
+    background: #ffffff;
+    border: 1px solid #cfcfcf;
+    border-radius: 5px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 144%;
+    padding-left: 18px;
+    color: #000000;
+    background-size: 12px;
+    background-position: right;
+    background-position: 60px;
 }
 
 #scholarship-table-contents {
