@@ -232,6 +232,8 @@
         let result = `<tr><th class="hrd-net-id">HRD-Net ID</th><th class="course-number">기수</th><th class="student-name">이름</th><th class="student-phonenumber">전화번호</th><th class="student-completion-status">출석률</th></tr>`;
 
         for(let i=0; i<data.length; i++) {
+            let tmpRatio = data[i][1].split("%")[0];
+            console.log(tmpRatio);
 
             result += `<tr class="board-table-row">
                     <td class="hrd-net-id">${data[i][0].hrdNetId}<input type="hidden" name="student-id" class="fetch-student-id" value=${data[i][0].studentId}/></td>

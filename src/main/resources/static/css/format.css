@@ -214,7 +214,7 @@
 
 /* 메뉴(제목) */
 #title-wrapper {
-    height: 120px;
+    height: 100px;
     min-width: 1300px;
     background-color: rgba(244, 244, 244, 1);
     display: flex;
