@@ -59,7 +59,8 @@
 
 table {
     border-collapse: separate;
-    border-spacing: 0px 13px;
+    /*border-spacing: 0px 13px;*/
+    border-spacing: 0px 8px;
 }
 
 td {
@@ -82,8 +83,13 @@ label {
 }
 
 #combine-update-btn {
-    width: 130px;
-    height: 33px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 160px;
+    height: 34px;
+    padding: 19px 16px;
+    font-size: 16px;
 }
 
 /* 각 수강생의 출결상태 select box */
@@ -121,11 +127,16 @@ select {
     justify-content: flex-end;
     gap: 10px;
     width: 100%;
-    margin-top: 20px;
+    /*margin-top: 20px;*/
     padding-right: 7%;
     .btn {
-        width: 65px;
-        height: 33px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80px;
+        height: 34px;
+        padding: 19px 16px;
+        font-size: 16px;
     }
 }
 #update-btn {
@@ -325,8 +336,9 @@ select {
 }
 .board-table.refer-attendance-status {
     width: 90%;
+    border-spacing: 0;
     tr {
-        height: 38px;
+        height: 40px;
     }
 }
 
@@ -477,7 +489,13 @@ select {
 }
 
 .filter-search-btn {
-    height: 39px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 34px;
+    padding: 19px 16px;
+    font-size: 16px;
 }
 
 /* table */
@@ -549,6 +567,11 @@ select {
 
 /**************************************************************************/
 /********************** addAttendance.html *****************/
+#search-form {
+    display: flex;
+    gap: 8px;
+    width: fit-content;
+}
 #content-section.attendance-add {
     width: 90%;
     margin-top: 10px;
@@ -557,7 +580,7 @@ select {
     margin: 0;
 }
 .attendance-status-wrapper.attendance-add {
-    margin-left: 44%;
+    margin-left: 42%;
 }
 .student-cnt-pages.attendance-add {
     margin-left: 10%;
@@ -565,7 +588,8 @@ select {
 #attendance-add-table-article {
     display: flex;
     /*height: 495px;*/
-    height: 490px;
+    /*height: 490px;*/
+    height: 420px;
 }
 .board-table.set-attendance {
     tr:first-child {
