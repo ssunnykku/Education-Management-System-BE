@@ -142,6 +142,14 @@
     </div>
 </div>
 
+<!--alert 대체 모달-->
+<div id="alert-modal">
+    <div class="modal-contents-wrapper">
+        <p id="alert-message"></p>
+        <button>확인</button>
+    </div>
+</div>
+
 
 
 <script>
@@ -271,7 +279,7 @@
                     <th class="set-attendance">증빙 서류</th>
                 </tr>`;
         if(totalAmount === 0) {
-            result += `<tr style="height: 400px; line-height: 25px;"><td colspan="7">아직 해당 날짜에 등록된 출결 정보가 없습니다.<br/>출결 입력해주세요.</td></tr>`;
+            result += `<tr style="height: 340px; line-height: 25px;"><td colspan="7">아직 해당 날짜에 등록된 출결 정보가 없습니다.<br/>출결 입력해주세요.</td></tr>`;
         } else {
             for(let i=0; i<data.length; i++) {
                 let attendanceCheck = "";
@@ -496,7 +504,15 @@
         };
 
         if(getAttendanceDate() == "") {
-            alert("날짜는 필수 검색 조건입니다!");
+            // alert("날짜는 필수 검색 조건입니다!");
+            $("#alert-message").text("날짜는 필수 검색 조건입니다!");
+            $("#alert-modal").css("display", "flex");
+            $(".modal-backdrop").css("display", "flex");
+
+            $("#alert-modal button").on("click", function() {
+                $("#alert-modal").css("display", "none");
+                $(".modal-backdrop").css("display", "none");
+            });
         } else {
             await fetchAttendanceList(page);
             checkAll(); // <th>의 체크박스 클릭 -> 모든 <tr>의 체크박스 선택 처리
@@ -570,7 +586,16 @@
         const checkedStudentData = [];
         const selectedRadio = $("input[name=attendanceStatus]:checked");
         if(!selectedRadio.length) {
-            alert("처리할 출결 상태를 체크해주세요!");
+            /*alert("처리할 출결 상태를 체크해주세요!");*/
+
+            $("#alert-message").text("처리할 출결 상태를 체크해주세요!");
+            $("#alert-modal").css("display", "flex");
+            $(".modal-backdrop").css("display", "flex");
+
+            $("#alert-modal button").on("click", function() {
+                $("#alert-modal").css("display", "none");
+                $(".modal-backdrop").css("display", "none");
+            });
             return;
         }
         const combineAttendanceStatus = selectedRadio.val();
@@ -604,10 +629,28 @@
             .then(async(data) => {
                 console.log(data.code);
                 if(data.code === 0) {
-                    alert("정상적으로 출결 등록/수정되었습니다.");
-                    location.reload();  // 화면 새로고침
+                    /*alert("정상적으로 출결 등록/수정되었습니다.");*/
+
+                    $("#alert-message").text("정상적으로 출결 등록/수정되었습니다.");
+                    $("#alert-modal").css("display", "flex");
+                    $(".modal-backdrop").css("display", "flex");
+
+                    $("#alert-modal button").on("click", function() {
+                        $("#alert-modal").css("display", "none");
+                        $(".modal-backdrop").css("display", "none");
+                        location.reload();  // 화면 새로고침
+                    });
+                    /*location.reload();  // 화면 새로고침*/
                 } else {
-                    alert("출결 등록/수정 실패");
+                    /*alert("출결 등록/수정 실패");*/
+                    $("#alert-message").text("출결 등록/수정 실패");
+                    $("#alert-modal").css("display", "flex");
+                    $(".modal-backdrop").css("display", "flex");
+
+                    $("#alert-modal button").on("click", function() {
+                        $("#alert-modal").css("display", "none");
+                        $(".modal-backdrop").css("display", "none");
+                    });
                 }
                 console.log(data.message);
             })
@@ -660,10 +703,27 @@
             .then(async(data) => {
                 console.log(data);
                 if(data.code === 0) {
-                    alert("정상적으로 출결 등록/수정되었습니다.");
-                    location.reload();
+                    /*alert("정상적으로 출결 등록/수정되었습니다.");*/
+                    $("#alert-message").text("정상적으로 출결 등록/수정되었습니다.");
+                    $("#alert-modal").css("display", "flex");
+                    $(".modal-backdrop").css("display", "flex");
+
+                    $("#alert-modal button").on("click", function() {
+                        $("#alert-modal").css("display", "none");
+                        $(".modal-backdrop").css("display", "none");
+                        location.reload();
+                    });
+                    /*location.reload();*/
                 } else {
-                    alert("출결 등록/수정 실패");
+                    /*alert("출결 등록/수정 실패");*/
+                    $("#alert-message").text("출결 등록/수정 실패");
+                    $("#alert-modal").css("display", "flex");
+                    $(".modal-backdrop").css("display", "flex");
+
+                    $("#alert-modal button").on("click", function() {
+                        $("#alert-modal").css("display", "none");
+                        $(".modal-backdrop").css("display", "none");
+                    });
                 }
                 console.log(data.message);
             })
@@ -748,7 +808,16 @@
         const checkedStudentData = [];
         const selectedRadio = $("input[name=attendanceStatusModal]:checked");
         if(!selectedRadio.length) {
-            alert("등록할 수강생 출결 상태를 체크해주세요!");
+            /*alert("등록할 수강생 출결 상태를 체크해주세요!");*/
+
+            $("#alert-message").text("등록할 수강생 출결 상태를 체크해주세요!");
+            $("#alert-modal").css("display", "flex");
+            $(".modal-backdrop").css("display", "flex");
+
+            $("#alert-modal button").on("click", function() {
+                $("#alert-modal").css("display", "none");
+                $(".modal-backdrop").css("display", "none");
+            });
             return;
         }
         const combineAttendanceStatus = selectedRadio.val();
