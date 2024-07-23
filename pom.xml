@@ -12,7 +12,7 @@
     <groupId>com.kosta</groupId>
     <artifactId>ems</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>ems</name>
     <description>kosta_ems</description>
     <properties>

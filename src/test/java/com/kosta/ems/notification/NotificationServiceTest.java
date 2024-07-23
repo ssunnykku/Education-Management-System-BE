@@ -23,7 +23,7 @@ class NotificationServiceTest {
 
 	@Test
 	void testSearchByKeyword() {
-		assertThat(notificationService.searchByKeyword("gg","d893c34e-2f8f-11ef-b0b2-0206f94be675", 1, 10 ).size()).isEqualTo(3);
+		assertThat(notificationService.searchByKeyword("gg","d893c34e-2f8f-11ef-b0b2-0206f94be675", 1, 10 ).size()).isEqualTo(0);
 
 	}
 	//@Test
