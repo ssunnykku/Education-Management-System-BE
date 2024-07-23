@@ -48,6 +48,7 @@ public interface StudentMapper {
 
     // scq로 수강생 기본 정보 가져오기
     GetStudentInfoByScqDTO selectStudentInfoByScq(int studentCourseSeq);
+    GetStudentInfoByScqDTO selectStudentInfoByStudentId(String studentId);
 
     List<StudentCourseInfoDTO> selectStudentListBycourseSeq(int courseSeq);
 

@@ -34,7 +34,7 @@
             <div class="student-cnt-pages" style="margin-left: 0"></div>
         </article>
         <article id="content-article">
-            <table class="board-table refer-attendance-status">   <!--div class="board-row" id="board-title-row" 였던것-->
+            <table class="board-table refer-attendance-status">
                 <tr>
                     <th class="course-number">기수</th>
                     <th class="course-name">교육과정명</th>
@@ -107,8 +107,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
 
     // 검색한 출결 데이터 목록 가져오기
     async function getAttendanceList(data) {
-        console.log("getAttendanceList - data");
-        console.log(data);
         let result = `<tr><th className="course-number">기수</th><th className="course-name">교육과정명</th><th className="student-name">수강생 이름</th><th className="hrd-net-id">HRD-Net ID</th><th className="attendance-duration">교육일수</th><th class="attendance-cnt">출석</th><th class="attendance-cnt-late">지각</th><th class="attendance-cnt-early-leave">조퇴</th><th class="attendance-cnt-go-out">외출</th><th class="attendance-cnt-absence">결석</th><th class="attendance-cnt-">출석 인정</th><th class="attendance-ratio">출석률</th></tr>`;
         for (let i = 0; i < data.length; i++) {
             result +=
@@ -163,8 +161,9 @@ fetch("/courses/course-number-list?excludeExpired=false", {
             .then((res) => res.json())
             .then(async(data) => {
                 let attendanceList = data.attendanceList;
-
                 let amount = data.amount;
+                currentPage = data.pageInfo.currentPage;
+
                 await getAttendanceList(attendanceList);
                 await getAmountAttendanceList(amount);
             })
@@ -198,7 +197,8 @@ fetch("/courses/course-number-list?excludeExpired=false", {
 
         for (let i = firstPage; i <= lastPage; i++) {
             let num = i;
-            $("#page-number").append(`<li><a class="page-link" onclick="fetchStudentAttendanceList(${num})">${num}</a></li>`);
+            let fontWeight = (num === currentPage) ? 'bold' : 'normal'; // 현재 페이지 번호일 때만 font-weight: bold 적용
+            $("#page-number").append(`<li><a class="page-link" style="font-weight: ${fontWeight}" onclick="fetchStudentAttendanceList(${num})">${num}</a></li>`);
         }
     }
 

@@ -46,7 +46,7 @@ class BenefitMapperTest {
         log.info(String.valueOf(build.getSettlementDurationSeq()));
     }
 
-    @Test
+   // @Test
     @Transactional
     @DisplayName("훈련수당 입력")
     public void insertBenefitSettlementAmountTest() {

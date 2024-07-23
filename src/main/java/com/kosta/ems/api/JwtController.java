@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kosta.ems.api.dto.AttendanceHistoryResponse;
 import com.kosta.ems.api.dto.UpdateStudentInfoRequest;
 import com.kosta.ems.course.CourseDTO;
+import com.kosta.ems.student.StudentService;
+import com.kosta.ems.student.StudentServiceImpl;
 import com.kosta.ems.student.dto.StudentInfoDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -95,10 +97,12 @@ public class JwtController {
     @PreAuthorize("hasRole('STUDENT')")
     public Map getStudentInfo(HttpServletRequest request) {
         String loginUser = getLoginUser(request);
+
         log.info("이거 {} ", getStudentHrdNetId(request));
         StudentInfoDTO result = service.getStudentByHrdNetId(getStudentHrdNetId(request));
 
         return Map.of("result", result);
+
     }
 
     //마이페이지 정보 수정 모달

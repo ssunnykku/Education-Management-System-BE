@@ -94,8 +94,9 @@ label {
 /* 각 수강생의 출결상태 select box */
 select {
     padding: 0 13px;
-    width: 65%;
+    width: 80%;
     height: 27px;
+    font-size: 15px;
     border: 1px solid lightgray;
     border-radius: 10px;
     background-image: url(../assets/Polygon.svg);
@@ -139,7 +140,7 @@ select {
 }
 #update-btn {
     color: #000;
-    background: rgba(244, 244, 244, 1);
+    background: #fff;
 }
 
 .acknowledgeModal {
@@ -208,8 +209,14 @@ select {
     display: flex;
     width: 100%;
     .btn {
-        width: 65px;
-        height: 33px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80px;
+        height: 34px;
+        padding: 19px 16px;
+        font-size: 16px;
+        font-weight: 500;
     }
 }
 .add-attendance-wrapper:first-child {
@@ -230,7 +237,7 @@ select {
     margin-top: 10px;
     #cancel-btn {
         color: #000;
-        background-color: rgba(244, 244, 244, 1);;
+        background-color: #fff;
     }
 }
 .add-attendance-wrapper p {
@@ -617,6 +624,7 @@ select {
     height: 30px;
     border-radius: 10px;
     box-shadow: 0px 0px 2px #888;
+    z-index: 200;
     background-color: rgba(244,244,244,1);
 }
 
@@ -636,6 +644,7 @@ select {
     top: 27.5%;
     left: 35%;
     font-size: 16px;
+    z-index: 200;
     background-color: #fff;
 
     .input-date {
@@ -724,7 +733,7 @@ select {
     width: 400px;
     height: 150px;
     border-radius: 10px;
-    border: 2px solid rgb(70, 98, 255);
+    border: 2px solid rgb(64, 64, 64);
     z-index: 999;
     background-color: #fff;
     .modal-contents-wrapper {

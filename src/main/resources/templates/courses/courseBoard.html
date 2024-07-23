@@ -20,7 +20,7 @@
 
         <form id="searchForm" action="/ems/courses">
 
-          <select name="excludeExpired" class="data-filter" onChange="updateCourseNumber(event)">
+          <select name="excludeExpired" class="data-filter" onChange="updateCourseNumber(event)" id="excludeExpiredSelect">
             <option value="true" th:selected="${paging.excludeExpired} == 1">진행중</option>
             <option value="false" th:selected="${paging.excludeExpired} == 0">전체</option>
           </select>
@@ -120,7 +120,7 @@
         <li th:classappend="${paging.pageOffset == 1} ? 'inactivePage'">
           <a class="page-link"
             th:href="@{|?page=${paging.pageOffset-1}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}">
-            <span>이전</span>
+            <img src="../../assets/navigate_prev_white_24dp%201.svg" alt="이전"/>
           </a>
         </li>
         <li th:each="page: ${#numbers.sequence(0, 9)}"
@@ -133,7 +133,7 @@
           th:classappend="${(paging.pageOffset + 10) > (paging.totalCourseCount/paging.pageSize)} ? 'inactivePage'">
           <a class="page-link"
             th:href="@{|?page=${paging.pageOffset + 10}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}">
-            <span>다음</span>
+            <img src="../../assets/navigate_next_white_24dp%201.svg" alt="다음"/>
           </a>
         </li>
       </ul>
@@ -212,7 +212,7 @@
       <div>
         <form id="editCourseForm">
           <h1>과정 수정</h1>
-          <input type="text" id="course _seq" hidden>
+          <input type="text" id="course_seq" hidden>
           <div method="post" class="course-form-row">
             <h4>과정 구분</h4>
             <select name="course_type" id="course_type" required>
@@ -299,14 +299,22 @@
     });
     $("#all-checkbox").on("change", toggleAll);
     $("#courseNumberSelect").on("change", gotoSearchPage);
+    $("#excludeExpiredSelect").on("change", gotoSearchAllPage);
+    
 
     function gotoSearchPage(){
       const searchForm = $("#searchForm").get(0);
       let str = "";
-      [...searchForm.elements].forEach((item, index) => 
+      [...searchForm.elements].forEach((item, index) => {
         str = str + "&" + item.name + "=" + item.value
+
+      }
       );
       location.href="/ems/courses?page=1" + str;
+    }
+    function gotoSearchAllPage(){
+      
+      location.href="/ems/courses?page=1&excludeExpired="+ $("#excludeExpiredSelect").val();
     }
     function toggleAll() {
       const isChecked = $("#all-checkbox").prop('checked');
@@ -340,6 +348,7 @@
       }
       function setCourseSeq(data) {
         editCourseModalDiv.find("#course_seq").val(data)
+        console.log(data);
       }
       function setcourseNumber(data) {
         editCourseModalDiv.find("#course_number").val(data)

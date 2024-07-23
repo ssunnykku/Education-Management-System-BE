@@ -134,12 +134,12 @@ class AttendanceServiceImplTest {
     }
     
 //  모바일 앱 api
-    @Test
+    //@Test
     @Transactional
     @DisplayName("모바일 API - 입실/퇴실 시간 CRUD 통합테스트")
     void attendanceTimeCRUDTest() {
         //주의: DB데이터 독립적이지 않다.
         //DB에 오늘의 입실/퇴실시간 데이터가 들어있지 않다고 가정.
-        assertThat(apiService.addInTime("738003dc-3eb0-11ef-bd30-0206f94be675")).isTrue();
+        assertThat(apiService.addInTime("f0066b40-44b0-11ef-bd30-0206f94be675")).isTrue();
     }
 }

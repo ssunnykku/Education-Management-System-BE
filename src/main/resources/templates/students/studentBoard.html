@@ -161,7 +161,7 @@ fetch("/courses/course-number-list?excludeExpired=false", {
    let courseNumber=0; 
     $(document).ready(async function () {
     $(".employment-courseId-filter").on("change", async function() {
-  	courseNumber = $(this).val(); // 'this' refers to the selected dropdown element
+  	courseNumber = $(this).val();
 	});
         await fetchStudentList(1);
 
@@ -204,15 +204,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
     $("#enroll-btn").click(function () {
         window.location.href = "/ems/students/set";
     });
-
-   /* function getCourseNumber() {
-        if ($("#input-course-number").val() == "") {
-            return 0;
-        }
-        return parseInt($("#input-course-number").val());
-    }*/
-    
-    
 
     function getStudentName() {
         return $(".student-name-filter").val();
@@ -365,8 +356,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
 
     $("input[name='isActive']").change(function() {
         const selectedValue = $(this).val(); // 선택된 라디오 버튼의 값
-        console.log("상태 변경O");
-        console.log(isActiveStatus);
 
         if (selectedValue === "activation") {
             $("#activation").prop("checked", true); // "활성화" 버튼 선택
@@ -380,7 +369,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
     });
 
     $("#update-set-btn").click(async function() {
-        console.log(isActiveStatus);
         const raw = JSON.stringify({
             "name": $("#modal-student-name").val(),
             "address": $("#modal-student-address").val(),
@@ -441,11 +429,12 @@ fetch("/courses/course-number-list?excludeExpired=false", {
             redirect: "follow"
         };
 
-        await fetch("/students/student-list?page=" + param, requestOptions)
+        await fetch("/students/list?page=" + param, requestOptions)
             .then((res) => res.json())
             .then(async (data) => {
                 let studentList = data.studentList;
                 let amount = data.amount;
+                currentPage = data.pageInfo.currentPage;
 
                 await getSearchedStudentList(studentList);
                 await getAmountStudentList(amount);
@@ -465,7 +454,8 @@ fetch("/courses/course-number-list?excludeExpired=false", {
 
         for (let i = firstPage; i <= lastPage; i++) {
             let num = i;
-            $("#page-number").append(`<li><a class="page-link" onclick="fetchStudentList(${num})">${num}</a></li>`);
+            let fontWeight = (num === currentPage) ? 'bold' : 'normal'; // 현재 페이지 번호일 때만 font-weight: bold 적용
+            $("#page-number").append(`<li><a class="page-link" style="font-weight: ${fontWeight}" onclick="fetchStudentList(${num})">${num}</a></li>`);
         }
     }
 
