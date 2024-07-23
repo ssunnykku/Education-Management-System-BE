@@ -98,7 +98,7 @@ public class JwtController {
         log.info("이거 {} ", getStudentHrdNetId(request));
         StudentInfoDTO result = service.getStudentByHrdNetId(getStudentHrdNetId(request));
 
-        return Map.of("result", loginUser);
+        return Map.of("result", result);
     }
 
     //마이페이지 정보 수정 모달
