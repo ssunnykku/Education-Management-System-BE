@@ -438,7 +438,7 @@ fetch("/courses/course-number-list?excludeExpired=false", {
             redirect: "follow"
         };
 
-        await fetch("/students/student-list?page=" + param, requestOptions)
+        await fetch("/students/list?page=" + param, requestOptions)
             .then((res) => res.json())
             .then(async (data) => {
                 let studentList = data.studentList;

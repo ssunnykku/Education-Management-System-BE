@@ -26,7 +26,7 @@ public class StudentController {
 
 
     // [수강생 정보] - 수강생 정보 조회
-    @PostMapping("/student-list")
+    @PostMapping("/list")
     public Map<String, Object> getStudentsByNameOrCourseNumber(@RequestParam(name = "page", required = false, defaultValue = "1") int page, @RequestBody StudentInfoDTO dto) {
         Map<String, Object> result = new HashMap<String, Object>();
         int size = 10;
