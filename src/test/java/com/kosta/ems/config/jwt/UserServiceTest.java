@@ -25,11 +25,7 @@ class UserServiceTest {
 
     }
 
-    @Test
-    void validateToken() {
-        log.info("access 검증: {}", jwtTokenProvider.isValid("eyJhbGciOiJIUzI1NiJ9.eyJpZCI6InNvbHNvbDUzOTAiLCJzdWIiOiJzb2xzb2w1MzkwIiwiaWF0IjoxNzIxMTAwMDQwLCJleHAiOjE3MjExMDE4NDB9.q0cDdxn6AnCzpQjngubcOd23Wy13pjQvg0reL1X55sA"));
-    }
-
+   
     @Test
     void logout() {
         assertThatThrownBy(() -> {
