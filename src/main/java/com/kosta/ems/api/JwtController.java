@@ -4,7 +4,11 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import com.kosta.ems.config.jwt.JwtTokenProvider;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,26 +30,29 @@ public class JwtController {
     private final ApiService service;
     @Value("${security.level}")
     private String SECURITY_LEVEL;
+    private final JwtTokenProvider jwtTokenProvider;
 
     //과정조회, 포인트조회
     @GetMapping("/course-list")
-    public Map getAllTakenCourses() {
-        StudentInfoDTO loginUser = getLoginUser();
-        return Map.of("result", service.getAllTakenCoursesByStudentId(loginUser.getStudentId()));
+    @PreAuthorize("hasRole('STUDENT')")
+    public Map getAllTakenCourses(HttpServletRequest request) {
+        String loginUser = getLoginUser(request);
+        return Map.of("result", service.getAllTakenCoursesByStudentId(loginUser));
     }
 
     //출결조회
     @GetMapping("/attendance-list")
-    public Map getAttendanceByMonth(LocalDate date) {
-        StudentInfoDTO loginUser = getLoginUser();
+    @PreAuthorize("hasRole('STUDENT')")
+    public Map getAttendanceByMonth(LocalDate date, HttpServletRequest request) {
+        String loginUser = getLoginUser(request);
 
         double monthAttendanceRate;
 
-        CourseDTO currentCourse = service.getCurrentCourse(loginUser.getStudentId());
+        CourseDTO currentCourse = service.getCurrentCourse(loginUser);
         if (currentCourse == null) {
             return Map.of("result", "[]");
         } else {
-            List<AttendanceHistoryResponse> attendances = service.getAttendanceByMonth(date, loginUser.getStudentId());
+            List<AttendanceHistoryResponse> attendances = service.getAttendanceByMonth(date, loginUser);
             int fullDaysOfMonth = 0;
             int attendanceDays = 0;
             LocalDate temp = LocalDate.of(date.getYear(), date.getMonth(), 1);
@@ -65,80 +72,67 @@ public class JwtController {
     }
 
     @GetMapping("/total-attendance-rate")
-    public Map getTotalAttendanceRate() {
-        StudentInfoDTO loginUser = getLoginUser();
-        return Map.of("result", service.getTotalAttendanceRate(loginUser.getStudentId()));
+    @PreAuthorize("hasRole('STUDENT')")
+    public Map getTotalAttendanceRate(HttpServletRequest request) {
+        String loginUser = getLoginUser(request);
+        return Map.of("result", service.getTotalAttendanceRate(loginUser));
     }
 
     //포인트조회
     @GetMapping("/point-history")
-    public Map getPointHistory(int courseSeq) {
-        StudentInfoDTO loginUser = getLoginUser();
-        return Map.of("result", service.getPointHistory(courseSeq, loginUser.getStudentId()));
+    @PreAuthorize("hasRole('STUDENT')")
+    public Map getPointHistory(int courseSeq,HttpServletRequest request) {
+        String loginUser = getLoginUser(request);
+        return Map.of("result", service.getPointHistory(courseSeq, loginUser));
     }
     
     //마이페이지 정보 조회
     @GetMapping("/student")
-    public Map getStudentInfo() {
-        StudentInfoDTO loginUser = getLoginUser();
+    @PreAuthorize("hasRole('STUDENT')")
+    public Map getStudentInfo(HttpServletRequest request) {
+        String loginUser = getLoginUser(request);
         return Map.of("result", loginUser);
     }
 
     //마이페이지 정보 수정 모달
     @PutMapping("/student")
-    public Map updateStudentInfo(@RequestBody UpdateStudentInfoRequest dto) {
-        StudentInfoDTO loginUser = getLoginUser();
-        return Map.of("result", service.updateStudentContactInfo(loginUser.getStudentId(), dto));
-//        return Map.of("result", false);
+    @PreAuthorize("hasRole('STUDENT')")
+    public Map updateStudentInfo(@RequestBody UpdateStudentInfoRequest dto,HttpServletRequest request) {
+        String loginUser = getLoginUser(request);
+        return Map.of("result", service.updateStudentContactInfo(loginUser, dto));
     }
     
     //현재 수강중인 과정
     @GetMapping("/current-course")
-    public Map GetCurrentCourse() {
-        StudentInfoDTO loginUser = getLoginUser();
-        return Map.of("result", service.getCurrentCourse(loginUser.getStudentId()));
+    @PreAuthorize("hasRole('STUDENT')")
+    public Map GetCurrentCourse(HttpServletRequest request) {
+        String loginUser = getLoginUser(request);
+        return Map.of("result", service.getCurrentCourse(loginUser));
     }
     //마이페이지 입실/
     @GetMapping("/time")
-    public Map GetAttendanceTimeStatus() {
-        StudentInfoDTO loginUser = getLoginUser();
-        return Map.of("result", service.getAttendanceTimeStatus(loginUser.getStudentId()));
+    @PreAuthorize("hasRole('STUDENT')")
+    public Map GetAttendanceTimeStatus(HttpServletRequest request) {
+        String loginUser = getLoginUser(request);
+        return Map.of("result", service.getAttendanceTimeStatus(loginUser));
     }
 
     @PostMapping("/in-time")
-    public Map recordInTime() {
-        StudentInfoDTO loginUser = getLoginUser();
-        return Map.of("result", service.addInTime(loginUser.getStudentId()));
+    @PreAuthorize("hasRole('STUDENT')")
+    public Map recordInTime(HttpServletRequest request) {
+        String loginUser = getLoginUser(request);
+        return Map.of("result", service.addInTime(loginUser));
     }
 
     @PostMapping("/out-time")
-    public Map recordOutTime() {
-        StudentInfoDTO loginUser = getLoginUser();
-        return Map.of("result", service.addOutTime(loginUser.getStudentId()));
+    @PreAuthorize("hasRole('STUDENT')")
+    public Map recordOutTime(HttpServletRequest request) {
+        String loginUser = getLoginUser(request);
+        return Map.of("result", service.addOutTime(loginUser));
     }
 
-    private StudentInfoDTO getLoginUser() {
-        StudentInfoDTO loginUser;
-         loginUser = service.getStudentByStudentCourseSeq(19);
-//        loginUser = StudentInfoDTO.builder()
-//                .studentId("738003dc-3eb0-11ef-bd30-0206f94be675")
-//                .hrdNetId("syc1234")
-//                .name("손유철")
-//                .birth(LocalDate.of(2002, 2, 16))
-//                .address("경기도 부천시 소사로 111 연꽃가득아파트 101호")
-//                .bank("국민")
-//                .account("110583195038")
-//                .phoneNumber("01059341921")
-//                .email("syc1234@gmail.com")
-//                .gender('M')
-//                .isActive('T')
-//                .build();
-//        if (SECURITY_LEVEL.equals("OFF")) {
-//        }
-//        else {
-//            loginUser = (StudentDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        }
-        return loginUser;
+    private String getLoginUser(HttpServletRequest request) {
+        return jwtTokenProvider.getStudentId(request);
     }
 
 }

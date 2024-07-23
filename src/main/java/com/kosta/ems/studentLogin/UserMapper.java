@@ -1,7 +1,6 @@
 package com.kosta.ems.studentLogin;
 
 import com.kosta.ems.student.dto.StudentCourseInfoDTO;
-import com.kosta.ems.student.dto.StudentDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -16,7 +15,7 @@ public interface UserMapper {
 
     String getRefreshToken(String hrdNetId);
 
-    String findByToken(String refreshToken);
+    StudentDTO findByToken(String refreshToken);
 
     void removeToken(String hrdNetId);
 

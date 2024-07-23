@@ -17,7 +17,6 @@ class JwtTokenProviderTest {
 
     @Test
     void createJwt() {
-        log.info("{}", jwtTokenProvider.createJwt("syc1234"));
 
     }
     
