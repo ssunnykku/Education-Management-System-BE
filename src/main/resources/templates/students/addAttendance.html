@@ -497,7 +497,7 @@ fetch("/courses/course-number-list?excludeExpired=false", {
             .then(async(data) => {
                 let attendanceList = data.attendanceList;
                 let amount = data.amount;
-                // totalPage = data.pageInfo.totalPage;
+                currentPage = data.pageInfo.currentPage;
 
                 await getAmountAttendanceList(amount);
                 await getAttendanceList(attendanceList);
@@ -592,7 +592,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
         };
 
         if(getAttendanceDate() == "") {
-            // alert("날짜는 필수 검색 조건입니다!");
             $("#alert-message").text("날짜는 필수 검색 조건입니다!");
             $("#alert-modal").css("display", "flex");
             $(".modal-backdrop").css("display", "flex");
@@ -617,8 +616,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
         const checkedStudentData = [];
         const selectedRadio = $("input[name=attendanceStatus]:checked");
         if(!selectedRadio.length) {
-            /*alert("처리할 출결 상태를 체크해주세요!");*/
-
             $("#alert-message").text("처리할 출결 상태를 체크해주세요!");
             $("#alert-modal").css("display", "flex");
             $(".modal-backdrop").css("display", "flex");
@@ -662,8 +659,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
             .then(async(data) => {
                 console.log(data.code);
                 if(data.code === 0) {
-                    /*alert("정상적으로 출결 등록/수정되었습니다.");*/
-
                     $("#add-attendance-modal").css("display", "none");
                     $(".modal-backdrop").css("display", "none");
                     $("#alert-message").text("정상적으로 출결 등록/수정되었습니다.");
@@ -675,7 +670,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
                         $(".modal-backdrop").css("display", "none");
                         location.reload();  // 화면 새로고침
                     });
-                    /*location.reload();  // 화면 새로고침*/
                 } else {
                     /*alert("출결 등록/수정 실패");*/
                     $("#alert-message").text("출결 등록/수정 실패");
@@ -700,7 +694,8 @@ fetch("/courses/course-number-list?excludeExpired=false", {
 
         for (let i = firstPage; i <= lastPage; i++) {
             let num = i;
-            $("#page-number").append(`<li><a class="page-link" onclick="fetchAttendanceList(${num})">${num}</a></li>`);
+            let fontWeight = (num === currentPage) ? 'bold' : 'normal'; // 현재 페이지 번호일 때만 font-weight: bold 적용
+            $("#page-number").append(`<li><a class="page-link" style="font-weight: ${fontWeight}" onclick="fetchAttendanceList(${num})">${num}</a></li>`);
         }
     }
 
