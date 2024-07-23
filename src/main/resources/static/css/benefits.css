@@ -1,6 +1,20 @@
 @import "reset.css";
 
 /************** benefitSettlement**************/
+input:-webkit-autofill {
+  background-color: transparent !important;
+  color: #000; /* 텍스트 색상을 원하는 색으로 설정 */
+}
+
+/* 자동완성된 값의 배경색을 흰색으로 설정 */
+input:-webkit-autofill {
+  background-color: white !important;
+  color: #000; /* 텍스트 색상을 원하는 색으로 설정 */
+}
+input:focus {
+    outline: none;
+     background-color: transparent; /* 포커스 상태일 때 투명으로 설정 */
+}
 
 /**모달 **/
 .modal-content {
@@ -48,17 +62,23 @@ section {
 
 
 #benefit-settlement-input-wrapper {
-    height: 45px;
+	display: flex;
+    flex-direction: row;
+    gap: 8px;
+    height : 41px;
+    align-items: center;
+	
+ /*    height: 45px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 5px;
+    gap: 5px; */
 }
 
 .benefit-settlement-duration {
     width: 120px;
-    height: 41px;
+
 
     background: #ffffff;
 
@@ -81,7 +101,7 @@ section {
 
 .benefit-settlement-date {
     width: 100px;
-    height: 39px;
+    height: 41px;
 
     background: #ffffff;
 
@@ -111,7 +131,7 @@ section {
 .settlement-date {
     border: none;
     width: 98%;
-    height: 38px;
+    height: 41px;
 }
 
 .result-settlement-date {
@@ -141,8 +161,8 @@ section {
 
 #error {
     width: 100%;
-    height: 20px;
-    padding-left: 18rem;
+    height: 1px;
+    padding-left: 5rem;
 }
 
 #benefit-result-error {
@@ -155,22 +175,28 @@ section {
 }
 
 #settlement-filter-wrapper {
-    width: 100%;
-    height: 45px;
+     padding-right: 50px;
+    margin-left: 28%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 250px;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 20px;
 }
 
 .benefit-settlement-filter-search-wrapper {
+	padding-right: 50px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     width: 100%;
+    margin-top: 20px;
+   /*  width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     margin: 20px 0 20px 0;
-    gap: 8px;
+    gap: 8px; */
 }
 
 .search-btn-wrapper {
@@ -216,8 +242,6 @@ section {
 }
 
 .benefit-search-input {
-    height: 37px;
-
     background: #ffffff;
 
     border: 1px solid #cfcfcf;
@@ -319,7 +343,13 @@ section {
 }
 
 .btn-wrapper {
-    height: 55px;
+	display: flex;
+  flex-direction: row;
+  gap: 10px;
+margin-left:450px;
+
+	
+ /*    height: 55px;
     padding: 0;
 
     display: flex;
@@ -327,7 +357,7 @@ section {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    /*margin-top: 20px;*/
+    margin-top: 20px; */
 }
 
 .benefit-btn-wrapper {
@@ -349,11 +379,25 @@ section {
 }
 
 #settlement-btn {
-    color: #ffffff;
+	    color: #ffffff;
+    background-color: rgb(64, 64, 64);
+    border-radius: 8px;
+    position: relative;
+    margin-left: 285px;
+    top: 40%;
+    display: flex;
+    flex-direction: row;
+    transform: translateY(-50%);
+    width: 80px;
+    height: 34px;
+    padding: 19px 16px;
+    box-shadow: 0px 0px 5px #888;
+    
+   /*  color: #ffffff;
     background-color: rgb(64, 64, 64);
     width: 60px;
     height: 32px;
-    border-radius: 8px;
+    border-radius: 8px; */
 }
 
 .btn-setting {
@@ -387,7 +431,7 @@ section {
 
     color: #1d1d1d;
     border-bottom: 0.5px solid lightgray;
-    height: 45px;
+    height: 40px;
 
     width: 100%;
     align-items: center;
@@ -408,12 +452,17 @@ section {
     background-color: #f9f9f9 !important;
 
     color: #1d1d1d;
-    height: 45px;
+    height: 40px;
 
 }
 
 .benefit-cnt-pages {
-    display: flex;
+	    width: 100%;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 100%;
+    color: #999999;
+    /* display: flex;
     flex-direction: column;
     justify-content: center;
 
@@ -422,7 +471,7 @@ section {
     font-size: 14px;
     line-height: 100%;
     height: 16px;
-    color: #999999;
+    color: #999999; */
 }
 
 #benefit-table-contents {
@@ -432,16 +481,17 @@ section {
 
 /****************** benefitResultBoard **************/
 .benefitResult-cnt-pages {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 
     font-style: normal;
     font-weight: 500;
+    color: #999999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     font-size: 14px;
     line-height: 100%;
     height: 16px;
-    color: #999999;
+
 }
 
 /*
@@ -547,7 +597,7 @@ filter and search
 
 .result-board-row {
     color: #1d1d1d;
-    height: 45px;
+    height: 40px;
     border-bottom: 1px solid #f3f5f9;
 
     display: flex;
@@ -631,7 +681,7 @@ filter and search
     margin: 20px 0 10px 0;
     display: flex;
     justify-content: center;
-    gap: 5px;
+    gap: 8px;
 }
 
 .settlement-date-input {
