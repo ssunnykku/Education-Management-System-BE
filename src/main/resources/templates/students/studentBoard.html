@@ -365,8 +365,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
 
     $("input[name='isActive']").change(function() {
         const selectedValue = $(this).val(); // 선택된 라디오 버튼의 값
-        console.log("상태 변경O");
-        console.log(isActiveStatus);
 
         if (selectedValue === "activation") {
             $("#activation").prop("checked", true); // "활성화" 버튼 선택
@@ -380,7 +378,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
     });
 
     $("#update-set-btn").click(async function() {
-        console.log(isActiveStatus);
         const raw = JSON.stringify({
             "name": $("#modal-student-name").val(),
             "address": $("#modal-student-address").val(),
