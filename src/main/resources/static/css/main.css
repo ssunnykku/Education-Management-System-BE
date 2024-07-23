@@ -282,7 +282,7 @@
     }
 
     tr:first-child {
-        height: 45px;
+        height: 40px;
         background-color: #f9f9f9;
     }
 
@@ -293,7 +293,7 @@
 
     tr {
         border-bottom: 0.5px solid lightgray;
-        height: 45px;
+        height: 40px;
     }
 }
 
@@ -352,12 +352,12 @@
 
     tr {
         border-bottom: 0.5px solid lightgray;
-        height: 45px;
+        height: 40px;
     }
 }
 
 #attendance-table-first-row {
-    height: 45px;
+    height: 40px;
     background-color: #f9f9f9;
 }
 

@@ -27,15 +27,18 @@ input:focus {
 }
 
 .btn-secondary{
-	        display: flex;
+	    display: flex;
         justify-content: center;
         align-items: center;
         height: 34px;
-        width: 50px;
-        color: #ffffff;
+        width: 80px;
+        padding: 19px 16px;
+        font-weight: 600;
+        color: #000;
+        border: none;
         border-radius: 8px;
-        box-shadow: 0px 0px 5px #d4d4d4;
-        background-color: rgb(64, 64, 64);
+        box-shadow: 0px 0px 3px #888;
+        background-color: #fff;
 }
 .save-btn{
 	    font-weight: 600;
@@ -43,11 +46,17 @@ input:focus {
     background-color: rgb(255, 255, 255);
     border-radius: 8px;
      height: 34px;
-        width: 50px;
+        width: 80px;
             display: flex;
         justify-content: center;
         align-items: center;
         border: 1px solid black;
+}
+#confirm-delete-btn {
+    padding: 19px 16px;
+    color: #fff;
+    box-shadow: 0px 0px 3px #888;
+    background-color: rgb(64, 64, 64);
 }
 .modal-footer{
 
@@ -116,13 +125,14 @@ input:focus {
     border-radius: 8px;
     position: relative;
     right: 10px;
-    margin-left: 240px;
+    margin-left: 248px;
     top: 40%;
     display: flex;
     flex-direction: row;
     transform: translateY(-50%);
     width: 80px;
-    height: 40px;
+    height: 34px;
+    padding: 19px 16px;
     box-shadow: 0px 0px 5px #888;
 
 }
@@ -151,7 +161,7 @@ input:focus {
 .notification-row {
     display: flex;
     flex-direction: row;
-    height: 45px;
+    height: 40px;
     width: 80%;
     align-items: center;
     text-align: center;
@@ -159,7 +169,7 @@ input:focus {
     border-bottom: 0.5px solid lightgray;
     font-style: normal;
     font-weight: 300;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 144%;
 
     color: #1d1d1d;
@@ -190,7 +200,7 @@ input:focus {
 #notification-table {
     width: 80%;
     margin: 0 auto;
-    padding: 20px 100px 10px 100px;
+    padding: 5px 100px 10px 100px;
     margin-left: 250px;
 
 }
@@ -209,14 +219,14 @@ input:focus {
 
 #notification-title-row {
     font-style: normal !important;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 144% !important;
     text-align: center;
     color: #1d1d1d;
     box-sizing: border-box;
     background: #eee;
     width: 80%;
-    height: 45px;
+    height: 40px;
     border-bottom: 1px solid #f3f5f9;
     font-weight: 600;
     border-top: 1px solid #5c5c5c;
@@ -417,6 +427,11 @@ footer {
 }
 
 #enroll-btn {
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 34px;
+    padding: 19px 16px;
     color: #ffffff;
     background-color: rgb(64, 64, 64);
     border-radius: 8px;
@@ -456,10 +471,17 @@ footer {
 }
 
 #edit-btn, #delete-btn, #cancel-btn {
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 34px;
+    padding: 19px 16px;
     font-weight: 600;
     color: rgb(64, 64, 64);
     background-color: rgb(255, 255, 255);
     border-radius: 8px;
+    box-shadow: none;
+    box-shadow: 0px 0px 3px #888;
 }
 
 /**************** setNotification **********************/
@@ -472,7 +494,10 @@ footer {
 }
 
 .setNotification-contents {
-
+    h3 {
+        margin-top: 5px;
+        font-weight: 500;
+    }
 }
 
 .setNotification-set-wrapper {
@@ -502,7 +527,7 @@ footer {
 }
 
 .setNotification-title-input-wrapper {
-    width: 90%;
+    width: 100%;
 }
 
 .setNotification-title-input-wrapper > h3 {
@@ -526,15 +551,12 @@ footer {
 }
 
 .setNotification-input-wrapper {
-    height: 600px;
-    /*   padding: 0 45px; */
     display: flex;
     flex-direction: row;
     justify-content: center;
     gap: 14px;
-
     width: 100%;
-
+    height: 450px;
 }
 
 #title-item {
@@ -548,7 +570,7 @@ footer {
 }
 
 #content-textarea-wrapper {
-    width: 810px;
+    width: 100%;
 }
 
 #title-input {
@@ -573,7 +595,8 @@ footer {
     background: #ffffff;
     border: 1px solid #cfcfcf;
     border-radius: 10px;
-    padding: 20px
+    padding: 12px 20px;
+    overflow-y: scroll;
 }
 #menu-btn {
   background-image: url("../assets/arrow_left.svg");
@@ -583,6 +606,7 @@ footer {
   height: 30px;
   width: 150px;
   margin: 0;
+  margin-left: -10px;
   display: flex; /* 버튼을 Flexbox 레이아웃으로 설정 */
   align-items: center; /* 버튼 안쪽 요소들을 수직 중앙 정렬 */
   justify-content: space-between; /* 버튼 안쪽 요소들을 좌우 양쪽 끝에 정렬하고, 중간에 여백 발생 */
@@ -610,7 +634,7 @@ margin-left:450px;
 }
 /*  setNotification button */
 #setNotification-btn-wrapper {
-    width: 900px;
+    width: 756px;
     height: 50px;
     display: flex;
     flex-direction: row;
