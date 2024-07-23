@@ -42,15 +42,14 @@
 /***** button/ search *******/
 
 #scholarship-search-btn-wrapper {
+    
+    padding-right: 50px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    flex-wrap: wrap;
     width: 100%;
-    padding-left: 35%;
-    padding-right: 5%;
-    height: 80px;
-    align-items: center;
-
+    margin-top: 20px;
+    margin-left: 32%;
 }
 
 .seacrch-form {
@@ -63,23 +62,27 @@
 }
 
 .important-button-wrapper {
-    margin: 0 !important;
-    padding: 0 !important;
+  /*   margin: 0 !important;
+    padding: 0 !important; */
 }
 
 .search-form-wrapper {
     display: flex;
     width: 450px;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
 }
 
 
 .scholarship-btn-wrapper {
-    height: 53px;
+	    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-left: 450px;
+   /*  height: 53px;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: center; */
 }
 
 /*.btn-wrapper {*/
@@ -115,11 +118,19 @@
 }
 
 #settlement-btn {
-    color: #ffffff;
+      color: #ffffff;
     background-color: rgb(64, 64, 64);
-    width: 60px;
-    height: 32px;
     border-radius: 8px;
+    position: relative;
+    margin-left: 285px;
+    top: 40%;
+    display: flex;
+    flex-direction: row;
+    transform: translateY(-50%);
+    width: 80px;
+    height: 34px;
+    padding: 19px 16px;
+    box-shadow: 0px 0px 5px #888;
 }
 
 .btn-setting {
@@ -148,25 +159,17 @@
 /*************************************/
 
 
-#button-wrapper {
-    height: 55px;
-    padding: 0;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-
-    display: flex;
-    justify-content: end;
-
-    padding-right: 130px;
-}
-
 #enroll-btn {
-    width: 96px;
-    color: #ffffff;
+   color: #ffffff;
     background-color: rgb(64, 64, 64);
     border-radius: 8px;
+    position: relative;
+    top: 40%;
+    flex-direction: row;
+    width: 80px;
+    height: 40px;
+    text-align: center;
+    box-shadow: 0px 0px 5px #888;
 }
 
 
@@ -175,13 +178,19 @@
     color: rgb(64, 64, 64);
     background-color: rgb(255, 255, 255);
     border-radius: 8px;
+    width: 80px;
+    height: 40px;
+    box-shadow: 0px 0px 5px #888;
 }
 
 #filter-button-wrapper {
+    padding-right: 50px;
+    margin-left: 14%;
     display: flex;
     flex-direction: row;
-    align-items: center;
-    height: 60px;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 20px;
 }
 
 .important-search-form {
@@ -289,7 +298,7 @@
 .point-table-row {
     display: flex;
     flex-direction: row;
-    height: 45px;
+    height: 40px;
     width: 100%;
     align-items: center;
     text-align: center;
@@ -317,7 +326,7 @@
     box-sizing: border-box;
 
     width: 100%;
-    height: 44px;
+    height: 40px;
 
     border-bottom: 0.5px solid lightgray;
     border-top: 1px solid rgb(92, 92, 92);
@@ -352,7 +361,7 @@
 
 .cnt-pages {
     width: 60%;
-    margin: 5px auto 10px auto;
+    margin: 0 auto 10px auto;
     font-weight: 500;
     color: #999999;
 }
@@ -453,7 +462,7 @@
     color: #1d1d1d;
     text-align: center;
     border-bottom: 0.5px solid lightgray;
-    height: 45px;
+    height: 40px;
 }
 
 .scholarshipBoard-checkbox {
@@ -470,7 +479,7 @@
     color: #1d1d1d;
 
     box-sizing: border-box;
-    height: 45px;
+    height: 40px;
 }
 
 /* 버튼 */
@@ -552,8 +561,8 @@
 .scholarshipResult-search-form-wrapper {
     margin: 20px 0 20px 0;
     display: flex;
-    gap: 4px;
-    padding-left: 13rem;
+    gap: 8px;
+    padding-left: 25%;
 }
 
 .scholarshipResult-search-btn-wrapper {
@@ -600,7 +609,7 @@
     display: flex;
     color: #1d1d1d;
     border-bottom: 0.5px solid lightgray;
-    height: 45px;
+    height: 40px;
 
     flex-direction: row;
     width: 100%;
@@ -626,7 +635,7 @@
 
     color: #1d1d1d;
     box-sizing: border-box;
-
+	height:40px;
     width: 100%;
 
 }
@@ -1199,10 +1208,15 @@ ul#pagination {
 }
 
 #button-wrapper {
-    margin-right: 5%;
+   display: flex;
+    flex-direction: row;
+    gap: 8px;
+    margin-left: 82%;
 }
 
-
+.search-filter-btn-form{
+	width: 100%;
+}
 /*********** settlementListModal.html ************/
 
 .check-settlement-wrapper {

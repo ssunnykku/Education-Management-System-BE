@@ -16,6 +16,8 @@
   <div th:insert="~{common/title :: title ('포인트 관리')}"></div>
   <section id="point-section">
     <article class="search-form-wrapper point-search important-search-form-wrapper">
+    <div class="search-filter-btn-form">
+    <div class="search-filter-form">
       <form action="#" class="seacrch-form important-search-form">
         <div id="filter-button-wrapper">
           <form action="/ems/points">
@@ -33,9 +35,11 @@
           </form>
         </div>
       </form>
+       </div>
       <div id="button-wrapper" class="important-button-wrapper">
         <button id="point-search-btn" class="btn-setting" onclick="initShowPointModal()">조회</button>
         <button id="enroll-btn" class="btn-setting" onclick="initAddPointModal()">포인트 등록</button>
+      </div>
       </div>
     </article>
     <div class="cnt-pages">
