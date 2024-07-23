@@ -161,7 +161,7 @@ fetch("/courses/course-number-list?excludeExpired=false", {
    let courseNumber=0; 
     $(document).ready(async function () {
     $(".employment-courseId-filter").on("change", async function() {
-  	courseNumber = $(this).val(); // 'this' refers to the selected dropdown element
+  	courseNumber = $(this).val();
 	});
         await fetchStudentList(1);
 
@@ -204,15 +204,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
     $("#enroll-btn").click(function () {
         window.location.href = "/ems/students/set";
     });
-
-   /* function getCourseNumber() {
-        if ($("#input-course-number").val() == "") {
-            return 0;
-        }
-        return parseInt($("#input-course-number").val());
-    }*/
-    
-    
 
     function getStudentName() {
         return $(".student-name-filter").val();

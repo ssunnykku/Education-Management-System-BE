@@ -47,8 +47,6 @@ const requestOptions = {
 fetch("/managers", requestOptions)
     .then((res) => res.json())
     .then((data) => {
-            console.log("콘솔로그");
-            console.log(data.result);
             const user = data.result;
             let result = `<div id="manager-info-name-wrapper" class="manager-info-item">
                         <span>이름</span>
@@ -101,14 +99,13 @@ fetch("/managers", requestOptions)
                     let formData = new FormData();
                     formData.append("profileImage", fileInput.files[0]);
 
-                    fetch('http://localhost:8888/managers/upload', {
+                    fetch('/managers/upload', {
                         method: 'POST',
                         cache: 'no-cache',
                         body: formData
                     })
                         .then((response) => response.json())
                         .then((data) => {
-                            console.log("프로필 이미지 업로드 완료");
                             $("#profile-upload-success-modal").css("display", "flex");
                             $(".modal-backdrop").css("display", "flex");
 
