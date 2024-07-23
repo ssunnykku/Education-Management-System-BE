@@ -84,6 +84,14 @@
 
 <div class="modal-backdrop"></div>
 
+<!--alert 대체 모달-->
+<div id="alert-modal">
+    <div class="modal-contents-wrapper">
+        <p id="alert-message"></p>
+        <button>확인</button>
+    </div>
+</div>
+
 <!-- HRD-Net Id 중복체크 결과 팝업 - 신규 가입 -->
 <div id="freshman-student" class="chk-result-popup">
     <div class="popup-content-wrapper">
@@ -301,13 +309,18 @@
             .catch((error) => console.error(error));
     }
     $("#enroll-btn").click(async function() {
-        console.log(getCourseNumber());
-        console.log(getHrdNetId());
         if(sessionStorage.getItem("isRegisteredStudent") == "true") {
             await fetchRegisterCourse()
                 .then(async (response) => {
-                    alert("수강과정 등록이 정상처리되었습니다.");
-                    window.location.href="/ems/students";
+                    $("#alert-message").text("수강과정 등록이 정상처리되었습니다.");
+                    $("#alert-modal").css("display", "flex");
+                    $(".modal-backdrop").css("display", "flex");
+
+                    $("#alert-modal button").on("click", function() {
+                        $("#alert-modal").css("display", "none");
+                        $(".modal-backdrop").css("display", "none");
+                        window.location.href="/ems/students";
+                    });
                 }).catch((error) => {
                     console.error("Error fetchRegisterCourse: 수강생 교육과정 등록 실패", error);
                 }).finally(() => {
