@@ -45,7 +45,7 @@ public class StudentController {
 
         // 페이징 response
         int totalPage = (totalCount / size) + 1;
-        int currentPage = 1;
+        int currentPage = page;
         int prevPage = 0;
         int nextPage = 0;
         if (currentPage > 1 && currentPage < totalPage) {
