@@ -120,7 +120,7 @@
         <li th:classappend="${paging.pageOffset == 1} ? 'inactivePage'">
           <a class="page-link"
             th:href="@{|?page=${paging.pageOffset-1}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}">
-            <span>이전</span>
+            <img src="../../assets/navigate_prev_white_24dp%201.svg" alt="이전"/>
           </a>
         </li>
         <li th:each="page: ${#numbers.sequence(0, 9)}"
@@ -133,7 +133,7 @@
           th:classappend="${(paging.pageOffset + 10) > (paging.totalCourseCount/paging.pageSize)} ? 'inactivePage'">
           <a class="page-link"
             th:href="@{|?page=${paging.pageOffset + 10}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}">
-            <span>다음</span>
+            <img src="../../assets/navigate_next_white_24dp%201.svg" alt="다음"/>
           </a>
         </li>
       </ul>
