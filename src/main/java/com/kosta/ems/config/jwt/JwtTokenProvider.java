@@ -120,10 +120,11 @@ public class JwtTokenProvider {
 
         Claims claims = parseClaims(accessToken);
 
-        log.info("?? {}", (String) claims.get("id"));
+        log.info("?? {}", (String) claims.get("id").getClass().getName());
         log.info("???? {}", claims);
-
-        return claims.getSubject();
+        String hrdNetId = (String) claims.get("id");
+        log.info("test; ", hrdNetId.getClass().getName());
+        return hrdNetId;
     }
 
     public String getStudentId(HttpServletRequest request){

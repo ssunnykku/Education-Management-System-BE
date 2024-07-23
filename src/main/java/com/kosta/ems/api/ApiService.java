@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.kosta.ems.student.dto.GetStudentInfoByScqDTO;
+import com.kosta.ems.student.dto.RegisteredStudentInfoDTO;
 import com.kosta.ems.student.dto.StudentBasicInfoDTO;
 import com.kosta.ems.student.dto.StudentInfoDTO;
 
@@ -220,12 +221,13 @@ public class ApiService {
         attendanceMapper.updateStudentAttendance(new UpdateStudentAttendanceStatusDTO(status, LocalDate.now(), studentCourseSeq, STUDENT_MANAGER_ID));
     }
 
-    public StudentInfoDTO getStudentByStudentCourseSeq(int studentCourseSeq) {
-        GetStudentInfoByScqDTO temp = studentMapper.selectStudentInfoByScq(studentCourseSeq);
+    public StudentInfoDTO getStudentByHrdNetId(String hrdNetId) {
+
+        RegisteredStudentInfoDTO temp = studentMapper.selectRegisteredStudentBasicInfo(hrdNetId);
         return StudentInfoDTO.builder()
                 .studentId(temp.getStudentId())
                 .name(temp.getName())
-                .hrdNetId(temp.getHrdNetId())
+                .hrdNetId(hrdNetId)
                 .account(temp.getAccount())
                 .birth(temp.getBirth())
                 .bank(temp.getBank())
