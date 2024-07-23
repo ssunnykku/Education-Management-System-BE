@@ -163,8 +163,9 @@ fetch("/courses/course-number-list?excludeExpired=false", {
             .then((res) => res.json())
             .then(async(data) => {
                 let attendanceList = data.attendanceList;
-
                 let amount = data.amount;
+                currentPage = data.pageInfo.currentPage;
+
                 await getAttendanceList(attendanceList);
                 await getAmountAttendanceList(amount);
             })
@@ -198,7 +199,8 @@ fetch("/courses/course-number-list?excludeExpired=false", {
 
         for (let i = firstPage; i <= lastPage; i++) {
             let num = i;
-            $("#page-number").append(`<li><a class="page-link" onclick="fetchStudentAttendanceList(${num})">${num}</a></li>`);
+            let fontWeight = (num === currentPage) ? 'bold' : 'normal'; // 현재 페이지 번호일 때만 font-weight: bold 적용
+            $("#page-number").append(`<li><a class="page-link" style="font-weight: ${fontWeight}" onclick="fetchStudentAttendanceList(${num})">${num}</a></li>`);
         }
     }
 
