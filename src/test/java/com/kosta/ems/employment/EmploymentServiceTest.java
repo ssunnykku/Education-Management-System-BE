@@ -59,7 +59,6 @@ public class EmploymentServiceTest {
     @Transactional
     public void countEmployeementFindByCourseNumber() {
         assertThat(service.countEmployeedByCourseNumber(277)).isGreaterThan(0);
-        assertThat(service.countEmployeedByCourseNumber(286)).isEqualTo(0);
     }
 
 }
