@@ -79,7 +79,6 @@ public class NotificationController {
         ManagerDTO loginUser = getLoginUser();
         String managerId = loginUser.getManagerId();
 
-
         return Map.of("result", notification.searchByKeyword(keyword, managerId, page, 10));
     }
 
