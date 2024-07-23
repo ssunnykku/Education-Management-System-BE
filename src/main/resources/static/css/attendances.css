@@ -644,6 +644,7 @@ select {
     top: 27.5%;
     left: 35%;
     font-size: 16px;
+    z-index: 200;
     background-color: #fff;
 
     .input-date {
@@ -732,7 +733,7 @@ select {
     width: 400px;
     height: 150px;
     border-radius: 10px;
-    border: 2px solid rgb(70, 98, 255);
+    border: 2px solid rgb(64, 64, 64);
     z-index: 999;
     background-color: #fff;
     .modal-contents-wrapper {
