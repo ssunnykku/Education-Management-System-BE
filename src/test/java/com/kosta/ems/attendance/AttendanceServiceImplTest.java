@@ -1,5 +1,7 @@
 package com.kosta.ems.attendance;
 
+import com.kosta.ems.api.ApiService;
+import com.kosta.ems.attendance.dto.AttendanceTimeDTO;
 import com.kosta.ems.attendance.dto.RequestAcknowledgeDTO;
 import com.kosta.ems.attendance.dto.RequestStudentAttendanceDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -9,9 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 @Slf4j
@@ -19,6 +25,8 @@ class AttendanceServiceImplTest {
 
     @Autowired
     AttendanceService attendanceService;
+    @Autowired
+    ApiService apiService;
 
     // ** 출결 조회 - 수강생 출결 데이터 목록
     @Test
@@ -123,5 +131,15 @@ class AttendanceServiceImplTest {
     @Test
     void getTimeByAttendanceDate() {
         log.info("{}", attendanceService.getTimeByAttendanceDate(LocalDate.parse("2024-07-19"), 277));
+    }
+    
+//  모바일 앱 api
+    @Test
+    @Transactional
+    @DisplayName("모바일 API - 입실/퇴실 시간 CRUD 통합테스트")
+    void attendanceTimeCRUDTest() {
+        //주의: DB데이터 독립적이지 않다.
+        //DB에 오늘의 입실/퇴실시간 데이터가 들어있지 않다고 가정.
+        assertThat(apiService.addInTime("738003dc-3eb0-11ef-bd30-0206f94be675")).isTrue();
     }
 }

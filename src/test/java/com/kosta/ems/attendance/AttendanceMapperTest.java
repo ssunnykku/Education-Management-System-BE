@@ -102,27 +102,6 @@ class AttendanceMapperTest {
         attendanceMapper.insertAttendanceStatus(dto);
     }
 
-    @Test
-//    @Transactional
-    @DisplayName("모바일 API - 입실/퇴실 시간 CRUD 통합테스트")
-    void attendanceTimeCRUDTest() {
-        //주의: DB데이터 독립적이지 않다.
-        //DB에 오늘의 입실/퇴실시간 데이터가 들어있지 않다고 가정.
-        AttendanceTimeId id = new AttendanceTimeId(LocalDate.now(), 19);
-        Optional<AttendanceTimeDTO> dto = attendanceTimeRepo.findById(id);
-        assertThat(dto.isEmpty()).isTrue();
-
-        AttendanceTimeDTO insertDto = AttendanceTimeDTO.builder()
-                .attendanceTimeId(id)
-                .inTime(LocalTime.now())
-                .build();
-        attendanceTimeRepo.save(insertDto);
-
-        dto = attendanceTimeRepo.findById(id);
-        assertThat(dto.isEmpty()).isFalse();
-        assertThat(dto.get().getAttendanceTimeId().equals(id)).isTrue();
-
-    }
 }
 
 

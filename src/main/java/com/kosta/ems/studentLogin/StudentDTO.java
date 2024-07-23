@@ -1,4 +1,4 @@
-package com.kosta.ems.student.dto;
+package com.kosta.ems.studentLogin;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,10 +18,11 @@ import java.util.List;
 public class StudentDTO implements UserDetails {
     private String hrdNetId;
     private String password;
+    private String studentId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("user"));
+        return List.of(new SimpleGrantedAuthority("ROLE_STUDENT"));
     }
 
     @Override
