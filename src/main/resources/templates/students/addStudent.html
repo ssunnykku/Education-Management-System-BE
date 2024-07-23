@@ -12,7 +12,7 @@
 <body id="content-wrapper">
 <div th:insert="~{common/header :: header}"></div>
 <section id="title-wrapper">
-    <h2 id="title">수강생 등록</h2>
+    <h2 id="title">수강 등록</h2>
 </section>
 <section id="content-section">
     <article>
@@ -54,7 +54,7 @@
                     </select>
                 </div>
                 <div class="student-items-item">
-                    <h4>지역 *</h4>
+                    <h4>주소 *</h4>
                     <input type="text" id="province"/>
                 </div>
             </div>
@@ -82,11 +82,13 @@
 </section>
 <footer></footer>
 
+<div class="modal-backdrop"></div>
+
 <!-- HRD-Net Id 중복체크 결과 팝업 - 신규 가입 -->
 <div id="freshman-student" class="chk-result-popup">
     <div class="popup-content-wrapper">
         <div class="popup-description-wrapper">
-            <p>등록된 HRD-Net ID의 수강생이 없습니다.<br/>먼저 수강생 회원가입 후, 수강신청 진행해주시기 바랍니다.</p>
+            <p>등록된 HRD-Net ID의 수강생이 없습니다.<br/>수강생 회원가입 후,<br/>수강 등록 가능합니다.</p>
         </div>
         <div class="popup-btn-wrapper">
             <button class="freshman cancel-btn">확인</button>
@@ -98,7 +100,7 @@
 <div id="existed-student" class="chk-result-popup">
     <div class="popup-content-wrapper">
         <div class="popup-description-wrapper">
-            <p>해당 HRD-Net ID의 수강생 등록 이력이 있습니다.<br/>입력하신 HRD-Net ID로 신규 수강신청하시겠습니까?</p>
+            <p>해당 HRD-Net ID의 수강생 등록 이력이 있습니다.<br/>입력하신 HRD-Net ID로<br/>신규 수강등록하시겠습니까?</p>
         </div>
         <div class="popup-btn-wrapper">
             <button class="existed cancel-btn">취소</button>
@@ -141,22 +143,27 @@
     // 입력한 HRD-Net ID의 등록 여부 결과 팝업 화면에 보여주기
     async function noticeCheckingIdResult(param) {
         if(param.result == "true") {
+            $(".modal-backdrop").css("display", "flex");
             $("#existed-student").css("display", "flex");
             // 팝업창 닫기(취소)
             $(".existed.cancel-btn").click(function() {
+                $(".modal-backdrop").css("display", "none");
                 $("#existed-student").css("display", "none");
             });
             // 등록된 id의 수강생 기본 정보 불러오기
             $(".existed.set-btn").click(async function() {
+                $(".modal-backdrop").css("display", "none");
                 await getRegisteredStudentBasicInfo(param.data);
                 $("#existed-student").css("display", "none");
                 await fetchOnGoingCourseList();
             })
         } else if(param.result == "false") {
+            $(".modal-backdrop").css("display", "flex");
             $("#freshman-student").css("display", "flex");
             await fetchOnGoingCourseList();
             // 팝업창 닫기(취소)
             $(".freshman.cancel-btn").click(function() {
+                $(".modal-backdrop").css("display", "none");
                 $("#freshman-student").css("display", "none");
                 window.location.href="/ems/students";
             });
