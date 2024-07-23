@@ -21,8 +21,9 @@
             <li id="nav-benefit" class="nav-li">지원금 관리</li>
         </ul>
         <div id="header-btns">
-                                   <span th:object="${#authentication.principal}"
-                                         th:text="*{name} + '(' + *{academyLocation} + ' 강의장)'"></span>
+
+            <span th:object="${#authentication.principal}" th:text="*{name} + '(' + *{academyLocation} + ' 강의장)'"></span>
+
             <form action="/manager/logout" method="post">
                 <button id="logout-btn" type="submit">로그아웃</button>
             </form>

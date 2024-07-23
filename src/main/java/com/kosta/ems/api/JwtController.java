@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.kosta.ems.config.jwt.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Slf4j
 public class JwtController {
     private final ApiService service;
     @Value("${security.level}")
@@ -39,6 +41,8 @@ public class JwtController {
     @PreAuthorize("hasRole('STUDENT')")
     public Map getAllTakenCourses(HttpServletRequest request) {
         String loginUser = getLoginUser(request);
+        log.info("test: ", getStudentHrdNetId(request));
+
         return Map.of("result", service.getAllTakenCoursesByStudentId(loginUser));
     }
 
@@ -93,7 +97,12 @@ public class JwtController {
     @PreAuthorize("hasRole('STUDENT')")
     public Map getStudentInfo(HttpServletRequest request) {
         String loginUser = getLoginUser(request);
-        return Map.of("result", service.getStudentByStudentId(loginUser));
+
+        log.info("이거 {} ", getStudentHrdNetId(request));
+        StudentInfoDTO result = service.getStudentByHrdNetId(getStudentHrdNetId(request));
+
+        return Map.of("result", result);
+
     }
 
     //마이페이지 정보 수정 모달
@@ -135,6 +144,9 @@ public class JwtController {
 
     private String getLoginUser(HttpServletRequest request) {
         return jwtTokenProvider.getStudentId(request);
+    }
+    private String getStudentHrdNetId(HttpServletRequest request) {
+        return jwtTokenProvider.getHrdNetId(request);
     }
 
 }
