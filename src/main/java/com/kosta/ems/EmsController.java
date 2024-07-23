@@ -187,6 +187,7 @@ public class EmsController {
         model.addAttribute("selectedCourseNumber", courseNumber);
         model.addAttribute("courseNumberList", courseNumberList);
         model.addAttribute("paging", paging);
+        System.out.println(paging);
         model.addAttribute("studentList", studentList);
         model.addAttribute("pointCategoryList", pointService.getPointCategoryList());
 
