@@ -215,24 +215,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
         $(".input-date").val(new Date().toISOString().substring(0,10));
         await fetchAttendanceList(1);
 
-        /*
-        // 모달 외부 클릭 시 모달 닫기 이벤트 처리기
-        $(document).on('click', function(event) {
-            const modal = $("#acknowledge-setting-modal");
-            const modalContainer = modal.find('.modal-container');
-
-            // 클릭이 모달 콘텐츠 영역 외부인지 확인
-            if (!modal.is(event.target) && !modalContainer.is(event.target) && modalContainer.has(event.target).length === 0) {
-                modal.css('display', 'none'); // 모달 숨기기
-                $(".modal-backdrop").css("display", "none");
-            }
-        });
-
-        // 모달 열려 있을 때 문서 외부 클릭 이벤트 방지
-        $("#acknowledge-setting-modal").on('shown.bs.modal', function() {
-            $('body').css('overflow', 'hidden'); // 스크롤 방지
-        });
-        */
         $('body').css('overflow', 'hidden'); // 스크롤 방지
     });
 
@@ -333,7 +315,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
                         break;
                 }
 
-                // const fileUploadInputHTML = data[i].attendanceStatus === "출석 인정" ? `<form ><label class="input-file-label" for="file-upload-btn">파일 첨부</label><input type="file" id="file-upload-btn" enabled /></form>` : `<input type="text" id="file-upload-btn" readonly/>`;
                 const fileUploadInputHTML = data[i].attendanceStatus === "출석 인정" ? `<button class="acknowledge-modal-popover">인정 내용 등록</button>` : `<button style="display: none;" class="acknowledge-modal-popover">인정 내용 등록</button>`;
 
                 result += `<tr class="board-table-row set-attendance">
@@ -404,7 +385,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
 
             // 출결 상태 '출석 인정'일 때만 증빙서류 input disabled 해제하기
             if (newAttendanceStatus === "출석 인정") {
-                // $(this).closest("tr").find(".file-input-wrapper").html('<label class="input-file-label" for="file-upload-btn">파일 첨부</label><input type="file" id="file-upload-btn" />');
                 $(this).closest("tr").find(".file-input-wrapper").html('<button class="acknowledge-modal-popover">인정 내용 등록</button>');
             } else {
                 $(this).closest("tr").find(".file-input-wrapper").html('<button class="acknowledge-modal-popover" style="display: none;">인정 내용 등록</button>');
@@ -413,7 +393,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
             // 출석인정 설정 모달 popover
             $(".acknowledge-modal-popover").on("click", async function() {
                 await fetchCategoryList();
-                // console.log($(this).closest('tr').find(".student-course-seq").text());
                 // 출석인정 선택한 수강생의 scq 잠시 sessionStorage에 set
                 sessionStorage.setItem("scq", $(this).closest('tr').find(".student-course-seq").text());
 
@@ -464,8 +443,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
         if(totalAmount === 0) {
             totalPage = 1;
         }
-        console.log("totalPage: " + totalPage);
-
         let result = '';
         result += `<span class="span-attendance-list-amount">총 ${data}건</span>`;
         $(".student-cnt-pages").html("");
@@ -504,7 +481,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
 
                 // 선택한 학생의 출결 처리 - 경우1_'출결 상태' 먼저 바꾸고 체크박스 선택하는 경우
                 $('.board-checkbox input[type="checkbox"]').on('change', function() {
-                    console.log("선택 수정 경우1 시작");
                     if (this.checked) {
                         const row = $(this).closest('tr');
                         const studentCourseSeq = row.find('.student-course-seq').text();
@@ -515,10 +491,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
                         const selectedAttendanceStatus = row.find('.attendance-status select').val();
                         const originAttendanceStatus = row.find('.attendance-status-origin').val();
 
-                        console.log(studentCourseSeq);
-                        console.log(selectedAttendanceStatus);
-                        console.log(getAttendanceDate());
-
                         const obj = {
                             "attendanceStatus": selectedAttendanceStatus,
                             "attendanceDate": getAttendanceDate(),
@@ -527,47 +499,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
                         objList.push(obj);
                     }
                 });
-
-                /*// 선택한 학생의 출결 처리 - 경우2_'체크박스' 먼저 선택하고 출결 상태 변경하는 경우
-                $("select[name='attendance-status-select']").change(function() {
-                    console.log("선택 수정 경우2 시작");
-                    const row = $(this).closest('tr');
-                    const studentCourseSeq = row.find('.student-course-seq').text();
-                    const courseNumber = row.find('.course-number').text();
-                    const hrdNetId = row.find('.hrd-net-id').text();
-                    const studentName = row.find('.student-name').text();
-                    const academyLocation = row.find('.academy-location').text();
-                    const selectedAttendanceStatus = row.find('.attendance-status select').val();
-                    const originAttendanceStatus = row.find('.attendance-status-origin').val();
-
-                    console.log(studentCourseSeq);
-                    console.log(selectedAttendanceStatus);
-                    console.log(getAttendanceDate());
-
-                    if(selectedAttendanceStatus == "출석 인정") {
-                        const obj = {
-                            "attendanceStatus": selectedAttendanceStatus,
-                            "attendanceDate": getAttendanceDate(),
-                            "studentCourseSeq": parseInt(studentCourseSeq, 10)
-                        };
-
-                    } else {
-                        const obj = {
-                            "attendanceStatus": selectedAttendanceStatus,
-                            "attendanceDate": getAttendanceDate(),
-                            "studentCourseSeq": parseInt(studentCourseSeq, 10)
-                        };
-                    }
-
-                    /!*const obj = {
-                        "attendanceStatus": selectedAttendanceStatus,
-                        "attendanceDate": getAttendanceDate(),
-                        "studentCourseSeq": parseInt(studentCourseSeq, 10)
-                    };*!/
-
-                    objList.push(obj);
-                });*/
-
             })
             .catch((error) => console.error(error));
     };
@@ -644,8 +575,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
     async function fetchUpdateAttendance(objList) {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        console.log("fetchUpdateAttendance(objList)");
-        console.log(objList);
 
         const requestOptions = {
             method: "PUT",
@@ -657,7 +586,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
         await fetch("/attendances/attendance-status", requestOptions)
             .then((res) => res.json())
             .then(async(data) => {
-                console.log(data.code);
                 if(data.code === 0) {
                     $("#add-attendance-modal").css("display", "none");
                     $(".modal-backdrop").css("display", "none");
@@ -671,7 +599,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
                         location.reload();  // 화면 새로고침
                     });
                 } else {
-                    /*alert("출결 등록/수정 실패");*/
                     $("#alert-message").text("출결 등록/수정 실패");
                     $("#alert-modal").css("display", "flex");
                     $(".modal-backdrop").css("display", "flex");
@@ -681,7 +608,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
                         $(".modal-backdrop").css("display", "none");
                     });
                 }
-                console.log(data.message);
             })
             .catch((error) => console.error(error));
     };
@@ -731,9 +657,7 @@ fetch("/courses/course-number-list?excludeExpired=false", {
         await fetch("/attendances/attendance-status", requestOptions)
             .then((res) => res.json())
             .then(async(data) => {
-                console.log(data);
                 if(data.code === 0) {
-                    /*alert("정상적으로 출결 등록/수정되었습니다.");*/
                     $("#add-attendance-modal").css("display", "none");
                     $(".modal-backdrop").css("display", "none");
                     $("#alert-message").text("정상적으로 출결 등록/수정되었습니다.");
@@ -745,9 +669,7 @@ fetch("/courses/course-number-list?excludeExpired=false", {
                         $(".modal-backdrop").css("display", "none");
                         location.reload();
                     });
-                    /*location.reload();*/
                 } else {
-                    /*alert("출결 등록/수정 실패");*/
                     $("#alert-message").text("출결 등록/수정 실패");
                     $("#alert-modal").css("display", "flex");
                     $(".modal-backdrop").css("display", "flex");
@@ -757,7 +679,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
                         $(".modal-backdrop").css("display", "none");
                     });
                 }
-                console.log(data.message);
             })
             .catch((error) => console.error(error));
     }
@@ -840,8 +761,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
         const checkedStudentData = [];
         const selectedRadio = $("input[name=attendanceStatusModal]:checked");
         if(!selectedRadio.length) {
-            /*alert("등록할 수강생 출결 상태를 체크해주세요!");*/
-
             $("#alert-message").text("등록할 수강생 출결 상태를 체크해주세요!");
             $("#alert-modal").css("display", "flex");
             $(".modal-backdrop").css("display", "flex");
@@ -882,9 +801,7 @@ fetch("/courses/course-number-list?excludeExpired=false", {
         await fetch("/attendances/acknowledge-category", requestOptions)
             .then((res) => res.json())
             .then(async(data) => {
-                console.log(data);
                 const categoryList = data.data;
-
                 await updateCategoryList(categoryList);
             })
             .catch((error) => console.error(error));
@@ -957,7 +874,6 @@ fetch("/courses/course-number-list?excludeExpired=false", {
 
     $("#acknowledge-setting-btn").on("click", async function() {
         await reflectAttendanceAcknowledgeStatus();
-        console.log('출석인정 처리 완료!');
         location.reload();  // 화면 새로고침
     });
 
