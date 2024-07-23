@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,6 +80,7 @@ public class ApiService {
                     .courseSeq(course.getCourseSeq())
                     .build());
         });
+        result.sort(Comparator.comparing(TakenCourseResponse::getEndDate).reversed());
         return result;
     }
 
@@ -222,6 +224,20 @@ public class ApiService {
 
     public StudentInfoDTO getStudentByStudentCourseSeq(int studentCourseSeq) {
         GetStudentInfoByScqDTO temp = studentMapper.selectStudentInfoByScq(studentCourseSeq);
+        return StudentInfoDTO.builder()
+                .studentId(temp.getStudentId())
+                .name(temp.getName())
+                .hrdNetId(temp.getHrdNetId())
+                .account(temp.getAccount())
+                .birth(temp.getBirth())
+                .bank(temp.getBank())
+                .phoneNumber(temp.getPhoneNumber())
+                .email(temp.getEmail())
+                .bank(temp.getBank())
+                .build();
+    }
+    public StudentInfoDTO getStudentByStudentId(String studentId) {
+        GetStudentInfoByScqDTO temp = studentMapper.selectStudentInfoByStudentId(studentId);
         return StudentInfoDTO.builder()
                 .studentId(temp.getStudentId())
                 .name(temp.getName())
