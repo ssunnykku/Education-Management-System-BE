@@ -997,7 +997,7 @@ tbody td:last-child {
   width: 400px;
   height: 150px;
   border-radius: 10px;
-  border: 2px solid rgb(70, 98, 255);
+  border: 2px solid rgb(64, 64, 64);
   z-index: 999;
   background-color: #fff;
   .modal-contents-wrapper {
