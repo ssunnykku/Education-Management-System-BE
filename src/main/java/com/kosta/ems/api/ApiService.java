@@ -236,4 +236,18 @@ public class ApiService {
                 .bank(temp.getBank())
                 .build();
     }
+    public StudentInfoDTO getStudentByStudentId(String studentId) {
+        GetStudentInfoByScqDTO temp = studentMapper.selectStudentInfoByStudentId(studentId);
+        return StudentInfoDTO.builder()
+                .studentId(temp.getStudentId())
+                .name(temp.getName())
+                .hrdNetId(temp.getHrdNetId())
+                .account(temp.getAccount())
+                .birth(temp.getBirth())
+                .bank(temp.getBank())
+                .phoneNumber(temp.getPhoneNumber())
+                .email(temp.getEmail())
+                .bank(temp.getBank())
+                .build();
+    }
 }

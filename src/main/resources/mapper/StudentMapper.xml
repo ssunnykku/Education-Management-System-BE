@@ -254,6 +254,22 @@
         WHERE sc.student_course_seq = #{scq}
           AND sc.student_id = s.student_id;
     </select>
+    <select id="selectStudentInfoByStudentId" resultType="com.kosta.ems.student.dto.GetStudentInfoByScqDTO">
+        SELECT s.student_id AS studentId,
+               hrd_net_id   AS hrdNetId,
+               NAME,
+               birth,
+               address,
+               bank,
+               ACCOUNT,
+               phone_number AS phoneNumber,
+               email,
+               gender,
+               s.manager_id AS managerId,
+               s.is_active  AS isActive
+        FROM students s
+        WHERE s.student_id = #{studentId};
+    </select>
 
     <select id="selectStudentListBycourseSeq" parameterType="int">
         select s.student_id    as studentId,

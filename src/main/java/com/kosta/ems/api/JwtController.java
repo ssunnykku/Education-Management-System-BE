@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kosta.ems.api.dto.AttendanceHistoryResponse;
 import com.kosta.ems.api.dto.UpdateStudentInfoRequest;
 import com.kosta.ems.course.CourseDTO;
+import com.kosta.ems.student.StudentService;
+import com.kosta.ems.student.StudentServiceImpl;
 import com.kosta.ems.student.dto.StudentInfoDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -91,7 +93,7 @@ public class JwtController {
     @PreAuthorize("hasRole('STUDENT')")
     public Map getStudentInfo(HttpServletRequest request) {
         String loginUser = getLoginUser(request);
-        return Map.of("result", loginUser);
+        return Map.of("result", service.getStudentByStudentId(loginUser));
     }
 
     //마이페이지 정보 수정 모달
