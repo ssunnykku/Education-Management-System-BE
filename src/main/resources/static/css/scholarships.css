@@ -1266,3 +1266,8 @@ ul#pagination {
     z-index: 200;
 
 }
+
+.course-modal.point {
+    margin: auto;
+    margin-top: 22%;
+}
