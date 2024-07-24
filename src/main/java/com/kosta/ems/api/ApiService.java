@@ -2,6 +2,8 @@ package com.kosta.ems.api;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -155,7 +157,7 @@ public class ApiService {
     }
 
     public boolean addInTime(String studentId) {
-        try {
+        LocalTime now = LocalTime.now(ZoneOffset.of("+09:00"));
             CourseDTO course = getCurrentCourse(studentId);
             if (course == null) {
                 return false;
@@ -164,28 +166,29 @@ public class ApiService {
             if (status.getInTime() != null) {
                 return false;
             }
-            StudentCourseDTO sCDTO;
+        StudentCourseDTO sCDTO = sCRepo.findByStudentIdAndCourseSeq(studentId, course.getCourseSeq()).orElseThrow(() -> new RuntimeException("수강하는 과정이 없습니다."));;
+        try {
             //먼저 attendance table에 추가
-            sCDTO = sCRepo.findByStudentIdAndCourseSeq(studentId, course.getCourseSeq()).orElseThrow(() -> new RuntimeException("수강하는 과정이 없습니다."));
+            
             attendanceMapper.insertAttendanceStatus(UpdateStudentAttendanceStatusDTO.builder()
                     .attendanceDate(LocalDate.now())
                     .attendanceStatus("입실")
                     .managerId(STUDENT_MANAGER_ID)
                     .studentCourseSeq(sCDTO.getSeq())
                     .build());
+        }catch (Exception e) {
+        }
 
             //후에 attendance_time table 추가
             AttendanceTimeId id = new AttendanceTimeId(LocalDate.now(), sCDTO.getSeq());
-            AttendanceTimeDTO inTime = new AttendanceTimeDTO(id, LocalTime.now(), null);
+            AttendanceTimeDTO inTime = new AttendanceTimeDTO(id, now, null);
             attendanceTimeRepo.save(inTime);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return true;
     }
 
     @Transactional
     public boolean addOutTime(String studentId) {
+        LocalTime now = LocalTime.now(ZoneOffset.of("+09:00"));
         CourseDTO course = getCurrentCourse(studentId);
         if (course == null) {
             return false;
@@ -204,7 +207,7 @@ public class ApiService {
         AttendanceTimeId id = new AttendanceTimeId(LocalDate.now(), sCDTO.getSeq());
         Optional<AttendanceTimeDTO> oriTime = attendanceTimeRepo.findById(id);
         AttendanceTimeDTO outTime = oriTime.orElseThrow(() -> new RuntimeException());
-        outTime.setOutTime(LocalTime.now());
+        outTime.setOutTime(now);
 
         updateAttendanceBasedOnTime(sCDTO.getSeq(), outTime.getInTime(), outTime.getOutTime());
 
