@@ -15,29 +15,36 @@
   <div th:insert="~{common/header :: header}"></div>
   <div th:insert="~{common/title :: title ('포인트 관리')}"></div>
   <section id="point-section">
-    <article class="search-form-wrapper point-search">
-      <form action="#" class="seacrch-form">
+    <article class="search-form-wrapper point-search important-search-form-wrapper">
+    <div class="search-filter-btn-form">
+    <div class="search-filter-form">
+      <form action="#" class="seacrch-form important-search-form">
         <div id="filter-button-wrapper">
           <form action="/ems/points">
+            <select name="excludeExpired" class="courseId-filter" onChange="updateCourseNumber(event)">
+              <option value="true" th:selected="${paging.excludeExpired} == 1">진행중</option>
+              <option value="false" th:selected="${paging.excludeExpired} == 0">전체</option>
+            </select>
             <select id="courseNumberSelect" name="courseNumber" class="courseId-filter">
               <option value="0">기수</option>
               <option th:each="courseNumber: ${courseNumberList}" th:text="${courseNumber}"
                 th:attr="value=${courseNumber}" th:selected="${selectedCourseNumber} == ${courseNumber}">기수 alt</option>
-            </select>
-            <select name="excludeExpired" class="courseId-filter" onChange="updateCourseNumber(event)">
-              <option value="true" th:selected="${paging.excludeExpired} == 1">진행중</option>
-              <option value="false" th:selected="${paging.excludeExpired} == 0">전체</option>
             </select>
             <input id="studentNameInput" name="studentName" placeholder="수강생 이름을 입력하세요" class="search-input"  value=""/>
             <button type="submit" class="filter-search-btn">검색</button>
           </form>
         </div>
       </form>
-      <div id="button-wrapper">
+       </div>
+      <div id="button-wrapper" class="important-button-wrapper">
         <button id="point-search-btn" class="btn-setting" onclick="initShowPointModal()">조회</button>
         <button id="enroll-btn" class="btn-setting" onclick="initAddPointModal()">포인트 등록</button>
       </div>
+      </div>
     </article>
+    <div class="cnt-pages">
+      <span th:text="${'총 ' + paging.totalStudentCount +'개'}">총 개수 alt</span>
+    </div>
     <article id="point-table-wrapper">
       <div id="point-table">
         <form>
@@ -88,14 +95,12 @@
       </div>
     </article>
     <article class="page-information">
-      <div class="cnt-pages">
-        <span th:text="${'총 ' + paging.totalStudentCount +'개'}">총 개수 alt</span>
-      </div>
+
       <ul id="pagination">
         <li th:classappend="${paging.pageOffset == 1} ? 'inactivePage'">
           <a class="page-link"
             th:href="@{|?page=${paging.pageOffset-1}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}&courseNumber=${selectedCourseNumber}&studentName=${searchedStudentName != null ? searchedStudentName : ''}|}">
-            <span>이전</span>
+            <img src="../../assets/navigate_prev_white_24dp%201.svg" alt="이전"/>
           </a>
         </li>
         <li th:each="page: ${#numbers.sequence(0, 9)}"
@@ -108,7 +113,7 @@
           th:classappend="${(paging.pageOffset + 10) > (paging.totalStudentCount/paging.pageSize)} ? 'inactivePage'">
           <a class="page-link"
             th:href="@{|?page=${paging.pageOffset + 10}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}&courseNumber=${selectedCourseNumber}&studentName=${searchedStudentName != null ? searchedStudentName : ''}|}">
-            <span>다음</span>
+            <img src="../../assets/navigate_next_white_24dp%201.svg" alt="다음"/>
           </a>
         </li>
       </ul>
@@ -153,21 +158,10 @@
               <h4>항목</h4>
               <h4>포인트(점)</h4>
             </div>
-            <!-- <div id="pointBody" style="display: contents;">
-
-              </div> -->
-            <!-- <div>
-                <h5>24.02.10</h5>
-                <h5>시험치기 응시</h5>
-                <h5>10</h5>
-              </div>
-              <div>
-                <h5>24.04.01</h5>
-                <h5>국가 자격증 취득</h5>
-                <h5>10</h5>
-              </div> -->
+           
           </div>
           <div class="total-point line">
+            <h3></h3>
             <h3>총 적립 포인트</h3>
             <h3 id="totalPoint">20</h3>
           </div>
@@ -223,6 +217,7 @@
       <div id="addpoint-wrapper2">
         <div class="point-info">
           <div class="info-title underline" id="point-info-name">
+            <h1></h1>
             <h1>항목</h1>
             <h1>포인트(점)</h1>
           </div>
@@ -245,7 +240,7 @@
   </div>
 
   <!-- 알림창 모달 -->
-  <div id="removeCourseCompleteModal" class="course-modal" popover>
+  <div id="removeCourseCompleteModal" class="course-modal point" popover>
     <div class="removecourse-wrapper">
       <div class="removecourse-info">
         <h1 class="upperline title">알림</h1>
@@ -257,6 +252,12 @@
     </div>
   </div>
   <script>
+     $("#pagination li").each((index, item) => {
+      if ($(item).hasClass("inactivePage")) {
+        let a = $(item).children("a");
+        a.removeAttr("href");
+      }
+    });
     function initAddPointModal() {
       const selectedStudentDiv = getSelectedStudent();
       const modal = getThisModal();

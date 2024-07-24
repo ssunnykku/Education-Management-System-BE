@@ -1,66 +1,129 @@
 package com.kosta.ems.config;
 
+import com.kosta.ems.config.jwt.JwtTokenProvider;
+import com.kosta.ems.config.jwt.StudentDetailService;
+import com.kosta.ems.config.jwt.TokenAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @RequiredArgsConstructor
 @Configuration
+@EnableWebSecurity
+@Slf4j
 public class WebSecurityConfig {
-    private int count;
+
     private final UserDetailService userService;
+    private final StudentDetailService studentService;
+    private final JwtTokenProvider jwtTokenProvider;
+
     @Value("${security.level}")
     private String SECURITY_LEVEL;
 
-    // 2. 리소스 접근 빈 설정
     @Bean
-    public WebSecurityCustomizer configure() {
+    public WebSecurityCustomizer webSecurityCustomizer() {
         if (SECURITY_LEVEL.equals("OFF")) {
             return (web) -> web.ignoring().requestMatchers("/**");
         }
         return (web) -> web.ignoring().requestMatchers("/css/**");
     }
 
-    // 3
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(
-                authorize -> authorize.requestMatchers("/ems/login").permitAll().anyRequest().authenticated());
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/students/login","/ems/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/**").hasRole("STUDENT")
+                        .requestMatchers("/ems/**")
+                        .hasRole("MANAGER")
+                        .anyRequest().authenticated()
+                )
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/ems/login")
+                        .defaultSuccessUrl("/ems", true)
+                        .failureUrl("/ems/login")
+                        .usernameParameter("employeeNumber")
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/manager/logout")
+                        .logoutSuccessUrl("/ems/login")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                );
 
-        http.formLogin(formLogin -> formLogin.loginPage("/ems/login").defaultSuccessUrl("/ems/courses", true)
-                .failureUrl("/ems/login").usernameParameter("employeeNumber"));
+        http.addFilterBefore(new TokenAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
-        http.logout(logout -> logout.
-                logoutUrl("/manager/logout")
-                .logoutSuccessUrl("/ems/login").invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID"));
-
-        http.csrf(csrf -> csrf.disable());
         return http.build();
     }
 
-    // 4
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, PlainEncoder passwordEncoder,
-            UserDetailService userDetailService) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class).userDetailsService(userService)
-                .passwordEncoder(passwordEncoder).and().build();
+    public AuthenticationManager authenticationManager(HttpSecurity http, PlainEncoder passwordEncoder) throws Exception {
+
+        AuthenticationManagerBuilder authBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+
+        log.info("{}", http);
+        log.info("authBuilder {} ", authBuilder);
+
+        // Manager AuthenticationProvider
+        DaoAuthenticationProvider managerAuthProvider = new DaoAuthenticationProvider();
+        managerAuthProvider.setUserDetailsService(userService);
+        managerAuthProvider.setPasswordEncoder(passwordEncoder);
+        authBuilder.authenticationProvider(managerAuthProvider);
+
+        // Student AuthenticationProvider
+        DaoAuthenticationProvider studentAuthProvider = new DaoAuthenticationProvider();
+        studentAuthProvider.setUserDetailsService(studentService);
+        studentAuthProvider.setPasswordEncoder(passwordEncoder);
+        authBuilder.authenticationProvider(studentAuthProvider);
+
+        return authBuilder.build();
+
     }
 
-    // 1비밀번호 암호화를 위해
+
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 
     @Bean
-    public PlainEncoder plainEncoder() {
+    public PlainEncoder PlainEncoder() {
         return new PlainEncoder();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

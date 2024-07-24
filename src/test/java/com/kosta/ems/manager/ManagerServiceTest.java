@@ -15,14 +15,11 @@ import com.kosta.ems.manager.ManagerService;
 
 @SpringBootTest
 public class ManagerServiceTest {
-	@Autowired
-	ManagerService service;
-	
-	@Test
-	@Transactional
-	public void loginTest() {
-		Map<String, String> map = service.login("EMP0001", "1234");
-		assertThat(map.get("managerId")).isEqualTo("d893bf71-2f8f-11ef-b0b2-0206f94be675");
-	}
-	
+    @Autowired
+    ManagerService service;
+
+    @Test
+    void fintByManagerIdTest() {
+        assertThat(service.fintByManagerId("3ddf8681-3eaf-11ef-bd30-0206f94be675").getName()).isEqualTo("김선희");
+    }
 }

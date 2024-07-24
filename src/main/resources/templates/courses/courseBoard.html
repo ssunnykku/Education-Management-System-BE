@@ -5,8 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
-  <link rel="stylesheet" href="../../css/format.css" />
-  <link rel="stylesheet" href="../../css/courses.css" />
+  <link rel="stylesheet" href="/css/format.css" />
+  <link rel="stylesheet" href="/css/courses.css" />
   <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
     integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
 </head>
@@ -14,29 +14,32 @@
 <body id="content-wrapper">
   <div th:insert="~{common/header :: header}"></div>
   <div th:insert="~{common/title :: title ('과정 관리')}"></div>
-  <section id="content-section">
+  <section id="course-section">
     <article id="courseBoard-btns-container">
       <div class="search-form-wrapper">
-        <!-- form???? -->
-        <form action="/ems/courses">
+
+        <form id="searchForm" action="/ems/courses">
+
+          <select name="excludeExpired" class="data-filter" onChange="updateCourseNumber(event)" id="excludeExpiredSelect">
+            <option value="true" th:selected="${paging.excludeExpired} == 1">진행중</option>
+            <option value="false" th:selected="${paging.excludeExpired} == 0">전체</option>
+          </select>
           <select id="courseNumberSelect" name="courseNumber" class="data-filter">
             <option value="0">기수</option>
             <option th:each="courseNumber: ${courseNumberList}" th:text="${courseNumber}" th:attr="value=${courseNumber}" th:selected="${selectedCourseNumber} == ${courseNumber}">기수 alt</option>
           </select>
-          <select name="excludeExpired" class="data-filter" onChange="updateCourseNumber(event)">
-            <option value="true" th:selected="${paging.excludeExpired} == 1">진행중</option>
-            <option value="false" th:selected="${paging.excludeExpired} == 0">전체</option>
-          </select>
-          <button type="submit" class="filter-search-btn">검색</button>
         </form>
-      </div>
-      <div id="courseBoard-btn-wrapper">
+            <div id="courseBoard-btn-wrapper">
         <button id="enroll-btn" class="btn-setting" popovertarget="addCourseModal">등록</button>
         <button id="delete-btn" class="btn-setting" popovertarget="removeCourseModal">삭제</button>
       </div>
-      
+      </div>
     </article>
-    <article>
+ 
+      
+    <div class="cnt-pages">
+        <span th:text="${'총 ' + paging.totalCourseCount +'개'}">총 개수 alt</span>
+      </div>
       <div id="courseBoard-table">
         <div class="courseBoard-row" id="courseBoard-title-row">
           <div id="courseBoard-no">
@@ -111,21 +114,17 @@
 
         </div>
       </div>
-    </article>
 
     <article class="page-information">
-      <div class="cnt-pages">
-        <span th:text="${'총 ' + paging.totalCourseCount +'개'}">총 개수 alt</span>
-      </div>
       <ul id="pagination">
         <li th:classappend="${paging.pageOffset == 1} ? 'inactivePage'">
           <a class="page-link"
             th:href="@{|?page=${paging.pageOffset-1}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}">
-            <span>이전</span>
+            <img src="../../assets/navigate_prev_white_24dp%201.svg" alt="이전"/>
           </a>
         </li>
         <li th:each="page: ${#numbers.sequence(0, 9)}"
-          th:if="${(paging.pageOffset + page) <= ((paging.totalCourseCount/paging.pageSize) + 1)}"
+          th:if="${(paging.pageOffset + page) <= (((paging.totalCourseCount-1)/paging.pageSize) + 1)}"
           th:classappend="${(paging.pageOffset + page) == paging.page} ? 'activePage'" class="page-item">
           <a th:text="${paging.pageOffset + page}" class="page-link"
             th:href="@{|?page=${paging.pageOffset + page}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}"></a>
@@ -134,7 +133,7 @@
           th:classappend="${(paging.pageOffset + 10) > (paging.totalCourseCount/paging.pageSize)} ? 'inactivePage'">
           <a class="page-link"
             th:href="@{|?page=${paging.pageOffset + 10}&excludeExpired=${paging.excludeExpired == 0 ? 'false' : 'true'}|}">
-            <span>다음</span>
+            <img src="../../assets/navigate_next_white_24dp%201.svg" alt="다음"/>
           </a>
         </li>
       </ul>
@@ -150,50 +149,52 @@
   <div id="addCourseModal" class="course-modal" popover>
     <div id="course-wrapper">
       <div>
-        <h1>과정 등록</h1>
-        <input type="text" id="course_seq" hidden>
-        <form method="post" class="course-form-row">
-          <h4>과정 구분</h4>
-          <select name="course_type" id="course_type">
-            <option>과정 구분을 선택하세요.</option>
-            <option th:each="type : ${courseTypeList}" th:attr="value=${type}" th:text="${type}">타입 alt</option>
-          </select>
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>기수</h4>
-          <input type="text" id="course_number" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>주제명</h4>
-          <input type="text" id="subject" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>과정명</h4>
-          <input type="text" id="course_name" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>시작일</h4>
-          <input type="date" id="course_start_date" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>종료일</h4>
-          <input type="date" id="course_end_date" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>교수자 이름</h4>
-          <input type="text" id="professor_name" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>총 교육일</h4>
-          <input type="text" id="total_training_hours" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>교육 시간(일)</h4>
-          <input type="text" id="training_hours_of_day" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>정원 수</h4>
-          <input type="number" id="course_max_students" />
+        <form id="addCourseForm">
+          <h1>과정 등록</h1>
+          <input type="text" id="course_seq" hidden>
+          <div method="post" class="course-form-row">
+            <h4>과정 구분</h4>
+            <select name="course_type" id="course_type" required>
+              <option>과정 구분을 선택하세요.</option>
+              <option th:each="type : ${courseTypeList}" th:attr="value=${type}" th:text="${type}">타입 alt</option>
+            </select>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>기수</h4>
+            <input type="text" name="courseNumber" id="course_number" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>주제명</h4>
+            <input type="text" id="subject" name="courseSubject" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>과정명</h4>
+            <input type="text" id="course_name" name="courseName" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>시작일</h4>
+            <input type="date" id="course_start_date" name="courseStartDate" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>종료일</h4>
+            <input type="date" id="course_end_date" name="courseEndDate" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>교수자 이름</h4>
+            <input type="text" id="professor_name" name="courseProfessorName" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>총 교육일</h4>
+            <input type="text" id="total_training_hours" name="totalTrainingDays" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>교육 시간(일)</h4>
+            <input type="text" id="training_hours_of_day" name="trainingHoursOfDay" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>정원 수</h4>
+            <input type="number" id="course_max_students" name="maxStudents" required/>
+          </div>
         </form>
 
         <div id="btn-wrapper">
@@ -209,47 +210,54 @@
   <div id="editCourseModal" class="course-modal" popover>
     <div id="course-wrapper">
       <div>
-        <h1>과정 수정</h1>
-        <input type="text" id="course_seq" hidden>
-        <form method="post" class="course-form-row">
-          <h4>과정 구분</h4>
-          <select name="course_type" id="course_type">
-            <option>과정 구분을 선택하세요.</option>
-            <option th:each="type : ${courseTypeList}" th:attr="value=${type}" th:text="${type}">타입 alt</option>
-          </select>
+        <form id="editCourseForm">
+          <h1>과정 수정</h1>
+          <input type="text" id="course_seq" hidden>
+          <div method="post" class="course-form-row">
+            <h4>과정 구분</h4>
+            <select name="course_type" id="course_type" required>
+              <option>과정 구분을 선택하세요.</option>
+              <option th:each="type : ${courseTypeList}" th:attr="value=${type}" th:text="${type}">타입 alt</option>
+            </select>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>기수</h4>
+            <input type="text" name="courseNumber" id="course_number" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>주제명</h4>
+            <input type="text" id="subject" name="courseSubject" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>과정명</h4>
+            <input type="text" id="course_name" name="courseName" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>시작일</h4>
+            <input type="date" id="course_start_date" name="courseStartDate" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>종료일</h4>
+            <input type="date" id="course_end_date" name="courseEndDate" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>교수자 이름</h4>
+            <input type="text" id="professor_name" name="courseProfessorName" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>총 교육일</h4>
+            <input type="text" id="total_training_hours" name="totalTrainingDays" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>교육 시간(일)</h4>
+            <input type="text" id="training_hours_of_day" name="trainingHoursOfDay" required/>
+          </div>
+          <div method="post" class="course-form-row">
+            <h4>정원 수</h4>
+            <input type="number" id="course_max_students" name="maxStudents" required/>
+          </div>
         </form>
-        <form method="post" class="course-form-row">
-          <h4>기수</h4>
-          <input type="text" id="course_number" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>주제명</h4>
-          <input type="text" id="subject" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>과정명</h4>
-          <input type="text" id="course_name" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>시작일</h4>
-          <input type="date" id="course_start_date" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>종료일</h4>
-          <input type="date" id="course_end_date" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>교수자 이름</h4>
-          <input type="text" id="professor_name" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>총 교육일</h4>
-          <input type="text" id="total_training_hours" />
-        </form>
-        <form method="post" class="course-form-row">
-          <h4>교육 시간(일)</h4>
-          <input type="text" id="training_hours_of_day" />
-        </form>
+        
 
         <div id="btn-wrapper">
           <button id="enroll-btn" class="btn-setting" onclick="editCourse(event)">수정</button>
@@ -275,20 +283,14 @@
     </div>
   </div>
 
-  <!-- 과정삭제 완료 모달 -->
-  <div id="removeCourseCompleteModal" class="course-modal" popover>
-    <div class="removecourse-wrapper">
-      <div class="removecourse-info">
-        <h1 class="upperline title">알림</h1>
-        <h1 id="message">삭제되었습니다.</h1>
-      </div>
-      <div id="btn-wrapper">
-        <button id="enroll-btn-format" class="btn-setting-format" onclick="location.reload()">확인</button>
-      </div>
-    </div>
-  </div>
+  <!-- 공용 알림창 모달 -->
+  <div th:replace="~{courses/alertModal :: alertModal}"></div>
+  <div th:replace="~{courses/messageModal :: messageModal}"></div>
+
 
   <script>
+
+
     $("#pagination li").each((index, item) => {
       if ($(item).hasClass("inactivePage")) {
         let a = $(item).children("a");
@@ -296,7 +298,24 @@
       }
     });
     $("#all-checkbox").on("change", toggleAll);
+    $("#courseNumberSelect").on("change", gotoSearchPage);
+    $("#excludeExpiredSelect").on("change", gotoSearchAllPage);
+    
 
+    function gotoSearchPage(){
+      const searchForm = $("#searchForm").get(0);
+      let str = "";
+      [...searchForm.elements].forEach((item, index) => {
+        str = str + "&" + item.name + "=" + item.value
+
+      }
+      );
+      location.href="/ems/courses?page=1" + str;
+    }
+    function gotoSearchAllPage(){
+      
+      location.href="/ems/courses?page=1&excludeExpired="+ $("#excludeExpiredSelect").val();
+    }
     function toggleAll() {
       const isChecked = $("#all-checkbox").prop('checked');
       $("#courseBoard-table input[type=checkbox]").prop('checked', isChecked);
@@ -329,6 +348,7 @@
       }
       function setCourseSeq(data) {
         editCourseModalDiv.find("#course_seq").val(data)
+        console.log(data);
       }
       function setcourseNumber(data) {
         editCourseModalDiv.find("#course_number").val(data)
@@ -366,6 +386,12 @@
     }
     function editCourse() {
       const editCourseModalDiv = $("#editCourseModal");
+      const editCourseForm = $("#editCourseForm");
+      const editCourseInputs = editCourseForm.serializeArray();
+      if(!isValidate(editCourseInputs)){
+        showMessage("모든 내용을 작성해주세요.")
+        return false;
+      }
 
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -392,8 +418,8 @@
 
       fetch("/courses/course", requestOptions)
         .then((response) => response.json())
-        .then((result) => { if (result.result) { showMessage("수정 성공") } })
-        .catch((error) => showMessage("수정에 실패하였습니다. \n같은 현상이 반복된다면 시스템 관리자에게 문의하여 주십시오."));
+        .then((result) => { if (result.result) { alertBeforeReload("수정 성공") } })
+        .catch((error) => alertBeforeReload("수정에 실패하였습니다. \n같은 현상이 반복된다면 시스템 관리자에게 문의하여 주십시오."));
 
 
       function getCourseSeq() {
@@ -432,9 +458,24 @@
         return $("#editCourseModal #course_type option:selected").val()
 
       }
+
+      function isValidate(inputs){
+        let result = true;
+        inputs.forEach(item => {
+          if(!item.value)
+            result = false;
+        });
+        return result;
+      }
     }
 
     function addCourse() {
+      const addCourseForm = $("#addCourseForm");
+      const addCourseInputs = addCourseForm.serializeArray();
+      if(!isValidate(addCourseInputs)){
+        showMessage("모든 내용을 작성해주세요.")
+        return false;
+      }
       const addCourseModalDiv = $("#addCourseModal");
 
       const myHeaders = new Headers();
@@ -461,8 +502,8 @@
 
       fetch("/courses/course", requestOptions)
         .then((response) => response.json())
-        .then((result) => { if (result.result) { showMessage("등록 성공") } else { showMessage("등록에 실패하였습니다.\n 이미 등록된 기수가 아닌지 확인하시고, 같은 현상이 반복된다면 시스템 관리자에게 문의하여 주십시오.") } })
-        .catch((error) => showMessage("등록에 실패하였습니다. \n네트워크 문제일 가능성이 높습니다. 서버 관리자에게 문의하여 주시기 바랍니다."));
+        .then((result) => { if (result.result) { alertBeforeReload("등록 성공") } else { alertBeforeReload("등록에 실패하였습니다.\n 이미 등록된 기수가 아닌지 확인하시고, 같은 현상이 반복된다면 시스템 관리자에게 문의하여 주십시오.") } })
+        .catch((error) => alertBeforeReload("등록에 실패하였습니다. \n네트워크 문제일 가능성이 높습니다. 서버 관리자에게 문의하여 주시기 바랍니다."));
 
 
       function getCourseSeq() {
@@ -501,6 +542,15 @@
         return $("#addCourseModal #course_type option:selected").val()
 
       }
+
+      function isValidate(inputs){
+        let result = true;
+        inputs.forEach(item => {
+          if(!item.value)
+            result = false;
+        });
+        return result;
+      }
     }
 
     async function removeCourse() {
@@ -518,9 +568,9 @@
 
       let result = await deleteCourse(selectedCourseSeqList);
       if(result){
-        showMessage("삭제되었습니다.");
+        alertBeforeReload("삭제되었습니다.");
       }else{
-        showMessage("삭제 중 오류가 발생하였습니다.\n같은 현상이 반복되면 관리자에게 문의해주시기 바랍니다.");
+        alertBeforeReload("삭제 중 오류가 발생하였습니다.\n같은 현상이 반복되면 관리자에게 문의해주시기 바랍니다.");
       }
     }
 
@@ -544,12 +594,19 @@
     async function updateCourseNumber(e){
       const courseNumberList = await getCourseNumberList(e.target.value);
       const courseNumberSelect = $("#courseNumberSelect");
+      const oriValue = $("#courseNumberSelect option:selected").val();
       courseNumberSelect.html("");
       let element = `<option value="` + 0 +`">` + "기수" + `</option>`;
       courseNumberList.forEach(courseNumber => {
-        element += `<option value="` + courseNumber +`">` + courseNumber + `</option>`;
+          element += `<option value="` + courseNumber +`">` + courseNumber + `</option>`;
       });
       courseNumberSelect.get()[0].innerHTML = element;
+
+      //이미 설정되어있던 값이 있으면 그걸로 초기화하고, 없으면 초기값 "기수"로 초기화한다.
+      courseNumberSelect.val(oriValue);
+      if(!courseNumberSelect.val()){
+        courseNumberSelect.val(0);
+      }
     }
 
     async function getCourseNumberList(excludeExpired){
@@ -558,11 +615,7 @@
       return data.result;
     }
 
-    function showMessage(msg) {
-      const messageModal = $("#removeCourseCompleteModal").get()[0];
-      messageModal.querySelector("#message").innerText = msg;
-      messageModal.showPopover();
-    }
+
   </script>
 </body>
 

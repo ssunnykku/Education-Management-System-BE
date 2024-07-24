@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.kosta.ems.config.jwt.JwtTokenProvider;
 import org.springframework.ui.Model;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,9 +42,9 @@ public class NotificationController {
     @Qualifier("notificationService")
     private final NotificationService notification;
     //공지사항 전체 글 search
+    private final JwtTokenProvider jwtTokenProvider;
 
     @GetMapping
-    //@AuthenticationPrincipal 사용할수있음.
     public Map<String, Object> notificationBoard(HttpSession session, @RequestParam(defaultValue = "1") int page) {
         ManagerDTO loginUser = getLoginUser();
         String managerId = loginUser.getManagerId();
@@ -57,7 +58,6 @@ public class NotificationController {
     //공지사항 글 추가(O)
     @PostMapping("/write")
     public Map<String, Boolean> addPost(@RequestBody NotificationDTO dto, HttpServletRequest request) {
-        //String managerId = (String) session.getAttribute("managerId");
         ManagerDTO loginUser = getLoginUser();
         String managerId = loginUser.getManagerId();
         dto.setManagerId(managerId);
@@ -74,9 +74,11 @@ public class NotificationController {
 
     //검색하기(O)
     @GetMapping("/list")
-    public Map<String, Collection> searchByKeyword(@RequestParam("keyword") String keyword, HttpSession session, @RequestParam(defaultValue = "1") int page) throws NoResultsFoundException {
+    public Map<String, Collection> searchByKeyword(@RequestParam("keyword") String keyword, HttpSession session, @RequestParam(defaultValue = "1") int page, HttpServletRequest request) {
+
         ManagerDTO loginUser = getLoginUser();
         String managerId = loginUser.getManagerId();
+
         return Map.of("result", notification.searchByKeyword(keyword, managerId, page, 10));
     }
 
@@ -122,5 +124,6 @@ public class NotificationController {
         }
         return loginUser;
     }
+
 
 }

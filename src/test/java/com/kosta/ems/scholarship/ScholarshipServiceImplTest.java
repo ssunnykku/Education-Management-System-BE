@@ -23,13 +23,14 @@ class ScholarshipServiceImplTest {
     void getScholarshipTargetListTest() {
         ScholarshipTargetListReqDTO dto = ScholarshipTargetListReqDTO.builder().name("").courseNumber(277).academyLocation("가산").build();
         log.info(scholarshipService.getScholarshipTargetList(dto, 1, 10).toString());
-        log.info(String.valueOf(scholarshipService.getScholarshipTargetList(dto, 2, 10).size()));
+        log.info(String.valueOf(scholarshipService.getScholarshipTargetList(dto, 1, 10).size()));
     }
 
-    //@Test
+    @Test
     @Transactional
-    void setScholarshipSettlementDateTest() {
-        scholarshipService.setScholarshipSettlementDate(9);
+    void setScholarshipSettlementTest() {
+        scholarshipService.setScholarshipSettlement(28, "3ddf8681-3eaf-11ef-bd30-0206f94be675");
+        assertThat(scholarshipService.getScholarshipResultList(ScholarshipTargetListReqDTO.builder().academyLocation("가산").courseNumber(282).name("").settlementDate(LocalDate.parse("2024-07-19")).build(), 1, 10)).isNotNull();
     }
 
     @Test
@@ -37,7 +38,7 @@ class ScholarshipServiceImplTest {
 
         ArrayList<ScholarshipSettlementResultDTO> list =
                 (ArrayList<ScholarshipSettlementResultDTO>) scholarshipService.getScholarshipResultList(ScholarshipTargetListReqDTO.builder()
-                        .courseNumber(277).name("손").scholarshipDate(LocalDate.parse("2024-06-21")).build(), 1, 10);
+                        .courseNumber(277).name("손").settlementDate(LocalDate.parse("2024-06-21")).build(), 1, 10);
 
         for (ScholarshipSettlementResultDTO dto : list) {
             assertThat(dto.getName()).contains("손");
@@ -48,12 +49,10 @@ class ScholarshipServiceImplTest {
     @Transactional
     void getScholarshipSettlementResultListTest2() {
 
-        scholarshipService.setScholarshipSettlementDate(66);
-        scholarshipService.setScholarshipSettlementDate(60);
-        scholarshipService.setScholarshipSettlementDate(63);
-        scholarshipService.setScholarshipSettlementDate(57);
+        scholarshipService.setScholarshipSettlement(22, "3ddf8681-3eaf-11ef-bd30-0206f94be675");
+        scholarshipService.setScholarshipSettlement(25, "3ddf8681-3eaf-11ef-bd30-0206f94be675");
 
-        ArrayList<ScholarshipSettlementResultDTO> list = (ArrayList<ScholarshipSettlementResultDTO>) scholarshipService.getScholarshipResultList(ScholarshipTargetListReqDTO.builder().courseNumber(277).name("").scholarshipDate(null).build(), 2, 10);
+        ArrayList<ScholarshipSettlementResultDTO> list = (ArrayList<ScholarshipSettlementResultDTO>) scholarshipService.getScholarshipResultList(ScholarshipTargetListReqDTO.builder().courseNumber(277).name("").settlementDate(null).build(), 1, 10);
         log.info(list.toString());
         log.info(String.valueOf(list.size()));
 

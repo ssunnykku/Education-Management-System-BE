@@ -1,6 +1,58 @@
 @import "reset.css";
 
 /************** benefitSettlement**************/
+input:-webkit-autofill {
+  background-color: transparent !important;
+  color: #000; /* 텍스트 색상을 원하는 색으로 설정 */
+}
+
+/* 자동완성된 값의 배경색을 흰색으로 설정 */
+input:-webkit-autofill {
+  background-color: white !important;
+  color: #000; /* 텍스트 색상을 원하는 색으로 설정 */
+}
+input:focus {
+    outline: none;
+     background-color: transparent; /* 포커스 상태일 때 투명으로 설정 */
+}
+
+/**모달 **/
+.modal-content {
+    margin-top: 300px;
+    width: 400px;
+    height: 200px;
+}
+
+.modal-body {
+    font-size: 20px;
+    text-align: center;
+    margin: 10px;
+    font-weight: 600;
+}
+
+.modal-title {
+    font-weight: 600;
+    text-align: center;
+    width: 100%;
+}
+
+.modal-footer {
+    border-top: none;
+    justify-content: center;
+}
+
+.btn-secondary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 34px;
+    width: 50px;
+    color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px #d4d4d4;
+    background-color: rgb(64, 64, 64);
+}
+
 
 /***** button/ search *******/
 
@@ -8,28 +60,25 @@ section {
     padding: 0 80px;
 }
 
-#settlement-filter-wrapper {
-    width: 100%;
-    height: 45px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
 
 #benefit-settlement-input-wrapper {
-    width: 100%;
-    height: 45px;
+	display: flex;
+    flex-direction: row;
+    gap: 8px;
+    height : 41px;
+    align-items: center;
+	
+ /*    height: 45px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 4px;
+    gap: 5px; */
 }
 
 .benefit-settlement-duration {
-    width: 100px;
-    height: 41px;
+    width: 120px;
+
 
     background: #ffffff;
 
@@ -81,7 +130,8 @@ section {
 
 .settlement-date {
     border: none;
-    width: 100%;
+    width: 98%;
+    height: 41px;
 }
 
 .result-settlement-date {
@@ -92,20 +142,15 @@ section {
 
 #lecture-days {
     border: none;
-    width: 100%;
+    width: 99%;
     text-align: center;
 }
 
-#filter-and-btn-wrapper {
-    width: 550px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+#benefit-settlement-search-btn-section {
+    padding: 0 200px;
 }
 
 .benefit-settlement-search-btn-wrapper {
-    padding-left: 400px;
-    padding-top: 10px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -116,15 +161,42 @@ section {
 
 #error {
     width: 100%;
-    height: 20px;
+    height: 1px;
+    padding-left: 5rem;
 }
 
-.benefit-settlement-filter_search_wrapper {
+#benefit-result-error {
     width: 100%;
+    height: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 14rem;
+}
+
+#settlement-filter-wrapper {
+     padding-right: 50px;
+    margin-left: 28%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.benefit-settlement-filter-search-wrapper {
+	padding-right: 50px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 20px;
+   /*  width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     margin: 20px 0 20px 0;
+    gap: 8px; */
 }
 
 .search-btn-wrapper {
@@ -167,6 +239,22 @@ section {
     background-repeat: no-repeat;
     background-size: 12px;
     background-position: 60px;
+}
+
+.benefit-search-input {
+    background: #ffffff;
+
+    border: 1px solid #cfcfcf;
+    border-radius: 10px;
+
+    z-index: 1;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 144%;
+    color: #000000;
+    text-align: center;
 }
 
 .search-input {
@@ -255,7 +343,13 @@ section {
 }
 
 .btn-wrapper {
-    height: 55px;
+	display: flex;
+  flex-direction: row;
+  gap: 10px;
+margin-left:450px;
+
+	
+ /*    height: 55px;
     padding: 0;
 
     display: flex;
@@ -263,7 +357,7 @@ section {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    /*margin-top: 20px;*/
+    margin-top: 20px; */
 }
 
 .benefit-btn-wrapper {
@@ -285,11 +379,25 @@ section {
 }
 
 #settlement-btn {
-    color: #ffffff;
+	    color: #ffffff;
+    background-color: rgb(64, 64, 64);
+    border-radius: 8px;
+    position: relative;
+    margin-left: 285px;
+    top: 40%;
+    display: flex;
+    flex-direction: row;
+    transform: translateY(-50%);
+    width: 80px;
+    height: 34px;
+    padding: 19px 16px;
+    box-shadow: 0px 0px 5px #888;
+    
+   /*  color: #ffffff;
     background-color: rgb(64, 64, 64);
     width: 60px;
     height: 32px;
-    border-radius: 8px;
+    border-radius: 8px; */
 }
 
 .btn-setting {
@@ -320,16 +428,15 @@ section {
 .board-row {
     display: flex;
     flex-direction: row;
-    height: 60px;
+
+    color: #1d1d1d;
+    border-bottom: 0.5px solid lightgray;
+    height: 40px;
+
     width: 100%;
     align-items: center;
     text-align: center;
     justify-content: space-between;
-
-    font-style: normal;
-    font-weight: 300;
-    font-size: 15px;
-    line-height: 144%;
 
     color: #1d1d1d;
 
@@ -340,21 +447,22 @@ section {
 }
 
 #board-title-row {
-    font-style: normal !important;
-    font-weight: 500 !important;
-    font-size: 15px;
-    line-height: 144% !important;
+    font-weight: 600 !important;
+    border-top: 1px solid #5c5c5c;
+    background-color: #f9f9f9 !important;
 
     color: #1d1d1d;
-    height: 60px;
+    height: 40px;
 
-    background: #ffffff;
-    border-bottom: 1px solid #f3f5f9;
-    border-radius: 10px 10px 0px 0px;
 }
 
 .benefit-cnt-pages {
-    display: flex;
+	    width: 100%;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 100%;
+    color: #999999;
+    /* display: flex;
     flex-direction: column;
     justify-content: center;
 
@@ -363,21 +471,27 @@ section {
     font-size: 14px;
     line-height: 100%;
     height: 16px;
-    color: #999999;
+    color: #999999; */
+}
+
+#benefit-table-contents {
+    border-bottom: 1px solid #5c5c5c !important;
+
 }
 
 /****************** benefitResultBoard **************/
 .benefitResult-cnt-pages {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 
     font-style: normal;
     font-weight: 500;
+    color: #999999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     font-size: 14px;
     line-height: 100%;
     height: 16px;
-    color: #999999;
+
 }
 
 /*
@@ -392,11 +506,16 @@ filter and search
 }
 
 #benefit-result-settlement-date {
-    width: 90px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#benefit-result-settlement-date > input {
+    width: 120px;
     height: 41px;
-
-    background: #ffffff;
-
     border: 1px solid #cfcfcf;
     border-radius: 5px;
 
@@ -407,20 +526,10 @@ filter and search
 
     color: #000000;
 
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-
 }
 
 #benefit-result-settlement-date-row {
-    width: 80px;
-}
-
-
-.benefitSettlement-checkbox {
-    width: 1%;
+    width: 20%;
 }
 
 .benefitSettlement-courseId {
@@ -477,101 +586,102 @@ filter and search
 
 /********************* benefitSettlementResult **********/
 
-/*#result-content-section {*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    width: 1000px;*/
-/*    justify-content: space-between;*/
-/*}*/
+#result-content-section {
+    padding: 0 180px;
+}
+
+#result-contents {
+    border-bottom: 1px solid #5c5c5c !important;
+
+}
 
 .result-board-row {
+    color: #1d1d1d;
+    height: 40px;
+    border-bottom: 1px solid #f3f5f9;
+
     display: flex;
     flex-direction: row;
-    height: 60px;
-    width: 1300px;
     align-items: center;
     text-align: center;
-    justify-content: space-between;
-
-    font-style: normal;
-    font-weight: 300;
-    font-size: 15px;
-    line-height: 144%;
-
-    color: #1d1d1d;
 
 }
 
 .benefit-result-board-table {
-    width: 1300px;
     white-space: nowrap;
-    overflow: auto
+    overflow: auto;
+    min-height: 50vh;
 }
 
-.benefitSettlementResult-checkbox {
-    /*width: 1%;*/
-    width: 50px;
-}
 
 .benefitSettlementResult-courseId {
-    width: 30px;
+    width: 5%;
 }
 
 .benefitSettlementResult-hrd-net-id {
-    width: 80px;
+    width: 10%;
 }
 
 .benefitSettlementResult-name {
-    width: 80px;
+    width: 7%;
 }
 
 .benefitSettlementResult-bank {
-    width: 80px;
+    width: 10%;
 }
 
 .benefitSettlementResult-account {
-    width: 150px;
+    width: 10%;
 }
 
 .benefitSettlementResult-settlement-duration {
-    width: 200px;
+    width: 25%;
 }
 
 .benefitSettlementResult-training-aid {
-    width: 80px;
+    width: 10%;
 }
 
 .benefitSettlementResult-meal-aid-amount {
-    width: 80px;
+    width: 10%;
 }
 
 .benefitSettlementResult-settlement_aid_amount {
-    width: 80px;
+    width: 10%;
 }
 
 .benefitSettlementResult-total-amount {
-    width: 80px;
+    width: 10%;
 }
 
-.benefit-settlement-date {
-    width: 80px;
+.benefit-result-settlement-date-row {
+    width: 10%;
+}
+
+.page-information {
+    height: 2.5rem;
 }
 
 .benefitResult-search-btn-wrapper {
     width: 100%;
     display: flex;
-    height: 80px;
+    height: 85px;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    padding-left: 20rem;
 
 }
 
+.benefit-result-settlement-date {
+    width: 10%;
+}
+
 .benefitResult-search-form-wrapper {
-    margin: 20px 0 20px 0;
+    margin: 20px 0 10px 0;
     display: flex;
     justify-content: center;
-    gap: 5px;
+    gap: 8px;
 }
 
 .settlement-date-input {
@@ -625,7 +735,6 @@ ul#pagination {
 }
 
 #page_number {
-    min-width: 30px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -634,4 +743,11 @@ ul#pagination {
 
 .page-link {
     width: 10px;
+}
+
+#search-course-modal {
+    width: 60rem;
+    height: 45rem;
+    border: #BBBBBB 1px solid;
+    border-radius: 20px;
 }

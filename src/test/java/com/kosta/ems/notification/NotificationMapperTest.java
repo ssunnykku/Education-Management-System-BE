@@ -21,14 +21,14 @@ class NotificationMapperTest {
 	}
 	@Test
 	void testFindByKeyword() {
-		log.info(notificationMapper.selectByKeyword("gg","d893c29b-2f8f-11ef-b0b2-0206f94be675", 10, 0 ).toString());
+		log.info(notificationMapper.selectByKeyword("2025","d893c29b-2f8f-11ef-b0b2-0206f94be675", 10, 0 ).toString());
 	}
 
-	//@Test
+	@Test
 	void testInsertNotification() {
 		NotificationDTO notification=
 				NotificationDTO.builder()
-				.managerId("d893c34e-2f8f-11ef-b0b2-0206f94be675")
+				.managerId("3ddf873c-3eaf-11ef-bd30-0206f94be675")
 				.title("더위로 인한 전사 직원 복장안내")
 				.description("무더위로 인해 8월말까지 7부 반바지까지 허용합니다.")
 				.build();

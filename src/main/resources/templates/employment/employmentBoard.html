@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
+            integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/format.css"/>
+    <link rel="stylesheet" href="../../css/employment.css"/> 
+</head>
+<body id="content-wrapper">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<div th:insert="~{common/header :: header}"></div>
+<div th:insert="~{common/title :: title ('수강생 취업 관리')}"></div>
+<section id="employment-contents">
+    <article id="employment-search-btn-wrapper">
+        <div class="search-form-wrapper">
+            <select name="employment-courseId-filter"
+                    class="employment-courseId-filter">
+                <option value="course-number" id="course-number">기수</option>
+            </select>
+            <div class="avg-form"></div>
+        </div>
+        <div class="employment-btn-wrapper">
+        <button type="button" id="export-to-excel" class="btn-setting">엑셀 추출</button>
+        <button type="button" class="email-btn">
+  		<a href="#" class="email" target="_blank">이메일</a>
+		</button>
+        </div>
+    </article>
+    <section id="employment-contents">
+  <article>
+  <div id="employmentBoard-table">
+    <table class="employmentBoard-table">
+      <thead>
+        <tr>
+         <th>
+            <input type="checkbox" name="" id="title-checkbox" />
+          </th>
+          <th><span>hrd-net-id</span></th>
+          <th><span>기수</span></th>
+          <th><span>이름</span></th>
+          <th><span>전화번호</span></th>
+          <th><span>이메일</span></th>
+          <th><span>과정종료일</span></th>
+          <th><span>취업처</span></th>
+          <th><span>취업 여부</span></th>
+        </tr>
+      </thead>
+      <tbody id="employment-table-contents"></tbody>
+    </table>
+  </div>
+</article>
+     </section>
+     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">취업처 입력</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <textarea name="company" id="company-input" placeholder="취업처를 입력하세요"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+        <button type="button" class="save-btn">저장</button>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<footer></footer>
+<script>
+
+$(document).ready(function() {
+  const emailLink = $('.email');
+  const checkboxes = $('.checkbox');
+
+  $(".email").click(function(event) {
+    const selectedEmails = [];
+    $(".checkbox").each(function() {
+      if ($(this).prop('checked')) {
+        selectedEmails.push($(this).data('email'));
+      }
+    });
+
+    if (selectedEmails.length > 0) {
+      emailLink.attr('href', `mailto:${selectedEmails.join(',')}`);
+    } else {
+      alert('선택된 수강생이 없습니다.');
+    }
+  });
+});
+
+async function getSettlementList(data) {
+  let tableBody = "";
+if (!data || data.length === 0) {
+    tableBody =    `<tr>
+            <td colspan="9" class="no-data-message" style="border-bottom: none;">데이터가 없습니다</td>
+        </tr>
+    `;
+  } else {
+  for (let i = 0; i < data.length; i++) {
+	const employmentStatusText = data[i].employeed ? "취업" : "미취업";
+	const companyText = data[i].company || "";
+    tableBody += `<tr>
+    <td><input type="checkbox" name=${data[i].sCSeq} class="checkbox"  data-email="${data[i].email}" value=${data[i].sCSeq}></td>
+      <td><span class="employmentBoard-hrd-net-id">${data[i].hrdNetId}</span></td>
+      <td><span class="employmentBoard-course-number">${data[i].courseNumber}</span></td>
+      <td><span class="employmentBoard-name">${data[i].name}</span></td>
+      <td><span class="employmentBoard-phone-number">${data[i].phoneNumber}</span></td>
+      <td><span class="employmentBoard-email">${data[i].email}</span></td>
+      <td><span class="employmentBoard-course-end-date">${data[i].courseEndDate}</span></td>
+      <td class="employmentBoard-company" data-scseq="${data[i].sCSeq}" data-employed="${employmentStatusText}" data-employmentSeq="${data[i].employmentSeq}"><span>${companyText}</span></td>
+      <td><span class="employmentBoard-is-employed">${employmentStatusText}</span></td>
+    </tr>`
+  }
+}
+
+  // Clear the existing table body
+  $("#employment-table-contents").html("");
+
+  // Append the generated table body to the existing table
+  $("#employment-table-contents").append(tableBody);
+}
+let sCSeq=null;
+$(document).ready(function() {
+  $('.employmentBoard-table').on('click', '.employmentBoard-company', function(e) {
+    const clickedCellText = $(this).text();
+	 sCSeq = $(this).data('scseq'); // Retrieve sCSeq from data attribute
+    const employmentSeq = $(this).data('employmentseq');
+    document.querySelector('#company-input').value = clickedCellText;
+
+    const myModal = new bootstrap.Modal('#exampleModal', {});
+    myModal.show();
+
+    $(".save-btn").on("click", function() {
+      const newCompany = document.getElementById("company-input").value;
+      fetch("/employments/student", {
+        method: "put",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          sCSeq: sCSeq,
+          company: newCompany
+        })
+      })
+      .then(response => {
+        
+          myModal.hide();
+         updateEmploymentData(courseNumber);
+         sCSeq=null;
+        } 
+        
+      )
+      });
+    });
+  });
+
+const excelDownload = document.querySelector('#export-to-excel');
+
+document.addEventListener('DOMContentLoaded', ()=>{
+    excelDownload.addEventListener('click', exportExcel);
+});
+
+
+function exportExcel() {
+  // 엑셀 시트 생성
+  var wb = XLSX.utils.book_new();
+  var newSh = excelHandler.getWorksheet();
+  XLSX.utils.book_append_sheet(wb, newSh, excelHandler.getSheetName());
+  var wb = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+  saveAs(new Blob([stab(wb)], { type: 'application/octet-stream' }), excelHandler.getExcelFileName());
+}
+
+var excelHandler = {
+  getExcelFileName: function() {
+    return '기수별 취업 데이터.xlsx'; // 파일 이름
+  },
+  getSheetName: function() {
+    return '시트 이름'; // 시트 이름
+  },
+  getExcelData: function() {
+    return document.getElementById('employmentBoard-table'); // TABLE id
+  },
+  getWorksheet: function() {
+    return XLSX.utils.table_to_sheet(this.getExcelData());
+  }
+};
+
+function stab(s) {
+  var buf = new ArrayBuffer(s.length); // convert s to arrayBuffer
+  var view = new Uint8Array(buf); // create uint8array as viewer
+  for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; // convert to octet
+  return buf;
+}
+let courseNumber = "";
+
+ function updateEmploymentData(courseNumber) {
+  fetch("/employments/info-list?courseNumber=" + courseNumber + "&page=" + 1, {
+    method: "GET" // 불필요한 Content-Type 헤더 제거
+  })
+  .then(response => response.json())
+  .then(async (data) => {
+    const notificationList = data.result;
+    await getSettlementList(notificationList);
+  })
+
+
+  fetch("/employments/avg-rate?courseNumber=" + courseNumber, {
+    method: "get",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(res => res.json())
+  .then(async (data) => {
+    const avg = data.result; // Assuming "result" property holds the average rate
+    const avgForm = document.querySelector(".avg-form");
+    avgForm.innerHTML = ""; // Clear existing content (optional)
+    avgForm.textContent = `평균 취업률 : ${avg.toFixed(2)}%`; // Format and display avg rate (rounded to 2 decimals)
+  })
+}
+
+// Call the function initially with the selected course number
+updateEmploymentData(courseNumber);
+
+// Call the function again when the dropdown value changes
+$(".employment-courseId-filter").on("change", async function() {
+  courseNumber = $(this).val(); // 'this' refers to the selected dropdown element
+  updateEmploymentData(courseNumber);
+});
+
+</script>
+</body>
+
+
+<script type="text/javascript" th:src="@{/scripts/employmentBoard.js}"></script>
+</html>

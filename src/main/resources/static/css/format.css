@@ -1,7 +1,6 @@
 @import "reset.css";
 
 /******************header ***************/
-@import "reset.css";
 
 #nav-title-wrapper {
     min-height: 100vh;
@@ -101,17 +100,18 @@
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    height: 185px;
+    height: 170px;
     align-items: flex-start;
     background-color: #ffffff;
     z-index: 50;
     position: absolute;
-    box-shadow: 0 5px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 2px #E7E9F2;
+
 }
 
 .nav-li-dropdown {
     height: 30px;
-    width: 150px;
+    width: 137px;
 
     font-style: normal;
     font-weight: 600;
@@ -142,13 +142,16 @@
 
 #header-btns {
     height: 100%;
-    width: 9%;
+    width: 17%;
     display: flex;
     space-between: center;
     align-items: center;
     flex-direction: row;
 
     padding-right: 10px;
+    gap: 10px;
+
+    font-size: 15px;
 }
 
 #header-btns > div:first-child {
@@ -211,7 +214,7 @@
 
 /* 메뉴(제목) */
 #title-wrapper {
-    height: 120px;
+    height: 100px;
     min-width: 1300px;
     background-color: rgba(244, 244, 244, 1);
     display: flex;

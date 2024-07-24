@@ -11,11 +11,11 @@ import java.util.Collection;
 public interface ScholarshipMapper {
     Collection<ScholarshipTargetDTO> selectScholarshipTargetList(String academyLocation, String name, String courseNumber, int limit, int offset);
 
-    void insertScholarshipSettlementDate(int studentCourseSeq);
+    void insertScholarshipSettlement(Integer studentCourseSeq, String managerId);
 
-    Collection<ScholarshipSettlementResultDTO> selectScholarshipResultList(String courseNumber, String academyLocation, String name, LocalDate scholarshipDate, int limit, int offset);
+    Collection<ScholarshipSettlementResultDTO> selectScholarshipResultList(Integer courseNumber, String academyLocation, String name, LocalDate settlementDate, int limit, int offset);
 
     int countScholarshipTarget(String academyLocation, String name, String courseNumber);
 
-    int countScholarshipResult(String courseNumber, String academyLocation, String name, LocalDate scholarshipDate);
+    int countScholarshipResult(String courseNumber, String academyLocation, String name, LocalDate settlementDate);
 }

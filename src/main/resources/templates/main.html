@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>main</title>
+    <link rel="stylesheet" href="../../css/format.css"/>
+    <link rel="stylesheet" href="../../css/main.css"/>
+    <link rel="stylesheet" href="../../css/reset.css"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
+            integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+</head>
+<body id="content-wrapper">
+<div th:insert="~{common/header :: header}"></div>
+<section id="main-section">
+    <article id="manager-course-info-wrapper">
+        <div id="main-manager-info-wrapper">
+            <div id="manager-info-title" class="info-title">
+                <h1>관리자 정보</h1>
+            </div>
+            <div id="manager-contents-wrapper">
+                <div id="manager-info-wrapper">
+
+                </div>
+                <div id="manager-info-img-wrapper">
+                    <label for="input-profile" id="input-profile-label"></label>
+                    <input id="input-profile" type="file" name="managerProfile" multiple="false" hidden />
+                </div>
+            </div>
+        </div>
+        <div id="main-course-info-wrapper">
+
+            <div id="course-info-title">
+                <a href="/ems/courses">
+                    <h1 class="info-title">진행중인 교육 과정</h1>
+                </a>
+            </div>
+
+            <div id="course-info-contents">
+                <div id="course-info-location-wrapper">
+                    <span id="course-info-item">교육장: </span>
+                </div>
+                <div id="course-table-wrapper">
+                    <table id="course-info-table">
+                        <tr>
+                            <th>기수</th>
+                            <th>과정명</th>
+                            <th>강사명</th>
+                            <th>개강일</th>
+                            <th>종강일</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </article>
+    <article id="attendance-info-wrapper">
+        <div>
+            <div id="attendance-title-wrapper">
+                <div class="info-title">
+                    <a href="/ems/attendances">
+                        <h1>출결 관리</h1>
+                    </a>
+                </div>
+                <div id="today">
+
+                </div>
+            </div>
+            <div id="course-number-wrapper">
+                <select name="course-number-filter" id="course-number-filter" class="courseId-filter">
+                    <!--                    <option value="none">기수</option>-->
+                </select>
+            </div>
+            <div id="course-name">
+            </div>
+        </div>
+        <div id="attendance-table-wrapper">
+            <table id="attendance-table">
+                <tr id="attendance-table-first-row">
+                    <th>기수</th>
+                    <th>수강생 이름</th>
+                    <th>입실</th>
+                    <th>퇴실</th>
+                </tr>
+                <tr style="display: contents" id="attendance-table-contents"></tr>
+            </table>
+        </div>
+    </article>
+</section>
+
+<div class="modal-backdrop"></div>
+
+<!--프로필 이미지 업로드 성공 모달-->
+<div id="profile-upload-success-modal">
+    <div class="modal-contents-wrapper">
+        <p>프로필 이미지 등록/수정이 정상 처리되었습니다.</p>
+        <button>확인</button>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/scripts/main.js}"></script>
+
+</body>
+</html>
